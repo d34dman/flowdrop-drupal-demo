@@ -1,0 +1,49 @@
+services:
+  cli:
+    image: ghcr.io/d34dman/flowdrop-drupal-demo-cli:main
+    networks:
+      - internal
+  nginx:
+    image: ghcr.io/d34dman/flowdrop-drupal-demo-nginx:main
+    depends_on:
+      - cli
+      - php
+    networks:
+      - internal
+      - web
+    volumes:
+      # Good Tip!
+      - drupal-data:/app/web/sites/default/files
+    restart: always
+
+  php:
+    image: ghcr.io/d34dman/flowdrop-drupal-demo-php:main
+    depends_on:
+      - cli
+    networks:
+      - internal
+    environment:
+      PHP_MEMORY_LIMIT: 600M
+  db:
+    image: wodby/mariadb:10.11-3.28.3
+    stop_grace_period: 30s
+    environment:
+      MYSQL_ROOT_PASSWORD: db
+      MYSQL_DATABASE: db
+      MYSQL_USER: db
+      MYSQL_PASSWORD: db
+      MYSQL_TRANSACTION_ISOLATION: READ-COMMITTED
+    networks:
+      - internal
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+volumes:
+  drupal-data:
+  mariadb-data:
+
+networks:
+  web:
+    external: true
+  internal:
+    external: false
