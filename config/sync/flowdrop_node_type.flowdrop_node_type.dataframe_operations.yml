@@ -1,0 +1,25 @@
+uuid: 71662ce2-fedb-417e-a1c8-25ba8907154b
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: m1ZdspUJwl_42Y_Wh_xcFVRvnH0OMYC4DdZGUo0ZVMs
+id: dataframe_operations
+label: 'DataFrame Operations'
+description: 'Perform operations on DataFrames'
+category: processing
+icon: 'mdi:table-cog'
+color: '#84cc16'
+version: 1.0.0
+enabled: true
+config:
+  operation: filter
+  columnName: ''
+  filterValue: ''
+  ascending: true
+tags:
+  - processing
+  - dataframe
+  - table
+  - operations
+executor_plugin: dataframe_operations

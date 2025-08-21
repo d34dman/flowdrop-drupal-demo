@@ -1,0 +1,12 @@
+uuid: ee50fc79-57b1-4b2d-9a98-f09903421671
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: qol8sYMJBhKR__JUTuYBHJPw0w4PMHP14SxzCfReU8I
+id: vector_store
+label: 'Vector Store'
+description: 'Node types for vector database operations and similarity search'
+icon: 'mdi:database-search'
+color: '#84cc16'
+enabled: true

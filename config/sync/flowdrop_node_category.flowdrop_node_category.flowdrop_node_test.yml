@@ -1,0 +1,15 @@
+uuid: b0a14415-be68-4bf3-b17d-562707f9258a
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_node_test
+_core:
+  default_config_hash: 2msKHvZ25UZNQwz0hiXk_YczrbV4bkj-RE6JMslRPbk
+id: flowdrop_node_test
+label: 'FlowDrop Node Test'
+description: 'Category used for collecting test nodes.'
+icon: 'mdi:cog'
+color: '#000000'
+enabled: null

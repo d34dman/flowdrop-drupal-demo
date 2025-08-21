@@ -1,0 +1,23 @@
+uuid: 1c7c68dc-8cee-4852-b57a-eb02864eb878
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: DtlphkFaofckRSMK64VrlUB5LQnI4WghkdYdjd8sAwg
+id: save_to_file
+label: 'Save to File'
+description: 'Save data to various file formats'
+category: data
+icon: 'mdi:content-save'
+color: '#ef4444'
+version: 1.0.0
+enabled: true
+config:
+  fileFormat: json
+  filePath: ./output/data.json
+tags:
+  - data
+  - save
+  - file
+  - export
+executor_plugin: save_to_file

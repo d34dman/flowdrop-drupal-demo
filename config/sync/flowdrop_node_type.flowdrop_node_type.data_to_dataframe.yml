@@ -1,0 +1,22 @@
+uuid: 1847dcba-113a-4426-b278-4da3bee7dadc
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: C-MkYwdUOcq15oFTS-iXpyjJ3JG6LdJLoIYfNOkzOHI
+id: data_to_dataframe
+label: 'Data to DataFrame'
+description: 'Convert Data objects to DataFrame'
+category: data
+icon: 'mdi:table-plus'
+color: '#10b981'
+version: 1.0.0
+enabled: true
+config:
+  includeText: true
+tags:
+  - data
+  - dataframe
+  - convert
+  - table
+executor_plugin: data_to_dataframe

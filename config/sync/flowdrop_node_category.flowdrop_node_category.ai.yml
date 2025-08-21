@@ -1,0 +1,12 @@
+uuid: 9a309585-5a0d-42fa-9d38-480b11d9044c
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 6muz0Y0wgDK1PXyrhPZfO8cK-yExJJgJ0m-2mnic8QI
+id: ai
+label: 'AI & ML'
+description: 'Node types for artificial intelligence and machine learning operations'
+icon: 'mdi:brain'
+color: '#9C27B0'
+enabled: true

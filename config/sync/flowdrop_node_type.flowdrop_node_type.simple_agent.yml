@@ -1,0 +1,23 @@
+uuid: 38971530-516a-4858-9dc8-7bb4dfd6a11a
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: M4SQlRD3Fu4u-GsEexUADyTvFUZfEGmQ0T8owqUQg_s
+id: simple_agent
+label: 'Simple Agent'
+description: 'Agent for tool orchestration'
+category: agent
+icon: 'mdi:account-cog'
+color: '#06b6d4'
+version: 1.0.0
+enabled: true
+config:
+  model: gpt-3.5-turbo
+  temperature: 0.7
+  maxIterations: 5
+tags:
+  - agent
+  - orchestration
+  - tools
+executor_plugin: simple_agent

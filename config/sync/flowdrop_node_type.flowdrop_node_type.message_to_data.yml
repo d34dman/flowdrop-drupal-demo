@@ -1,0 +1,20 @@
+uuid: b34fce5e-2f94-42a3-b6a3-6bbaa27059ec
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: B4IMe4hSN-TH1YvR0cg7xYqLU0NytnBa2XDpxbCKZXM
+id: message_to_data
+label: 'Message to Data'
+description: 'Convert Message objects to Data objects'
+category: data
+icon: 'mdi:message-arrow-right'
+color: '#f59e0b'
+version: 1.0.0
+enabled: true
+config: {  }
+tags:
+  - data
+  - message
+  - convert
+executor_plugin: message_to_data

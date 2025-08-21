@@ -1,0 +1,415 @@
+uuid: 0549222a-0d26-4aad-bd58-98c9fdd7de21
+langcode: en
+status: true
+dependencies: {  }
+id: demo
+label: Demo
+description: "A demo FlowDrop workflow.\r\nTry opening the workflow in \"Open in Editor\" to use the awesome FlowDrop UI to manage the workflow."
+nodes:
+  -
+    id: 13540037-a4ee-4324-941e-0764370f2125
+    type: workflowNode
+    position:
+      x: 890
+      'y': 280
+    data:
+      label: 'Simple Agent'
+      config:
+        systemPrompt: 'You are a helpful assistant.'
+        temperature: 0.7
+        maxTokens: 1000
+      metadata:
+        id: simple_agent
+        name: 'Simple Agent'
+        type: default
+        description: 'Agent for tool orchestration'
+        category: agents
+        icon: 'mdi:account-cog'
+        color: '#06b6d4'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - agent
+          - orchestration
+          - tools
+        executor_plugin: simple_agent
+        inputs:
+          -
+            id: message
+            name: Message
+            type: input
+            dataType: string
+            required: false
+            description: 'The message for the agent to process'
+          -
+            id: tools
+            name: Tools
+            type: input
+            dataType: array
+            required: false
+            description: 'Tools available to the agent'
+            defaultValue: {  }
+        outputs:
+          -
+            id: response
+            name: response
+            type: output
+            dataType: json
+            required: false
+            description: 'The agent response'
+          -
+            id: system_prompt
+            name: system_prompt
+            type: output
+            dataType: string
+            required: false
+            description: 'The system prompt used'
+          -
+            id: temperature
+            name: temperature
+            type: output
+            dataType: number
+            required: false
+            description: 'The temperature setting'
+          -
+            id: max_tokens
+            name: max_tokens
+            type: output
+            dataType: number
+            required: false
+            description: 'The maximum tokens allowed'
+          -
+            id: tools_used
+            name: tools_used
+            type: output
+            dataType: array
+            required: false
+            description: 'The tools used by the agent'
+          -
+            id: message
+            name: message
+            type: output
+            dataType: string
+            required: false
+            description: 'The input message'
+        config:
+          model: gpt-3.5-turbo
+          temperature: 0.7
+          maxIterations: 5
+        configSchema:
+          type: object
+          properties:
+            systemPrompt:
+              type: string
+              title: 'System Prompt'
+              description: 'System prompt for the agent'
+              format: multiline
+              default: 'You are a helpful assistant.'
+            temperature:
+              type: number
+              title: Temperature
+              description: 'Temperature for response generation (0.0 to 1.0)'
+              default: 0.7
+            maxTokens:
+              type: integer
+              title: 'Max Tokens'
+              description: 'Maximum tokens for response'
+              default: 1000
+      nodeId: 13540037-a4ee-4324-941e-0764370f2125
+    deletable: true
+    measured:
+      width: 288
+      height: 780
+    selected: false
+    dragging: false
+  -
+    id: c3a7859e-5a1b-4efe-9904-f3e839d9e0b1
+    type: workflowNode
+    position:
+      x: 270
+      'y': 300
+    data:
+      label: 'Text Input'
+      config:
+        placeholder: 'Enter text...'
+        defaultValue: ''
+        required: false
+      metadata:
+        id: text_input
+        name: 'Text Input'
+        type: default
+        description: 'Simple text input for user data'
+        category: inputs
+        icon: 'mdi:text'
+        color: '#22c55e'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - input
+          - text
+          - user-input
+        executor_plugin: text_input
+        inputs:
+          -
+            id: data
+            name: 'Input Data'
+            type: input
+            dataType: string
+            required: false
+            description: 'Input data for the text field'
+        outputs:
+          -
+            id: text
+            name: text
+            type: output
+            dataType: string
+            required: false
+            description: 'The input text value'
+        config:
+          placeholder: 'Enter text here...'
+          defaultValue: ''
+          multiline: false
+        configSchema:
+          type: object
+          properties:
+            placeholder:
+              type: string
+              title: Placeholder
+              description: 'Placeholder text for the input field'
+              default: 'Enter text...'
+            defaultValue:
+              type: string
+              title: 'Default Value'
+              description: 'Default text value'
+              default: ''
+            required:
+              type: boolean
+              title: Required
+              description: 'Whether the input is required'
+              default: false
+            maxLength:
+              type: integer
+              title: 'Maximum Length'
+              description: 'Maximum number of characters allowed'
+              minimum: 1
+              maximum: 10000
+      nodeId: c3a7859e-5a1b-4efe-9904-f3e839d9e0b1
+    deletable: true
+    measured:
+      width: 288
+      height: 330
+    selected: false
+    dragging: false
+  -
+    id: 9975480a-5d72-46a0-9fa8-679b4bc627d6
+    type: workflowNode
+    position:
+      x: 1430
+      'y': 540
+    data:
+      label: 'Chat Output'
+      config:
+        message: ''
+        format: text
+        showTimestamp: false
+      metadata:
+        id: chat_output
+        name: 'Chat Output'
+        type: default
+        description: 'Display chat-style output with formatting'
+        category: outputs
+        icon: 'mdi:chat'
+        color: '#8b5cf6'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - output
+          - chat
+          - display
+        executor_plugin: chat_output
+        inputs:
+          -
+            id: message
+            name: 'Chat Message'
+            type: input
+            dataType: string
+            required: false
+            description: 'The chat message to output'
+        outputs:
+          -
+            id: message
+            name: message
+            type: output
+            dataType: string
+            required: false
+            description: 'The chat message'
+          -
+            id: format
+            name: format
+            type: output
+            dataType: string
+            required: false
+            description: 'The message format'
+          -
+            id: timestamp
+            name: timestamp
+            type: output
+            dataType: number
+            required: false
+            description: 'The message timestamp'
+        config:
+          showTimestamp: true
+          maxLength: 2000
+          markdown: true
+        configSchema:
+          type: object
+          properties:
+            message:
+              type: string
+              title: Message
+              description: 'Default chat message'
+              default: ''
+            format:
+              type: string
+              title: Format
+              description: 'Message format (text, markdown, html)'
+              default: text
+            showTimestamp:
+              type: boolean
+              title: 'Show Timestamp'
+              description: 'Whether to include timestamp'
+              default: false
+      nodeId: 9975480a-5d72-46a0-9fa8-679b4bc627d6
+    deletable: true
+    measured:
+      width: 288
+      height: 480
+    selected: false
+    dragging: false
+  -
+    id: 022c9112-b6d2-4a5f-8ad6-a482988ceb69
+    type: note
+    position:
+      x: 250
+      'y': 680
+    data:
+      label: Notes
+      config:
+        content: |-
+          # Workflow Notes
+
+          **Click on the "+" button on left to add new nodes** 
+
+          Add your documentation here using **Markdown** formatting.
+
+          ## Features
+          - Supports **bold** and *italic* text
+          - Create lists and code blocks
+          - Add links and more!
+        noteType: info
+      metadata:
+        id: notes
+        name: Notes
+        type: note
+        description: 'Add documentation and comments to your workflow with Markdown support'
+        category: tools
+        icon: 'mdi:note-text'
+        color: '#fbbf24'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - tools
+          - notes
+          - documentation
+          - comments
+          - markdown
+        executor_plugin: notes
+        inputs: {  }
+        outputs:
+          -
+            id: content
+            name: 'Note Content'
+            type: output
+            dataType: string
+            required: false
+            description: 'The markdown content of the note'
+          -
+            id: noteType
+            name: 'Note Type'
+            type: output
+            dataType: string
+            required: false
+            description: 'The visual type of the note (info, warning, success, error, note)'
+          -
+            id: message
+            name: Message
+            type: output
+            dataType: string
+            required: false
+            description: 'Status message about the note'
+        config:
+          content: |-
+            # Workflow Notes
+
+            Add your documentation here using **Markdown** formatting.
+
+            ## Features
+            - Supports **bold** and *italic* text
+            - Create lists and code blocks
+            - Add links and more!
+          noteType: info
+        configSchema:
+          type: object
+          properties:
+            content:
+              type: string
+              title: 'Note Content'
+              description: 'Documentation or comment text (supports Markdown)'
+              format: multiline
+              default: |-
+                # Workflow Notes
+
+                Add your documentation here using **Markdown** formatting.
+
+                ## Features
+                - Supports **bold** and *italic* text
+                - Create lists and code blocks
+                - Add links and more!
+            noteType:
+              type: string
+              title: 'Note Type'
+              description: 'Visual style and color of the note'
+              default: info
+              enum:
+                - info
+                - warning
+                - success
+                - error
+                - note
+      nodeId: 022c9112-b6d2-4a5f-8ad6-a482988ceb69
+    deletable: true
+    measured:
+      width: 500
+      height: 360
+    selected: true
+    dragging: false
+edges:
+  -
+    id: xy-edge__c3a7859e-5a1b-4efe-9904-f3e839d9e0b1text-13540037-a4ee-4324-941e-0764370f2125message
+    source: c3a7859e-5a1b-4efe-9904-f3e839d9e0b1
+    target: 13540037-a4ee-4324-941e-0764370f2125
+    sourceHandle: text
+    targetHandle: message
+  -
+    id: xy-edge__13540037-a4ee-4324-941e-0764370f2125message-9975480a-5d72-46a0-9fa8-679b4bc627d6message
+    source: 13540037-a4ee-4324-941e-0764370f2125
+    target: 9975480a-5d72-46a0-9fa8-679b4bc627d6
+    sourceHandle: message
+    targetHandle: message
+metadata:
+  version: 1.0.0
+  createdAt: '2025-08-21T16:46:58.000Z'
+  updatedAt: '2025-08-21T16:49:26.550Z'
+created: 1755794818
+changed: 1755794966
+uid: 0

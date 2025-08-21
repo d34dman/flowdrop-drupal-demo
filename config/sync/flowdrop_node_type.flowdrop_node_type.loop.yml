@@ -1,0 +1,22 @@
+uuid: 4da10429-fc5d-45d9-8308-bd0f3cb26b15
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: Y8R8TlKuSxlaKc7f8E388U9tDWwaXOwMghdvgeppd8k
+id: loop
+label: Loop
+description: 'Iterate over data items'
+category: logic
+icon: 'mdi:loop'
+color: '#8b5cf6'
+version: 1.0.0
+enabled: true
+config:
+  maxIterations: 100
+tags:
+  - conditional
+  - logic
+  - loop
+  - iteration
+executor_plugin: loop_executor

@@ -1,0 +1,23 @@
+uuid: 131ecfd2-fbe2-4e59-8a56-935581f29bf9
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: Tge_lmsUE2rMh1oKw2HVvghlN8QtfxeEU6jEnLOUDB4
+id: conversation_buffer
+label: 'Conversation Buffer'
+description: 'Store conversation history'
+category: memory
+icon: 'mdi:chat-history'
+color: '#8b5cf6'
+version: 1.0.0
+enabled: true
+config:
+  maxTokens: 2000
+  returnMessages: true
+tags:
+  - memory
+  - conversation
+  - history
+  - buffer
+executor_plugin: conversation_buffer

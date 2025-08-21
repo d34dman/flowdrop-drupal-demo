@@ -1,0 +1,20 @@
+uuid: 1b239ee2-aa8e-42ba-b6c1-cdaff38b0c68
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_node_test
+_core:
+  default_config_hash: Pz8HBynBzv6IlMMAqfGRUMRkAU9DeKDgWxkF4gZT5aA
+id: test_transform
+label: 'Test : Transform'
+description: ''
+category: flowdrop_node_test
+icon: 'mdi:cog'
+color: '#000000'
+version: 1.0.0
+enabled: true
+config: {  }
+tags: {  }
+executor_plugin: transform_node_processor

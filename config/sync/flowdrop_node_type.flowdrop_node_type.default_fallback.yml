@@ -1,0 +1,22 @@
+uuid: e9ea8f8b-d9ce-4c1a-871f-8914fc55e62a
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 0-Poga5av8sm_pHmNsO9tS2CPmi6tS7Nhe0zkP0yMzg
+id: default_fallback
+label: 'Default Fallback'
+description: 'A default fallback node that requires no inputs and produces no outputs'
+category: helpers
+icon: 'mdi:help-circle'
+color: '#6b7280'
+version: 1.0.0
+enabled: true
+config:
+  enabled: true
+  description: ''
+tags:
+  - helper
+  - fallback
+  - default
+executor_plugin: default_fallback

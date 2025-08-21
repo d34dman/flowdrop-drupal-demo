@@ -1,0 +1,28 @@
+uuid: a682f228-6394-47e7-8c7b-b8d1871619f7
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: J_MtO5KSumLgk75J4uPWmj0ej2PQdrj0w2KesO32uPc
+id: file_upload
+label: 'File Upload'
+description: 'Upload and process files of various formats'
+category: input
+icon: 'mdi:file-upload'
+color: '#ef4444'
+version: 1.0.0
+enabled: true
+config:
+  allowedTypes:
+    - txt
+    - pdf
+    - docx
+    - csv
+    - json
+  maxSize: 10485760
+tags:
+  - input
+  - file
+  - upload
+  - document
+executor_plugin: file_upload

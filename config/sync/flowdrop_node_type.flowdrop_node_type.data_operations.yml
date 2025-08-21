@@ -1,0 +1,24 @@
+uuid: 37c1e510-0e49-4075-aca3-2a71b022ca33
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: QhFklxpVR_ViphDtgGVFxIsrISG_V1YYIn0D9Nn_a7k
+id: data_operations
+label: 'Data Operations'
+description: 'Perform operations on Data objects'
+category: processing
+icon: 'mdi:database-cog'
+color: '#6366f1'
+version: 1.0.0
+enabled: true
+config:
+  operation: select_keys
+  keys: {  }
+  filterKey: ''
+  filterValue: ''
+tags:
+  - processing
+  - data
+  - operations
+executor_plugin: data_operations

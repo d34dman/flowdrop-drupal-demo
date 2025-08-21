@@ -1,0 +1,12 @@
+uuid: 9fcf8be4-0297-4e04-960a-413c96ad9de2
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: OAmqNI_PRfLvSUxkEJpVSXJ3T5TxLvXbR2tSQtdWswU
+id: data
+label: Data
+description: 'Node types for data storage, retrieval, and manipulation'
+icon: 'mdi:database'
+color: '#607D8B'
+enabled: true

@@ -1,0 +1,23 @@
+uuid: 0945a195-e323-4e9d-8f83-576d0f88a7d7
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: i1x6427FKShRpONVd90_SxevR97hkUghK8FGRbAwyeA
+id: regex_extractor
+label: 'Regex Extractor'
+description: 'Extract patterns using regular expressions'
+category: processing
+icon: 'mdi:regex'
+color: '#ec4899'
+version: 1.0.0
+enabled: true
+config:
+  pattern: ''
+  flags: g
+tags:
+  - processing
+  - regex
+  - extract
+  - pattern
+executor_plugin: regex_extractor

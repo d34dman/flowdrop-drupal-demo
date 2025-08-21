@@ -1,0 +1,23 @@
+uuid: fa8e3b7e-fd42-4fc7-b296-fdff50119f68
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: 3AuU5IT38G4pvEt1sFuQ5SyCaVRr90dqeV1ZIftyHe0
+id: text_output
+label: 'Text Output'
+description: 'Simple text output for displaying data'
+category: output
+icon: 'mdi:text-box'
+color: '#ef4444'
+version: 1.0.0
+enabled: true
+config:
+  format: plain
+  maxLength: 1000
+  showTimestamp: false
+tags:
+  - output
+  - text
+  - display
+executor_plugin: text_output

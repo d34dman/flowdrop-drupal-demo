@@ -1,0 +1,22 @@
+uuid: da41f466-7f6c-423e-a47d-a8de1f578f6e
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: GmZYp39_9Q1TxglFR9VaEp1RqQLEl4JdnEoLvmRM_EE
+id: calculator
+label: Calculator
+description: 'Perform mathematical calculations'
+category: tool
+icon: 'mdi:calculator'
+color: '#6366f1'
+version: 1.0.0
+enabled: true
+config:
+  precision: 2
+tags:
+  - tools
+  - calculator
+  - math
+  - compute
+executor_plugin: calculator
