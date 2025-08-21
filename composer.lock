@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23fdc02f60437ad61362dbe6ab8d396c",
+    "content-hash": "70594db96f9090c03a2043a65d0f2af3",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1533,6 +1533,83 @@
                 "GPL-2.0-or-later"
             ],
             "description": "Core and its dependencies with known-compatible minor versions. Require this project INSTEAD OF drupal/core."
+        },
+        {
+            "name": "drupal/flowdrop",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/flowdrop.git",
+                "reference": "83c69cfc86395dda232ffdc1a9e8ed4b23b99e5f"
+            },
+            "require": {
+                "drupal/core": "^11.2",
+                "php": ">=8.2"
+            },
+            "require-dev": {
+                "drupal/ai": "^1.1",
+                "drupal/ai_agents": "^1.1",
+                "drupal/bpmn_io": "^3.0",
+                "drupal/coffee": "^2.0",
+                "drupal/eca": "^3.0",
+                "drupal/flowdrop_job": "*",
+                "drupal/flowdrop_node_category": "*",
+                "drupal/flowdrop_node_type": "*",
+                "drupal/flowdrop_pipeline": "*",
+                "drupal/flowdrop_ui": "*",
+                "drupal/flowdrop_workflow": "*",
+                "drupal/mcp": "^1.0",
+                "drupal/modeler_api": "^1.0",
+                "drupal/queue_ui": "^3.2",
+                "drupal/ultimate_cron": "^2.0@beta",
+                "drush/drush": "^13.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "1.x-dev",
+                    "datestamp": "1755774472",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Drupal\\flowdrop\\": "src/"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "muschpusch",
+                    "homepage": "https://www.drupal.org/user/257634"
+                },
+                {
+                    "name": "stmh",
+                    "homepage": "https://www.drupal.org/user/35538"
+                }
+            ],
+            "description": "A visual workflow editor for Drupal",
+            "homepage": "https://www.drupal.org/project/flowdrop",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/flowdrop",
+                "issues": "https://www.drupal.org/project/issues/flowdrop"
+            }
         },
         {
             "name": "drupal/gin",
@@ -6429,8 +6506,10 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {},
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "drupal/flowdrop": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {},
