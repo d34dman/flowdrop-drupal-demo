@@ -2,4 +2,5 @@ vendor
 node_modules
 sites/default/files
 web/core
-
+web/modules/contrib
+web/themes/contrib
