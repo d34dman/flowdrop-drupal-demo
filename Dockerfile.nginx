@@ -1,0 +1,12 @@
+ARG CLI_IMAGE
+FROM ${CLI_IMAGE} as cli
+
+FROM uselagoon/nginx-drupal:24.3.1
+# https://github.com/uselagoon/lagoon-images/blob/main/images/nginx-drupal/Dockerfile
+# https://github.com/uselagoon/lagoon-images/blob/main/images/nginx/Dockerfile
+# https://github.com/uselagoon/lagoon-images/blob/main/images/commons/Dockerfile
+
+COPY --from=cli /app /app
+
+# Define where the Drupal Root is located
+ENV WEBROOT=web

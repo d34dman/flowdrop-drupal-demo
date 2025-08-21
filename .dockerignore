@@ -1,0 +1,16 @@
+.git/
+node_modules/
+docs/build
+vendor/
+web/core
+web/modules/contrib
+web/themes/contrib
+fabfile.yaml
+.fabfile.yaml
+/.phab/*
+docker-compose*
+web/sites/*/files/
+web/themes/custom/circle_dot/node_modules
+.idea
+.ddev
+hosting
