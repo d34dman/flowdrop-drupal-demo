@@ -1,0 +1,22 @@
+uuid: 7f9c5a78-782d-449c-b74f-21303c43399d
+langcode: en
+status: true
+dependencies:
+  module:
+    - pm_board
+    - pm_story
+_core:
+  default_config_hash: 8ZxQpYGe3HITGE9bX-WCylkiWaJC0GJhXUrEm-5c0MY
+id: pm_board_column.pm_story
+field_name: pm_story
+entity_type: pm_board_column
+type: entity_reference
+settings:
+  target_type: pm_story
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

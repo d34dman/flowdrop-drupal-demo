@@ -1,0 +1,8 @@
+uuid: 33218090-4669-41dc-8196-2b5f30d0ab4a
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: S-kTYtJP9FyMTQKdDSQRxvZGfVA2LGcMj5qkXFbEuRo
+id: pm_feature
+label: 'Feature list'

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37ae85c253eb849989c018494be2f3e3",
+    "content-hash": "44f59dbe15846d55f0227f8b9499cb01",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -122,6 +122,70 @@
                 "source": "https://github.com/Chi-teck/drupal-code-generator/tree/4.2.0"
             },
             "time": "2025-06-01T13:48:30+00:00"
+        },
+        {
+            "name": "commerceguys/addressing",
+            "version": "v2.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/commerceguys/addressing.git",
+                "reference": "ea826dbe5b3fe76960073a2167d5cf996c811cda"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/commerceguys/addressing/zipball/ea826dbe5b3fe76960073a2167d5cf996c811cda",
+                "reference": "ea826dbe5b3fe76960073a2167d5cf996c811cda",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/collections": "^1.6 || ^2.0",
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "ext-json": "*",
+                "mikey179/vfsstream": "^1.6.11",
+                "phpunit/phpunit": "^9.6",
+                "squizlabs/php_codesniffer": "^3.7",
+                "symfony/validator": "^5.4 || ^6.3 || ^7.0"
+            },
+            "suggest": {
+                "symfony/validator": "to validate addresses"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CommerceGuys\\Addressing\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bojan Zivanovic"
+                },
+                {
+                    "name": "Damien Tournoud"
+                }
+            ],
+            "description": "Addressing library powered by CLDR and Google's address data.",
+            "keywords": [
+                "address",
+                "internationalization",
+                "localization",
+                "postal"
+            ],
+            "support": {
+                "issues": "https://github.com/commerceguys/addressing/issues",
+                "source": "https://github.com/commerceguys/addressing/tree/v2.2.4"
+            },
+            "time": "2025-01-13T16:03:24+00:00"
         },
         {
             "name": "composer/installers",
@@ -963,6 +1027,92 @@
             "time": "2024-09-05T10:17:24+00:00"
         },
         {
+            "name": "doctrine/collections",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/collections.git",
+                "reference": "2eb07e5953eed811ce1b309a7478a3b236f2273d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/collections/zipball/2eb07e5953eed811ce1b309a7478a3b236f2273d",
+                "reference": "2eb07e5953eed811ce1b309a7478a3b236f2273d",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/deprecations": "^1",
+                "php": "^8.1",
+                "symfony/polyfill-php84": "^1.30"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^12",
+                "ext-json": "*",
+                "phpstan/phpstan": "^1.8",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\Common\\Collections\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com"
+                },
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com"
+                }
+            ],
+            "description": "PHP Doctrine Collections library that adds additional functionality on top of PHP arrays.",
+            "homepage": "https://www.doctrine-project.org/projects/collections.html",
+            "keywords": [
+                "array",
+                "collections",
+                "iterators",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/doctrine/collections/issues",
+                "source": "https://github.com/doctrine/collections/tree/2.3.0"
+            },
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fcollections",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-03-22T10:17:19+00:00"
+        },
+        {
             "name": "doctrine/deprecations",
             "version": "1.1.5",
             "source": {
@@ -1152,6 +1302,73 @@
                 }
             ],
             "time": "2024-10-09T13:47:03+00:00"
+        },
+        {
+            "name": "drupal/address",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/address.git",
+                "reference": "2.0.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/address-2.0.4.zip",
+                "reference": "2.0.4",
+                "shasum": "5a86f7abc028f3d9833784dbf0791a6e4463da8e"
+            },
+            "require": {
+                "commerceguys/addressing": "^2.1.1",
+                "drupal/core": "^9.5 || ^10 || ^11",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "drupal/diff": "^1",
+                "drupal/feeds": "^3",
+                "drupal/token": "^1"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.4",
+                    "datestamp": "1746462054",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "bojanz",
+                    "homepage": "https://www.drupal.org/user/86106"
+                },
+                {
+                    "name": "centarro",
+                    "homepage": "https://www.drupal.org/user/3661446"
+                },
+                {
+                    "name": "dww",
+                    "homepage": "https://www.drupal.org/user/46549"
+                },
+                {
+                    "name": "jsacksick",
+                    "homepage": "https://www.drupal.org/user/972218"
+                },
+                {
+                    "name": "rszrama",
+                    "homepage": "https://www.drupal.org/user/49344"
+                }
+            ],
+            "description": "Provides functionality for storing, validating and displaying international postal addresses.",
+            "homepage": "http://drupal.org/project/address",
+            "support": {
+                "source": "https://git.drupalcode.org/project/address"
+            }
         },
         {
             "name": "drupal/ai",
@@ -1832,6 +2049,69 @@
             "description": "Core and its dependencies with known-compatible minor versions. Require this project INSTEAD OF drupal/core."
         },
         {
+            "name": "drupal/dynamic_entity_reference",
+            "version": "3.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/dynamic_entity_reference.git",
+                "reference": "3.2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/dynamic_entity_reference-3.2.1.zip",
+                "reference": "3.2.1",
+                "shasum": "051c565f6580f512cbc7ddc3f49fdd6ba8d406af"
+            },
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "drupal/diff": "*",
+                "mglaman/phpstan-drupal": "^1.1",
+                "phpstan/phpstan": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "3.2.1",
+                    "datestamp": "1740521060",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Lee Rowlands",
+                    "homepage": "https://www.drupal.org/u/larowlan",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Jibran Ijaz",
+                    "homepage": "https://www.drupal.org/u/jibran",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "larowlan",
+                    "homepage": "https://www.drupal.org/user/395439"
+                }
+            ],
+            "description": "Provides a field that allows an entity-reference field to reference more than one entity type.",
+            "homepage": "http://drupal.org/project/dynamic_entity_reference",
+            "support": {
+                "source": "http://cgit.drupalcode.org/dynamic_entity_reference",
+                "issues": "http://drupal.org/project/dynamic_entity_reference",
+                "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
+        },
+        {
             "name": "drupal/eca",
             "version": "3.0.2",
             "source": {
@@ -2234,6 +2514,710 @@
             "support": {
                 "source": "https://drupal.org/project/modeler_api",
                 "issues": "https://drupal.org/project/issues/modeler_api"
+            }
+        },
+        {
+            "name": "drupal/notification_server",
+            "version": "1.0.0-alpha2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/notification_server.git",
+                "reference": "1.0.0-alpha2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/notification_server-1.0.0-alpha2.zip",
+                "reference": "1.0.0-alpha2",
+                "shasum": "87d9e2672b38b5fdf2b21af8bb1c89586b6251ce"
+            },
+            "require": {
+                "drupal/core": "^10 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "1.0.0-alpha2",
+                    "datestamp": "1755946929",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                }
+            ],
+            "description": "A Drupal module that provides real-time notification capabilities through both HTTP and WebSocket protocols.",
+            "homepage": "https://www.drupal.org/project/notification_server",
+            "support": {
+                "source": "https://git.drupalcode.org/project/notification_server"
+            }
+        },
+        {
+            "name": "drupal/pm",
+            "version": "dev-4.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/pm.git",
+                "reference": "693023f40406fcd725493d8a634747e316d5c53d"
+            },
+            "require": {
+                "drupal/address": "*",
+                "drupal/core": "^10 || ^11",
+                "drupal/dynamic_entity_reference": "*",
+                "drupal/pm_ui": "*",
+                "drupal/verf": "*"
+            },
+            "require-dev": {
+                "commerceguys/addressing": "^2.0@dev",
+                "drupal/address": "*",
+                "drupal/dynamic_entity_reference": "*",
+                "drupal/pm_board": "*",
+                "drupal/pm_epic": "*",
+                "drupal/pm_expense": "*",
+                "drupal/pm_feature": "*",
+                "drupal/pm_invoice": "*",
+                "drupal/pm_note": "*",
+                "drupal/pm_organization": "*",
+                "drupal/pm_persona": "*",
+                "drupal/pm_priority": "*",
+                "drupal/pm_project": "*",
+                "drupal/pm_status": "*",
+                "drupal/pm_story": "*",
+                "drupal/pm_sub_task": "*",
+                "drupal/pm_task": "*",
+                "drupal/pm_timetracking": "*",
+                "drupal/verf": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "4.x-dev",
+                    "datestamp": "1744139223",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "juliangb",
+                    "homepage": "https://www.drupal.org/user/719472"
+                }
+            ],
+            "description": "Project Management suite.",
+            "homepage": "https://www.drupal.org/project/pm",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/pm",
+                "issues": "https://www.drupal.org/project/issues/pm"
+            }
+        },
+        {
+            "name": "drupal/pm_app",
+            "version": "dev-1.0.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/pm_app.git",
+                "reference": "9577e032e80e80d81dba0ab84a6e4792f5e4bee5"
+            },
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/notification_server": "*",
+                "drupal/pm": "*",
+                "drupal/pm_board": "*",
+                "drupal/pm_epic": "*",
+                "drupal/pm_feature": "*",
+                "drupal/pm_priority": "*",
+                "drupal/pm_project": "*",
+                "drupal/pm_rest": "*",
+                "drupal/pm_status": "*",
+                "drupal/pm_story": "*",
+                "drupal/pm_sub_task": "*",
+                "drupal/pm_task": "*",
+                "drupal/pm_ui": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.0.x": "1.0.x-dev"
+                },
+                "drupal": {
+                    "version": "1.0.x-dev",
+                    "datestamp": "1744488334",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                }
+            ],
+            "description": "A client side application to interact with Drupal PM.",
+            "homepage": "https://www.drupal.org/project/pm_app",
+            "support": {
+                "source": "https://git.drupalcode.org/project/pm_app"
+            }
+        },
+        {
+            "name": "drupal/pm_board",
+            "version": "dev-4.x",
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/pm": "*",
+                "drupal/pm_project": "*",
+                "drupal/verf": "*"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "4.x-dev",
+                    "datestamp": "1744139223",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "juliangb",
+                    "homepage": "https://www.drupal.org/user/719472"
+                }
+            ],
+            "description": "PM Board",
+            "homepage": "https://www.drupal.org/project/pm",
+            "support": {
+                "source": "https://git.drupalcode.org/project/pm"
+            }
+        },
+        {
+            "name": "drupal/pm_epic",
+            "version": "dev-4.x",
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/pm": "*",
+                "drupal/pm_feature": "*",
+                "drupal/pm_priority": "*",
+                "drupal/pm_project": "*",
+                "drupal/pm_status": "*",
+                "drupal/verf": "*"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "4.x-dev",
+                    "datestamp": "1744139223",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "juliangb",
+                    "homepage": "https://www.drupal.org/user/719472"
+                }
+            ],
+            "description": "PM Epic",
+            "homepage": "https://www.drupal.org/project/pm",
+            "support": {
+                "source": "https://git.drupalcode.org/project/pm"
+            }
+        },
+        {
+            "name": "drupal/pm_feature",
+            "version": "dev-4.x",
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/pm": "*",
+                "drupal/pm_priority": "*",
+                "drupal/pm_project": "*",
+                "drupal/pm_status": "*",
+                "drupal/pm_story": "*",
+                "drupal/verf": "*"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "4.x-dev",
+                    "datestamp": "1744139223",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "juliangb",
+                    "homepage": "https://www.drupal.org/user/719472"
+                }
+            ],
+            "description": "PM Feature",
+            "homepage": "https://www.drupal.org/project/pm",
+            "support": {
+                "source": "https://git.drupalcode.org/project/pm"
+            }
+        },
+        {
+            "name": "drupal/pm_priority",
+            "version": "dev-4.x",
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/pm": "*"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "4.x-dev",
+                    "datestamp": "1744139223",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "juliangb",
+                    "homepage": "https://www.drupal.org/user/719472"
+                }
+            ],
+            "description": "PM Priority",
+            "homepage": "https://www.drupal.org/project/pm",
+            "support": {
+                "source": "https://git.drupalcode.org/project/pm"
+            }
+        },
+        {
+            "name": "drupal/pm_project",
+            "version": "dev-4.x",
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/pm": "*",
+                "drupal/pm_priority": "*",
+                "drupal/pm_status": "*",
+                "drupal/verf": "*"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "4.x-dev",
+                    "datestamp": "1744139223",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "juliangb",
+                    "homepage": "https://www.drupal.org/user/719472"
+                }
+            ],
+            "description": "PM Project",
+            "homepage": "https://www.drupal.org/project/pm",
+            "support": {
+                "source": "https://git.drupalcode.org/project/pm"
+            }
+        },
+        {
+            "name": "drupal/pm_rest",
+            "version": "dev-4.x",
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/pm": "^4"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "4.x-dev",
+                    "datestamp": "1744139223",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "juliangb",
+                    "homepage": "https://www.drupal.org/user/719472"
+                }
+            ],
+            "description": "Enables REST integration for PM entities.",
+            "homepage": "https://www.drupal.org/project/pm",
+            "support": {
+                "source": "https://git.drupalcode.org/project/pm"
+            }
+        },
+        {
+            "name": "drupal/pm_status",
+            "version": "dev-4.x",
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/pm": "*"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "4.x-dev",
+                    "datestamp": "1744139223",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "juliangb",
+                    "homepage": "https://www.drupal.org/user/719472"
+                }
+            ],
+            "description": "PM Status",
+            "homepage": "https://www.drupal.org/project/pm",
+            "support": {
+                "source": "https://git.drupalcode.org/project/pm"
+            }
+        },
+        {
+            "name": "drupal/pm_story",
+            "version": "dev-4.x",
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/pm": "*",
+                "drupal/pm_priority": "*",
+                "drupal/pm_project": "*",
+                "drupal/pm_status": "*",
+                "drupal/pm_task": "*",
+                "drupal/verf": "*"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "4.x-dev",
+                    "datestamp": "1744139223",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "juliangb",
+                    "homepage": "https://www.drupal.org/user/719472"
+                }
+            ],
+            "description": "PM Story",
+            "homepage": "https://www.drupal.org/project/pm",
+            "support": {
+                "source": "https://git.drupalcode.org/project/pm"
+            }
+        },
+        {
+            "name": "drupal/pm_sub_task",
+            "version": "dev-4.x",
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/pm": "*",
+                "drupal/pm_priority": "*",
+                "drupal/pm_project": "*",
+                "drupal/pm_status": "*",
+                "drupal/verf": "*"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "4.x-dev",
+                    "datestamp": "1744139223",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "juliangb",
+                    "homepage": "https://www.drupal.org/user/719472"
+                }
+            ],
+            "description": "PM Sub Task",
+            "homepage": "https://www.drupal.org/project/pm",
+            "support": {
+                "source": "https://git.drupalcode.org/project/pm"
+            }
+        },
+        {
+            "name": "drupal/pm_task",
+            "version": "dev-4.x",
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/pm": "*",
+                "drupal/pm_priority": "*",
+                "drupal/pm_project": "*",
+                "drupal/pm_status": "*",
+                "drupal/pm_sub_task": "*",
+                "drupal/verf": "*"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "4.x-dev",
+                    "datestamp": "1744139223",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "juliangb",
+                    "homepage": "https://www.drupal.org/user/719472"
+                }
+            ],
+            "description": "PM Task",
+            "homepage": "https://www.drupal.org/project/pm",
+            "support": {
+                "source": "https://git.drupalcode.org/project/pm"
+            }
+        },
+        {
+            "name": "drupal/pm_ui",
+            "version": "dev-4.x",
+            "require": {
+                "drupal/core": "^10 || ^11",
+                "drupal/pm": "^4"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-4.x": "4.x-dev"
+                },
+                "drupal": {
+                    "version": "4.x-dev",
+                    "datestamp": "1744139223",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "juliangb",
+                    "homepage": "https://www.drupal.org/user/719472"
+                }
+            ],
+            "description": "UI elements for PM modules",
+            "homepage": "https://www.drupal.org/project/pm",
+            "support": {
+                "source": "https://git.drupalcode.org/project/pm"
+            }
+        },
+        {
+            "name": "drupal/verf",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/verf.git",
+                "reference": "2.1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/verf-2.1.0.zip",
+                "reference": "2.1.0",
+                "shasum": "46e528f0c805580a6c43431fb3400085030294a0"
+            },
+            "require": {
+                "drupal/core": "^10 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.1.0",
+                    "datestamp": "1738325526",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "legolasbo",
+                    "homepage": "https://www.drupal.org/user/2480548"
+                },
+                {
+                    "name": "peelas02",
+                    "homepage": "https://www.drupal.org/user/3836090"
+                },
+                {
+                    "name": "podarok",
+                    "homepage": "https://www.drupal.org/user/116002"
+                }
+            ],
+            "description": "Provides Views filters for entity reference fields.",
+            "homepage": "https://www.drupal.org/project/verf",
+            "support": {
+                "source": "https://git.drupalcode.org/project/verf"
             }
         },
         {
@@ -7255,7 +8239,9 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "drupal/flowdrop": 20
+        "drupal/flowdrop": 20,
+        "drupal/notification_server": 15,
+        "drupal/pm_app": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

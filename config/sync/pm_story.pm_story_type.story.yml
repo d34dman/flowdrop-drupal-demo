@@ -1,0 +1,11 @@
+uuid: c516098a-72c1-4da7-a5a1-a1fdee6b2580
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - pm_story
+_core:
+  default_config_hash: Okwrwo_Gle206ex_418lsfKJOZGm2dF88dnebCqHj5I
+id: story
+label: Story

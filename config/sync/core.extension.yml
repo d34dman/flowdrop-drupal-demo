@@ -1,16 +1,24 @@
 _core:
   default_config_hash: 4GIX5Esnc_umpXUBj4IIocRX7Mt5fPhm4AgXfE3E56E
 module:
+  address: 0
   basic_auth: 0
   block: 0
   bpmn_io: 0
   breakpoint: 0
+  ckeditor5: 0
   coffee: 0
+  comment: 0
+  datetime: 0
+  datetime_range: 0
   dblog: 0
+  dynamic_entity_reference: 0
   dynamic_page_cache: 0
   eca: 0
   eca_ui: 0
+  editor: 0
   field: 0
+  file: 0
   filter: 0
   flowdrop: 0
   flowdrop_ai: 0
@@ -26,16 +34,36 @@ module:
   flowdrop_ui: 0
   flowdrop_workflow: 0
   key: 0
+  link: 0
   modeler_api: 0
   mysql: 0
   node: 0
+  notification_server: 0
   options: 0
   page_cache: 0
+  path: 0
   path_alias: 0
+  pm: 0
+  pm_app: 0
+  pm_board: 0
+  pm_epic: 0
+  pm_feature: 0
+  pm_priority: 0
+  pm_project: 0
+  pm_rest: 0
+  pm_status: 0
+  pm_story: 0
+  pm_sub_task: 0
+  pm_task: 0
+  pm_ui: 0
+  rest: 0
+  serialization: 0
   system: 0
   text: 0
   toolbar: 0
   user: 0
+  verf: 0
+  views: 10
   minimal: 1000
 theme:
   stark: 0

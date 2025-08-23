@@ -1,0 +1,8 @@
+uuid: 1b9c4dd2-626a-45f6-b58b-e5808dd1954b
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: fvxiXPqI3tXBxdLcJUyarFHg1MMXtK5j853BQih6TX8
+id: pm_task
+label: 'Task list'

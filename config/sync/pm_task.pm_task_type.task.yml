@@ -1,0 +1,11 @@
+uuid: 4dfafb9b-4c59-4213-ae5e-28395d313e96
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - pm_task
+_core:
+  default_config_hash: TdzWc4pNGj4KPm72e0AulNj8V8psjKj7Up4goHavzUA
+id: task
+label: Task

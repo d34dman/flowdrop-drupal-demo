@@ -1,0 +1,11 @@
+uuid: 3e6512d5-ac92-47df-af5a-e8845713bf72
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - pm_feature
+_core:
+  default_config_hash: Wplm5UtLo-zN9e_UdYO8aR-GTh_oNIfQk7JbvAHyo9k
+id: feature
+label: Feature

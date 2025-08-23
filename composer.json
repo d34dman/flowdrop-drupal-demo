@@ -28,6 +28,8 @@
         "drupal/flowdrop": "1.x-dev",
         "drupal/gin": "^5.0",
         "drupal/modeler_api": "^1.0",
+        "drupal/notification_server": "^1.0@alpha",
+        "drupal/pm_app": "^1.0@dev",
         "drush/drush": "^13.6"
     },
     "conflict": {

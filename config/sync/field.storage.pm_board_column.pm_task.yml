@@ -1,0 +1,22 @@
+uuid: a74bc20d-1483-46b8-85bf-bf3f5898bd72
+langcode: en
+status: true
+dependencies:
+  module:
+    - pm_board
+    - pm_task
+_core:
+  default_config_hash: subj0Rn7a_4YWQwyLv4DcCX21QtjbKlNCmXQ-C5Fpuw
+id: pm_board_column.pm_task
+field_name: pm_task
+entity_type: pm_board_column
+type: entity_reference
+settings:
+  target_type: pm_task
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
