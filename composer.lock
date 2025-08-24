@@ -2640,7 +2640,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/pm_app.git",
-                "reference": "9577e032e80e80d81dba0ab84a6e4792f5e4bee5"
+                "reference": "dd7ad0b319a92eef8e004f8294399ed8da9f00fd"
             },
             "require": {
                 "drupal/core": "^10 || ^11",
@@ -2665,7 +2665,7 @@
                 },
                 "drupal": {
                     "version": "1.0.x-dev",
-                    "datestamp": "1744488334",
+                    "datestamp": "1756067146",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
