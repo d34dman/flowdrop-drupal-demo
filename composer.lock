@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77ae3e4346eb6e216f9ebf0027101754",
+    "content-hash": "f4aeea4650439c861bd8893ad0f1edf1",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2700,7 +2700,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/pm_app.git",
-                "reference": "dd7ad0b319a92eef8e004f8294399ed8da9f00fd"
+                "reference": "a1c6d8de90f5dd9a780752e1531cd12998670835"
             },
             "require": {
                 "drupal/core": "^10 || ^11",
@@ -2725,7 +2725,7 @@
                 },
                 "drupal": {
                     "version": "1.0.x-dev",
-                    "datestamp": "1756067146",
+                    "datestamp": "1756322584",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
