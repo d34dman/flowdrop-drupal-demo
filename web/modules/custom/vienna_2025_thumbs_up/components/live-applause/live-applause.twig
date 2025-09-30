@@ -31,47 +31,76 @@
 } %}
 
 <div{{ attributes.addClass(widget_classes) }}
-    data-live-applause-widget="{{ widget_settings|json_encode }}">
+    data-live-applause-widget="{{ widget_settings|json_encode }}"
+    role="application"
+    aria-label="Live applause interactive widget for {{ eventTitle|default('event') }}">
 
   {% if showConnectionStatus %}
-  <div class="live-applause-widget__connection-status live-applause-widget__connection-status--connecting{{ embedded ? ' live-applause-widget__connection-status--embedded' }}">
-    <span class="live-applause-widget__connection-status-indicator"></span> Connecting...
+  <div class="live-applause-widget__connection-status live-applause-widget__connection-status--connecting{{ embedded ? ' live-applause-widget__connection-status--embedded' }}"
+       role="status"
+       aria-live="polite">
+    <span class="sr-only">Connection status: </span>
+    <span class="live-applause-widget__connection-status-indicator" aria-hidden="true"></span> Connecting...
   </div>
   {% endif %}
 
-  <div class="live-applause-widget__main-content">
-    <div class="live-applause-widget__header">
-      {% if eventImageSrc %}
-      <div class="live-applause-widget__logo-container">
-        <img src="{{ eventImageSrc }}"
-             alt="{{ eventImageAlt|default('Event logo') }}"
-             class="live-applause-widget__logo">
-      </div>
-      {% endif %}
-
-      <div class="live-applause-widget__title">{{ eventTitle|default('Live Applause! 👏') }}</div>
-      <div class="live-applause-widget__subtitle">{{ eventSubTitle|default('Real-Time Notifications Demo') }}</div>
-      <div class="live-applause-widget__event-info">{{ eventInfo|default('Interactive Event') }}</div>
+  <header class="live-applause-widget__header">
+    {% if eventImageSrc %}
+    <div class="live-applause-widget__logo-container">
+      <img src="{{ eventImageSrc }}"
+           alt="{{ eventImageAlt|default('Event logo') }}"
+           class="live-applause-widget__logo">
     </div>
+    {% endif %}
 
-    <button class="live-applause-widget__thumbs-button" type="button">
-      👍
+    <h1 class="live-applause-widget__title">{{ eventTitle|default('Live Applause! 👏') }}</h1>
+    <p class="live-applause-widget__subtitle">{{ eventSubTitle|default('Real-Time Notifications Demo') }}</p>
+    <p class="live-applause-widget__event-info">{{ eventInfo|default('Interactive Event') }}</p>
+  </header>
+
+  <main class="live-applause-widget__main-content">
+    <button class="live-applause-widget__thumbs-button" 
+            type="button"
+            aria-label="Give thumbs up"
+            aria-describedby="live-applause-instructions live-applause-my-clicks live-applause-total-clicks"
+            aria-pressed="false">
+      <span aria-hidden="true">👍</span>
+      <span class="sr-only">Thumbs up button</span>
     </button>
 
-    <div class="live-applause-widget__instructions">
-      Tap the button to show your appreciation!<br>
-      <small>Multiple taps welcome! 🎉</small>
+    <div class="live-applause-widget__instructions" id="live-applause-instructions">
+      <p>Tap the button to show your appreciation!</p>
+      <p><small>Multiple taps welcome! <span aria-hidden="true">🎉</span></small></p>
     </div>
-  </div>
+  </main>
 
-  <div class="live-applause-widget__stats">
+  <aside class="live-applause-widget__stats" 
+         role="region" 
+         aria-label="Applause statistics"
+         aria-live="polite">
     <div class="live-applause-widget__stat-item">
-      <span class="live-applause-widget__stat-number" id="live-applause-my-clicks">0</span>
+      <span class="live-applause-widget__stat-number" id="live-applause-my-clicks" aria-label="My thumbs up count">0</span>
       <span class="live-applause-widget__stat-label">My Thumbs Up</span>
     </div>
     <div class="live-applause-widget__stat-item">
-      <span class="live-applause-widget__stat-number" id="live-applause-total-clicks">0</span>
+      <span class="live-applause-widget__stat-number" id="live-applause-total-clicks" aria-label="Total community thumbs up count">0</span>
       <span class="live-applause-widget__stat-label">Total Thumbs Up</span>
     </div>
+  </aside>
+
+  <!-- Screen reader announcements -->
+  <div id="live-applause-announcements" 
+       class="sr-only" 
+       aria-live="polite" 
+       aria-atomic="true"
+       role="status">
+  </div>
+
+  <!-- Urgent celebrations announcements -->
+  <div id="live-applause-celebrations" 
+       class="sr-only" 
+       aria-live="assertive"
+       aria-atomic="true"
+       role="alert">
   </div>
 </div>

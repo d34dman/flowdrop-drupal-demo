@@ -77,6 +77,10 @@
       this.myClicksElement = this.element.querySelector('#live-applause-my-clicks');
       this.totalClicksElement = this.element.querySelector('#live-applause-total-clicks');
       this.statsElement = this.element.querySelector('.live-applause-widget__stats');
+      
+      // Accessibility: Screen reader announcement elements
+      this.announcementsElement = this.element.querySelector('#live-applause-announcements');
+      this.celebrationsElement = this.element.querySelector('#live-applause-celebrations');
     }
 
     async connectWebSocket() {
@@ -153,6 +157,14 @@
       // Primary click handler
       this.thumbsButton.addEventListener('click', (e) => {
         this.handleThumbsClick(e);
+      });
+
+      // Accessibility: Keyboard navigation support
+      this.thumbsButton.addEventListener('keydown', (e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          this.handleThumbsClick(e);
+        }
       });
 
       // Enhanced touch events for mobile
@@ -262,6 +274,10 @@
       this.updateMyClicks(this.myClicks);
       // Post thumbs up to server (no optimistic total update)
       this.postThumbsUp();
+
+      // Accessibility: Update button aria attributes and announce click
+      this.updateButtonAria();
+      this.announceToScreenReader(`Thumbs up given. You have given ${this.myClicks} thumbs up.`);
 
       // Standard haptic feedback for personal clicks
       if (navigator.vibrate) {
@@ -465,6 +481,26 @@
       }, 2500);
     }
 
+    // Accessibility: Screen reader announcements
+    announceToScreenReader(message, priority = 'polite') {
+      const announcer = priority === 'assertive' ? this.celebrationsElement : this.announcementsElement;
+      if (announcer) {
+        announcer.textContent = message;
+        // Clear after announcement to avoid repetition
+        setTimeout(() => {
+          announcer.textContent = '';
+        }, 1000);
+      }
+    }
+
+    // Accessibility: Update button aria attributes
+    updateButtonAria() {
+      if (this.thumbsButton) {
+        const newLabel = `Give thumbs up (${this.myClicks} given, ${this.totalClicks} total)`;
+        this.thumbsButton.setAttribute('aria-label', newLabel);
+      }
+    }
+
     async postThumbsUp() {
       try {
         const res = await fetch(this.postThumbUrl, {
@@ -484,6 +520,8 @@
     }
 
     updateConnectionStatus(status) {
+      if (!this.connectionStatus) return;
+      
       this.connectionStatus.className = `live-applause-widget__connection-status live-applause-widget__connection-status--${status}`;
       let label = '';
       switch (status) {
@@ -497,7 +535,17 @@
           label = 'Disconnected';
           break;
       }
-      this.connectionStatus.innerHTML = '<span class="live-applause-widget__connection-status-indicator"></span> ' + label;
+      
+      // Update visual status with screen reader text
+      this.connectionStatus.innerHTML = 
+        '<span class="sr-only">Connection status: </span>' +
+        '<span class="live-applause-widget__connection-status-indicator" aria-hidden="true"></span> ' + 
+        label;
+      
+      // Accessibility: Announce connection status changes (only for significant changes)
+      if (status === 'connected' || status === 'disconnected') {
+        this.announceToScreenReader(`Connection status: ${label}`);
+      }
     }
 
     updateMyClicks(count) {
@@ -563,6 +611,12 @@
       console.log(`🎆 COMMUNITY FIREWORKS! Total reached ${milestoneCount}!`);
       this.createFireworksAnimation();
       
+      // Accessibility: Announce celebration to screen readers
+      this.announceToScreenReader(
+        `Celebration! The community has reached ${milestoneCount} total thumbs up with spectacular fireworks!`, 
+        'assertive'
+      );
+      
       // Enhanced vibration for community century milestone
       if (navigator.vibrate) {
         navigator.vibrate([200, 100, 200, 100, 200]);
@@ -572,6 +626,12 @@
     triggerCommunityConfetti(milestoneCount) {
       console.log(`🎊 COMMUNITY CONFETTI! Total reached ${milestoneCount}!`);
       this.createConfettiAnimation();
+      
+      // Accessibility: Announce celebration to screen readers
+      this.announceToScreenReader(
+        `Celebration! The community has reached ${milestoneCount} total thumbs up with confetti!`, 
+        'assertive'
+      );
       
       // Enhanced vibration for community decade milestone
       if (navigator.vibrate) {
