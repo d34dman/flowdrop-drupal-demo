@@ -1,8 +1,18 @@
-thumbs_up.example:
-  path: '/thumbs-up/%'
+thumbs_up.up:
+  path: '/thumbs-up/{uuid}/up'
+  methods:  [GET, POST]
   defaults:
     _title: 'Thumbs Up'
-    _controller: '\Drupal\thumbs_up\Controller\ThumbsUpController'
+    _controller: '\Drupal\thumbs_up\Controller\ThumbsUpController::up'
+  requirements:
+    _permission: 'access content'
+
+thumbs_up.subscribe:
+  path: '/thumbs-up/{uuid}/subscribe'
+  methods:  [GET, POST]
+  defaults:
+    _title: 'Thumbs Up Subscribe'
+    _controller: '\Drupal\thumbs_up\Controller\ThumbsUpController::subscribe'
   requirements:
     _permission: 'access content'
 

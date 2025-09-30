@@ -163,6 +163,22 @@ class ThumbsUpEvent extends ContentEntityBase implements ThumbsUpEventInterface 
       ])
       ->setDisplayConfigurable('view', TRUE);
 
+    $fields['thumbs_up'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Thumbs up'))
+      ->setDefaultValue(0)
+      ->setDescription(t('The number of thumbs up for the thumbs_up_event.'))
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'integer',
+        'weight' => 20,
+      ])
+      ->setDisplayConfigurable('view', TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'integer',
+        'weight' => 20,
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Authored on'))
       ->setDescription(t('The time that the thumbs_up_event was created.'))

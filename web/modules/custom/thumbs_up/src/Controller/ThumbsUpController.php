@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\thumbs_up\Controller;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\Core\State\StateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\notification_server\Service\NotificationServerClientInterface;
+use Drupal\thumbs_up\ThumbsUpAction;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Returns responses for thumbs_up routes.
@@ -24,11 +21,7 @@ final class ThumbsUpController implements ContainerInjectionInterface {
    * The controller constructor.
    */
   public function __construct(
-    private readonly ConfigFactoryInterface $configFactory,
-    private readonly NotificationServerClientInterface $notificationServerClient,
-    private readonly LoggerChannelFactoryInterface $loggerFactory,
-    private readonly EntityTypeManagerInterface $entityTypeManager,
-    private readonly StateInterface $state,
+    private readonly ThumbsUpAction $thumbsUpAction
   ) {}
 
   /**
@@ -36,25 +29,27 @@ final class ThumbsUpController implements ContainerInjectionInterface {
    */
   public static function create(ContainerInterface $container): self {
     return new self(
-      $container->get('config.factory'),
-      $container->get('notification_server.client'),
-      $container->get('logger.factory'),
-      $container->get('entity_type.manager'),
-      $container->get('state'),
+      $container->get('thumbs_up'),
     );
+  }
+
+  public function subscribe(string $uuid): JsonResponse {
+    return new JsonResponse($this->thumbsUpAction->subscribe($uuid));
   }
 
   /**
    * Builds the response.
    */
-  public function __invoke(): array {
-
-    $build['content'] = [
-      '#type' => 'item',
-      '#markup' => $this->t('It works!'),
-    ];
-
-    return $build;
+  public function up(string $uuid): JsonResponse {
+    if ($this->thumbsUpAction->up($uuid)) {
+      return new JsonResponse(
+        [
+          'message' => 'ok',
+        ]);
+    }
+    else {
+      throw new AccessDeniedHttpException('Un-authorized');
+    }
   }
 
 }

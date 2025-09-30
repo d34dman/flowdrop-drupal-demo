@@ -1,0 +1,6 @@
+services:
+  thumbs_up:
+    class: Drupal\thumbs_up\ThumbsUpAction
+    arguments: ['@entity_type.manager', '@entity.repository', '@database', '@logger.factory', '@notification_server.client']
+    tags:
+      - { name: needs_destruction }
