@@ -1,0 +1,13 @@
+# Vienna 2025 Thumbs Up Module Libraries
+
+live-applause:
+  version: 1.x
+  css:
+    theme:
+      components/live-applause/live-applause.css: {}
+  js:
+    components/live-applause/live-applause.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery

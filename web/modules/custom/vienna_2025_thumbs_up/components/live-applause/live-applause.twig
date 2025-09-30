@@ -1,0 +1,77 @@
+{#
+/**
+ * @file
+ * Live Applause Widget Template
+ *
+ * Available variables:
+ * - eventId: Unique identifier for the event
+ * - apiBase: Base URL for the thumbs-up API
+ * - eventTitle: Main title displayed in the widget
+ * - eventSubTitle: Subtitle text displayed below the main title
+ * - eventInfo: Additional event details
+ * - eventImageSrc: URL for the event logo/image
+ * - eventImageAlt: Alt text for the event image
+ * - showConnectionStatus: Whether to display WebSocket connection status
+ * - enableBackgroundAnimation: Whether to show floating emoji animations
+ * - clickCooldown: Minimum time between clicks to prevent spam
+ * - embedded: Whether to render in embedded mode (affects positioning)
+ */
+#}
+{% set widget_classes = [
+  'live-applause-widget',
+  embedded ? 'live-applause-widget--embedded' : 'live-applause-widget--fullscreen'
+] %}
+
+{% set widget_settings = {
+  eventId: eventId,
+  apiBase: apiBase,
+  clickCooldown: clickCooldown|default(100),
+  enableBackgroundAnimation: enableBackgroundAnimation|default(true),
+  showConnectionStatus: showConnectionStatus|default(true)
+} %}
+
+{% if showConnectionStatus %}
+<div class="live-applause-widget__connection-status live-applause-widget__connection-status--connecting{{ embedded ? ' live-applause-widget__connection-status--embedded' }}">
+  <span class="live-applause-widget__connection-status-indicator"></span> Connecting...
+</div>
+{% endif %}
+
+<div{{ attributes.addClass(widget_classes) }}
+    data-live-applause-widget="{{ widget_settings|json_encode }}">
+
+  <div class="live-applause-widget__main-content">
+    <div class="live-applause-widget__header">
+      {% if eventImageSrc %}
+      <div class="live-applause-widget__logo-container">
+        <img src="{{ eventImageSrc }}"
+             alt="{{ eventImageAlt|default('Event logo') }}"
+             class="live-applause-widget__logo">
+      </div>
+      {% endif %}
+
+      <div class="live-applause-widget__title">{{ eventTitle|default('Live Applause! 👏') }}</div>
+      <div class="live-applause-widget__subtitle">{{ eventSubTitle|default('Real-Time Notifications Demo') }}</div>
+      <div class="live-applause-widget__event-info">{{ eventInfo|default('Interactive Event') }}</div>
+    </div>
+
+    <button class="live-applause-widget__thumbs-button" type="button">
+      👍
+    </button>
+
+    <div class="live-applause-widget__instructions">
+      Tap the button to show your appreciation!<br>
+      <small>Multiple taps welcome! 🎉</small>
+    </div>
+  </div>
+
+  <div class="live-applause-widget__stats">
+    <div class="live-applause-widget__stat-item">
+      <span class="live-applause-widget__stat-number" id="live-applause-my-clicks">0</span>
+      <span class="live-applause-widget__stat-label">My Thumbs Up</span>
+    </div>
+    <div class="live-applause-widget__stat-item">
+      <span class="live-applause-widget__stat-number" id="live-applause-total-clicks">0</span>
+      <span class="live-applause-widget__stat-label">Total Applause</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json
+
+name: "Live Applause Widget"
+status: experimental
+description: "Interactive real-time applause widget with WebSocket support for live events"
+group: "Event Widgets"
+
+props:
+  type: object
+  properties:
+    # Event Configuration
+    eventId:
+      type: string
+      title: "Event ID"
+      description: "Unique identifier for the event"
+      examples: ["e5fe2721-64a2-412a-9d41-afcd611d74f2"]
+
+    apiBase:
+      type: string
+      title: "API Base URL"
+      description: "Base URL for the thumbs-up API"
+      examples: ["https://flowdrop-drupal-demo.ddev.site"]
+
+    # Event Display Information
+    eventTitle:
+      type: string
+      title: "Event Title"
+      description: "Main title displayed in the widget"
+      default: "Live Applause! 👏"
+
+    eventSubTitle:
+      type: string
+      title: "Event Subtitle"
+      description: "Subtitle text displayed below the main title"
+      default: "Real-Time Notifications Demo"
+
+    eventInfo:
+      type: string
+      title: "Event Information"
+      description: "Additional event details"
+      default: "Interactive Event"
+
+    eventImageSrc:
+      type: string
+      title: "Event Image Source"
+      description: "URL for the event logo/image"
+      default: "https://events.drupal.org/themes/contrib/drupalorg_drupalcon_theme/logo.svg"
+
+    eventImageAlt:
+      type: string
+      title: "Event Image Alt Text"
+      description: "Alt text for the event image"
+      default: "Event logo"
+
+    # Widget Configuration
+    showConnectionStatus:
+      type: boolean
+      title: "Show Connection Status"
+      description: "Whether to display WebSocket connection status indicator"
+      default: true
+
+    enableBackgroundAnimation:
+      type: boolean
+      title: "Enable Background Animation"
+      description: "Whether to show floating emoji animations"
+      default: true
+
+    clickCooldown:
+      type: integer
+      title: "Click Cooldown (ms)"
+      description: "Minimum time between clicks to prevent spam"
+      default: 100
+      minimum: 50
+      maximum: 1000
+
+    # Styling Options
+    embedded:
+      type: boolean
+      title: "Embedded Mode"
+      description: "Whether to render in embedded mode (affects positioning and styling)"
+      default: false
+
+  required: ["eventId", "apiBase"]
+
+# CSS and JS attachments
+libraryOverrides:
+  dependencies:
+    - vienna_2025_thumbs_up/live-applause
