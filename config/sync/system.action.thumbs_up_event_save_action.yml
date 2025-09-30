@@ -1,0 +1,13 @@
+uuid: 6240e221-57ef-4fec-b250-783a82beecb3
+langcode: en
+status: true
+dependencies:
+  module:
+    - thumbs_up
+_core:
+  default_config_hash: Ev-ft-qt1WGeEs6U6jWCALXvYlEivv3qkGFzoMzHk4A
+id: thumbs_up_event_save_action
+label: 'Save thumbs_up_events'
+type: thumbs_up_event
+plugin: 'entity:save_action:thumbs_up_event'
+configuration: {  }

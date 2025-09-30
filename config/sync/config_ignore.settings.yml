@@ -4,3 +4,4 @@ mode: simple
 ignored_config_entities:
   - notification_server.settings
   - 'system.site:page.*'
+  - vienna_2025_thumbs_up.settings

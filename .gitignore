@@ -8,7 +8,7 @@
 /web/libraries/
 /backups
 .vscode
-
+.playwright-mcp
 # Ignore sensitive information
 /web/sites/*/settings.local.php
 /web/sites/*/settings.ddev.*
