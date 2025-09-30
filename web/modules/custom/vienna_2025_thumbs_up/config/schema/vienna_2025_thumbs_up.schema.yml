@@ -1,0 +1,8 @@
+# Schema for the configuration files of the vienna_2025_thumbs_up module.
+vienna_2025_thumbs_up.settings:
+  type: config_object
+  label: 'vienna_2025_thumbs_up settings'
+  mapping:
+    config:
+      type: text
+      label: 'Config (in Json format)'

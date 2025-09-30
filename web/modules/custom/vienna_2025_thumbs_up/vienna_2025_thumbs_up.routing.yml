@@ -1,0 +1,15 @@
+vienna_2025_thumbs_up.thumbs_up:
+  path: '/vienna-2025'
+  defaults:
+    _title: 'Thumbs Up'
+    _controller: '\Drupal\vienna_2025_thumbs_up\Controller\ThumbsUp'
+  requirements:
+    _permission: 'access content'
+
+vienna_2025_thumbs_up.settings:
+  path: '/admin/config/system/vienna-2025'
+  defaults:
+    _title: 'Settings'
+    _form: 'Drupal\vienna_2025_thumbs_up\Form\SettingsForm'
+  requirements:
+    _permission: 'administer site configuration'

@@ -1,0 +1,7 @@
+name: 'vienna_2025_thumbs_up'
+type: module
+description: 'Demo module for Vienna 2025 &quot;thumbs Up&quot;'
+package: Vienna 2025
+core_version_requirement: ^10 || ^11
+dependencies:
+  - thumbs_up:thumbs_up

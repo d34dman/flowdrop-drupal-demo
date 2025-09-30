@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for vienna_2025_thumbs_up module.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function vienna_2025_thumbs_up_theme(): array {
+  return [
+    'html__vienna_2025' => [
+      'base hook' => 'html',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function vienna_2025_thumbs_up_preprocess_html(&$variables): void {
+  $config = \Drupal::config('vienna_2025_thumbs_up.settings')->get('config');
+  $decoded = json_decode($config, TRUE);
+  $variables = array_merge($variables, $decoded);
+  $variables['#cache']['tags'][] = 'config:vienna_2025_thumbs_up.settings';
+}
