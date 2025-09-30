@@ -1,0 +1,8 @@
+name: 'thumbs_up'
+type: module
+description: 'Thumbs up'
+package: Custom
+core_version_requirement: ^10 || ^11
+
+dependencies:
+  - notification_server:notification_server

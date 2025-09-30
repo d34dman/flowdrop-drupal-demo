@@ -1,0 +1,10 @@
+entity.thumbs_up_event.edit_form:
+  route_name: entity.thumbs_up_event.edit_form
+  group: thumbs_up_event
+  title: 'Edit'
+
+entity.thumbs_up_event.delete_form:
+  route_name: entity.thumbs_up_event.delete_form
+  group: thumbs_up_event
+  title: 'Delete'
+  weight: 10

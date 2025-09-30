@@ -1,0 +1,11 @@
+entity.thumbs_up_event.settings:
+  title: 'thumbs_up_event'
+  description: 'Configure a thumbs_up_event entity type.'
+  route_name:  entity.thumbs_up_event.settings
+  parent: system.admin_structure
+
+entity.thumbs_up_event.collection:
+  title: 'thumbs_up_events'
+  description: 'List of thumbs_up_events.'
+  route_name: entity.thumbs_up_event.collection
+  parent: system.admin_content

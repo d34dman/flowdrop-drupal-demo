@@ -1,0 +1,5 @@
+thumbs_up_event.add_form:
+  title: 'Add thumbs_up_event'
+  route_name: entity.thumbs_up_event.add_form
+  appears_on:
+    - entity.thumbs_up_event.collection

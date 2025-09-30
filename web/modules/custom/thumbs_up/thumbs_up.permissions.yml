@@ -1,0 +1,11 @@
+administer thumbs_up_event:
+  title: 'Administer thumbs_up_events'
+  restrict access: true
+view thumbs_up_event:
+  title: 'View thumbs_up_event'
+edit thumbs_up_event:
+  title: 'Edit thumbs_up_event'
+delete thumbs_up_event:
+  title: 'Delete thumbs_up_event'
+create thumbs_up_event:
+  title: 'Create thumbs_up_event'

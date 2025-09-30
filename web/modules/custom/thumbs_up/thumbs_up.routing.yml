@@ -1,0 +1,15 @@
+thumbs_up.example:
+  path: '/thumbs-up/%'
+  defaults:
+    _title: 'Thumbs Up'
+    _controller: '\Drupal\thumbs_up\Controller\ThumbsUpController'
+  requirements:
+    _permission: 'access content'
+
+entity.thumbs_up_event.settings:
+  path: 'admin/structure/thumbs-up-event'
+  defaults:
+    _form: '\Drupal\thumbs_up\Form\ThumbsUpEventSettingsForm'
+    _title: 'thumbs_up_event'
+  requirements:
+    _permission: 'administer thumbs_up_event'

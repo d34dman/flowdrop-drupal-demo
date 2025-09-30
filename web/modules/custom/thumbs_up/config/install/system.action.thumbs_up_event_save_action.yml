@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - thumbs_up
+id: thumbs_up_event_save_action
+label: 'Save thumbs_up_events'
+type: thumbs_up_event
+plugin: entity:save_action:thumbs_up_event
+configuration: {  }
