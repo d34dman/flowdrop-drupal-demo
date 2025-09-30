@@ -54,7 +54,7 @@ final class ThumbsUpAction implements ThumbsUpActionInterface, DestructableInter
     $this->notificationServerClient->createChannel($channel);
     $this->notificationServerClient->subscribeToChannel($channel_name, $client_id);
     return [
-      'endpoint' => $websocket_url . '?clientID=' . $client_id,
+      'endpoint' => $websocket_url . '?clientId=' . $client_id,
       'channel' => $this->getChannelName($uuid),
     ];
   }
@@ -85,7 +85,7 @@ final class ThumbsUpAction implements ThumbsUpActionInterface, DestructableInter
   public function updateEvents() {
     if (!empty($this->updateList)) {
       foreach ($this->updateList as $uuid) {
-        if ($entity = $this->entityRepository->loadEntityByUuid($uuid)) {
+        if ($entity = $this->entityRepository->loadEntityByUuid('thumbs_up_event', $uuid)) {
           // Get the latest count.
           $query = $this->connection->query("SELECT thumbs_up FROM {thumbs_up_event} WHERE uuid = :uuid", [
             ':uuid' => $uuid,
