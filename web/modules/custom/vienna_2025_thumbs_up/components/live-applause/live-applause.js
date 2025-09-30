@@ -23,7 +23,7 @@
       this.lastClickTime = 0;
       this.clickCooldown = settings.clickCooldown || 100;
       this.isMobile = this.detectMobile();
-      
+
       // Event configuration
       this.eventId = settings.eventId;
       this.apiBase = settings.apiBase;
@@ -72,12 +72,13 @@
     }
 
     initializeElements() {
+      this.celebrationContainer = this.element.querySelector('.live-applause-widget--celebrations-container');
       this.thumbsButton = this.element.querySelector('.live-applause-widget__thumbs-button');
       this.connectionStatus = this.element.querySelector('.live-applause-widget__connection-status');
       this.myClicksElement = this.element.querySelector('#live-applause-my-clicks');
       this.totalClicksElement = this.element.querySelector('#live-applause-total-clicks');
       this.statsElement = this.element.querySelector('.live-applause-widget__stats');
-      
+
       // Accessibility: Screen reader announcement elements
       this.announcementsElement = this.element.querySelector('#live-applause-announcements');
       this.celebrationsElement = this.element.querySelector('#live-applause-celebrations');
@@ -328,12 +329,12 @@
     createFloatingThumb() {
       const thumb = document.createElement('div');
       thumb.classList.add('live-applause-widget__floating-thumb');
-      
+
       // Use party emojis when community total is close to or just hit a milestone
       const isNearCommunityMilestone = this.isNearCommunityMilestone();
       const partyEmojis = ['🎉', '🥳', '✨', '🎊', '🌟', '💫', '🎆'];
       const thumbsEmojis = ['👍', '👍🏻', '👍🏼', '👍🏽', '👍🏾', '👍🏿'];
-      
+
       if (isNearCommunityMilestone) {
         thumb.classList.add('live-applause-widget__floating-thumb--party');
         thumb.textContent = partyEmojis[Math.floor(Math.random() * partyEmojis.length)];
@@ -341,18 +342,11 @@
         thumb.textContent = thumbsEmojis[Math.floor(Math.random() * thumbsEmojis.length)];
       }
 
-      // Enhanced random positioning with wider spread
-      const buttonRect = this.thumbsButton.getBoundingClientRect();
-      const spreadX = isNearCommunityMilestone ? 150 : 100;
-      const spreadY = isNearCommunityMilestone ? 80 : 50;
-      
-      const x = buttonRect.left + (Math.random() - 0.5) * spreadX;
-      const y = buttonRect.top + (Math.random() - 0.5) * spreadY;
-
-      thumb.style.left = x + 'px';
-      thumb.style.top = y + 'px';
-
-      document.body.appendChild(thumb);
+      // // Enhanced random positioning with wider spread
+      // const buttonRect = this.celebrationContainer.getBoundingClientRect();
+      // thumb.style.left = '0px';
+      // thumb.style.top = '0px';
+      this.celebrationContainer.appendChild(thumb);
 
       // Cleanup with appropriate timing based on animation duration
       const cleanupTime = isNearCommunityMilestone ? 2800 : 2500;
@@ -365,17 +359,17 @@
 
     isNearCommunityMilestone() {
       if (this.totalClicks < 10) return false;
-      
+
       // Check if we're within 3 clicks of a decade milestone or just hit one
       const nextDecade = Math.ceil(this.totalClicks / 10) * 10;
       const distanceToNextDecade = nextDecade - this.totalClicks;
       const justHitDecade = this.totalClicks % 10 === 0;
-      
-      // Check if we're within 5 clicks of a century milestone or just hit one  
+
+      // Check if we're within 5 clicks of a century milestone or just hit one
       const nextCentury = Math.ceil(this.totalClicks / 100) * 100;
       const distanceToNextCentury = nextCentury - this.totalClicks;
       const justHitCentury = this.totalClicks % 100 === 0;
-      
+
       // Show party emojis if:
       // 1. We just hit a milestone
       // 2. We're very close to a milestone (3 for decades, 5 for centuries)
@@ -385,22 +379,22 @@
     createConfettiAnimation() {
       const confettiCount = 25;
       const types = ['square', 'circle', 'triangle'];
-      
+
       for (let i = 0; i < confettiCount; i++) {
         const confetti = document.createElement('div');
         confetti.classList.add('live-applause-widget__confetti');
         confetti.classList.add(`live-applause-widget__confetti--${types[i % types.length]}`);
-        
+
         // Random horizontal position across screen width
         const x = Math.random() * window.innerWidth;
         const delay = Math.random() * 2000; // Stagger the animations
-        
+
         confetti.style.left = x + 'px';
         confetti.style.top = '-20px';
         confetti.style.animationDelay = delay + 'ms';
-        
+
         document.body.appendChild(confetti);
-        
+
         // Cleanup after animation completes
         setTimeout(() => {
           if (confetti.parentNode) {
@@ -408,7 +402,7 @@
           }
         }, 3200 + delay);
       }
-      
+
       // Add screen shake effect for extra excitement
       if (this.element) {
         this.element.style.animation = 'live-applause-screen-shake 0.5s ease-in-out';
@@ -426,15 +420,15 @@
         { x: '30%', y: '40%' },
         { x: '70%', y: '35%' }
       ];
-      
+
       const colors = ['gold', 'red', 'blue'];
-      
+
       fireworkPositions.forEach((position, index) => {
         setTimeout(() => {
           this.createSingleFirework(position.x, position.y, colors[index % colors.length]);
         }, index * 300);
       });
-      
+
       // Add intense screen shake for fireworks
       if (this.element) {
         this.element.style.animation = 'live-applause-fireworks-shake 2s ease-in-out';
@@ -448,31 +442,31 @@
       const firework = document.createElement('div');
       firework.classList.add('live-applause-widget__firework');
       firework.classList.add(`live-applause-widget__firework--${color}`);
-      
+
       firework.style.left = x;
       firework.style.top = y;
-      
+
       // Create particles for explosion effect
       const particleCount = 12;
       for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.classList.add('live-applause-widget__firework-particle');
-        
+
         const angle = (360 / particleCount) * i;
         const distance = 60 + Math.random() * 40;
-        
+
         const radians = angle * (Math.PI / 180);
         const particleX = Math.cos(radians) * distance;
         const particleY = Math.sin(radians) * distance;
-        
+
         particle.style.transform = `translate(${particleX}px, ${particleY}px)`;
         particle.style.animationDelay = Math.random() * 0.2 + 's';
-        
+
         firework.appendChild(particle);
       }
-      
+
       document.body.appendChild(firework);
-      
+
       // Cleanup after animation
       setTimeout(() => {
         if (firework.parentNode) {
@@ -521,12 +515,12 @@
 
     updateConnectionStatus(status) {
       if (!this.connectionStatus) return;
-      
+
       this.connectionStatus.className = `live-applause-widget__connection-status live-applause-widget__connection-status--${status}`;
       let label = '';
       switch (status) {
         case 'connected':
-          label = 'Connected';
+          label = '';
           break;
         case 'connecting':
           label = 'Connecting...';
@@ -535,13 +529,13 @@
           label = 'Disconnected';
           break;
       }
-      
+
       // Update visual status with screen reader text
-      this.connectionStatus.innerHTML = 
+      this.connectionStatus.innerHTML =
         '<span class="sr-only">Connection status: </span>' +
-        '<span class="live-applause-widget__connection-status-indicator" aria-hidden="true"></span> ' + 
+        '<span class="live-applause-widget__connection-status-indicator" aria-hidden="true"></span> ' +
         label;
-      
+
       // Accessibility: Announce connection status changes (only for significant changes)
       if (status === 'connected' || status === 'disconnected') {
         this.announceToScreenReader(`Connection status: ${label}`);
@@ -562,10 +556,10 @@
     updateTotalClicks(count) {
       // Check for milestone celebrations before updating UI
       this.checkTotalMilestoneCelebrations(this.previousTotalClicks, count);
-      
+
       // Update previous count for next comparison
       this.previousTotalClicks = count;
-      
+
       // Animate the number display
       this.animateNumber(this.totalClicksElement, count);
     }
@@ -573,12 +567,12 @@
     checkTotalMilestoneCelebrations(previousTotal, newTotal) {
       // Don't trigger on first load
       if (previousTotal === 0) return;
-      
+
       console.log(`🔍 Milestone Check: ${previousTotal} → ${newTotal}`);
-      
+
       // Find all milestones between previous and new total
       const milestonesCrossed = this.findMilestonesCrossed(previousTotal, newTotal);
-      
+
       milestonesCrossed.forEach(milestone => {
         if (milestone >= 100 && milestone % 100 === 0) {
           console.log(`🎆 CENTURY MILESTONE DETECTED: ${milestone}`);
@@ -592,31 +586,31 @@
 
     findMilestonesCrossed(previousTotal, newTotal) {
       const milestones = [];
-      
+
       // Find decade milestones (10, 20, 30, etc.)
       const startDecade = Math.floor(previousTotal / 10) + 1;
       const endDecade = Math.floor(newTotal / 10);
-      
+
       for (let decade = startDecade; decade <= endDecade; decade++) {
         const milestone = decade * 10;
         if (milestone > previousTotal && milestone <= newTotal) {
           milestones.push(milestone);
         }
       }
-      
+
       return milestones;
     }
 
     triggerCommunityFireworks(milestoneCount) {
       console.log(`🎆 COMMUNITY FIREWORKS! Total reached ${milestoneCount}!`);
       this.createFireworksAnimation();
-      
+
       // Accessibility: Announce celebration to screen readers
       this.announceToScreenReader(
-        `Celebration! The community has reached ${milestoneCount} total thumbs up with spectacular fireworks!`, 
+        `Celebration! The community has reached ${milestoneCount} total thumbs up with spectacular fireworks!`,
         'assertive'
       );
-      
+
       // Enhanced vibration for community century milestone
       if (navigator.vibrate) {
         navigator.vibrate([200, 100, 200, 100, 200]);
@@ -626,13 +620,13 @@
     triggerCommunityConfetti(milestoneCount) {
       console.log(`🎊 COMMUNITY CONFETTI! Total reached ${milestoneCount}!`);
       this.createConfettiAnimation();
-      
+
       // Accessibility: Announce celebration to screen readers
       this.announceToScreenReader(
-        `Celebration! The community has reached ${milestoneCount} total thumbs up with confetti!`, 
+        `Celebration! The community has reached ${milestoneCount} total thumbs up with confetti!`,
         'assertive'
       );
-      
+
       // Enhanced vibration for community decade milestone
       if (navigator.vibrate) {
         navigator.vibrate([100, 50, 100]);
@@ -686,7 +680,7 @@
     setInterval(() => {
       if (Math.random() > 0.8) {
         const emoji = document.createElement('div');
-        emoji.textContent = ['🎉', '👏', '🙌', '✨'][Math.floor(Math.random() * 4)];
+        emoji.textContent = ['🎉', '👏', '👻', '✨'][Math.floor(Math.random() * 4)];
         emoji.style.position = 'absolute';
         emoji.style.left = Math.random() * window.innerWidth + 'px';
         emoji.style.top = window.innerHeight + 'px';
@@ -694,7 +688,7 @@
         emoji.style.opacity = '0.3';
         emoji.style.pointerEvents = 'none';
         emoji.style.zIndex = '1';
-        emoji.style.animation = 'live-applause-float-up 4s linear forwards';
+        emoji.style.animation = 'live-applause-gentle-float 4s ease-out forwards';
 
         document.body.appendChild(emoji);
 
@@ -711,17 +705,17 @@
   Drupal.behaviors.liveApplauseWidget = {
     attach: function (context, settings) {
       const widgets = context.querySelectorAll('.live-applause-widget[data-live-applause-widget]:not(.live-applause-widget--processed)');
-      
+
       widgets.forEach((widget) => {
         widget.classList.add('live-applause-widget--processed');
         const widgetSettings = JSON.parse(widget.getAttribute('data-live-applause-widget'));
-        
+
         // Initialize the widget
         const instance = new LiveApplauseWidget(widget, widgetSettings);
-        
+
         // Store instance on element for potential future access
         widget.liveApplauseWidgetInstance = instance;
-        
+
         // Start background animation if enabled
         setTimeout(() => {
           createBackgroundAnimation(widget, widgetSettings);

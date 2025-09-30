@@ -56,10 +56,13 @@
     <h1 class="live-applause-widget__title">{{ eventTitle|default('Live Applause! 👏') }}</h1>
     <p class="live-applause-widget__subtitle">{{ eventSubTitle|default('Real-Time Notifications Demo') }}</p>
     <p class="live-applause-widget__event-info">{{ eventInfo|default('Interactive Event') }}</p>
+
   </header>
 
+
   <main class="live-applause-widget__main-content">
-    <button class="live-applause-widget__thumbs-button" 
+    <div class="live-applause-widget--celebrations-container"></div>
+    <button class="live-applause-widget__thumbs-button"
             type="button"
             aria-label="Give thumbs up"
             aria-describedby="live-applause-instructions live-applause-my-clicks live-applause-total-clicks"
@@ -74,8 +77,8 @@
     </div>
   </main>
 
-  <aside class="live-applause-widget__stats" 
-         role="region" 
+  <aside class="live-applause-widget__stats"
+         role="region"
          aria-label="Applause statistics"
          aria-live="polite">
     <div class="live-applause-widget__stat-item">
@@ -89,16 +92,16 @@
   </aside>
 
   <!-- Screen reader announcements -->
-  <div id="live-applause-announcements" 
-       class="sr-only" 
-       aria-live="polite" 
+  <div id="live-applause-announcements"
+       class="sr-only"
+       aria-live="polite"
        aria-atomic="true"
        role="status">
   </div>
 
   <!-- Urgent celebrations announcements -->
-  <div id="live-applause-celebrations" 
-       class="sr-only" 
+  <div id="live-applause-celebrations"
+       class="sr-only"
        aria-live="assertive"
        aria-atomic="true"
        role="alert">

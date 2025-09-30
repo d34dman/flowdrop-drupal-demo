@@ -31,10 +31,10 @@
   --color-primary-navy: #092963;
   --color-primary-blue: #3abcee;
   --color-primary-blue-dark: #009bde;
-  --color-primary-orange: #f26451;
-  --color-primary-orange-dark: #e14739;
   --color-primary-yellow: #ffc422;
   --color-primary-yellow-dark: #f8b300;
+  --color-primary-orange: #f26451;
+  --color-primary-orange-dark: #e14739;
 
   /* Background Colors */
   --color-bg-primary: #ffffff;
@@ -49,15 +49,18 @@
   --color-text-white: #ffffff;
 
   /* Shadow Colors */
-  --shadow-primary: rgba(58, 188, 238, 0.1);
-  --shadow-button: rgba(242, 100, 81, 0.2);
-  --shadow-button-hover: rgba(242, 100, 81, 0.4);
+  --shadow-primary: rgba(0, 0, 0, 0.1);
+  --shadow-button: rgba(0, 0, 0, 0.2);
+  --shadow-button-hover: rgba(0, 0, 0, 0.4);
 
   /* Interactive States */
   --color-connected: #3abcee;
   --color-disconnected: #f26451;
   --color-connecting: #ffc422;
   --color-ripple: #3abcee;
+
+  --color-cta-bg: var(--color-primary-navy);
+  --color-cta-bg--hover: var(--color-primary-blue-dark);
 }
 
 /* Fullscreen mode styles (when used as main page content) */
@@ -127,9 +130,7 @@
   min-height: 200px;
 }
 
-.live-applause-widget__header {
-  /* No extra margin needed with gap-based layout */
-}
+/* Legacy selector - no extra margin needed with gap-based layout */
 
 .live-applause-widget__logo-container {
   margin-bottom: 20px;
@@ -167,7 +168,7 @@
   height: 200px;
   border-radius: 8px;
   border: none;
-  background: var(--color-primary-orange);
+  background: var(--color-cta-bg);
   color: var(--color-text-white);
   font-size: 4rem;
   cursor: pointer;
@@ -181,7 +182,7 @@
 .live-applause-widget__thumbs-button:hover {
   transform: scale(1.05);
   box-shadow: 0 15px 40px var(--shadow-button-hover);
-  background: var(--color-primary-orange-dark);
+  background: var(--color-cta-bg--hover);
 }
 
 .live-applause-widget__thumbs-button:active {
@@ -192,7 +193,7 @@
 .live-applause-widget__thumbs-button:focus {
   outline: 3px solid var(--color-primary-blue);
   outline-offset: 4px;
-  box-shadow: 
+  box-shadow:
     0 15px 40px var(--shadow-button-hover),
     0 0 0 3px var(--color-primary-blue);
 }
@@ -205,7 +206,7 @@
 .live-applause-widget__thumbs-button:focus-visible {
   outline: 3px solid var(--color-primary-blue);
   outline-offset: 4px;
-  box-shadow: 
+  box-shadow:
     0 15px 40px var(--shadow-button-hover),
     0 0 0 3px var(--color-primary-blue);
 }
@@ -280,7 +281,6 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  width: 200px;
 }
 
 .live-applause-widget__connection-status--embedded {
@@ -288,7 +288,6 @@
   top: 8px;
   right: 8px;
   width: auto;
-  min-width: 120px;
 }
 
 .live-applause-widget__connection-status-indicator {
@@ -348,70 +347,79 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
-/* Enhanced floating thumbs animation */
+.live-applause-widget--celebrations-container {
+  position: relative;
+  height: 0px;
+  overflow: visible;
+  z-index: 8999999;
+}
+/* Gentle celebratory floating thumbs animation */
 .live-applause-widget__floating-thumb {
-  position: absolute;
+  position: relative;
   font-size: 2.5rem;
   pointer-events: none;
   z-index: 5;
   will-change: transform, opacity;
   transform: translateZ(0); /* Hardware acceleration */
   backface-visibility: hidden; /* Performance optimization */
-  text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 140, 0, 0.6);
-  filter: brightness(1.5) saturate(1.3) drop-shadow(0 0 8px rgba(255, 215, 0, 0.7));
-  animation: live-applause-float-up 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  text-shadow: 0 0 12px rgba(16, 185, 129, 0.4), 0 0 24px rgba(59, 130, 246, 0.3);
+  filter: brightness(1.1) saturate(1.1) drop-shadow(0 0 6px rgba(16, 185, 129, 0.4));
+  animation: live-applause-gentle-float 2.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .live-applause-widget__floating-thumb--party {
-  animation: live-applause-party-float 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  filter: brightness(1.8) saturate(1.5) drop-shadow(0 0 12px rgba(255, 20, 147, 0.8));
-  text-shadow: 0 0 25px rgba(255, 20, 147, 0.9), 0 0 50px rgba(255, 105, 180, 0.7);
+  animation: live-applause-celebration-float 2.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  filter: brightness(1.15) saturate(1.1) drop-shadow(0 0 8px rgba(139, 92, 246, 0.4));
+  text-shadow: 0 0 15px rgba(139, 92, 246, 0.5), 0 0 30px rgba(168, 85, 247, 0.3);
 }
 
-@keyframes live-applause-float-up {
-  0% {
-    opacity: 1;
-    transform: translateY(0) scale(0.8) rotate(0deg);
-  }
-  20% {
-    opacity: 1;
-    transform: translateY(-20px) scale(1.1) rotate(72deg);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-80px) scale(1.3) rotate(180deg);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-180px) scale(1.8) rotate(360deg);
-  }
-}
-
-@keyframes live-applause-party-float {
+@keyframes live-applause-gentle-float {
   0% {
     opacity: 1;
     transform: translateY(0) scale(0.9) rotate(0deg);
   }
-  15% {
+  25% {
     opacity: 1;
-    transform: translateY(-15px) scale(1.2) rotate(60deg);
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(-40px) scale(1.4) rotate(120deg);
+    transform: translateY(-30px) scale(1.05) rotate(15deg);
   }
   50% {
     opacity: 1;
-    transform: translateY(-90px) scale(1.6) rotate(240deg);
+    transform: translateY(-60px) scale(1.1) rotate(-10deg);
   }
-  70% {
-    opacity: 1;
-    transform: translateY(-140px) scale(1.7) rotate(300deg);
+  75% {
+    opacity: 0.8;
+    transform: translateY(-90px) scale(1.15) rotate(20deg);
   }
   100% {
     opacity: 0;
-    transform: translateY(-200px) scale(2.0) rotate(720deg);
+    transform: translateY(-120px) scale(1.2) rotate(-5deg);
+  }
+}
+
+@keyframes live-applause-celebration-float {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(0.9) rotate(0deg);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-25px) scale(1.1) rotate(25deg);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-55px) scale(1.15) rotate(-15deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-85px) scale(1.2) rotate(30deg);
+  }
+  80% {
+    opacity: 0.7;
+    transform: translateY(-115px) scale(1.25) rotate(-20deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-150px) scale(1.3) rotate(45deg);
   }
 }
 
@@ -653,12 +661,12 @@
     padding: 12px 15px;
     border-radius: 0;
   }
-  
+
   /* Responsive rules for semantic elements */
   .live-applause-widget main {
     padding: 10px 0;
   }
-  
+
   .live-applause-widget header {
     margin-bottom: 15px;
   }
@@ -726,12 +734,12 @@
     gap: 6px;
     padding: 10px 12px;
   }
-  
+
   /* Responsive rules for semantic elements */
   .live-applause-widget main {
     padding: 8px 0;
   }
-  
+
   .live-applause-widget header {
     margin-bottom: 12px;
   }
@@ -797,12 +805,12 @@
     gap: 4px;
     padding: 8px 10px;
   }
-  
+
   /* Responsive rules for semantic elements */
   .live-applause-widget main {
     padding: 6px 0;
   }
-  
+
   .live-applause-widget header {
     margin-bottom: 8px;
   }
@@ -883,12 +891,12 @@
     gap: 4px;
     padding: 8px 12px;
   }
-  
+
   /* Responsive rules for semantic elements */
   .live-applause-widget main {
     padding: 6px 0;
   }
-  
+
   .live-applause-widget header {
     margin-bottom: 8px;
   }
@@ -920,22 +928,27 @@
     animation: none !important;
     opacity: 0 !important;
   }
-  
+
   /* Reduce button hover/active transforms */
   .live-applause-widget__thumbs-button:hover,
   .live-applause-widget__thumbs-button:active {
     transform: none;
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
   }
-  
+
   /* Disable screen shake animations */
-  @keyframes live-applause-screen-shake,
-  @keyframes live-applause-fireworks-shake {
-    0%, 100% { 
-      transform: none; 
+  @keyframes live-applause-screen-shake {
+    0%, 100% {
+      transform: none;
     }
   }
-  
+
+  @keyframes live-applause-fireworks-shake {
+    0%, 100% {
+      transform: none;
+    }
+  }
+
   /* Reduce pulse animation */
   @keyframes live-applause-pulse {
     0%, 100% {
@@ -945,24 +958,24 @@
       transform: scale(1.02);
     }
   }
-  
+
   /* Disable number animation */
   .live-applause-widget__stat-number {
     transition: none !important;
   }
-  
+
   /* Disable ripple effects */
   .live-applause-widget__ripple {
     display: none !important;
   }
-  
+
   /* Simplify connection status indicator animation */
   @keyframes live-applause-spin {
-    0%, 100% { 
-      transform: rotate(0deg); 
+    0%, 100% {
+      transform: rotate(0deg);
     }
   }
-  
+
   /* Ensure focus states are still visible but less animated */
   .live-applause-widget__thumbs-button:focus,
   .live-applause-widget__thumbs-button:focus-visible {
@@ -977,7 +990,7 @@
     outline: 3px solid HighlightText;
     outline-offset: 4px;
   }
-  
+
   .live-applause-widget__connection-status {
     border: 2px solid ButtonText;
   }
@@ -990,7 +1003,7 @@
     min-width: 44px;
     min-height: 44px;
   }
-  
+
   /* Enhanced focus for touch devices */
   .live-applause-widget__thumbs-button:focus {
     outline: 4px solid var(--color-primary-blue);
