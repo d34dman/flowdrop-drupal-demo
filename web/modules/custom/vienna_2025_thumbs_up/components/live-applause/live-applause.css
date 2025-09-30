@@ -56,6 +56,7 @@
   height: 100vh;
   max-height: 600px;
   justify-content: space-between;
+  position: relative;
 }
 
 /* Widget embedded mode */
@@ -188,7 +189,7 @@
 }
 
 .live-applause-widget__connection-status {
-  position: fixed;
+  position: absolute;
   top: 12px;
   right: 12px;
   padding: 8px 12px;
@@ -210,6 +211,10 @@
 
 .live-applause-widget__connection-status--embedded {
   position: absolute;
+  top: 8px;
+  right: 8px;
+  width: auto;
+  min-width: 120px;
 }
 
 .live-applause-widget__connection-status-indicator {
@@ -270,23 +275,69 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Floating thumbs animation */
+/* Enhanced floating thumbs animation */
 .live-applause-widget__floating-thumb {
   position: absolute;
-  font-size: 2rem;
+  font-size: 2.5rem;
   pointer-events: none;
   z-index: 5;
-  animation: live-applause-float-up 2s ease-out forwards;
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Hardware acceleration */
+  backface-visibility: hidden; /* Performance optimization */
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 140, 0, 0.6);
+  filter: brightness(1.5) saturate(1.3) drop-shadow(0 0 8px rgba(255, 215, 0, 0.7));
+  animation: live-applause-float-up 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.live-applause-widget__floating-thumb--party {
+  animation: live-applause-party-float 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  filter: brightness(1.8) saturate(1.5) drop-shadow(0 0 12px rgba(255, 20, 147, 0.8));
+  text-shadow: 0 0 25px rgba(255, 20, 147, 0.9), 0 0 50px rgba(255, 105, 180, 0.7);
 }
 
 @keyframes live-applause-float-up {
   0% {
     opacity: 1;
-    transform: translateY(0) scale(1) rotate(0deg);
+    transform: translateY(0) scale(0.8) rotate(0deg);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(-20px) scale(1.1) rotate(72deg);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-80px) scale(1.3) rotate(180deg);
   }
   100% {
     opacity: 0;
-    transform: translateY(-150px) scale(1.5) rotate(360deg);
+    transform: translateY(-180px) scale(1.8) rotate(360deg);
+  }
+}
+
+@keyframes live-applause-party-float {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(0.9) rotate(0deg);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(-15px) scale(1.2) rotate(60deg);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-40px) scale(1.4) rotate(120deg);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-90px) scale(1.6) rotate(240deg);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-140px) scale(1.7) rotate(300deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-200px) scale(2.0) rotate(720deg);
   }
 }
 
@@ -324,6 +375,153 @@
   60% {
     transform: translateY(-5px);
   }
+}
+
+/* Confetti Animation for Decade Milestones */
+.live-applause-widget__confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  z-index: 1000;
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Hardware acceleration */
+  backface-visibility: hidden; /* Performance optimization */
+}
+
+.live-applause-widget__confetti--square {
+  background: linear-gradient(45deg, #ff6b6b, #feca57);
+  animation: live-applause-confetti-fall 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.live-applause-widget__confetti--circle {
+  background: linear-gradient(45deg, #48dbfb, #0abde3);
+  border-radius: 50%;
+  animation: live-applause-confetti-fall 3.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.live-applause-widget__confetti--triangle {
+  background: linear-gradient(45deg, #ff9ff3, #f368e0);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  animation: live-applause-confetti-fall 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes live-applause-confetti-fall {
+  0% {
+    opacity: 1;
+    transform: translateY(-100vh) rotate(0deg) scale(1);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(-80vh) rotate(36deg) scale(1.1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0) rotate(180deg) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(720deg) scale(0.8);
+  }
+}
+
+/* Fireworks Animation for 100+ Milestone */
+.live-applause-widget__firework {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1001;
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Hardware acceleration */
+  backface-visibility: hidden; /* Performance optimization */
+}
+
+.live-applause-widget__firework-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+  transform: translateZ(0); /* Hardware acceleration */
+  backface-visibility: hidden; /* Performance optimization */
+}
+
+.live-applause-widget__firework--gold .live-applause-widget__firework-particle {
+  background: radial-gradient(circle, #ffd700, #ffed4e);
+  box-shadow: 0 0 15px #ffd700, 0 0 30px #ffed4e;
+  animation: live-applause-firework-explode 2s ease-out forwards;
+}
+
+.live-applause-widget__firework--red .live-applause-widget__firework-particle {
+  background: radial-gradient(circle, #ff4757, #ff6b7d);
+  box-shadow: 0 0 15px #ff4757, 0 0 30px #ff6b7d;
+  animation: live-applause-firework-explode 2.2s ease-out forwards;
+}
+
+.live-applause-widget__firework--blue .live-applause-widget__firework-particle {
+  background: radial-gradient(circle, #3742fa, #5352ed);
+  box-shadow: 0 0 15px #3742fa, 0 0 30px #5352ed;
+  animation: live-applause-firework-explode 1.8s ease-out forwards;
+}
+
+@keyframes live-applause-firework-explode {
+  0% {
+    opacity: 1;
+    transform: scale(0) rotate(0deg);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.2) rotate(72deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5) rotate(180deg);
+  }
+  80% {
+    opacity: 0.7;
+    transform: scale(1.8) rotate(288deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.5) rotate(360deg);
+  }
+}
+
+/* Screen shake animations for milestone celebrations */
+@keyframes live-applause-screen-shake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  10% { transform: translate(-2px, -2px) rotate(-0.5deg); }
+  20% { transform: translate(-4px, 0px) rotate(0.5deg); }
+  30% { transform: translate(4px, 2px) rotate(0deg); }
+  40% { transform: translate(2px, -2px) rotate(0.5deg); }
+  50% { transform: translate(-2px, 2px) rotate(-0.5deg); }
+  60% { transform: translate(-4px, 2px) rotate(0deg); }
+  70% { transform: translate(4px, 2px) rotate(-0.5deg); }
+  80% { transform: translate(-2px, -2px) rotate(0.5deg); }
+  90% { transform: translate(2px, 2px) rotate(0deg); }
+}
+
+@keyframes live-applause-fireworks-shake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  5% { transform: translate(-3px, -3px) rotate(-1deg); }
+  10% { transform: translate(-6px, 0px) rotate(1deg); }
+  15% { transform: translate(6px, 3px) rotate(0deg); }
+  20% { transform: translate(3px, -3px) rotate(1deg); }
+  25% { transform: translate(-3px, 3px) rotate(-1deg); }
+  30% { transform: translate(-6px, 3px) rotate(0deg); }
+  35% { transform: translate(6px, 3px) rotate(-1deg); }
+  40% { transform: translate(-3px, -3px) rotate(1deg); }
+  45% { transform: translate(3px, 3px) rotate(0deg); }
+  50% { transform: translate(-2px, -2px) rotate(-0.5deg); }
+  55% { transform: translate(-4px, 0px) rotate(0.5deg); }
+  60% { transform: translate(4px, 2px) rotate(0deg); }
+  65% { transform: translate(2px, -2px) rotate(0.5deg); }
+  70% { transform: translate(-2px, 2px) rotate(-0.5deg); }
+  75% { transform: translate(-4px, 2px) rotate(0deg); }
+  80% { transform: translate(4px, 2px) rotate(-0.5deg); }
+  85% { transform: translate(-2px, -2px) rotate(0.5deg); }
+  90% { transform: translate(2px, 2px) rotate(0deg); }
+  95% { transform: translate(-1px, -1px) rotate(-0.2deg); }
 }
 
 /* Mobile-first responsive design */

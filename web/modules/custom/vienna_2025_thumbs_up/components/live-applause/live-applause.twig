@@ -30,14 +30,14 @@
   showConnectionStatus: showConnectionStatus|default(true)
 } %}
 
-{% if showConnectionStatus %}
-<div class="live-applause-widget__connection-status live-applause-widget__connection-status--connecting{{ embedded ? ' live-applause-widget__connection-status--embedded' }}">
-  <span class="live-applause-widget__connection-status-indicator"></span> Connecting...
-</div>
-{% endif %}
-
 <div{{ attributes.addClass(widget_classes) }}
     data-live-applause-widget="{{ widget_settings|json_encode }}">
+
+  {% if showConnectionStatus %}
+  <div class="live-applause-widget__connection-status live-applause-widget__connection-status--connecting{{ embedded ? ' live-applause-widget__connection-status--embedded' }}">
+    <span class="live-applause-widget__connection-status-indicator"></span> Connecting...
+  </div>
+  {% endif %}
 
   <div class="live-applause-widget__main-content">
     <div class="live-applause-widget__header">
@@ -71,7 +71,7 @@
     </div>
     <div class="live-applause-widget__stat-item">
       <span class="live-applause-widget__stat-number" id="live-applause-total-clicks">0</span>
-      <span class="live-applause-widget__stat-label">Total Applause</span>
+      <span class="live-applause-widget__stat-label">Total Thumbs Up</span>
     </div>
   </div>
 </div>

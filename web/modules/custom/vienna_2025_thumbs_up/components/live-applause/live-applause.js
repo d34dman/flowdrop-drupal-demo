@@ -16,6 +16,8 @@
       this.ws = null;
       this.myClicks = 0;
       this.totalClicks = 0;
+      this.previousTotalClicks = 0;
+      this.totalClicksInitialized = false;
       this.statsVisible = false;
       this.userId = this.generateUserId();
       this.lastClickTime = 0;
@@ -115,6 +117,11 @@
               const messageVal = payload.data.message;
               const parsedTotal = typeof messageVal === 'string' ? parseInt(messageVal, 10) : Number(messageVal);
               if (!Number.isNaN(parsedTotal)) {
+                // On first initialization, set previous total to current to avoid false celebrations
+                if (!this.totalClicksInitialized) {
+                  this.previousTotalClicks = parsedTotal;
+                  this.totalClicksInitialized = true;
+                }
                 this.totalClicks = parsedTotal;
                 this.updateTotalClicks(this.totalClicks);
               }
@@ -256,14 +263,9 @@
       // Post thumbs up to server (no optimistic total update)
       this.postThumbsUp();
 
-      // Enhanced haptic feedback on mobile
+      // Standard haptic feedback for personal clicks
       if (navigator.vibrate) {
-        // Different vibration patterns for different click counts
-        if (this.myClicks % 10 === 0) {
-          navigator.vibrate([100, 50, 100]); // Special pattern for milestones
-        } else {
-          navigator.vibrate(50); // Standard feedback
-        }
+        navigator.vibrate(50);
       }
 
       // Add visual feedback for mobile
@@ -310,21 +312,157 @@
     createFloatingThumb() {
       const thumb = document.createElement('div');
       thumb.classList.add('live-applause-widget__floating-thumb');
-      thumb.textContent = '👍';
+      
+      // Use party emojis when community total is close to or just hit a milestone
+      const isNearCommunityMilestone = this.isNearCommunityMilestone();
+      const partyEmojis = ['🎉', '🥳', '✨', '🎊', '🌟', '💫', '🎆'];
+      const thumbsEmojis = ['👍', '👍🏻', '👍🏼', '👍🏽', '👍🏾', '👍🏿'];
+      
+      if (isNearCommunityMilestone) {
+        thumb.classList.add('live-applause-widget__floating-thumb--party');
+        thumb.textContent = partyEmojis[Math.floor(Math.random() * partyEmojis.length)];
+      } else {
+        thumb.textContent = thumbsEmojis[Math.floor(Math.random() * thumbsEmojis.length)];
+      }
 
-      // Random position around the button
+      // Enhanced random positioning with wider spread
       const buttonRect = this.thumbsButton.getBoundingClientRect();
-      const x = buttonRect.left + (Math.random() - 0.5) * 100;
-      const y = buttonRect.top + (Math.random() - 0.5) * 50;
+      const spreadX = isNearCommunityMilestone ? 150 : 100;
+      const spreadY = isNearCommunityMilestone ? 80 : 50;
+      
+      const x = buttonRect.left + (Math.random() - 0.5) * spreadX;
+      const y = buttonRect.top + (Math.random() - 0.5) * spreadY;
 
       thumb.style.left = x + 'px';
       thumb.style.top = y + 'px';
 
       document.body.appendChild(thumb);
 
+      // Cleanup with appropriate timing based on animation duration
+      const cleanupTime = isNearCommunityMilestone ? 2800 : 2500;
       setTimeout(() => {
-        thumb.remove();
-      }, 2000);
+        if (thumb.parentNode) {
+          thumb.remove();
+        }
+      }, cleanupTime);
+    }
+
+    isNearCommunityMilestone() {
+      if (this.totalClicks < 10) return false;
+      
+      // Check if we're within 3 clicks of a decade milestone or just hit one
+      const nextDecade = Math.ceil(this.totalClicks / 10) * 10;
+      const distanceToNextDecade = nextDecade - this.totalClicks;
+      const justHitDecade = this.totalClicks % 10 === 0;
+      
+      // Check if we're within 5 clicks of a century milestone or just hit one  
+      const nextCentury = Math.ceil(this.totalClicks / 100) * 100;
+      const distanceToNextCentury = nextCentury - this.totalClicks;
+      const justHitCentury = this.totalClicks % 100 === 0;
+      
+      // Show party emojis if:
+      // 1. We just hit a milestone
+      // 2. We're very close to a milestone (3 for decades, 5 for centuries)
+      return justHitDecade || justHitCentury || distanceToNextDecade <= 3 || distanceToNextCentury <= 5;
+    }
+
+    createConfettiAnimation() {
+      const confettiCount = 25;
+      const types = ['square', 'circle', 'triangle'];
+      
+      for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('live-applause-widget__confetti');
+        confetti.classList.add(`live-applause-widget__confetti--${types[i % types.length]}`);
+        
+        // Random horizontal position across screen width
+        const x = Math.random() * window.innerWidth;
+        const delay = Math.random() * 2000; // Stagger the animations
+        
+        confetti.style.left = x + 'px';
+        confetti.style.top = '-20px';
+        confetti.style.animationDelay = delay + 'ms';
+        
+        document.body.appendChild(confetti);
+        
+        // Cleanup after animation completes
+        setTimeout(() => {
+          if (confetti.parentNode) {
+            confetti.remove();
+          }
+        }, 3200 + delay);
+      }
+      
+      // Add screen shake effect for extra excitement
+      if (this.element) {
+        this.element.style.animation = 'live-applause-screen-shake 0.5s ease-in-out';
+        setTimeout(() => {
+          this.element.style.animation = '';
+        }, 500);
+      }
+    }
+
+    createFireworksAnimation() {
+      const fireworkPositions = [
+        { x: '20%', y: '30%' },
+        { x: '80%', y: '25%' },
+        { x: '50%', y: '20%' },
+        { x: '30%', y: '40%' },
+        { x: '70%', y: '35%' }
+      ];
+      
+      const colors = ['gold', 'red', 'blue'];
+      
+      fireworkPositions.forEach((position, index) => {
+        setTimeout(() => {
+          this.createSingleFirework(position.x, position.y, colors[index % colors.length]);
+        }, index * 300);
+      });
+      
+      // Add intense screen shake for fireworks
+      if (this.element) {
+        this.element.style.animation = 'live-applause-fireworks-shake 2s ease-in-out';
+        setTimeout(() => {
+          this.element.style.animation = '';
+        }, 2000);
+      }
+    }
+
+    createSingleFirework(x, y, color) {
+      const firework = document.createElement('div');
+      firework.classList.add('live-applause-widget__firework');
+      firework.classList.add(`live-applause-widget__firework--${color}`);
+      
+      firework.style.left = x;
+      firework.style.top = y;
+      
+      // Create particles for explosion effect
+      const particleCount = 12;
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('live-applause-widget__firework-particle');
+        
+        const angle = (360 / particleCount) * i;
+        const distance = 60 + Math.random() * 40;
+        
+        const radians = angle * (Math.PI / 180);
+        const particleX = Math.cos(radians) * distance;
+        const particleY = Math.sin(radians) * distance;
+        
+        particle.style.transform = `translate(${particleX}px, ${particleY}px)`;
+        particle.style.animationDelay = Math.random() * 0.2 + 's';
+        
+        firework.appendChild(particle);
+      }
+      
+      document.body.appendChild(firework);
+      
+      // Cleanup after animation
+      setTimeout(() => {
+        if (firework.parentNode) {
+          firework.remove();
+        }
+      }, 2500);
     }
 
     async postThumbsUp() {
@@ -374,7 +512,71 @@
     }
 
     updateTotalClicks(count) {
+      // Check for milestone celebrations before updating UI
+      this.checkTotalMilestoneCelebrations(this.previousTotalClicks, count);
+      
+      // Update previous count for next comparison
+      this.previousTotalClicks = count;
+      
+      // Animate the number display
       this.animateNumber(this.totalClicksElement, count);
+    }
+
+    checkTotalMilestoneCelebrations(previousTotal, newTotal) {
+      // Don't trigger on first load
+      if (previousTotal === 0) return;
+      
+      console.log(`🔍 Milestone Check: ${previousTotal} → ${newTotal}`);
+      
+      // Find all milestones between previous and new total
+      const milestonesCrossed = this.findMilestonesCrossed(previousTotal, newTotal);
+      
+      milestonesCrossed.forEach(milestone => {
+        if (milestone >= 100 && milestone % 100 === 0) {
+          console.log(`🎆 CENTURY MILESTONE DETECTED: ${milestone}`);
+          this.triggerCommunityFireworks(milestone);
+        } else if (milestone >= 10 && milestone % 10 === 0) {
+          console.log(`🎊 DECADE MILESTONE DETECTED: ${milestone}`);
+          this.triggerCommunityConfetti(milestone);
+        }
+      });
+    }
+
+    findMilestonesCrossed(previousTotal, newTotal) {
+      const milestones = [];
+      
+      // Find decade milestones (10, 20, 30, etc.)
+      const startDecade = Math.floor(previousTotal / 10) + 1;
+      const endDecade = Math.floor(newTotal / 10);
+      
+      for (let decade = startDecade; decade <= endDecade; decade++) {
+        const milestone = decade * 10;
+        if (milestone > previousTotal && milestone <= newTotal) {
+          milestones.push(milestone);
+        }
+      }
+      
+      return milestones;
+    }
+
+    triggerCommunityFireworks(milestoneCount) {
+      console.log(`🎆 COMMUNITY FIREWORKS! Total reached ${milestoneCount}!`);
+      this.createFireworksAnimation();
+      
+      // Enhanced vibration for community century milestone
+      if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200, 100, 200]);
+      }
+    }
+
+    triggerCommunityConfetti(milestoneCount) {
+      console.log(`🎊 COMMUNITY CONFETTI! Total reached ${milestoneCount}!`);
+      this.createConfettiAnimation();
+      
+      // Enhanced vibration for community decade milestone
+      if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 100]);
+      }
     }
 
     animateNumber(element, newValue) {
