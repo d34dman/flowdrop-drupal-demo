@@ -655,7 +655,7 @@
     emoji.style.fontSize = '2rem';
     emoji.style.opacity = '0.3';
     emoji.style.pointerEvents = 'none';
-    emoji.style.zIndex = '1';
+    emoji.style.zIndex = '9999999';
     emoji.style.animation = 'live-applause-gentle-float 4s ease-out forwards';
 
     element.appendChild(emoji);
