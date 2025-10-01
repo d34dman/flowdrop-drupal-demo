@@ -77,6 +77,9 @@
       this.connectionStatus = this.element.querySelector('.live-applause-widget__connection-status');
       this.myClicksElement = this.element.querySelector('#live-applause-my-clicks');
       this.totalClicksElement = this.element.querySelector('#live-applause-total-clicks');
+      
+      // Add body class to prevent scrollbars from floating animations (fallback for :has() selector)
+      document.body.classList.add('live-applause-active');
       this.statsElement = this.element.querySelector('.live-applause-widget__stats');
 
       // Accessibility: Screen reader announcement elements
@@ -270,6 +273,7 @@
       this.animateButton();
       this.createRippleEffect(event);
       this.createFloatingThumb();
+      this.createThankYouMessage();
 
       // Update UI (local count only; total comes from server)
       this.updateMyClicks(this.myClicks);
@@ -355,6 +359,64 @@
           thumb.remove();
         }
       }, cleanupTime);
+    }
+
+    createThankYouMessage() {
+      const thankYou = document.createElement('div');
+      thankYou.classList.add('live-applause-widget__thank-you');
+      thankYou.textContent = 'Thank You!';
+      
+      // Determine the milestone level based on myClicks
+      let milestoneClass = 'live-applause-widget__thank-you--regular';
+      let duration = 2000; // Default duration in milliseconds
+      
+      if (this.myClicks % 100 === 0) {
+        // 100th click - EPIC!
+        milestoneClass = 'live-applause-widget__thank-you--milestone-100';
+        duration = 4000;
+        // Add special text for 100th milestone
+        thankYou.textContent = 'THANK YOU SO MUCH!';
+      } else if (this.myClicks % 50 === 0) {
+        // 50th click milestone
+        milestoneClass = 'live-applause-widget__thank-you--milestone-50';
+        duration = 3000;
+        thankYou.textContent = 'Thank You!! 🎉';
+      } else if (this.myClicks % 10 === 0) {
+        // 10th click milestone
+        milestoneClass = 'live-applause-widget__thank-you--milestone-10';
+        duration = 2500;
+        thankYou.textContent = 'Thank You! ✨';
+      }
+      
+      thankYou.classList.add(milestoneClass);
+      
+      // Position relative to the button
+      const buttonRect = this.thumbsButton.getBoundingClientRect();
+      const containerRect = this.element.getBoundingClientRect();
+      
+      // Position relative to the widget container
+      thankYou.style.left = (buttonRect.left - containerRect.left + buttonRect.width / 2) + 'px';
+      thankYou.style.top = (buttonRect.top - containerRect.top + buttonRect.height / 2) + 'px';
+      
+      // Add to widget container
+      this.element.appendChild(thankYou);
+  
+      
+      // Screen reader announcement for milestones
+      if (this.myClicks % 100 === 0) {
+        this.announceToScreenReader(`Amazing! You've reached ${this.myClicks} thumbs up! Thank you so much for your enthusiasm!`);
+      } else if (this.myClicks % 50 === 0) {
+        this.announceToScreenReader(`Fantastic! ${this.myClicks} thumbs up! Thank you for your continued support!`);
+      } else if (this.myClicks % 10 === 0) {
+        this.announceToScreenReader(`Great! You've given ${this.myClicks} thumbs up! Thank you!`);
+      }
+      
+      // Cleanup after animation completes
+      setTimeout(() => {
+        if (thankYou && thankYou.parentNode) {
+          thankYou.remove();
+        }
+      }, duration);
     }
 
     isNearCommunityMilestone() {
@@ -568,17 +630,14 @@
       // Don't trigger on first load
       if (previousTotal === 0) return;
 
-      console.log(`🔍 Milestone Check: ${previousTotal} → ${newTotal}`);
 
       // Find all milestones between previous and new total
       const milestonesCrossed = this.findMilestonesCrossed(previousTotal, newTotal);
 
       milestonesCrossed.forEach(milestone => {
         if (milestone >= 100 && milestone % 100 === 0) {
-          console.log(`🎆 CENTURY MILESTONE DETECTED: ${milestone}`);
           this.triggerCommunityFireworks(milestone);
         } else if (milestone >= 10 && milestone % 10 === 0) {
-          console.log(`🎊 DECADE MILESTONE DETECTED: ${milestone}`);
           this.triggerCommunityConfetti(milestone);
         }
       });
@@ -602,7 +661,6 @@
     }
 
     triggerCommunityFireworks(milestoneCount) {
-      console.log(`🎆 COMMUNITY FIREWORKS! Total reached ${milestoneCount}!`);
       this.createFireworksAnimation();
 
       // Accessibility: Announce celebration to screen readers
@@ -611,14 +669,9 @@
         'assertive'
       );
 
-      // Enhanced vibration for community century milestone
-      if (navigator.vibrate) {
-        navigator.vibrate([200, 100, 200, 100, 200]);
-      }
     }
 
     triggerCommunityConfetti(milestoneCount) {
-      console.log(`🎊 COMMUNITY CONFETTI! Total reached ${milestoneCount}!`);
       this.createConfettiAnimation();
 
       // Accessibility: Announce celebration to screen readers
@@ -627,10 +680,6 @@
         'assertive'
       );
 
-      // Enhanced vibration for community decade milestone
-      if (navigator.vibrate) {
-        navigator.vibrate([100, 50, 100]);
-      }
     }
 
     animateNumber(element, newValue) {
@@ -683,7 +732,7 @@
         emoji.textContent = ['🎉', '👏', '👻', '✨'][Math.floor(Math.random() * 4)];
         emoji.style.position = 'absolute';
         emoji.style.left = Math.random() * window.innerWidth + 'px';
-        emoji.style.top = window.innerHeight + 'px';
+        emoji.style.top = (window.innerHeight - 20) + 'px';
         emoji.style.fontSize = '2rem';
         emoji.style.opacity = '0.3';
         emoji.style.pointerEvents = 'none';
