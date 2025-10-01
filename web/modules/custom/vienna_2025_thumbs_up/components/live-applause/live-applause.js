@@ -336,7 +336,7 @@
 
       // Use party emojis when community total is close to or just hit a milestone
       const isNearCommunityMilestone = this.isNearCommunityMilestone();
-      const partyEmojis = ['🎉', '🥳', '✨', '🎊', '🌟', '💫', '🎆'];
+      const partyEmojis = ['🎉', '🥳', '✨', '🎊', '🌟', '💫'];
       const thumbsEmojis = ['👍', '👍🏻', '👍🏼', '👍🏽', '👍🏾', '👍🏿'];
 
       if (isNearCommunityMilestone) {
@@ -349,7 +349,9 @@
       // // Enhanced random positioning with wider spread
       // const buttonRect = this.celebrationContainer.getBoundingClientRect();
       // thumb.style.left = '0px';
-      // thumb.style.top = '0px';
+      thumb.style.top = '50%';
+      thumb.style.left = '50%';
+      thumb.style.transform = 'translate(-50%, -50%)';
       this.celebrationContainer.appendChild(thumb);
 
       // Cleanup with appropriate timing based on animation duration
@@ -439,102 +441,21 @@
     }
 
     createConfettiAnimation() {
-      const confettiCount = 25;
-      const types = ['square', 'circle', 'triangle'];
-
-      for (let i = 0; i < confettiCount; i++) {
-        const confetti = document.createElement('div');
-        confetti.classList.add('live-applause-widget__confetti');
-        confetti.classList.add(`live-applause-widget__confetti--${types[i % types.length]}`);
-
-        // Random horizontal position across screen width
-        const x = Math.random() * window.innerWidth;
-        const delay = Math.random() * 2000; // Stagger the animations
-
-        confetti.style.left = x + 'px';
-        confetti.style.top = '-20px';
-        confetti.style.animationDelay = delay + 'ms';
-
-        document.body.appendChild(confetti);
-
-        // Cleanup after animation completes
-        setTimeout(() => {
-          if (confetti.parentNode) {
-            confetti.remove();
-          }
-        }, 3200 + delay);
-      }
-
-      // Add screen shake effect for extra excitement
-      if (this.element) {
-        this.element.style.animation = 'live-applause-screen-shake 0.5s ease-in-out';
-        setTimeout(() => {
-          this.element.style.animation = '';
-        }, 500);
-      }
+      const interval = setInterval(() => {
+        singleShotEmojiAnimation(['🎉', '👏', '👻', '👏', '👏']);
+      }, 100);
+      setTimeout(() => {
+        clearInterval(interval);
+      }, 500);
     }
 
     createFireworksAnimation() {
-      const fireworkPositions = [
-        { x: '20%', y: '30%' },
-        { x: '80%', y: '25%' },
-        { x: '50%', y: '20%' },
-        { x: '30%', y: '40%' },
-        { x: '70%', y: '35%' }
-      ];
-
-      const colors = ['gold', 'red', 'blue'];
-
-      fireworkPositions.forEach((position, index) => {
-        setTimeout(() => {
-          this.createSingleFirework(position.x, position.y, colors[index % colors.length]);
-        }, index * 300);
-      });
-
-      // Add intense screen shake for fireworks
-      if (this.element) {
-        this.element.style.animation = 'live-applause-fireworks-shake 2s ease-in-out';
-        setTimeout(() => {
-          this.element.style.animation = '';
-        }, 2000);
-      }
-    }
-
-    createSingleFirework(x, y, color) {
-      const firework = document.createElement('div');
-      firework.classList.add('live-applause-widget__firework');
-      firework.classList.add(`live-applause-widget__firework--${color}`);
-
-      firework.style.left = x;
-      firework.style.top = y;
-
-      // Create particles for explosion effect
-      const particleCount = 12;
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('live-applause-widget__firework-particle');
-
-        const angle = (360 / particleCount) * i;
-        const distance = 60 + Math.random() * 40;
-
-        const radians = angle * (Math.PI / 180);
-        const particleX = Math.cos(radians) * distance;
-        const particleY = Math.sin(radians) * distance;
-
-        particle.style.transform = `translate(${particleX}px, ${particleY}px)`;
-        particle.style.animationDelay = Math.random() * 0.2 + 's';
-
-        firework.appendChild(particle);
-      }
-
-      document.body.appendChild(firework);
-
-      // Cleanup after animation
+      const interval = setInterval(() => {
+        singleShotEmojiAnimation(['🎆', '✨', '🌟', '💫', '🎇', '✨', '✨']);
+      }, 100);
       setTimeout(() => {
-        if (firework.parentNode) {
-          firework.remove();
-        }
-      }, 2500);
+        clearInterval(interval);
+      }, 5000);
     }
 
     // Accessibility: Screen reader announcements
@@ -719,31 +640,41 @@
   }
 
   /**
+   * Helper function to create a single shot emoji animation that rises from the bottom of the screen.
+   * 
+   * @param {string[]} content - The content of the emoji to animate.
+   * @param {number} duration - The duration of the animation in milliseconds.
+   * @param {HTMLElement} element - The element to append the emoji to.
+   */
+  function singleShotEmojiAnimation(content = ['🎉', '👏', '👻', '✨'], duration = 4000, element = document.body) {
+    const emoji = document.createElement('div');
+    emoji.textContent = content[Math.floor(Math.random() * content.length)];
+    emoji.style.position = 'absolute';
+    emoji.style.left = Math.random() * window.innerWidth + 'px';
+    emoji.style.top = (window.innerHeight - 50) + 'px';
+    emoji.style.fontSize = '2rem';
+    emoji.style.opacity = '0.3';
+    emoji.style.pointerEvents = 'none';
+    emoji.style.zIndex = '1';
+    emoji.style.animation = 'live-applause-gentle-float 4s ease-out forwards';
+
+    element.appendChild(emoji);
+
+    setTimeout(() => {
+      emoji.remove();
+    }, duration);
+  }
+
+  /**
    * Background animation function
    */
   function createBackgroundAnimation(element, settings) {
     if (!settings.enableBackgroundAnimation) {
       return;
     }
-
     setInterval(() => {
       if (Math.random() > 0.8) {
-        const emoji = document.createElement('div');
-        emoji.textContent = ['🎉', '👏', '👻', '✨'][Math.floor(Math.random() * 4)];
-        emoji.style.position = 'absolute';
-        emoji.style.left = Math.random() * window.innerWidth + 'px';
-        emoji.style.top = (window.innerHeight - 20) + 'px';
-        emoji.style.fontSize = '2rem';
-        emoji.style.opacity = '0.3';
-        emoji.style.pointerEvents = 'none';
-        emoji.style.zIndex = '1';
-        emoji.style.animation = 'live-applause-gentle-float 4s ease-out forwards';
-
-        document.body.appendChild(emoji);
-
-        setTimeout(() => {
-          emoji.remove();
-        }, 4000);
+        singleShotEmojiAnimation(['👀', '😴', '💤'], 4000);
       }
     }, 3000);
   }
