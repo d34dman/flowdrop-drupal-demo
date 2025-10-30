@@ -15,6 +15,7 @@ module:
   ckeditor5: 0
   coffee: 0
   comment: 0
+  composer_deploy: 0
   config_ignore: 0
   datetime: 0
   datetime_range: 0
@@ -41,6 +42,7 @@ module:
   flowdrop_runtime: 0
   flowdrop_ui: 0
   flowdrop_workflow: 0
+  git_deploy: 0
   key: 0
   link: 0
   modeler_api: 0
@@ -70,6 +72,7 @@ module:
   text: 0
   thumbs_up: 0
   toolbar: 0
+  update: 0
   user: 0
   verf: 0
   vienna_2025_thumbs_up: 0
