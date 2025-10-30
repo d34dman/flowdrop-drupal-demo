@@ -17,6 +17,7 @@ module:
   comment: 0
   composer_deploy: 0
   config_ignore: 0
+  cors_ui: 0
   datetime: 0
   datetime_range: 0
   dblog: 0
