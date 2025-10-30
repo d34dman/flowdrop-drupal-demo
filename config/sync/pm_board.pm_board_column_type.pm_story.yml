@@ -1,8 +1,0 @@
-uuid: 22ee8b67-d7d0-46a3-ac07-f9fe5ce5112a
-langcode: en
-status: true
-dependencies: {  }
-_core:
-  default_config_hash: JOmHLdVXEd0qAB7SLdpnZ0y0Wk_-vVGBP6qW2eh9Gkw
-id: pm_story
-label: 'Story list'

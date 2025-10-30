@@ -1,8 +1,0 @@
-uuid: 7b2870bb-8e38-44bf-bccc-19d2d62475ad
-langcode: en
-status: true
-dependencies: {  }
-_core:
-  default_config_hash: cmN2i5ia9SmJVG-5MkUJ-eEWStImVAlX5JTwgRoICyQ
-id: pm_epic
-label: 'Epic list'

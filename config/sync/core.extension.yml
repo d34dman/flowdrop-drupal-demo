@@ -55,19 +55,6 @@ module:
   page_cache: 0
   path: 0
   path_alias: 0
-  pm: 0
-  pm_app: 0
-  pm_board: 0
-  pm_epic: 0
-  pm_feature: 0
-  pm_priority: 0
-  pm_project: 0
-  pm_rest: 0
-  pm_status: 0
-  pm_story: 0
-  pm_sub_task: 0
-  pm_task: 0
-  pm_ui: 0
   rest: 0
   serialization: 0
   system: 0
