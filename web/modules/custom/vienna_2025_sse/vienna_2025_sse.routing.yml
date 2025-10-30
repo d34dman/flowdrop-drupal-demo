@@ -1,0 +1,15 @@
+vienna_2025_sse.sse:
+  path: '/vienna-2025-sse/sse'
+  defaults:
+    _title: 'SSE Notifications'
+    _controller: '\Drupal\vienna_2025_sse\Controller\SimpleSseController'
+  requirements:
+    _permission: 'access content'
+
+vienna_2025_sse.server_memory:
+  path: '/vienna-2025-sse/server-memory'
+  defaults:
+    _title: 'Server Memory Information'
+    _controller: '\Drupal\vienna_2025_sse\Controller\ServerMemoryController'
+  requirements:
+    _permission: 'access content'

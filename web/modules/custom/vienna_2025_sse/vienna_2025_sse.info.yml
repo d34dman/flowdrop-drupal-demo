@@ -1,0 +1,5 @@
+name: 'vienna_2025_sse'
+type: module
+description: 'SSE Demo Module'
+package: Custom
+core_version_requirement: ^10 || ^11
