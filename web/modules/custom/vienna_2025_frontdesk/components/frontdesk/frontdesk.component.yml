@@ -1,0 +1,272 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json
+name: "Frontdesk Widget"
+status: stable
+description: "Multi-step registration form for DrupalCamp Vienna 2025"
+group: "Event Widgets"
+libraryOverrides:
+  css:
+    component:
+      frontdesk.css: {}
+  js:
+    frontdesk.js: {}
+props:
+  type: object
+  properties:
+    text:
+      type: object
+      title: "Text Content Configuration"
+      description: "All text content for the component (optional - uses defaults if not provided)"
+      properties:
+        loading:
+          type: object
+          properties:
+            message:
+              type: string
+              title: "Loading Message"
+              description: "Text shown in loading overlay"
+        steps:
+          type: object
+          title: "Step-specific Text"
+          properties:
+            step1:
+              type: object
+              title: "Step 1 - AI Preference"
+              properties:
+                title:
+                  type: string
+                subtitle:
+                  type: string
+                choices:
+                  type: object
+                  properties:
+                    ai:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                        description:
+                          type: string
+                    traditional:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                        description:
+                          type: string
+                    separator:
+                      type: string
+            step2:
+              type: object
+              title: "Step 2 - Username Input"
+              properties:
+                title:
+                  type: string
+                subtitle:
+                  type: string
+                fields:
+                  type: object
+                  properties:
+                    username:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                        optional:
+                          type: string
+                        placeholder:
+                          type: string
+                        hint:
+                          type: string
+                        error:
+                          type: string
+                buttons:
+                  type: object
+                  properties:
+                    back:
+                      type: string
+                    skip:
+                      type: string
+                    continue:
+                      type: string
+            step3:
+              type: object
+              title: "Step 3 - Confirmation"
+              properties:
+                title:
+                  type: string
+                subtitle:
+                  type: string
+                fields:
+                  type: object
+                  properties:
+                    firstName:
+                      type: string
+                    lastName:
+                      type: string
+                    email:
+                      type: string
+                buttons:
+                  type: object
+                  properties:
+                    edit:
+                      type: string
+                    confirm:
+                      type: string
+            step3b:
+              type: object
+              title: "Step 3b - Edit Form"
+              properties:
+                title:
+                  type: string
+                subtitle:
+                  type: string
+                fields:
+                  type: object
+                  properties:
+                    firstName:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                        placeholder:
+                          type: string
+                    lastName:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                        placeholder:
+                          type: string
+                    email:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                        placeholder:
+                          type: string
+                buttons:
+                  type: object
+                  properties:
+                    cancel:
+                      type: string
+                    save:
+                      type: string
+            step4:
+              type: object
+              title: "Step 4 - Company"
+              properties:
+                title:
+                  type: string
+                subtitle:
+                  type: string
+                fields:
+                  type: object
+                  properties:
+                    company:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                        placeholder:
+                          type: string
+                        hint:
+                          type: string
+                buttons:
+                  type: object
+                  properties:
+                    back:
+                      type: string
+                    continue:
+                      type: string
+            step5:
+              type: object
+              title: "Step 5 - Feedback"
+              properties:
+                title:
+                  type: string
+                subtitle:
+                  type: string
+                fields:
+                  type: object
+                  properties:
+                    feedback:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                        placeholder:
+                          type: string
+                        hint:
+                          type: string
+                buttons:
+                  type: object
+                  properties:
+                    back:
+                      type: string
+                    continue:
+                      type: string
+            step6:
+              type: object
+              title: "Step 6 - Want More Info"
+              properties:
+                title:
+                  type: string
+                subtitle:
+                  type: string
+                choices:
+                  type: object
+                  properties:
+                    yes:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                        description:
+                          type: string
+                    no:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                        description:
+                          type: string
+                    separator:
+                      type: string
+            step7:
+              type: object
+              title: "Step 7 - Coffee Wait Screen"
+              properties:
+                title:
+                  type: string
+                subtitle:
+                  type: string
+                coffee:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    location:
+                      type: string
+                waiting:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                buttons:
+                  type: object
+                  properties:
+                    registerAnother:
+                      type: string
+            step8:
+              type: object
+              title: "Step 8 - Success Screen"
+              properties:
+                title:
+                  type: string
+                message:
+                  type: string
+                buttons:
+                  type: object
+                  properties:
+                    registerAnother:
+                      type: string

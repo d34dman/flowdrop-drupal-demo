@@ -1,0 +1,325 @@
+{#
+/**
+ * @file
+ * Drupal HTML template for Frontdesk Registration
+ *
+ * This template provides the full HTML document structure for the frontdesk
+ * registration widget, optimized for iPad displays.
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the html tag.
+ * - page_title: The page title, for use in the actual content.
+ * - head_title: Title for the <title> tag.
+ * - head_title_array: List of text elements that make up the head_title.
+ * - html_attributes: Same as attributes, except applied to the html tag.
+ * - page_top: Initial markup from any modules.
+ * - page: The rendered page markup.
+ * - page_bottom: Closing markup from any modules.
+ * - db_offline: A flag indicating if the database is offline.
+ * - placeholder_token: The token for replacing the content of this placeholder.
+ *
+ * @see template_preprocess_html()
+ */
+#}
+<!DOCTYPE html>
+<html{{ html_attributes }}>
+<head>
+  <head-placeholder token="{{ placeholder_token }}">
+    <title>{{ head_title|safe_join(' | ') }}</title>
+    <css-placeholder token="{{ placeholder_token }}">
+      <js-placeholder token="{{ placeholder_token }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="format-detection" content="telephone=no">
+        <style>
+          /**
+           * Full page layout styles for Frontdesk Registration
+           * Optimized for iPad displays with touch-friendly interactions
+           */
+
+          /* Reset and base styles */
+          * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+          }
+
+          body {
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f8fafc 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #092963;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+          }
+
+          /* Center content vertically when viewport is taller than content */
+          @media (min-height: 650px) {
+            body {
+              justify-content: center;
+            }
+          }
+
+          /* For shorter viewports, align to top */
+          @media (max-height: 649px) {
+            body {
+              justify-content: flex-start;
+              padding-top: 20px;
+            }
+          }
+
+          *, *::before, *::after {
+            box-sizing: inherit;
+          }
+
+          /* Main content container */
+          #main-content {
+            width: 960px;
+            height: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 10px 50px rgba(58, 188, 238, 0.15);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+          }
+
+          /* Branding header - removed */
+
+          /* Hide breadcrumb, page title, and site branding */
+          .region-breadcrumb,
+          .page-title,
+          #main-content h1.page-title,
+          nav[role="navigation"],
+          .breadcrumb,
+          .region-header,
+          .site-branding,
+          .block-system-branding-block,
+          .block-page-title-block {
+            display: none !important;
+          }
+
+          /* Hide the grey header text specifically */
+          #main-content header.content-header {
+            display: none !important;
+          }
+
+          /* Disable all links to prevent navigation away */
+          a:not(.btn):not(#register-another) {
+            pointer-events: none;
+            cursor: default;
+            color: inherit;
+            text-decoration: none;
+          }
+
+          /* Make frontdesk container scrollable within fixed height */
+          #main-content .frontdesk-container {
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 10px;
+          }
+
+          /* Custom scrollbar for webkit browsers */
+          #main-content .frontdesk-container::-webkit-scrollbar {
+            width: 8px;
+          }
+
+          #main-content .frontdesk-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+          }
+
+          #main-content .frontdesk-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+          }
+
+          #main-content .frontdesk-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+          }
+
+          /* iPad Pro landscape optimization */
+          @media (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+            body {
+              padding: 40px;
+            }
+
+            #main-content {
+              width: 960px;
+              height: 600px;
+            }
+          }
+
+          /* iPad standard portrait optimization */
+          @media (min-width: 768px) and (max-width: 834px) and (orientation: portrait) {
+            body {
+              padding: 20px;
+            }
+
+            #main-content {
+              width: 728px;
+              height: 950px;
+            }
+          }
+
+          /* Better portrait mode for all tablets */
+          @media (orientation: portrait) and (min-width: 768px) {
+            #main-content {
+              width: calc(100vw - 40px);
+              max-width: 768px;
+              height: calc(100vh - 60px);
+              max-height: 1000px;
+            }
+
+            body {
+              padding: 20px;
+            }
+          }
+
+          /* Mobile responsive adjustments */
+          @media (max-width: 767px) {
+            body {
+              padding: 15px;
+              background: #ffffff;
+            }
+
+            #main-content {
+              width: calc(100vw - 30px);
+              height: calc(100vh - 30px);
+              max-width: 100%;
+              padding: 20px;
+              border-radius: 16px;
+              box-shadow: none;
+            }
+
+            #main-content::before {
+              font-size: 12px;
+              margin-bottom: 10px;
+              padding-bottom: 10px;
+            }
+          }
+
+          /* Prevent zoom on focus for iPad */
+          @media screen and (max-width: 1024px) {
+            input[type="text"],
+            input[type="email"],
+            textarea {
+              font-size: 16px !important;
+            }
+          }
+
+          /* Background decoration */
+          body::before,
+          body::after {
+            content: "";
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 0;
+          }
+
+          body::before {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #3abcee 0%, transparent 70%);
+            top: -100px;
+            left: -100px;
+            animation: float 20s ease-in-out infinite;
+          }
+
+          body::after {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #092963 0%, transparent 70%);
+            bottom: -100px;
+            right: -100px;
+            animation: float 15s ease-in-out infinite reverse;
+          }
+
+          @keyframes float {
+            0%, 100% {
+              transform: translate(0, 0);
+            }
+            50% {
+              transform: translate(50px, 50px);
+            }
+          }
+
+          /* Touch feedback enhancement */
+          button:active,
+          .pill-button:active {
+            opacity: 0.8;
+          }
+
+          /* Accessibility - high contrast mode */
+          @media (prefers-contrast: high) {
+            #main-content {
+              border: 2px solid #092963;
+            }
+
+            #main-content::before {
+              border-bottom-width: 3px;
+            }
+          }
+
+          /* Loading animation */
+          @keyframes shimmer {
+            0% {
+              background-position: -1000px 0;
+            }
+            100% {
+              background-position: 1000px 0;
+            }
+          }
+
+          /* Smooth scrolling */
+          html {
+            scroll-behavior: smooth;
+          }
+
+          /* Prevent text selection on UI elements */
+          button,
+          .pill-button {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+          }
+
+          /* Focus visible for keyboard navigation */
+          *:focus-visible {
+            outline: 3px solid #3abcee;
+            outline-offset: 2px;
+            border-radius: 4px;
+          }
+
+          /* Hide Drupal system messages in fullscreen mode */
+          .messages {
+            display: none;
+          }
+        </style>
+</head>
+<body{{ attributes.addClass('frontdesk-page') }}>
+  {{ page_top }}
+
+  <div id="main-content" role="main">
+    {{ page }}
+  </div>
+
+  {{ page_bottom }}
+  <js-bottom-placeholder token="{{ placeholder_token }}">
+</body>
+</html>
+

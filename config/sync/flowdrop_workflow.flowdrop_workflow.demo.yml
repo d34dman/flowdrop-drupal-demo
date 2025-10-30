@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: demo
-label: 'Untitled Workflow'
+label: 'Demo Workflow'
 description: "A demo FlowDrop workflow.\r\nTry opening the workflow in \"Open in Editor\" to use the awesome FlowDrop UI to manage the workflow."
 nodes:
   -
@@ -463,5 +463,5 @@ metadata:
   createdAt: '2025-08-21T16:46:58.000Z'
   updatedAt: '2025-10-30T00:27:34.273Z'
 created: 1755947816
-changed: 1761784054
+changed: 1761784706
 uid: 0

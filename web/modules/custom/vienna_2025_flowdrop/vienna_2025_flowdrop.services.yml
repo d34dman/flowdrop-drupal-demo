@@ -1,0 +1,4 @@
+services:
+  vienna_2025_flowdrop.executor:
+    class: Drupal\vienna_2025_flowdrop\FlowdropExecutor
+    arguments: ['@entity_type.manager', '@logger.factory', '@flowdrop_pipeline.job_generation', '@flowdrop_runtime.synchronous_orchestrator']

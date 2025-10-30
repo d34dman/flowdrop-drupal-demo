@@ -1,0 +1,12 @@
+name: 'Vienna 2025 Flowdrop'
+type: module
+description: 'Flowdrop Demo Module showcased at DrupalCon Vienna 2025'
+package: Factorial
+core_version_requirement: ^10 || ^11
+dependencies:
+  - flowdrop:flowdrop
+  - flowdrop:flowdrop_workflow
+  - flowdrop:flowdrop_pipeline
+  - flowdrop:flowdrop_node_type
+  - factorial_crm:factorial_crm
+  - key:key

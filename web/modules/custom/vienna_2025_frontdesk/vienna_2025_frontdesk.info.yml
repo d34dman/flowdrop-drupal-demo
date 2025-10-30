@@ -1,0 +1,9 @@
+name: 'vienna_2025_frontdesk'
+type: module
+description: 'Factorial Front Desk at DrupalCamp Vienna 2025'
+package: Factorial
+core_version_requirement: ^10 || ^11
+dependencies:
+  - notification_server:notification_server
+  - factorial_crm:factorial_crm
+  - vienna_2025_flowdrop:vienna_2025_flowdrop

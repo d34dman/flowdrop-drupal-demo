@@ -1,0 +1,75 @@
+vienna_2025_frontdesk.frontdesk:
+  path: '/vienna-2025-frontdesk'
+  defaults:
+    _title: 'Frontdesk'
+    _controller: '\Drupal\vienna_2025_frontdesk\Controller\Frontdesk'
+  requirements:
+    _permission: 'access content'
+
+vienna_2025_frontdesk.api.ai_preference:
+  path: '/api/frontdesk/ai-preference'
+  defaults:
+    _controller: '\Drupal\vienna_2025_frontdesk\Controller\FrontdeskApiController::submitAiPreference'
+  requirements:
+    _permission: 'access content'
+  methods: [POST]
+  options:
+    no_cache: TRUE
+
+vienna_2025_frontdesk.api.lookup_user:
+  path: '/api/frontdesk/lookup-user'
+  defaults:
+    _controller: '\Drupal\vienna_2025_frontdesk\Controller\FrontdeskApiController::lookupDrupalUser'
+  requirements:
+    _permission: 'access content'
+  methods: [POST]
+  options:
+    no_cache: TRUE
+
+vienna_2025_frontdesk.api.update_user:
+  path: '/api/frontdesk/update-user'
+  defaults:
+    _controller: '\Drupal\vienna_2025_frontdesk\Controller\FrontdeskApiController::updateUserInfo'
+  requirements:
+    _permission: 'access content'
+  methods: [POST]
+  options:
+    no_cache: TRUE
+
+vienna_2025_frontdesk.api.submit_company:
+  path: '/api/frontdesk/submit-company'
+  defaults:
+    _controller: '\Drupal\vienna_2025_frontdesk\Controller\FrontdeskApiController::submitCompany'
+  requirements:
+    _permission: 'access content'
+  methods: [POST]
+  options:
+    no_cache: TRUE
+
+vienna_2025_frontdesk.api.submit_feedback:
+  path: '/api/frontdesk/submit-feedback'
+  defaults:
+    _controller: '\Drupal\vienna_2025_frontdesk\Controller\FrontdeskApiController::submitFeedback'
+  requirements:
+    _permission: 'access content'
+  methods: [POST]
+  options:
+    no_cache: TRUE
+
+vienna_2025_frontdesk.api.submit_final:
+  path: '/api/frontdesk/submit-final'
+  defaults:
+    _controller: '\Drupal\vienna_2025_frontdesk\Controller\FrontdeskApiController::submitFinal'
+  requirements:
+    _permission: 'access content'
+  methods: [POST]
+  options:
+    no_cache: TRUE
+
+vienna_2025_frontdesk.settings:
+  path: '/admin/config/system/vienna-2025'
+  defaults:
+    _title: 'Settings'
+    _form: 'Drupal\vienna_2025_frontdesk\Form\SettingsForm'
+  requirements:
+    _permission: 'administer site configuration'

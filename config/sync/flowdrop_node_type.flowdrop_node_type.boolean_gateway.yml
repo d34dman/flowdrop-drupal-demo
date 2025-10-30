@@ -1,0 +1,22 @@
+uuid: 4bb2b175-fed8-489c-84c8-b899ebea1597
+langcode: en
+status: true
+dependencies: {  }
+id: boolean_gateway
+label: 'Boolean Gateway'
+description: ''
+category: logic
+icon: 'mdi:cog'
+color: '#007cba'
+version: 1.0.0
+enabled: true
+config:
+  branches:
+    -
+      name: 'True'
+      value: true
+    -
+      name: 'False'
+      value: false
+tags: {  }
+executor_plugin: boolean_gateway

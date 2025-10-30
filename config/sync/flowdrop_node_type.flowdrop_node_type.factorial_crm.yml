@@ -1,0 +1,16 @@
+uuid: 8d9163eb-c01f-461b-bcf2-5e71b096c26c
+langcode: en
+status: true
+dependencies: {  }
+id: factorial_crm
+label: 'Factorial CRM'
+description: "Subits data to Factorial CRM.\r\n\r\nData must be provided in the format json format."
+category: data
+icon: 'mdi:api'
+color: '#b80000'
+version: 1.0.0
+enabled: true
+config:
+  nodeType: simple
+tags: {  }
+executor_plugin: factorial_crm

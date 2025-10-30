@@ -7,6 +7,6 @@ _core:
 id: ai
 label: 'AI & ML'
 description: 'Node types for artificial intelligence and machine learning operations'
-icon: 'mdi:brain'
-color: '#9C27B0'
+icon: 'mdi:shimmer'
+color: '#9c27b0'
 enabled: true

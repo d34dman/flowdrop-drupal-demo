@@ -1,0 +1,730 @@
+/**
+ * @file
+ * Frontdesk multi-step registration form styles.
+ */
+
+/* ==================== Base Styles ==================== */
+.frontdesk-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 15px 20px;
+  position: relative;
+  min-height: 600px;
+}
+
+/* ==================== Loading Overlay ==================== */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(9, 41, 99, 0.95);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+.loading-overlay.active {
+  display: flex;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #3abcee;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: #fff;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* ==================== Progress Bar ==================== */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #e0e7ff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3abcee 0%, #092963 100%);
+  width: 16.66%;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==================== Step Container ==================== */
+.step {
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Hide title and subtitle in edit form (step 3b) to save space */
+#step-3b .step-title,
+#step-3b .step-subtitle {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================== Typography ==================== */
+.step-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #092963;
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+.step-subtitle {
+  font-size: 16px;
+  color: #64748b;
+  text-align: center;
+  margin: 0 0 25px 0;
+}
+
+/* ==================== Matrix-Inspired Step 1 ==================== */
+.matrix-container {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.glitch {
+  position: relative;
+  animation: glitch 3s infinite;
+}
+
+@keyframes glitch {
+  0%, 100% {
+    text-shadow: 0 0 1px rgba(58, 188, 238, 0.5);
+  }
+  25% {
+    text-shadow: -2px 0 1px rgba(58, 188, 238, 0.7), 2px 0 1px rgba(237, 28, 36, 0.7);
+  }
+  50% {
+    text-shadow: 2px 0 1px rgba(58, 188, 238, 0.7), -2px 0 1px rgba(237, 28, 36, 0.7);
+  }
+  75% {
+    text-shadow: 0 0 1px rgba(58, 188, 238, 0.5);
+  }
+}
+
+.pill-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.pill-button {
+  background: #fff;
+  border: 3px solid #e0e7ff;
+  border-radius: 20px;
+  padding: 30px 40px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 220px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pill-button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(58, 188, 238, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.pill-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.blue-pill {
+  border-color: #3abcee;
+}
+
+.blue-pill:hover {
+  border-color: #2a9fd4;
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(58, 188, 238, 0.3);
+}
+
+.red-pill {
+  border-color: #ed1c24;
+}
+
+.red-pill:hover {
+  border-color: #d31b22;
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(237, 28, 36, 0.3);
+}
+
+.pill-icon {
+  font-size: 50px;
+  margin-bottom: 12px;
+}
+
+.pill-label {
+  font-size: 20px;
+  font-weight: 700;
+  color: #092963;
+  margin-bottom: 6px;
+}
+
+.pill-description {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.pill-vs {
+  font-size: 20px;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+/* ==================== Form Elements ==================== */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #092963;
+  margin-bottom: 10px;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 16px;
+  border: 2px solid #e0e7ff;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background: #fff;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: #3abcee;
+  box-shadow: 0 0 0 4px rgba(58, 188, 238, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-hint {
+  font-size: 14px;
+  color: #94a3b8;
+  margin-top: 8px;
+}
+
+.optional-label {
+  font-size: 14px;
+  font-weight: 400;
+  color: #94a3b8;
+}
+
+.error-hint {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  animation: fadeIn 0.3s ease;
+}
+
+.error-hint-text {
+  font-size: 14px;
+  color: #dc2626;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ==================== Info Card ==================== */
+.info-card {
+  background: #f8fafc;
+  border: 2px solid #e0e7ff;
+  border-radius: 12px;
+  padding: 20px 25px;
+  margin-bottom: 25px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #e0e7ff;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #64748b;
+}
+
+.info-value {
+  font-weight: 500;
+  color: #092963;
+}
+
+/* ==================== Buttons ==================== */
+.button-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.btn {
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #3abcee 0%, #092963 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(58, 188, 238, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(58, 188, 238, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #092963;
+  border: 2px solid #e0e7ff;
+}
+
+.btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #3abcee;
+}
+
+.btn-tertiary {
+  background: #fff;
+  color: #64748b;
+  border: 2px solid #cbd5e1;
+}
+
+.btn-tertiary:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #475569;
+}
+
+.btn-large {
+  padding: 20px 48px;
+  font-size: 18px;
+}
+
+/* ==================== Success Screen ==================== */
+.success-container {
+  text-align: center;
+  padding: 30px 20px 20px;
+  position: relative;
+}
+
+.success-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #fff;
+  font-size: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  animation: successPulse 1s ease-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #092963;
+  margin-bottom: 10px;
+}
+
+.success-message {
+  font-size: 16px;
+  color: #64748b;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.success-animation {
+  position: relative;
+  height: 100px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+/* Center the Register Another button */
+.success-container .btn {
+  margin: 0 auto;
+  display: inline-block;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #3abcee;
+  animation: confettiFall 3s infinite;
+}
+
+.confetti:nth-child(1) { left: 10%; background: #3abcee; animation-delay: 0s; }
+.confetti:nth-child(2) { left: 30%; background: #ed1c24; animation-delay: 0.5s; }
+.confetti:nth-child(3) { left: 50%; background: #10b981; animation-delay: 1s; }
+.confetti:nth-child(4) { left: 70%; background: #f59e0b; animation-delay: 1.5s; }
+.confetti:nth-child(5) { left: 90%; background: #8b5cf6; animation-delay: 2s; }
+
+@keyframes confettiFall {
+  0% {
+    top: -20px;
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    top: 200px;
+    transform: rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ==================== Coffee Wait Screen ==================== */
+.coffee-wait-container {
+  text-align: center;
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.coffee-machine-wrapper {
+  margin-bottom: 10px;
+}
+
+.coffee-machine {
+  animation: coffeeMachinePulse 3s ease-in-out infinite;
+}
+
+@keyframes coffeeMachinePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+.coffee-wait-content {
+  width: 100%;
+}
+
+.coffee-wait-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #092963;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+
+.coffee-wait-message {
+  font-size: 16px;
+  color: #64748b;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.coffee-invitation {
+  background: linear-gradient(135deg, #FFF9E6 0%, #FFE9B8 100%);
+  border: 2px solid #F59E0B;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+  animation: gentlePulse 2s ease-in-out infinite;
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.25);
+  }
+}
+
+.coffee-invitation-icon {
+  font-size: 48px;
+  flex-shrink: 0;
+  animation: coffeeRotate 4s ease-in-out infinite;
+}
+
+@keyframes coffeeRotate {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-10deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+}
+
+.coffee-invitation-text {
+  flex: 1;
+  text-align: left;
+}
+
+.coffee-invitation-text strong {
+  display: block;
+  font-size: 17px;
+  color: #92400e;
+  margin-bottom: 8px;
+}
+
+.coffee-direction {
+  font-size: 14px;
+  color: #78350f;
+  margin: 8px 0 0 0;
+  line-height: 1.4;
+}
+
+.waiting-indicator {
+  margin-top: 15px;
+}
+
+.waiting-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.waiting-dots .dot {
+  width: 10px;
+  height: 10px;
+  background: #3abcee;
+  border-radius: 50%;
+  animation: dotPulse 1.4s ease-in-out infinite;
+}
+
+.waiting-dots .dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.waiting-dots .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.waiting-dots .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dotPulse {
+  0%, 80%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+}
+
+.waiting-text {
+  font-size: 14px;
+  color: #64748b;
+  font-style: italic;
+}
+
+.coffee-wait-container .btn {
+  margin: 10px auto 0;
+  display: inline-block;
+}
+
+/* ==================== Error Message ==================== */
+.error-message {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 16px 24px;
+  border-radius: 12px;
+  border: 2px solid #fecaca;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.2);
+  max-width: 90%;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+}
+
+.error-message.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ==================== Responsive Design ==================== */
+@media (max-width: 768px) {
+  .frontdesk-container {
+    padding: 15px;
+  }
+
+  .step-title {
+    font-size: 28px;
+  }
+
+  .step-subtitle {
+    font-size: 16px;
+  }
+
+  .pill-choice {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .pill-button {
+    min-width: 100%;
+    padding: 30px 40px;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+/* ==================== Message Callout Animations ==================== */
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(-30px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.02) translateY(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ==================== Accessibility ==================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.btn:focus,
+.form-input:focus,
+.form-textarea:focus,
+.pill-button:focus {
+  outline: 3px solid #3abcee;
+  outline-offset: 2px;
+}
+

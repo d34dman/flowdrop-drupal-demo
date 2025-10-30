@@ -1,0 +1,5 @@
+vienna_2025_frontdesk.settings:
+  title: Vienna 2025 Settings
+  parent: system.admin_config_system
+  route_name: vienna_2025_frontdesk.settings
+  weight: 10

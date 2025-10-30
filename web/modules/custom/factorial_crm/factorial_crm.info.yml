@@ -1,0 +1,5 @@
+name: 'Factorial CRM (Non functional)'
+type: module
+description: 'Factorial CRM module stripped down for demo purposes'
+package: Factorial
+core_version_requirement: ^10 || ^11

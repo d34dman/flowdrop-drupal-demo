@@ -1,0 +1,11 @@
+services:
+  vienna_2025_frontdesk.processor:
+    class: Drupal\vienna_2025_frontdesk\Service\FrontdeskProcessor
+    arguments:
+      - '@factorial_crm'
+      - '@http_client_factory'
+      - '@session_manager'
+      - '@request_stack'
+      - '@vienna_2025_flowdrop.executor'
+      - '@logger.factory'
+

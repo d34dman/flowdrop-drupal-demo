@@ -1,0 +1,9 @@
+services:
+  factorial_crm:
+    class: Drupal\factorial_crm\Service\FactorialCrm
+    arguments:
+      - '@logger.channel.factorial_crm'
+  # Logger decorator that preserves PSR-3 context in Drupal dblog.
+  logger.channel.factorial_crm:
+    parent: logger.channel_base
+    arguments: [ 'factorial_crm' ]

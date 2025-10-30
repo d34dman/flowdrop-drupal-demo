@@ -1,0 +1,15 @@
+uuid: 497d8d76-e8e3-4f54-94d7-d3b1b0312213
+langcode: en
+status: true
+dependencies: {  }
+id: data_to_json
+label: 'Data to JSON'
+description: ''
+category: processing
+icon: 'mdi:cog'
+color: '#007cba'
+version: 1.0.0
+enabled: true
+config: {  }
+tags: {  }
+executor_plugin: data_to_json

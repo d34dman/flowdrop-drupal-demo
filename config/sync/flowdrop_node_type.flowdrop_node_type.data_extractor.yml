@@ -1,0 +1,15 @@
+uuid: 8b6ff495-9cda-4cf2-bda7-ed8278da3ebe
+langcode: en
+status: true
+dependencies: {  }
+id: data_extractor
+label: 'Data Extractor'
+description: 'Extracts Data.'
+category: processing
+icon: 'mdi:cog'
+color: '#007cba'
+version: 1.0.0
+enabled: true
+config: {  }
+tags: {  }
+executor_plugin: data_extractor
