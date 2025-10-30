@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: demo
-label: Demo
+label: 'Untitled Workflow'
 description: "A demo FlowDrop workflow.\r\nTry opening the workflow in \"Open in Editor\" to use the awesome FlowDrop UI to manage the workflow."
 nodes:
   -
@@ -390,7 +390,7 @@ nodes:
     deletable: true
     measured:
       width: 500
-      height: 360
+      height: 374
     selected: true
     dragging: false
 edges:
@@ -398,18 +398,70 @@ edges:
     id: xy-edge__c3a7859e-5a1b-4efe-9904-f3e839d9e0b1text-13540037-a4ee-4324-941e-0764370f2125message
     source: c3a7859e-5a1b-4efe-9904-f3e839d9e0b1
     target: 13540037-a4ee-4324-941e-0764370f2125
+    data:
+      isToolConnection: false
+      targetNodeType: workflowNode
+      targetCategory: agents
     sourceHandle: text
     targetHandle: message
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
   -
     id: xy-edge__13540037-a4ee-4324-941e-0764370f2125message-9975480a-5d72-46a0-9fa8-679b4bc627d6message
     source: 13540037-a4ee-4324-941e-0764370f2125
     target: 9975480a-5d72-46a0-9fa8-679b4bc627d6
+    data:
+      isToolConnection: false
+      targetNodeType: workflowNode
+      targetCategory: outputs
     sourceHandle: message
     targetHandle: message
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+  -
+    id: xy-edge__c3a7859e-5a1b-4efe-9904-f3e839d9e0b1c3a7859e-5a1b-4efe-9904-f3e839d9e0b1-output-text-13540037-a4ee-4324-941e-0764370f212513540037-a4ee-4324-941e-0764370f2125-input-message
+    source: c3a7859e-5a1b-4efe-9904-f3e839d9e0b1
+    target: 13540037-a4ee-4324-941e-0764370f2125
+    data:
+      isToolConnection: false
+      targetNodeType: workflowNode
+      targetCategory: agents
+    sourceHandle: c3a7859e-5a1b-4efe-9904-f3e839d9e0b1-output-text
+    targetHandle: 13540037-a4ee-4324-941e-0764370f2125-input-message
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+  -
+    id: xy-edge__13540037-a4ee-4324-941e-0764370f212513540037-a4ee-4324-941e-0764370f2125-output-message-9975480a-5d72-46a0-9fa8-679b4bc627d69975480a-5d72-46a0-9fa8-679b4bc627d6-input-message
+    source: 13540037-a4ee-4324-941e-0764370f2125
+    target: 9975480a-5d72-46a0-9fa8-679b4bc627d6
+    data:
+      isToolConnection: false
+      targetNodeType: workflowNode
+      targetCategory: outputs
+    sourceHandle: 13540037-a4ee-4324-941e-0764370f2125-output-message
+    targetHandle: 9975480a-5d72-46a0-9fa8-679b4bc627d6-input-message
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
 metadata:
   version: 1.0.0
   createdAt: '2025-08-21T16:46:58.000Z'
-  updatedAt: '2025-08-21T16:49:26.550Z'
+  updatedAt: '2025-10-30T00:27:34.273Z'
 created: 1755947816
-changed: 1761783657
+changed: 1761784054
 uid: 0

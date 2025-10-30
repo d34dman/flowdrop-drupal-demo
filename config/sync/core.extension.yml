@@ -25,6 +25,7 @@ module:
   eca: 0
   eca_ui: 0
   editor: 0
+  factorial_crm: 0
   field: 0
   field_ui: 0
   file: 0
@@ -75,6 +76,8 @@ module:
   update: 0
   user: 0
   verf: 0
+  vienna_2025_flowdrop: 0
+  vienna_2025_frontdesk: 0
   vienna_2025_thumbs_up: 0
   views: 10
   minimal: 1000
