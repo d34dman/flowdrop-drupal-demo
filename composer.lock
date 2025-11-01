@@ -2362,7 +2362,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flowdrop.git",
-                "reference": "855be47649f3bd1153aa52837071b53db338f79a"
+                "reference": "0a71f33f163dfd4fdc058f7a3cebc0e61713441c"
             },
             "require": {
                 "drupal/core": "^11.2",
@@ -2394,7 +2394,7 @@
                 },
                 "drupal": {
                     "version": "1.x-dev",
-                    "datestamp": "1762009398",
+                    "datestamp": "1762035939",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
