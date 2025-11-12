@@ -5,12 +5,13 @@ dependencies: {  }
 id: factorial_agent
 label: 'Factorial Agent'
 description: 'A simple agent that you can configure for your needs.'
-category: ai
+category: agent
 icon: 'mdi:brain'
 color: '#b80000'
 version: 1.0.0
 enabled: true
 config:
+  nodeType: simple
   systemPrompt: 'You are a helpful assistant.'
   temperature: '0.7'
   maxTokens: '1000'

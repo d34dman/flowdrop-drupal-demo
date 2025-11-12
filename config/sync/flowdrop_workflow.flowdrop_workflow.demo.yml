@@ -123,84 +123,6 @@ nodes:
     selected: false
     dragging: false
   -
-    id: c3a7859e-5a1b-4efe-9904-f3e839d9e0b1
-    type: workflowNode
-    position:
-      x: 270
-      'y': 300
-    data:
-      label: 'Text Input'
-      config:
-        placeholder: 'Enter text...'
-        defaultValue: ''
-        required: false
-      metadata:
-        id: text_input
-        name: 'Text Input'
-        type: default
-        description: 'Simple text input for user data'
-        category: inputs
-        icon: 'mdi:text'
-        color: '#22c55e'
-        version: 1.0.0
-        enabled: true
-        tags:
-          - input
-          - text
-          - user-input
-        executor_plugin: text_input
-        inputs:
-          -
-            id: data
-            name: 'Input Data'
-            type: input
-            dataType: string
-            required: false
-            description: 'Input data for the text field'
-        outputs:
-          -
-            id: text
-            name: text
-            type: output
-            dataType: string
-            required: false
-            description: 'The input text value'
-        config:
-          placeholder: 'Enter text here...'
-          defaultValue: ''
-          multiline: false
-        configSchema:
-          type: object
-          properties:
-            placeholder:
-              type: string
-              title: Placeholder
-              description: 'Placeholder text for the input field'
-              default: 'Enter text...'
-            defaultValue:
-              type: string
-              title: 'Default Value'
-              description: 'Default text value'
-              default: ''
-            required:
-              type: boolean
-              title: Required
-              description: 'Whether the input is required'
-              default: false
-            maxLength:
-              type: integer
-              title: 'Maximum Length'
-              description: 'Maximum number of characters allowed'
-              minimum: 1
-              maximum: 10000
-      nodeId: c3a7859e-5a1b-4efe-9904-f3e839d9e0b1
-    deletable: true
-    measured:
-      width: 288
-      height: 330
-    selected: false
-    dragging: false
-  -
     id: 9975480a-5d72-46a0-9fa8-679b4bc627d6
     type: workflowNode
     position:
@@ -290,8 +212,8 @@ nodes:
     id: 022c9112-b6d2-4a5f-8ad6-a482988ceb69
     type: note
     position:
-      x: 250
-      'y': 680
+      x: 300
+      'y': 540
     data:
       label: Notes
       config:
@@ -391,25 +313,86 @@ nodes:
     measured:
       width: 500
       height: 374
-    selected: true
+    selected: false
     dragging: false
-edges:
   -
-    id: xy-edge__c3a7859e-5a1b-4efe-9904-f3e839d9e0b1text-13540037-a4ee-4324-941e-0764370f2125message
-    source: c3a7859e-5a1b-4efe-9904-f3e839d9e0b1
-    target: 13540037-a4ee-4324-941e-0764370f2125
+    id: text_input.1
+    type: universalNode
+    position:
+      x: 310
+      'y': 330
     data:
-      isToolConnection: false
-      targetNodeType: workflowNode
-      targetCategory: agents
-    sourceHandle: text
-    targetHandle: message
-    style: 'stroke: grey;'
-    markerEnd:
-      type: arrowclosed
-      width: 16
-      height: 16
-      color: grey
+      label: 'Text Input'
+      config:
+        nodeType: simple
+        placeholder: 'Enter text...'
+        defaultValue: ''
+      metadata:
+        id: text_input
+        name: 'Text Input'
+        type: simple
+        supportedTypes:
+          - simple
+          - square
+          - default
+        description: 'Simple text input for user data'
+        category: inputs
+        icon: 'mdi:text'
+        color: '#22c55e'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - input
+          - text
+          - user-input
+        executor_plugin: text_input
+        inputs: {  }
+        outputs:
+          -
+            id: text
+            name: text
+            type: output
+            dataType: string
+            required: false
+            description: 'The input text value'
+        config:
+          placeholder: 'Enter text here...'
+          defaultValue: ''
+          multiline: false
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              description: 'Choose the visual representation for this node'
+              default: simple
+              enum:
+                - simple
+                - square
+                - default
+              enumNames:
+                - 'Simple (compact layout)'
+                - 'Square (square layout)'
+                - Default
+            placeholder:
+              type: string
+              title: Placeholder
+              description: 'Placeholder text for the input field'
+              default: 'Enter text...'
+            defaultValue:
+              type: string
+              title: 'Default Value'
+              description: 'Default text value'
+              default: ''
+      nodeId: text_input.1
+    deletable: true
+    measured:
+      width: 288
+      height: 88
+    selected: true
+    dragging: true
+edges:
   -
     id: xy-edge__13540037-a4ee-4324-941e-0764370f2125message-9975480a-5d72-46a0-9fa8-679b4bc627d6message
     source: 13540037-a4ee-4324-941e-0764370f2125
@@ -420,22 +403,6 @@ edges:
       targetCategory: outputs
     sourceHandle: message
     targetHandle: message
-    style: 'stroke: grey;'
-    markerEnd:
-      type: arrowclosed
-      width: 16
-      height: 16
-      color: grey
-  -
-    id: xy-edge__c3a7859e-5a1b-4efe-9904-f3e839d9e0b1c3a7859e-5a1b-4efe-9904-f3e839d9e0b1-output-text-13540037-a4ee-4324-941e-0764370f212513540037-a4ee-4324-941e-0764370f2125-input-message
-    source: c3a7859e-5a1b-4efe-9904-f3e839d9e0b1
-    target: 13540037-a4ee-4324-941e-0764370f2125
-    data:
-      isToolConnection: false
-      targetNodeType: workflowNode
-      targetCategory: agents
-    sourceHandle: c3a7859e-5a1b-4efe-9904-f3e839d9e0b1-output-text
-    targetHandle: 13540037-a4ee-4324-941e-0764370f2125-input-message
     style: 'stroke: grey;'
     markerEnd:
       type: arrowclosed
@@ -458,10 +425,26 @@ edges:
       width: 16
       height: 16
       color: grey
+  -
+    id: xy-edge__text_input.1text_input.1-output-text-13540037-a4ee-4324-941e-0764370f212513540037-a4ee-4324-941e-0764370f2125-input-message
+    source: text_input.1
+    target: 13540037-a4ee-4324-941e-0764370f2125
+    data:
+      isToolConnection: false
+      targetNodeType: workflowNode
+      targetCategory: agents
+    sourceHandle: text_input.1-output-text
+    targetHandle: 13540037-a4ee-4324-941e-0764370f2125-input-message
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
 metadata:
   version: 1.0.0
   createdAt: '2025-08-21T16:46:58.000Z'
-  updatedAt: '2025-10-30T00:27:34.273Z'
+  updatedAt: '2025-11-12T20:33:38.021Z'
 created: 1755947816
-changed: 1761784706
+changed: 1762979618
 uid: 0

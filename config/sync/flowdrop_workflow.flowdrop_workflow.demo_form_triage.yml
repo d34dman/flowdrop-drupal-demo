@@ -1,0 +1,951 @@
+uuid: bf620776-7e66-42f8-bc67-78fee01c5fd7
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+_core:
+  default_config_hash: Dm1f0Gl6SuXA-h2f7tExXptv1WQ8T15-BHgD7gB0u7Q
+id: demo_form_triage
+label: 'Demo: Contact Form Triage & Scheduling'
+description: 'Demonstrates intelligent form processing, triage classification, calendar integration, and automated meeting scheduling'
+nodes:
+  -
+    id: form_data_receiver.1
+    type: universalNode
+    position:
+      x: 180
+      'y': 190
+    data:
+      label: 'Form Data Receiver'
+      config:
+        nodeType: tool
+        formId: contact_form
+        requiredFields:
+          - name
+          - email
+          - message
+        validateEmail: true
+      metadata:
+        id: form_data_receiver
+        name: 'Form Data Receiver'
+        type: tool
+        supportedTypes:
+          - tool
+          - default
+        description: 'Receive and process form submission data from contact forms'
+        category: inputs
+        icon: 'mdi:form-select'
+        color: '#4CAF50'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - form
+          - input
+          - contact
+          - submission
+        executor_plugin: form_data_receiver
+        inputs:
+          -
+            id: tool
+            name: Tool
+            type: input
+            dataType: tool
+            required: false
+            description: 'Available Tools'
+          -
+            id: form_data
+            name: 'Form Data'
+            type: input
+            dataType: json
+            required: false
+            description: 'Raw form submission data'
+          -
+            id: submission_id
+            name: 'Submission ID'
+            type: input
+            dataType: string
+            required: false
+            description: 'Unique identifier for this submission'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: tool
+            name: Tool
+            type: output
+            dataType: tool
+            required: false
+            description: 'Available tools'
+          -
+            id: submission_id
+            name: submission_id
+            type: output
+            dataType: string
+            required: false
+            description: 'Unique submission identifier'
+          -
+            id: form_id
+            name: form_id
+            type: output
+            dataType: string
+            required: false
+            description: 'Form identifier'
+          -
+            id: raw_data
+            name: raw_data
+            type: output
+            dataType: json
+            required: false
+            description: 'Original form data as submitted'
+          -
+            id: structured_data
+            name: structured_data
+            type: output
+            dataType: json
+            required: false
+            description: 'Processed and structured form data'
+          -
+            id: validation_results
+            name: validation_results
+            type: output
+            dataType: json
+            required: false
+            description: 'Validation results for each field'
+          -
+            id: is_valid
+            name: is_valid
+            type: output
+            dataType: boolean
+            required: false
+            description: 'Whether the form data is valid'
+          -
+            id: received_at
+            name: received_at
+            type: output
+            dataType: string
+            required: false
+            description: 'Timestamp when form was received'
+          -
+            id: processing_metadata
+            name: processing_metadata
+            type: output
+            dataType: json
+            required: false
+            description: 'Additional metadata about the submission'
+        config:
+          formId: contact_form
+          requiredFields:
+            - name
+            - email
+            - message
+          validateEmail: true
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              description: 'Choose the visual representation for this node'
+              default: tool
+              enum:
+                - tool
+                - default
+              enumNames:
+                - 'Tool Node (with metadata port)'
+                - 'Default Node (standard ports)'
+            formId:
+              type: string
+              title: 'Form ID'
+              description: 'Identifier for the form type'
+              default: contact_form
+            requiredFields:
+              type: array
+              title: 'Required Fields'
+              description: 'List of required form fields'
+              items:
+                type: string
+              default:
+                - name
+                - email
+                - message
+            validateEmail:
+              type: boolean
+              title: 'Validate Email'
+              description: 'Whether to validate email field format'
+              default: true
+      nodeId: form_data_receiver.1
+    deletable: true
+    measured:
+      width: 288
+      height: 142
+    selected: false
+    dragging: false
+  -
+    id: content_classifier.1
+    type: universalNode
+    position:
+      x: 610
+      'y': 290
+    data:
+      label: 'Content Classifier'
+      config:
+        nodeType: tool
+        classificationMode: full_analysis
+        confidenceThreshold: 0.7
+        categories:
+          - support
+          - features
+          - sales
+          - general
+      metadata:
+        id: content_classifier
+        name: 'Content Classifier'
+        type: tool
+        supportedTypes:
+          - tool
+          - default
+        description: 'Classify content into categories (support, features, sales) for proper triage'
+        category: tools
+        icon: 'mdi:tag-multiple'
+        color: '#9c27b0'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - classification
+          - triage
+          - ai
+          - content-analysis
+        executor_plugin: content_classifier
+        inputs:
+          -
+            id: tool
+            name: Tool
+            type: input
+            dataType: tool
+            required: false
+            description: 'Available Tools'
+          -
+            id: structured_data
+            name: 'Structured Data'
+            type: input
+            dataType: json
+            required: false
+            description: 'Processed form data for classification'
+          -
+            id: raw_data
+            name: 'Raw Data'
+            type: input
+            dataType: json
+            required: false
+            description: 'Original form data'
+          -
+            id: submission_id
+            name: 'Submission ID'
+            type: input
+            dataType: string
+            required: false
+            description: 'Unique submission identifier'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: tool
+            name: Tool
+            type: output
+            dataType: tool
+            required: false
+            description: 'Available tools'
+          -
+            id: submission_id
+            name: submission_id
+            type: output
+            dataType: string
+            required: false
+            description: 'Unique submission identifier'
+          -
+            id: primary_category
+            name: primary_category
+            type: output
+            dataType: string
+            required: false
+            description: 'Primary classification category'
+          -
+            id: confidence
+            name: confidence
+            type: output
+            dataType: number
+            required: false
+            description: 'Classification confidence score (0-1)'
+          -
+            id: category_scores
+            name: category_scores
+            type: output
+            dataType: json
+            required: false
+            description: 'Scores for all categories'
+          -
+            id: classification_reasoning
+            name: classification_reasoning
+            type: output
+            dataType: string
+            required: false
+            description: 'Explanation of the classification decision'
+          -
+            id: suggested_teams
+            name: suggested_teams
+            type: output
+            dataType: array
+            required: false
+            description: 'Recommended teams to handle this submission'
+          -
+            id: priority_level
+            name: priority_level
+            type: output
+            dataType: string
+            required: false
+            description: 'Priority level (normal, medium, high)'
+          -
+            id: keywords_found
+            name: keywords_found
+            type: output
+            dataType: json
+            required: false
+            description: 'Keywords that influenced classification'
+          -
+            id: classified_at
+            name: classified_at
+            type: output
+            dataType: string
+            required: false
+            description: 'Classification timestamp'
+        config:
+          nodeType: tool
+          classificationMode: full_analysis
+          confidenceThreshold: '0.7'
+          categories:
+            - support
+            - features
+            - sales
+            - general
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              description: 'Choose the visual representation for this node'
+              default: tool
+              enum:
+                - tool
+                - default
+              enumNames:
+                - 'Tool Node (with metadata port)'
+                - 'Default Node (standard ports)'
+            classificationMode:
+              type: string
+              title: 'Classification Mode'
+              description: 'Type of analysis to perform'
+              enum:
+                - keyword_only
+                - sentiment_analysis
+                - full_analysis
+              default: full_analysis
+            confidenceThreshold:
+              type: number
+              title: 'Confidence Threshold'
+              description: 'Minimum confidence for classification (0-1)'
+              minimum: 0
+              maximum: 1
+              default: 0.7
+            categories:
+              type: array
+              title: 'Available Categories'
+              description: 'Categories to classify content into'
+              items:
+                type: string
+              default:
+                - support
+                - features
+                - sales
+                - general
+      nodeId: content_classifier.1
+    deletable: true
+    measured:
+      width: 288
+      height: 120
+    selected: false
+    dragging: false
+  -
+    id: calendar_availability_checker.1
+    type: universalNode
+    position:
+      x: 610
+      'y': 440
+    data:
+      label: 'Calendar Availability Checker'
+      config:
+        nodeType: tool
+        timeZone: America/New_York
+        lookAheadDays: 7
+        meetingDuration: 30
+      metadata:
+        id: calendar_availability_checker
+        name: 'Calendar Availability Checker'
+        type: tool
+        supportedTypes:
+          - tool
+          - default
+        description: 'Check Google Calendar availability for team members'
+        category: integrations
+        icon: 'mdi:calendar-search'
+        color: '#607D8B'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - calendar
+          - google
+          - availability
+          - scheduling
+        executor_plugin: calendar_availability_checker
+        inputs:
+          -
+            id: tool
+            name: Tool
+            type: input
+            dataType: tool
+            required: false
+            description: 'Available Tools'
+          -
+            id: suggested_teams
+            name: 'Suggested Teams'
+            type: input
+            dataType: array
+            required: false
+            description: 'Teams that should handle this request'
+          -
+            id: submission_id
+            name: 'Submission ID'
+            type: input
+            dataType: string
+            required: false
+            description: 'Unique submission identifier'
+          -
+            id: priority_level
+            name: 'Priority Level'
+            type: input
+            dataType: string
+            required: false
+            description: 'Priority level of the request'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: tool
+            name: Tool
+            type: output
+            dataType: tool
+            required: false
+            description: 'Available tools'
+          -
+            id: submission_id
+            name: submission_id
+            type: output
+            dataType: string
+            required: false
+            description: 'Unique submission identifier'
+          -
+            id: team_members
+            name: team_members
+            type: output
+            dataType: array
+            required: false
+            description: 'Team members checked for availability'
+          -
+            id: availability_results
+            name: availability_results
+            type: output
+            dataType: json
+            required: false
+            description: 'Detailed availability results for each team member'
+          -
+            id: suggested_meeting_times
+            name: suggested_meeting_times
+            type: output
+            dataType: array
+            required: false
+            description: 'Suggested meeting time options'
+          -
+            id: priority_level
+            name: priority_level
+            type: output
+            dataType: string
+            required: false
+            description: 'Priority level of the request'
+          -
+            id: meeting_duration
+            name: meeting_duration
+            type: output
+            dataType: number
+            required: false
+            description: 'Meeting duration in minutes'
+          -
+            id: checked_at
+            name: checked_at
+            type: output
+            dataType: string
+            required: false
+            description: 'Timestamp when availability was checked'
+          -
+            id: calendar_metadata
+            name: calendar_metadata
+            type: output
+            dataType: json
+            required: false
+            description: 'Calendar configuration metadata'
+        config:
+          timeZone: America/New_York
+          lookAheadDays: 7
+          meetingDuration: 30
+          workingHours:
+            start: '09:00'
+            end: '17:00'
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              description: 'Choose the visual representation for this node'
+              default: tool
+              enum:
+                - tool
+                - default
+              enumNames:
+                - 'Tool Node (with metadata port)'
+                - 'Default Node (standard ports)'
+            timeZone:
+              type: string
+              title: 'Time Zone'
+              description: 'Time zone for calendar operations'
+              default: America/New_York
+            lookAheadDays:
+              type: integer
+              title: 'Look Ahead Days'
+              description: 'Number of days to look ahead for availability'
+              minimum: 1
+              maximum: 30
+              default: 7
+            meetingDuration:
+              type: integer
+              title: 'Meeting Duration (minutes)'
+              description: 'Default meeting duration in minutes'
+              minimum: 15
+              maximum: 240
+              default: 30
+            workingHours:
+              type: object
+              title: 'Working Hours'
+              description: 'Working hours configuration'
+              properties:
+                start:
+                  type: string
+                  title: 'Start Time'
+                  default: '09:00'
+                end:
+                  type: string
+                  title: 'End Time'
+                  default: '17:00'
+      nodeId: calendar_availability_checker.1
+    deletable: true
+    measured:
+      width: 288
+      height: 164
+    selected: false
+    dragging: false
+  -
+    id: factorial_agent.1
+    type: universalNode
+    position:
+      x: 1250
+      'y': -140
+    data:
+      label: 'Factorial Agent'
+      config:
+        nodeType: default
+        systemPrompt: 'You are a helpful assistant.'
+        temperature: 0.7
+        maxTokens: '1000'
+      metadata:
+        id: factorial_agent
+        name: 'Factorial Agent'
+        type: simple
+        supportedTypes:
+          - simple
+          - default
+        description: 'A simple agent that you can configure for your needs.'
+        category: agents
+        icon: 'mdi:brain'
+        color: '#b80000'
+        version: 1.0.0
+        enabled: true
+        tags: {  }
+        executor_plugin: factorial_agent
+        inputs:
+          -
+            id: message
+            name: Message
+            type: input
+            dataType: string
+            required: false
+            description: 'The message for the agent to process'
+          -
+            id: tools
+            name: Tools
+            type: input
+            dataType: array
+            required: false
+            description: 'Tools available to the agent'
+            defaultValue: {  }
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: response
+            name: response
+            type: output
+            dataType: json
+            required: false
+            description: 'The Agent Response'
+          -
+            id: tools_used
+            name: tools_used
+            type: output
+            dataType: array
+            required: false
+            description: 'The tools used by the agent'
+          -
+            id: message
+            name: message
+            type: output
+            dataType: string
+            required: false
+            description: 'The Agent Response as text'
+        config:
+          nodeType: simple
+          systemPrompt: 'You are a helpful assistant.'
+          temperature: '0.7'
+          maxTokens: '1000'
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              description: 'Choose the visual representation for this node'
+              default: simple
+              enum:
+                - simple
+                - default
+              enumNames:
+                - Simple
+                - Default
+            systemPrompt:
+              type: string
+              title: 'System Prompt'
+              description: 'System prompt for the agent'
+              format: multiline
+              default: 'You are a helpful assistant.'
+            temperature:
+              type: number
+              title: Temperature
+              description: 'Temperature for response generation (0.0 to 1.0)'
+              default: 0.7
+            maxTokens:
+              type: integer
+              title: 'Max Tokens'
+              description: 'Maximum tokens for response'
+              default: 1000
+      nodeId: factorial_agent.1
+    deletable: true
+    measured:
+      width: 288
+      height: 590
+    selected: false
+    dragging: false
+  -
+    id: user_choice_presenter.1
+    type: universalNode
+    position:
+      x: 600
+      'y': 30
+    data:
+      label: 'User Choice Presenter'
+      config:
+        nodeType: tool
+        presentationMode: interactive
+        autoSelectBest: false
+        includeDeclineOption: true
+      metadata:
+        id: user_choice_presenter
+        name: 'User Choice Presenter'
+        type: tool
+        supportedTypes:
+          - tool
+          - default
+        description: 'Present meeting time options to users and capture their selection'
+        category: ui
+        icon: 'mdi:account-question'
+        color: '#E91E63'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - ui
+          - user-choice
+          - scheduling
+          - interaction
+        executor_plugin: user_choice_presenter
+        inputs:
+          -
+            id: tool
+            name: Tool
+            type: input
+            dataType: tool
+            required: false
+            description: 'Available Tools'
+          -
+            id: suggested_meeting_times
+            name: 'Suggested Meeting Times'
+            type: input
+            dataType: array
+            required: false
+            description: 'Available meeting time options'
+          -
+            id: submission_id
+            name: 'Submission ID'
+            type: input
+            dataType: string
+            required: false
+            description: 'Unique submission identifier'
+          -
+            id: priority_level
+            name: 'Priority Level'
+            type: input
+            dataType: string
+            required: false
+            description: 'Priority level of the request'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: tool
+            name: Tool
+            type: output
+            dataType: tool
+            required: false
+            description: 'Available tools'
+          -
+            id: submission_id
+            name: submission_id
+            type: output
+            dataType: string
+            required: false
+            description: 'Unique submission identifier'
+          -
+            id: presentation_data
+            name: presentation_data
+            type: output
+            dataType: json
+            required: false
+            description: 'Formatted data for user presentation'
+          -
+            id: available_options
+            name: available_options
+            type: output
+            dataType: array
+            required: false
+            description: 'All available meeting time options'
+          -
+            id: selected_option
+            name: selected_option
+            type: output
+            dataType: mixed
+            required: false
+            description: 'Auto-selected option (if applicable)'
+          -
+            id: presentation_mode
+            name: presentation_mode
+            type: output
+            dataType: string
+            required: false
+            description: 'Mode of presentation (interactive, email, sms)'
+          -
+            id: user_interaction_required
+            name: user_interaction_required
+            type: output
+            dataType: boolean
+            required: false
+            description: 'Whether user interaction is required'
+          -
+            id: presentation_url
+            name: presentation_url
+            type: output
+            dataType: string
+            required: false
+            description: 'URL for user to make selection'
+          -
+            id: expires_at
+            name: expires_at
+            type: output
+            dataType: string
+            required: false
+            description: 'When the selection opportunity expires'
+          -
+            id: created_at
+            name: created_at
+            type: output
+            dataType: string
+            required: false
+            description: 'When the presentation was created'
+        config:
+          presentationMode: interactive
+          autoSelectBest: false
+          includeDeclineOption: true
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              description: 'Choose the visual representation for this node'
+              default: tool
+              enum:
+                - tool
+                - default
+              enumNames:
+                - 'Tool Node (with metadata port)'
+                - 'Default Node (standard ports)'
+            presentationMode:
+              type: string
+              title: 'Presentation Mode'
+              description: 'How to present options to the user'
+              enum:
+                - interactive
+                - email
+                - sms
+              default: interactive
+            autoSelectBest:
+              type: boolean
+              title: 'Auto-Select Best Option'
+              description: 'Automatically select the best available option'
+              default: false
+            includeDeclineOption:
+              type: boolean
+              title: 'Include Decline Option'
+              description: 'Allow users to decline all suggested times'
+              default: true
+      nodeId: user_choice_presenter.1
+    deletable: true
+    measured:
+      width: 288
+      height: 142
+    selected: true
+    dragging: true
+edges:
+  -
+    id: xy-edge__user_choice_presenter.1user_choice_presenter.1-output-tool-factorial_agent.1factorial_agent.1-input-tools
+    source: user_choice_presenter.1
+    target: factorial_agent.1
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: agents
+    sourceHandle: user_choice_presenter.1-output-tool
+    targetHandle: factorial_agent.1-input-tools
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+  -
+    id: xy-edge__calendar_availability_checker.1calendar_availability_checker.1-output-tool-factorial_agent.1factorial_agent.1-input-tools
+    source: calendar_availability_checker.1
+    target: factorial_agent.1
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: agents
+    sourceHandle: calendar_availability_checker.1-output-tool
+    targetHandle: factorial_agent.1-input-tools
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+  -
+    id: xy-edge__content_classifier.1content_classifier.1-output-tool-factorial_agent.1factorial_agent.1-input-tools
+    source: content_classifier.1
+    target: factorial_agent.1
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: agents
+    sourceHandle: content_classifier.1-output-tool
+    targetHandle: factorial_agent.1-input-tools
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+  -
+    id: xy-edge__form_data_receiver.1form_data_receiver.1-output-tool-factorial_agent.1factorial_agent.1-input-tools
+    source: form_data_receiver.1
+    target: factorial_agent.1
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: agents
+    sourceHandle: form_data_receiver.1-output-tool
+    targetHandle: factorial_agent.1-input-tools
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+metadata:
+  version: 1.0.0
+  createdAt: '2025-11-12T20:29:55.720Z'
+  updatedAt: '2025-11-12T20:30:47.812Z'
+created: 1762978747
+changed: 1762979447
+uid: 1

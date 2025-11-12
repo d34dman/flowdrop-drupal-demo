@@ -1,0 +1,30 @@
+uuid: bfc58cf9-6e16-47e9-b256-f5598e156a1e
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+_core:
+  default_config_hash: CXyf3x8iVTh0lQF_ro5V3VGW_gcWWxYKY5SefIGCgnw
+id: calendar_availability_checker
+label: 'Calendar Availability Checker'
+description: 'Check Google Calendar availability for team members'
+category: integrations
+icon: 'mdi:calendar-search'
+color: '#607D8B'
+version: 1.0.0
+enabled: true
+config:
+  timeZone: America/New_York
+  lookAheadDays: 7
+  meetingDuration: 30
+  workingHours:
+    start: '09:00'
+    end: '17:00'
+tags:
+  - calendar
+  - google
+  - availability
+  - scheduling
+executor_plugin: calendar_availability_checker

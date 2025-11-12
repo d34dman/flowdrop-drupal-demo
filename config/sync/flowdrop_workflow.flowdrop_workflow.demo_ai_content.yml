@@ -1,0 +1,904 @@
+uuid: 89bfb21d-8ce8-48b9-aeb6-de510bd1a70a
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+_core:
+  default_config_hash: 7TqCHvfiB2ZkVaEyt2e0zLDn5W9irNkIVmvsz44Uwzk
+id: demo_ai_content
+label: 'Demo: AI-Powered Content Enhancement'
+description: 'Demonstrates intelligent content processing using AI to distinguish context and make smart replacements'
+nodes:
+  -
+    id: factorial_agent.1
+    type: universalNode
+    position:
+      x: 380
+      'y': 230
+    data:
+      label: 'Factorial Agent'
+      config:
+        nodeType: default
+        systemPrompt: 'You are a helpful assistant.'
+        temperature: 0.7
+        maxTokens: '1000'
+      metadata:
+        id: factorial_agent
+        name: 'Factorial Agent'
+        type: simple
+        supportedTypes:
+          - simple
+          - default
+        description: 'A simple agent that you can configure for your needs.'
+        category: agents
+        icon: 'mdi:brain'
+        color: '#b80000'
+        version: 1.0.0
+        enabled: true
+        tags: {  }
+        executor_plugin: factorial_agent
+        inputs:
+          -
+            id: message
+            name: Message
+            type: input
+            dataType: string
+            required: false
+            description: 'The message for the agent to process'
+          -
+            id: tools
+            name: Tools
+            type: input
+            dataType: array
+            required: false
+            description: 'Tools available to the agent'
+            defaultValue: {  }
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: response
+            name: response
+            type: output
+            dataType: json
+            required: false
+            description: 'The Agent Response'
+          -
+            id: tools_used
+            name: tools_used
+            type: output
+            dataType: array
+            required: false
+            description: 'The tools used by the agent'
+          -
+            id: message
+            name: message
+            type: output
+            dataType: string
+            required: false
+            description: 'The Agent Response as text'
+        config:
+          nodeType: simple
+          systemPrompt: 'You are a helpful assistant.'
+          temperature: '0.7'
+          maxTokens: '1000'
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              description: 'Choose the visual representation for this node'
+              default: simple
+              enum:
+                - simple
+                - default
+              enumNames:
+                - Simple
+                - Default
+            systemPrompt:
+              type: string
+              title: 'System Prompt'
+              description: 'System prompt for the agent'
+              format: multiline
+              default: 'You are a helpful assistant.'
+            temperature:
+              type: number
+              title: Temperature
+              description: 'Temperature for response generation (0.0 to 1.0)'
+              default: 0.7
+            maxTokens:
+              type: integer
+              title: 'Max Tokens'
+              description: 'Maximum tokens for response'
+              default: 1000
+      nodeId: factorial_agent.1
+    deletable: true
+    measured:
+      width: 288
+      height: 103
+    selected: false
+  -
+    id: ai_content_analyzer.1
+    type: universalNode
+    position:
+      x: -100
+      'y': 520
+    data:
+      label: 'AI Content Analyzer'
+      config:
+        nodeType: tool
+        targetText: XB
+        replacementText: Canvas
+        analysisMode: context_aware
+        confidenceThreshold: 0.8
+      metadata:
+        id: ai_content_analyzer
+        name: 'AI Content Analyzer'
+        type: tool
+        supportedTypes:
+          - tool
+          - default
+        description: 'AI-powered content analysis for smart text processing and context understanding'
+        category: tools
+        icon: 'mdi:brain'
+        color: '#9c27b0'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - ai
+          - analysis
+          - content
+          - context
+          - smart-processing
+        executor_plugin: ai_content_analyzer
+        inputs:
+          -
+            id: content
+            name: 'Content to Analyze'
+            type: input
+            dataType: mixed
+            required: false
+            description: 'Text content or array of content items for AI analysis'
+          -
+            id: tool
+            name: Tool
+            type: input
+            dataType: tool
+            required: false
+            description: 'Available Tools'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: tool
+            name: Tool
+            type: output
+            dataType: tool
+            required: false
+            description: 'Available tools'
+          -
+            id: analyzed_content
+            name: analyzed_content
+            type: output
+            dataType: array
+            required: false
+            description: 'Content items with AI analysis results'
+          -
+            id: total_analyzed
+            name: total_analyzed
+            type: output
+            dataType: number
+            required: false
+            description: 'Total number of items analyzed'
+          -
+            id: total_replacements
+            name: total_replacements
+            type: output
+            dataType: number
+            required: false
+            description: 'Total number of replacements made'
+          -
+            id: analysis_mode
+            name: analysis_mode
+            type: output
+            dataType: string
+            required: false
+            description: 'The analysis mode used'
+          -
+            id: confidence_threshold
+            name: confidence_threshold
+            type: output
+            dataType: number
+            required: false
+            description: 'Confidence threshold used for replacements'
+          -
+            id: analyzed_at
+            name: analyzed_at
+            type: output
+            dataType: string
+            required: false
+            description: 'Timestamp when analysis was completed'
+        config:
+          nodeType: tool
+          targetText: XB
+          replacementText: Canvas
+          analysisMode: context_aware
+          confidenceThreshold: '0.8'
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              description: 'Choose the visual representation for this node'
+              default: tool
+              enum:
+                - tool
+                - default
+              enumNames:
+                - 'Tool Node (with metadata port)'
+                - 'Default Node (standard ports)'
+            targetText:
+              type: string
+              title: 'Target Text'
+              description: 'Text to analyze and potentially replace'
+              default: XB
+            replacementText:
+              type: string
+              title: 'Replacement Text'
+              description: 'Text to replace with when appropriate'
+              default: Canvas
+            analysisMode:
+              type: string
+              title: 'Analysis Mode'
+              description: 'Type of AI analysis to perform'
+              enum:
+                - acronym_detection
+                - sentence_flow
+                - context_aware
+              default: context_aware
+            confidenceThreshold:
+              type: number
+              title: 'Confidence Threshold'
+              description: 'Minimum confidence level for making replacements (0-1)'
+              minimum: 0
+              maximum: 1
+              default: 0.8
+      nodeId: ai_content_analyzer.1
+    deletable: true
+    measured:
+      width: 288
+      height: 142
+    selected: false
+    dragging: false
+  -
+    id: content_classifier.1
+    type: universalNode
+    position:
+      x: -530
+      'y': 620
+    data:
+      label: 'Content Classifier'
+      config:
+        nodeType: tool
+        classificationMode: full_analysis
+        confidenceThreshold: 0.7
+        categories:
+          - support
+          - features
+          - sales
+          - general
+      metadata:
+        id: content_classifier
+        name: 'Content Classifier'
+        type: tool
+        supportedTypes:
+          - tool
+          - default
+        description: 'Classify content into categories (support, features, sales) for proper triage'
+        category: tools
+        icon: 'mdi:tag-multiple'
+        color: '#9c27b0'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - classification
+          - triage
+          - ai
+          - content-analysis
+        executor_plugin: content_classifier
+        inputs:
+          -
+            id: tool
+            name: Tool
+            type: input
+            dataType: tool
+            required: false
+            description: 'Available Tools'
+          -
+            id: structured_data
+            name: 'Structured Data'
+            type: input
+            dataType: json
+            required: false
+            description: 'Processed form data for classification'
+          -
+            id: raw_data
+            name: 'Raw Data'
+            type: input
+            dataType: json
+            required: false
+            description: 'Original form data'
+          -
+            id: submission_id
+            name: 'Submission ID'
+            type: input
+            dataType: string
+            required: false
+            description: 'Unique submission identifier'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: tool
+            name: Tool
+            type: output
+            dataType: tool
+            required: false
+            description: 'Available tools'
+          -
+            id: submission_id
+            name: submission_id
+            type: output
+            dataType: string
+            required: false
+            description: 'Unique submission identifier'
+          -
+            id: primary_category
+            name: primary_category
+            type: output
+            dataType: string
+            required: false
+            description: 'Primary classification category'
+          -
+            id: confidence
+            name: confidence
+            type: output
+            dataType: number
+            required: false
+            description: 'Classification confidence score (0-1)'
+          -
+            id: category_scores
+            name: category_scores
+            type: output
+            dataType: json
+            required: false
+            description: 'Scores for all categories'
+          -
+            id: classification_reasoning
+            name: classification_reasoning
+            type: output
+            dataType: string
+            required: false
+            description: 'Explanation of the classification decision'
+          -
+            id: suggested_teams
+            name: suggested_teams
+            type: output
+            dataType: array
+            required: false
+            description: 'Recommended teams to handle this submission'
+          -
+            id: priority_level
+            name: priority_level
+            type: output
+            dataType: string
+            required: false
+            description: 'Priority level (normal, medium, high)'
+          -
+            id: keywords_found
+            name: keywords_found
+            type: output
+            dataType: json
+            required: false
+            description: 'Keywords that influenced classification'
+          -
+            id: classified_at
+            name: classified_at
+            type: output
+            dataType: string
+            required: false
+            description: 'Classification timestamp'
+        config:
+          nodeType: tool
+          classificationMode: full_analysis
+          confidenceThreshold: '0.7'
+          categories:
+            - support
+            - features
+            - sales
+            - general
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              description: 'Choose the visual representation for this node'
+              default: tool
+              enum:
+                - tool
+                - default
+              enumNames:
+                - 'Tool Node (with metadata port)'
+                - 'Default Node (standard ports)'
+            classificationMode:
+              type: string
+              title: 'Classification Mode'
+              description: 'Type of analysis to perform'
+              enum:
+                - keyword_only
+                - sentiment_analysis
+                - full_analysis
+              default: full_analysis
+            confidenceThreshold:
+              type: number
+              title: 'Confidence Threshold'
+              description: 'Minimum confidence for classification (0-1)'
+              minimum: 0
+              maximum: 1
+              default: 0.7
+            categories:
+              type: array
+              title: 'Available Categories'
+              description: 'Categories to classify content into'
+              items:
+                type: string
+              default:
+                - support
+                - features
+                - sales
+                - general
+      nodeId: content_classifier.1
+    deletable: true
+    measured:
+      width: 288
+      height: 120
+    selected: false
+    dragging: true
+  -
+    id: content_loader.1
+    type: universalNode
+    position:
+      x: -530
+      'y': 470
+    data:
+      label: 'Content Loader'
+      config:
+        nodeType: tool
+        contentType: article
+        status: published
+        limit: 50
+        fields:
+          - title
+          - body
+      metadata:
+        id: content_loader
+        name: 'Content Loader'
+        type: tool
+        supportedTypes:
+          - tool
+          - default
+        description: 'Load content from the site for batch processing'
+        category: tools
+        icon: 'mdi:database-import'
+        color: '#ff9800'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - content
+          - drupal
+          - batch
+          - loader
+        executor_plugin: content_loader
+        inputs:
+          -
+            id: tool
+            name: Tool
+            type: input
+            dataType: tool
+            required: false
+            description: 'Available Tools'
+          -
+            id: filters
+            name: 'Additional Filters'
+            type: input
+            dataType: json
+            required: false
+            description: 'Additional filtering criteria'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: tool
+            name: Tool
+            type: output
+            dataType: tool
+            required: false
+            description: 'Available tools'
+          -
+            id: content_items
+            name: content_items
+            type: output
+            dataType: array
+            required: false
+            description: 'Array of loaded content items'
+          -
+            id: total_count
+            name: total_count
+            type: output
+            dataType: number
+            required: false
+            description: 'Total number of items loaded'
+          -
+            id: content_type
+            name: content_type
+            type: output
+            dataType: string
+            required: false
+            description: 'The content type that was loaded'
+          -
+            id: loaded_at
+            name: loaded_at
+            type: output
+            dataType: string
+            required: false
+            description: 'Timestamp when content was loaded'
+        config:
+          nodeType: tool
+          contentType: article
+          status: published
+          limit: '50'
+          fields:
+            - title
+            - body
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              description: 'Choose the visual representation for this node'
+              default: tool
+              enum:
+                - tool
+                - default
+              enumNames:
+                - 'Tool Node (with metadata port)'
+                - 'Default Node (standard ports)'
+            contentType:
+              type: string
+              title: 'Content Type'
+              description: 'The content type to load'
+              enum:
+                - article
+                - page
+                - blog_post
+                - news
+              default: article
+            status:
+              type: string
+              title: 'Publication Status'
+              description: 'Filter by publication status'
+              enum:
+                - published
+                - unpublished
+                - all
+              default: published
+            limit:
+              type: integer
+              title: Limit
+              description: 'Maximum number of items to load'
+              minimum: 1
+              maximum: 1000
+              default: 50
+            fields:
+              type: array
+              title: 'Fields to Load'
+              description: 'Which fields to include in the output'
+              items:
+                type: string
+                enum:
+                  - title
+                  - body
+                  - summary
+                  - author
+                  - created
+                  - tags
+              default:
+                - title
+                - body
+      nodeId: content_loader.1
+    deletable: true
+    measured:
+      width: 288
+      height: 120
+    selected: false
+    dragging: false
+  -
+    id: text_input.1
+    type: universalNode
+    position:
+      x: -180
+      'y': 270
+    data:
+      label: 'Text Input'
+      config:
+        nodeType: simple
+        placeholder: 'Enter text...'
+        defaultValue: ''
+      metadata:
+        id: text_input
+        name: 'Text Input'
+        type: simple
+        supportedTypes:
+          - simple
+          - square
+          - default
+        description: 'Simple text input for user data'
+        category: inputs
+        icon: 'mdi:text'
+        color: '#22c55e'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - input
+          - text
+          - user-input
+        executor_plugin: text_input
+        inputs: {  }
+        outputs:
+          -
+            id: text
+            name: text
+            type: output
+            dataType: string
+            required: false
+            description: 'The input text value'
+        config:
+          placeholder: 'Enter text here...'
+          defaultValue: ''
+          multiline: false
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              description: 'Choose the visual representation for this node'
+              default: simple
+              enum:
+                - simple
+                - square
+                - default
+              enumNames:
+                - 'Simple (compact layout)'
+                - 'Square (square layout)'
+                - Default
+            placeholder:
+              type: string
+              title: Placeholder
+              description: 'Placeholder text for the input field'
+              default: 'Enter text...'
+            defaultValue:
+              type: string
+              title: 'Default Value'
+              description: 'Default text value'
+              default: ''
+      nodeId: text_input.1
+    deletable: true
+    measured:
+      width: 288
+      height: 88
+    selected: false
+  -
+    id: text_output.1
+    type: universalNode
+    position:
+      x: 840
+      'y': 660
+    data:
+      label: 'Text Output'
+      config:
+        nodeType: simple
+        maxLength: 1000
+        format: plain
+      metadata:
+        id: text_output
+        name: 'Text Output'
+        type: simple
+        supportedTypes:
+          - square
+          - simple
+          - default
+        description: 'Simple text output for displaying data'
+        category: outputs
+        icon: 'mdi:text-box'
+        color: '#ef4444'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - output
+          - text
+          - display
+        executor_plugin: text_output
+        inputs:
+          -
+            id: text
+            name: 'Text Input'
+            type: input
+            dataType: string
+            required: false
+            description: 'The text to output'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs: {  }
+        config:
+          format: plain
+          maxLength: 1000
+          showTimestamp: false
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              description: 'Choose the visual representation for this node'
+              default: simple
+              enum:
+                - simple
+                - square
+                - default
+              enumNames:
+                - 'Simple (compact layout)'
+                - 'Square (square layout)'
+                - Default
+            maxLength:
+              type: integer
+              title: 'Maximum Length'
+              description: 'Maximum length of output text'
+              default: 1000
+              minimum: 1
+              maximum: 10000
+            format:
+              type: string
+              title: 'Text Format'
+              description: 'Text formatting option'
+              default: plain
+              enum:
+                - plain
+                - html
+                - markdown
+      nodeId: text_output.1
+    deletable: true
+    measured:
+      width: 288
+      height: 88
+    selected: true
+    dragging: true
+edges:
+  -
+    id: xy-edge__ai_content_analyzer.1ai_content_analyzer.1-output-tool-factorial_agent.1factorial_agent.1-input-tools
+    source: ai_content_analyzer.1
+    target: factorial_agent.1
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: agents
+    sourceHandle: ai_content_analyzer.1-output-tool
+    targetHandle: factorial_agent.1-input-tools
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+  -
+    id: xy-edge__content_classifier.1content_classifier.1-output-tool-ai_content_analyzer.1ai_content_analyzer.1-input-tool
+    source: content_classifier.1
+    target: ai_content_analyzer.1
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: tools
+    sourceHandle: content_classifier.1-output-tool
+    targetHandle: ai_content_analyzer.1-input-tool
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+  -
+    id: xy-edge__content_loader.1content_loader.1-output-tool-ai_content_analyzer.1ai_content_analyzer.1-input-tool
+    source: content_loader.1
+    target: ai_content_analyzer.1
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: tools
+    sourceHandle: content_loader.1-output-tool
+    targetHandle: ai_content_analyzer.1-input-tool
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+  -
+    id: xy-edge__text_input.1text_input.1-output-text-factorial_agent.1factorial_agent.1-input-message
+    source: text_input.1
+    target: factorial_agent.1
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: agents
+    sourceHandle: text_input.1-output-text
+    targetHandle: factorial_agent.1-input-message
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+  -
+    id: xy-edge__factorial_agent.1factorial_agent.1-output-message-text_output.1text_output.1-input-text
+    source: factorial_agent.1
+    target: text_output.1
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: outputs
+    sourceHandle: factorial_agent.1-output-message
+    targetHandle: text_output.1-input-text
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+metadata:
+  version: 1.0.0
+  createdAt: '2025-11-12T20:21:14.326Z'
+  updatedAt: '2025-11-12T20:24:40.064Z'
+created: 1762978747
+changed: 1762979080
+uid: 1

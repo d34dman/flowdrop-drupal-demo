@@ -1,0 +1,15 @@
+uuid: ae3f2b65-1d39-4bb1-b5e2-b0ec1ba26174
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+_core:
+  default_config_hash: ECZ_we-hNal-PqYUtuEolAolSJ6y8PoQckBwGjdYJnI
+id: ui
+label: 'User Interface'
+description: 'Node types for user interaction and interface elements'
+icon: 'mdi:monitor'
+color: '#E91E63'
+enabled: true

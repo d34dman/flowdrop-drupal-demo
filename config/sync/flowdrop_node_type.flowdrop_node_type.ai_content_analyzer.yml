@@ -1,0 +1,30 @@
+uuid: 082af94e-c9a5-4c46-9663-2e34a01709ba
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+_core:
+  default_config_hash: wdo_53JeEFvoZhdmQsoJDk8zLh-P7vfcXq1pfb1luls
+id: ai_content_analyzer
+label: 'AI Content Analyzer'
+description: 'AI-powered content analysis for smart text processing and context understanding'
+category: tool
+icon: 'mdi:brain'
+color: '#9c27b0'
+version: 1.0.0
+enabled: true
+config:
+  nodeType: tool
+  targetText: XB
+  replacementText: Canvas
+  analysisMode: context_aware
+  confidenceThreshold: '0.8'
+tags:
+  - ai
+  - analysis
+  - content
+  - context
+  - smart-processing
+executor_plugin: ai_content_analyzer
