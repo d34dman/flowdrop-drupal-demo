@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+id: text_find_replace
+label: 'Text Find & Replace'
+description: 'Find and replace text in content with advanced options'
+category: processing
+icon: 'mdi:find-replace'
+color: '#2196F3'
+version: '1.0.0'
+enabled: true
+config:
+  findText: 'XB'
+  replaceText: 'Canvas'
+  caseSensitive: false
+  useRegex: false
+  wholeWordsOnly: true
+tags:
+  - text
+  - replace
+  - content
+  - processing
+executor_plugin: 'text_find_replace'

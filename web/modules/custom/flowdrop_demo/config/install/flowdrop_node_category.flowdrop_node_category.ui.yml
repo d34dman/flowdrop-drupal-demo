@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+id: ui
+label: 'User Interface'
+description: 'Node types for user interaction and interface elements'
+icon: 'mdi:monitor'
+color: '#E91E63'
+enabled: true

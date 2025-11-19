@@ -1,0 +1,48 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+id: demo_content_replace
+label: 'Demo: Site-wide Content Replace (XB → Canvas)'
+description: 'Demonstrates batch content processing with find and replace operations across all blog posts'
+nodes:
+  - id: 'content_loader_1'
+    type: 'content_loader'
+    position:
+      x: 100
+      y: 100
+    data:
+      type: 'content_loader'
+      label: 'Load Blog Posts'
+      config:
+        contentType: 'blog_post'
+        status: 'published'
+        limit: 100
+        fields: ['title', 'body', 'author', 'created']
+  - id: 'text_replace_1'
+    type: 'text_find_replace'
+    position:
+      x: 400
+      y: 100
+    data:
+      type: 'text_find_replace'
+      label: 'Replace XB with Canvas'
+      config:
+        findText: 'XB'
+        replaceText: 'Canvas'
+        caseSensitive: false
+        useRegex: false
+        wholeWordsOnly: true
+edges:
+  - id: 'edge_1'
+    source: 'content_loader_1'
+    target: 'text_replace_1'
+    data:
+      sourceHandle: 'content_items'
+      targetHandle: 'content'
+metadata: {}
+created: 1734567890
+changed: 1734567890
+uid: 1

@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the FlowDrop Demo module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ *
+ * Remove demo workflows when the module is uninstalled.
+ */
+function flowdrop_demo_uninstall() {
+  // List of demo workflow configuration names to remove.
+  $workflow_configs = [
+    'flowdrop_workflow.flowdrop_workflow.demo_content_replace',
+    'flowdrop_workflow.flowdrop_workflow.demo_ai_content',
+    'flowdrop_workflow.flowdrop_workflow.demo_form_triage',
+  ];
+
+  $config_factory = \Drupal::configFactory();
+
+  foreach ($workflow_configs as $config_name) {
+    try {
+      $config = $config_factory->getEditable($config_name);
+      if (!$config->isNew()) {
+        $config->delete();
+        \Drupal::logger('flowdrop_demo')->info('Removed demo workflow config: @name', ['@name' => $config_name]);
+      }
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('flowdrop_demo')->error('Failed to remove demo workflow config @name: @error', [
+        '@name' => $config_name,
+        '@error' => $e->getMessage(),
+      ]);
+    }
+  }
+
+  \Drupal::messenger()->addStatus('FlowDrop Demo workflows have been removed.');
+}

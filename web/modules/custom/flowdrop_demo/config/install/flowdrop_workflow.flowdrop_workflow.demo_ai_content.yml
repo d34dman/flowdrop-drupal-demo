@@ -1,0 +1,67 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+id: demo_ai_content
+label: 'Demo: AI-Powered Content Enhancement'
+description: 'Demonstrates intelligent content processing using AI to distinguish context and make smart replacements'
+nodes:
+  - id: 'content_loader_2'
+    type: 'content_loader'
+    position:
+      x: 100
+      y: 100
+    data:
+      type: 'content_loader'
+      label: 'Load All Content'
+      config:
+        contentType: 'article'
+        status: 'published'
+        limit: 50
+        fields: ['title', 'body', 'summary', 'tags']
+  - id: 'ai_analyzer_1'
+    type: 'ai_content_analyzer'
+    position:
+      x: 400
+      y: 100
+    data:
+      type: 'ai_content_analyzer'
+      label: 'AI Context Analysis'
+      config:
+        targetText: 'XB'
+        replacementText: 'Canvas'
+        analysisMode: 'context_aware'
+        confidenceThreshold: 0.8
+  - id: 'text_replace_2'
+    type: 'text_find_replace'
+    position:
+      x: 700
+      y: 100
+    data:
+      type: 'text_find_replace'
+      label: 'Apply AI Recommendations'
+      config:
+        findText: 'XB'
+        replaceText: 'Canvas'
+        caseSensitive: false
+        useRegex: false
+        wholeWordsOnly: true
+edges:
+  - id: 'edge_1'
+    source: 'content_loader_2'
+    target: 'ai_analyzer_1'
+    data:
+      sourceHandle: 'content_items'
+      targetHandle: 'content'
+  - id: 'edge_2'
+    source: 'ai_analyzer_1'
+    target: 'text_replace_2'
+    data:
+      sourceHandle: 'analyzed_content'
+      targetHandle: 'content'
+metadata: {}
+created: 1734567890
+changed: 1734567890
+uid: 1

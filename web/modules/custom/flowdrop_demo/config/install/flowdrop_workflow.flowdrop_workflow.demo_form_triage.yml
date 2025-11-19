@@ -1,0 +1,84 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+id: demo_form_triage
+label: 'Demo: Contact Form Triage & Scheduling'
+description: 'Demonstrates intelligent form processing, triage classification, calendar integration, and automated meeting scheduling'
+nodes:
+  - id: 'form_receiver_1'
+    type: 'form_data_receiver'
+    position:
+      x: 100
+      y: 150
+    data:
+      type: 'form_data_receiver'
+      label: 'Contact Form Handler'
+      config:
+        formId: 'contact_form'
+        requiredFields: ['name', 'email', 'message']
+        validateEmail: true
+  - id: 'classifier_1'
+    type: 'content_classifier'
+    position:
+      x: 400
+      y: 150
+    data:
+      type: 'content_classifier'
+      label: 'Classify Request Type'
+      config:
+        classificationMode: 'full_analysis'
+        confidenceThreshold: 0.7
+        categories: ['support', 'features', 'sales', 'general']
+  - id: 'calendar_checker_1'
+    type: 'calendar_availability_checker'
+    position:
+      x: 700
+      y: 150
+    data:
+      type: 'calendar_availability_checker'
+      label: 'Check Team Availability'
+      config:
+        timeZone: 'America/New_York'
+        lookAheadDays: 7
+        meetingDuration: 30
+        workingHours:
+          start: '09:00'
+          end: '17:00'
+  - id: 'choice_presenter_1'
+    type: 'user_choice_presenter'
+    position:
+      x: 1000
+      y: 150
+    data:
+      type: 'user_choice_presenter'
+      label: 'Present Time Options'
+      config:
+        presentationMode: 'interactive'
+        autoSelectBest: false
+        includeDeclineOption: true
+edges:
+  - id: 'edge_1'
+    source: 'form_receiver_1'
+    target: 'classifier_1'
+    data:
+      sourceHandle: 'structured_data'
+      targetHandle: 'structured_data'
+  - id: 'edge_2'
+    source: 'classifier_1'
+    target: 'calendar_checker_1'
+    data:
+      sourceHandle: 'suggested_teams'
+      targetHandle: 'suggested_teams'
+  - id: 'edge_3'
+    source: 'calendar_checker_1'
+    target: 'choice_presenter_1'
+    data:
+      sourceHandle: 'suggested_meeting_times'
+      targetHandle: 'suggested_meeting_times'
+metadata: {}
+created: 1734567890
+changed: 1734567890
+uid: 1

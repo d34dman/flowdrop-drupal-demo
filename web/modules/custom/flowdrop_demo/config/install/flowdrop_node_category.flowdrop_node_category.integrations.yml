@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+id: integrations
+label: 'Integrations'
+description: 'Node types for external service integrations'
+icon: 'mdi:link-variant'
+color: '#607D8B'
+enabled: true

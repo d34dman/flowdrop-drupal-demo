@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+id: content
+label: 'Content'
+description: 'Node types for content management and manipulation'
+icon: 'mdi:file-document'
+color: '#FF9800'
+enabled: true

@@ -1,0 +1,11 @@
+name: 'FlowDrop Demo'
+type: module
+description: 'Demonstration module showcasing FlowDrop workflow capabilities with practical use cases including content management, AI-powered editing, and form triage workflows.'
+package: FlowDrop
+core_version_requirement: ^11
+dependencies:
+  - flowdrop:flowdrop
+  - flowdrop:flowdrop_node_processor
+  - flowdrop:flowdrop_node_category
+  - flowdrop:flowdrop_node_type
+  - flowdrop:flowdrop_workflow
