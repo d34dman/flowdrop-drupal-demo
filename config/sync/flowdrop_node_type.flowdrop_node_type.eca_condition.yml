@@ -1,0 +1,22 @@
+uuid: 5e6f7a8b-3d4e-5f6a-0b1c-2d3e4f5a6b7c
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_eca
+id: eca_condition
+label: 'ECA Condition'
+description: 'Evaluate ECA conditions within FlowDrop workflows for conditional logic'
+category: eca
+icon: 'mdi:help-network-outline'
+color: '#FF9800'
+version: 1.0.0
+enabled: true
+config: {  }
+tags:
+  - eca
+  - condition
+  - logic
+  - workflow
+executor_plugin: eca_condition

@@ -1,0 +1,23 @@
+uuid: 76065210-6c01-4c02-9d9f-04cdb3322441
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+id: node_field_extractor
+label: 'Node Field Extractor'
+description: 'Extract field values from Drupal nodes for workflow processing'
+category: content
+icon: 'mdi:checkbook-arrow-right'
+color: '#10b981'
+version: 1.0.0
+enabled: true
+config: {  }
+tags:
+  - node
+  - fields
+  - drupal
+  - content
+  - extraction
+executor_plugin: node_field_extractor

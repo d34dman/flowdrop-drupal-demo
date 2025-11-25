@@ -1,0 +1,13 @@
+uuid: 7a8b9c0d-5e6f-7a8b-2c3d-4e5f6a7b8c9d
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_eca
+id: eca
+label: ECA
+description: 'Event-Condition-Action processors for Drupal integration'
+icon: 'mdi:flash'
+color: '#9C27B0'
+enabled: true

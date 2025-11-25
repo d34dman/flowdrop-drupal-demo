@@ -1,0 +1,11 @@
+uuid: 914220c8-c68d-411c-9478-325c2beb6293
+langcode: en
+status: true
+dependencies:
+  module:
+    - thumbs_up
+id: thumbs_up_event.token
+label: Token
+description: null
+targetEntityType: thumbs_up_event
+cache: true

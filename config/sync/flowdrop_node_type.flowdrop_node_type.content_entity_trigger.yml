@@ -1,0 +1,26 @@
+uuid: 8a9b0c1d-2e3f-4a5b-6c7d-8e9f0a1b2c3d
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_entity_events
+id: content_entity_trigger
+label: 'Content Entity Trigger'
+description: 'Trigger workflows on entity lifecycle events (insert, update, delete, load, etc.)'
+category: triggers
+icon: 'mdi:book-open-outline'
+color: '#9C27B0'
+version: 1.0.0
+enabled: true
+config:
+  event_type: insert
+  entity_filter: '*'
+  auto_trigger: false
+  execution_mode: async
+tags:
+  - entity
+  - trigger
+  - events
+  - lifecycle
+executor_plugin: content_entity_trigger

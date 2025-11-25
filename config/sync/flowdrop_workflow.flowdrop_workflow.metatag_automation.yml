@@ -1,0 +1,1671 @@
+uuid: f6f3bc12-f61d-471b-8b7a-2832008b1da5
+langcode: en
+status: true
+dependencies: {  }
+id: metatag_automation
+label: 'MetaTag Automation'
+description: TBD
+nodes:
+  -
+    id: chat_model.1
+    type: universalNode
+    position:
+      x: 710
+      'y': 1090
+    data:
+      label: 'Chat Model'
+      config:
+        model: 'llama3.2:latest'
+        temperature: 0.7
+        maxTokens: '1000'
+        systemPrompt: |-
+          You are an SEO metadata generator.
+          Given the following page content:
+
+          {{ field_content }}
+
+          Return a **strict JSON object only**:
+
+          {
+            "meta_title": "...",
+            "meta_description": "..."
+          }
+
+          Rules:
+          - meta_title: max 60 chars, compelling, human readable.
+          - meta_description: max 155 chars, enticing, summarizes content.
+          - No markdown, no commentary, no explanation.
+      metadata:
+        id: chat_model
+        name: 'Chat Model'
+        type: default
+        supportedTypes:
+          - default
+        description: 'AI chat model for conversation and text generation'
+        category: models
+        icon: 'mdi:robot'
+        color: '#8b5cf6'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - model
+          - ai
+          - chat
+          - gpt
+        executor_plugin: chat_model
+        inputs:
+          -
+            id: message
+            name: Message
+            type: input
+            dataType: string
+            required: false
+            description: 'The message to send to the model'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: response
+            name: response
+            type: output
+            dataType: string
+            required: false
+            description: 'The model response'
+          -
+            id: model
+            name: model
+            type: output
+            dataType: string
+            required: false
+            description: 'The model used'
+          -
+            id: temperature
+            name: temperature
+            type: output
+            dataType: number
+            required: false
+            description: 'The temperature setting'
+          -
+            id: tokens_used
+            name: tokens_used
+            type: output
+            dataType: number
+            required: false
+            description: 'Number of tokens used'
+        config:
+          model: gpt-3.5-turbo
+          temperature: 0.7
+          maxTokens: 1000
+          systemPrompt: ''
+        configSchema:
+          type: object
+          properties:
+            model:
+              type: string
+              title: Model
+              description: 'The chat model to use'
+              default: gpt-3.5-turbo
+            temperature:
+              type: number
+              title: Temperature
+              description: 'Model temperature (0.0 to 2.0)'
+              default: 0.7
+            maxTokens:
+              type: integer
+              title: 'Max Tokens'
+              description: 'Maximum tokens in response'
+              default: 1000
+            systemPrompt:
+              type: string
+              title: 'System Prompt'
+              description: 'System prompt for the model'
+              format: multiline
+              default: ''
+      nodeId: chat_model.1
+    deletable: true
+    measured:
+      width: 288
+      height: 590
+    selected: false
+    dragging: false
+  -
+    id: boolean_gateway.1
+    type: universalNode
+    position:
+      x: -230
+      'y': 1530
+    data:
+      label: 'Boolean Gateway'
+      config:
+        branches:
+          -
+            name: 'True'
+            value: true
+          -
+            name: 'False'
+            value: false
+      metadata:
+        id: boolean_gateway
+        name: 'Boolean Gateway'
+        type: gateway
+        supportedTypes:
+          - gateway
+        description: ''
+        category: logic
+        icon: 'mdi:cog'
+        color: '#007cba'
+        version: 1.0.0
+        enabled: true
+        tags: {  }
+        executor_plugin: boolean_gateway
+        inputs:
+          -
+            id: value
+            name: 'Input Value'
+            type: input
+            dataType: boolean
+            required: false
+            description: 'The value to evaluate against branch conditions'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs: {  }
+        config:
+          branches:
+            -
+              name: 'True'
+              value: true
+            -
+              name: 'False'
+              value: false
+        configSchema:
+          type: object
+          properties:
+            branches:
+              type: array
+              description: 'The active branches'
+              default:
+                -
+                  name: 'True'
+                  value: true
+                -
+                  name: 'False'
+                  value: false
+              format: hidden
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: 'The name of the branch'
+                  value:
+                    type: boolean
+                    description: 'The value of the branch'
+                description: 'The active branch'
+      nodeId: boolean_gateway.1
+    deletable: true
+    measured:
+      width: 288
+      height: 344
+    selected: false
+    dragging: false
+  -
+    id: notes.1
+    type: universalNode
+    position:
+      x: -2170
+      'y': 600
+    data:
+      label: Notes
+      config:
+        content: |-
+          # Metatag Automation
+
+          This workflow will be triggered after a page (content type) is created or updated.
+
+          Then if the ```field_metatag``` is empty it will trigger the field extractor to get the body field (field_content) and pass the value to the chat model using ```llama3.2:latest``` model which will acts as a SEO expert, then it will return the generated meta title and meta description into a JSON parser, then it will finally generate/update the metatags
+        noteType: info
+      metadata:
+        id: notes
+        name: Notes
+        type: note
+        supportedTypes:
+          - note
+        description: 'Add documentation and comments to your workflow with Markdown support'
+        category: tools
+        icon: 'mdi:note-text'
+        color: '#fbbf24'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - tools
+          - notes
+          - documentation
+          - comments
+          - markdown
+        executor_plugin: notes
+        inputs:
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: content
+            name: 'Note Content'
+            type: output
+            dataType: string
+            required: false
+            description: 'The markdown content of the note'
+          -
+            id: noteType
+            name: 'Note Type'
+            type: output
+            dataType: string
+            required: false
+            description: 'The visual type of the note (info, warning, success, error, note)'
+          -
+            id: message
+            name: Message
+            type: output
+            dataType: string
+            required: false
+            description: 'Status message about the note'
+        config:
+          content: |-
+            # Workflow Notes
+
+            Add your documentation here using **Markdown** formatting.
+
+            ## Features
+            - Supports **bold** and *italic* text
+            - Create lists and code blocks
+            - Add links and more!
+          noteType: info
+        configSchema:
+          type: object
+          properties:
+            content:
+              type: string
+              title: 'Note Content'
+              description: 'Documentation or comment text (supports Markdown)'
+              format: multiline
+              default: |-
+                # Workflow Notes
+
+                Add your documentation here using **Markdown** formatting.
+
+                ## Features
+                - Supports **bold** and *italic* text
+                - Create lists and code blocks
+                - Add links and more!
+            noteType:
+              type: string
+              title: 'Note Type'
+              description: 'Visual style and color of the note'
+              default: info
+              enum:
+                - info
+                - warning
+                - success
+                - error
+                - note
+      nodeId: notes.1
+    deletable: true
+    measured:
+      width: 500
+      height: 394
+    selected: false
+    dragging: false
+  -
+    id: json_parser.1
+    type: universalNode
+    position:
+      x: 1120
+      'y': 830
+    data:
+      label: 'JSON Parser'
+      config:
+        nodeType: default
+        extractFields: meta_title
+      metadata:
+        id: json_parser
+        name: 'JSON Parser'
+        type: default
+        supportedTypes:
+          - default
+        description: 'Parse JSON strings and extract structured data (handles LLM responses)'
+        category: data
+        icon: 'mdi:code-json'
+        color: '#f59e0b'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - json
+          - parse
+          - data
+          - transform
+          - llm
+        executor_plugin: json_parser
+        inputs:
+          -
+            id: json
+            name: 'JSON String'
+            type: input
+            dataType: string
+            required: false
+            description: 'JSON string to parse'
+          -
+            id: response
+            name: 'Response (alternative)'
+            type: input
+            dataType: string
+            required: false
+            description: 'Alternative input field name'
+          -
+            id: text
+            name: 'Text (alternative)'
+            type: input
+            dataType: string
+            required: false
+            description: 'Alternative input field name'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: parsed_data
+            name: parsed_data
+            type: output
+            dataType: json
+            required: false
+            description: 'The complete parsed JSON data as an associative array'
+          -
+            id: json_valid
+            name: json_valid
+            type: output
+            dataType: boolean
+            required: false
+            description: 'Whether JSON parsing was successful'
+        config: {  }
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              default: default
+              enum:
+                - default
+            extractFields:
+              type: array
+              title: 'Fields to Extract'
+              description: 'Specific JSON field names to extract (e.g., ["meta_title", "meta_description"]). Leave empty to extract all top-level fields from the JSON.'
+              items:
+                type: string
+              default: {  }
+      nodeId: json_parser.1
+    deletable: true
+    measured:
+      width: 288
+      height: 590
+    selected: false
+    dragging: true
+  -
+    id: json_parser.2
+    type: universalNode
+    position:
+      x: 1120
+      'y': 1490
+    data:
+      label: 'JSON Parser'
+      config:
+        nodeType: default
+        extractFields: meta_description
+      metadata:
+        id: json_parser
+        name: 'JSON Parser'
+        type: default
+        supportedTypes:
+          - default
+        description: 'Parse JSON strings and extract structured data (handles LLM responses)'
+        category: data
+        icon: 'mdi:code-json'
+        color: '#f59e0b'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - json
+          - parse
+          - data
+          - transform
+          - llm
+        executor_plugin: json_parser
+        inputs:
+          -
+            id: json
+            name: 'JSON String'
+            type: input
+            dataType: string
+            required: false
+            description: 'JSON string to parse'
+          -
+            id: response
+            name: 'Response (alternative)'
+            type: input
+            dataType: string
+            required: false
+            description: 'Alternative input field name'
+          -
+            id: text
+            name: 'Text (alternative)'
+            type: input
+            dataType: string
+            required: false
+            description: 'Alternative input field name'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: parsed_data
+            name: parsed_data
+            type: output
+            dataType: json
+            required: false
+            description: 'The complete parsed JSON data as an associative array'
+          -
+            id: json_valid
+            name: json_valid
+            type: output
+            dataType: boolean
+            required: false
+            description: 'Whether JSON parsing was successful'
+        config: {  }
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              default: default
+              enum:
+                - default
+            extractFields:
+              type: array
+              title: 'Fields to Extract'
+              description: 'Specific JSON field names to extract (e.g., ["meta_title", "meta_description"]). Leave empty to extract all top-level fields from the JSON.'
+              items:
+                type: string
+              default: {  }
+      nodeId: json_parser.2
+    deletable: true
+    measured:
+      width: 288
+      height: 590
+    selected: false
+    dragging: false
+  -
+    id: node_field_extractor.2
+    type: universalNode
+    position:
+      x: 240
+      'y': 540
+    data:
+      label: 'Node Field Extractor'
+      config:
+        nodeType: default
+        fieldName: field_content
+        extractAll: false
+        nodeId: ''
+      metadata:
+        id: node_field_extractor
+        name: 'Node Field Extractor'
+        type: default
+        supportedTypes:
+          - default
+        description: 'Extract field values from Drupal nodes for workflow processing'
+        category: content
+        icon: 'mdi:checkbook-arrow-right'
+        color: '#10b981'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - node
+          - fields
+          - drupal
+          - content
+          - extraction
+        executor_plugin: node_field_extractor
+        inputs:
+          -
+            id: entity_id
+            name: 'Entity ID'
+            type: input
+            dataType: number
+            required: false
+            description: 'Node ID from ECA trigger'
+          -
+            id: node_id
+            name: 'Node ID'
+            type: input
+            dataType: number
+            required: false
+            description: 'Alternative node ID input'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: node_id
+            name: node_id
+            type: output
+            dataType: number
+            required: false
+            description: 'The node ID'
+          -
+            id: node_title
+            name: node_title
+            type: output
+            dataType: string
+            required: false
+            description: 'The node title'
+          -
+            id: node_type
+            name: node_type
+            type: output
+            dataType: string
+            required: false
+            description: 'The node content type'
+          -
+            id: node_status
+            name: node_status
+            type: output
+            dataType: string
+            required: false
+            description: 'Node publication status'
+          -
+            id: field_value
+            name: field_value
+            type: output
+            dataType: string
+            required: false
+            description: 'Extracted field value'
+          -
+            id: field_name
+            name: field_name
+            type: output
+            dataType: string
+            required: false
+            description: 'Name of the extracted field'
+          -
+            id: fields
+            name: fields
+            type: output
+            dataType: json
+            required: false
+            description: 'All extracted fields (if extractAll enabled)'
+        config: {  }
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              default: default
+              enum:
+                - default
+            fieldName:
+              type: string
+              title: 'Field Name'
+              description: 'Machine name of the field to extract (e.g., body, field_description)'
+              default: body
+            extractAll:
+              type: boolean
+              title: 'Extract All Fields'
+              description: 'Extract all fields instead of just one'
+              default: false
+            nodeId:
+              type: integer
+              title: 'Node ID (Manual)'
+              description: 'Manual node ID if not from trigger'
+              required: false
+      nodeId: node_field_extractor.2
+    deletable: true
+    measured:
+      width: 288
+      height: 890
+    selected: false
+    dragging: false
+  -
+    id: node_metatag_updater.2
+    type: universalNode
+    position:
+      x: 1770
+      'y': 350
+    data:
+      label: 'Node MetaTag Updater'
+      config:
+        nodeType: default
+      metadata:
+        id: node_metatag_updater
+        name: 'Node MetaTag Updater'
+        type: default
+        supportedTypes:
+          - default
+        description: 'Update node meta tags (title and description) with infinite loop prevention'
+        category: content
+        icon: 'mdi:tag-multiple-outline'
+        color: '#8b5cf6'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - node
+          - metatag
+          - seo
+          - update
+        executor_plugin: node_metatag_updater
+        inputs:
+          -
+            id: node_id
+            name: 'Node ID'
+            type: input
+            dataType: number
+            required: false
+            description: 'ID of the node to update'
+          -
+            id: meta_title
+            name: 'Meta Title'
+            type: input
+            dataType: string
+            required: false
+            description: 'SEO meta title (55-60 characters recommended)'
+          -
+            id: meta_description
+            name: 'Meta Description'
+            type: input
+            dataType: string
+            required: false
+            description: 'SEO meta description (150-160 characters recommended)'
+          -
+            id: title
+            name: 'Title (alternative)'
+            type: input
+            dataType: string
+            required: false
+            description: 'Alternative field name for meta title'
+          -
+            id: description
+            name: 'Description (alternative)'
+            type: input
+            dataType: string
+            required: false
+            description: 'Alternative field name for meta description'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: success
+            name: success
+            type: output
+            dataType: boolean
+            required: false
+            description: 'Whether the update was successful'
+          -
+            id: node_id
+            name: node_id
+            type: output
+            dataType: number
+            required: false
+            description: 'The updated node ID'
+          -
+            id: node_title
+            name: node_title
+            type: output
+            dataType: string
+            required: false
+            description: 'The node title'
+          -
+            id: updated_fields
+            name: updated_fields
+            type: output
+            dataType: json
+            required: false
+            description: 'Fields that were updated'
+          -
+            id: message
+            name: message
+            type: output
+            dataType: string
+            required: false
+            description: 'Status message'
+        config: {  }
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              default: default
+              enum:
+                - default
+            nodeId:
+              type: integer
+              title: 'Node ID (Fallback)'
+              description: 'Fallback node ID if not provided in input'
+              required: false
+      nodeId: node_metatag_updater.2
+    deletable: true
+    measured:
+      width: 288
+      height: 965
+    selected: false
+    dragging: false
+  -
+    id: metatag_checker.2
+    type: universalNode
+    position:
+      x: -1050
+      'y': 430
+    data:
+      label: 'MetaTag Checker'
+      config:
+        nodeType: default
+        nodeId: ''
+      metadata:
+        id: metatag_checker
+        name: 'MetaTag Checker'
+        type: default
+        supportedTypes:
+          - default
+        description: 'Check if node metatags need generation (detects empty fields or token-only placeholders like [node:title])'
+        category: content
+        icon: 'mdi:tag-check-outline'
+        color: '#10b981'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - metatag
+          - seo
+          - validation
+          - checker
+        executor_plugin: metatag_checker
+        inputs:
+          -
+            id: entity_id
+            name: 'Entity ID'
+            type: input
+            dataType: number
+            required: false
+            description: 'Node ID from trigger'
+          -
+            id: node_id
+            name: 'Node ID'
+            type: input
+            dataType: number
+            required: false
+            description: 'Alternative node ID input'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: needs_generation
+            name: needs_generation
+            type: output
+            dataType: boolean
+            required: false
+            description: 'TRUE if metatags need to be generated'
+          -
+            id: has_metatag_field
+            name: has_metatag_field
+            type: output
+            dataType: boolean
+            required: false
+            description: 'Whether the node has field_metatag'
+          -
+            id: is_empty
+            name: is_empty
+            type: output
+            dataType: boolean
+            required: false
+            description: 'Whether the metatag field is completely empty'
+          -
+            id: has_tokens
+            name: has_tokens
+            type: output
+            dataType: boolean
+            required: false
+            description: 'Whether current values contain token placeholders'
+          -
+            id: title_needs_generation
+            name: title_needs_generation
+            type: output
+            dataType: boolean
+            required: false
+            description: 'Whether meta title needs generation'
+          -
+            id: description_needs_generation
+            name: description_needs_generation
+            type: output
+            dataType: boolean
+            required: false
+            description: 'Whether meta description needs generation'
+          -
+            id: current_title
+            name: current_title
+            type: output
+            dataType: string
+            required: false
+            description: 'Current meta title value'
+          -
+            id: current_description
+            name: current_description
+            type: output
+            dataType: string
+            required: false
+            description: 'Current meta description value'
+          -
+            id: node_id
+            name: node_id
+            type: output
+            dataType: number
+            required: false
+            description: 'The node ID'
+          -
+            id: message
+            name: message
+            type: output
+            dataType: string
+            required: false
+            description: 'Status message'
+        config: {  }
+        configSchema:
+          type: object
+          properties:
+            nodeType:
+              type: select
+              title: 'Node Type'
+              default: default
+              enum:
+                - default
+            nodeId:
+              type: integer
+              title: 'Node ID (Manual)'
+              description: 'Manual node ID if not from trigger'
+              required: false
+      nodeId: metatag_checker.2
+    deletable: true
+    measured:
+      width: 288
+      height: 1115
+    selected: true
+    dragging: true
+  -
+    id: content_entity_trigger.3
+    type: universalNode
+    position:
+      x: -1550
+      'y': -790
+    data:
+      label: 'Content Entity Trigger'
+      config:
+        triggerData: ''
+        workflowId: ''
+        pipelineId: ''
+        description: ''
+        enabled: true
+        event_type: update
+        entity_filter: 'node::page'
+        auto_trigger: true
+        execution_mode: sync
+      metadata:
+        id: content_entity_trigger
+        name: 'Content Entity Trigger'
+        type: trigger
+        supportedTypes:
+          - trigger
+        description: 'Trigger workflows on entity lifecycle events (insert, update, delete, load, etc.)'
+        category: triggers
+        icon: 'mdi:book-open-outline'
+        color: '#9C27B0'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - entity
+          - trigger
+          - events
+          - lifecycle
+        executor_plugin: content_entity_trigger
+        inputs:
+          -
+            id: data
+            name: 'Trigger Input Data'
+            type: input
+            dataType: mixed
+            required: false
+            description: 'Input data for the trigger'
+          -
+            id: entity
+            name: Entity
+            type: input
+            dataType: json
+            required: false
+            description: 'The entity data'
+          -
+            id: event_type
+            name: 'Event Type'
+            type: input
+            dataType: string
+            required: false
+            description: 'The event type'
+          -
+            id: event_data
+            name: 'Event Data'
+            type: input
+            dataType: json
+            required: false
+            description: 'Additional event metadata'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: trigger_type
+            name: trigger_type
+            type: output
+            dataType: string
+            required: false
+            description: 'The type of trigger that was executed'
+          -
+            id: trigger_data
+            name: trigger_data
+            type: output
+            dataType: json
+            required: false
+            description: 'The processed trigger data'
+          -
+            id: workflow_id
+            name: workflow_id
+            type: output
+            dataType: string
+            required: false
+            description: 'The ID of the workflow being triggered'
+          -
+            id: pipeline_id
+            name: pipeline_id
+            type: output
+            dataType: string
+            required: false
+            description: 'The ID of the pipeline being triggered'
+          -
+            id: timestamp
+            name: timestamp
+            type: output
+            dataType: number
+            required: false
+            description: 'Unix timestamp when the event occurred'
+          -
+            id: execution_id
+            name: execution_id
+            type: output
+            dataType: string
+            required: false
+            description: 'Unique execution ID for this trigger execution'
+          -
+            id: entity
+            name: entity
+            type: output
+            dataType: json
+            required: false
+            description: 'Full entity data including all fields'
+          -
+            id: entity_id
+            name: entity_id
+            type: output
+            dataType: number
+            required: false
+            description: 'Entity ID'
+          -
+            id: entity_type
+            name: entity_type
+            type: output
+            dataType: string
+            required: false
+            description: 'Entity type (node, user, taxonomy_term, etc.)'
+          -
+            id: bundle
+            name: bundle
+            type: output
+            dataType: string
+            required: false
+            description: 'Bundle (article, page, etc.)'
+          -
+            id: label
+            name: label
+            type: output
+            dataType: string
+            required: false
+            description: 'Entity label/title'
+          -
+            id: event_type
+            name: event_type
+            type: output
+            dataType: string
+            required: false
+            description: 'The event type that triggered (insert, update, etc.)'
+          -
+            id: original_entity
+            name: original_entity
+            type: output
+            dataType: json
+            required: false
+            description: 'Original entity data (for update events)'
+          -
+            id: changed_fields
+            name: changed_fields
+            type: output
+            dataType: array
+            required: false
+            description: 'List of fields that changed (for update events)'
+        config:
+          event_type: insert
+          entity_filter: '*'
+          auto_trigger: false
+          execution_mode: async
+        configSchema:
+          type: object
+          properties:
+            triggerData:
+              type: object
+              title: 'Trigger Data'
+              description: 'Default data to use when the trigger is activated'
+              default: {  }
+            workflowId:
+              type: string
+              title: 'Workflow ID'
+              description: 'The ID of the workflow to trigger'
+              default: ''
+            pipelineId:
+              type: string
+              title: 'Pipeline ID'
+              description: 'The ID of the pipeline to trigger'
+              default: ''
+            description:
+              type: string
+              title: Description
+              description: 'Optional description for this trigger'
+              default: ''
+            enabled:
+              type: boolean
+              title: Enabled
+              description: 'Whether this trigger is enabled'
+              default: true
+            event_type:
+              type: select
+              title: 'Event Type'
+              description: 'Which entity lifecycle event should trigger this workflow'
+              enum:
+                - create
+                - presave
+                - insert
+                - update
+                - predelete
+                - delete
+                - load
+                - view
+                - translation_create
+                - translation_insert
+                - translation_delete
+              enumNames:
+                - 'Initialize (entity created in memory)'
+                - 'Presave (before save)'
+                - 'Insert (after new entity saved)'
+                - 'Update (after existing entity saved)'
+                - 'Predelete (before delete)'
+                - 'Delete (after delete)'
+                - 'Load (entity loaded)'
+                - 'View (entity rendered)'
+                - 'Translation Create'
+                - 'Translation Insert'
+                - 'Translation Delete'
+              default: insert
+              required: true
+            entity_filter:
+              type: text
+              title: 'Entity Filter'
+              description: 'Wildcard filter: * (all), node (entity type), node::article (specific bundle)'
+              default: '*'
+            auto_trigger:
+              type: boolean
+              title: Auto-trigger
+              description: 'Automatically start workflow when matching events occur'
+              default: false
+            execution_mode:
+              type: select
+              title: 'Execution Mode'
+              description: 'How to execute the workflow when triggered'
+              enum:
+                - async
+                - sync
+              enumNames:
+                - 'Asynchronous (queue-based, recommended)'
+                - 'Synchronous (immediate, blocks request)'
+              default: async
+          required: {  }
+      nodeId: content_entity_trigger.3
+    deletable: true
+    measured:
+      width: 288
+      height: 1565
+    selected: false
+    dragging: true
+  -
+    id: content_entity_trigger.4
+    type: universalNode
+    position:
+      x: -1540
+      'y': 830
+    data:
+      label: 'Content Entity Trigger'
+      config:
+        triggerData: ''
+        workflowId: ''
+        pipelineId: ''
+        description: ''
+        enabled: true
+        event_type: insert
+        entity_filter: 'node::page'
+        auto_trigger: true
+        execution_mode: sync
+      metadata:
+        id: content_entity_trigger
+        name: 'Content Entity Trigger'
+        type: trigger
+        supportedTypes:
+          - trigger
+        description: 'Trigger workflows on entity lifecycle events (insert, update, delete, load, etc.)'
+        category: triggers
+        icon: 'mdi:book-open-outline'
+        color: '#9C27B0'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - entity
+          - trigger
+          - events
+          - lifecycle
+        executor_plugin: content_entity_trigger
+        inputs:
+          -
+            id: data
+            name: 'Trigger Input Data'
+            type: input
+            dataType: mixed
+            required: false
+            description: 'Input data for the trigger'
+          -
+            id: entity
+            name: Entity
+            type: input
+            dataType: json
+            required: false
+            description: 'The entity data'
+          -
+            id: event_type
+            name: 'Event Type'
+            type: input
+            dataType: string
+            required: false
+            description: 'The event type'
+          -
+            id: event_data
+            name: 'Event Data'
+            type: input
+            dataType: json
+            required: false
+            description: 'Additional event metadata'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: trigger_type
+            name: trigger_type
+            type: output
+            dataType: string
+            required: false
+            description: 'The type of trigger that was executed'
+          -
+            id: trigger_data
+            name: trigger_data
+            type: output
+            dataType: json
+            required: false
+            description: 'The processed trigger data'
+          -
+            id: workflow_id
+            name: workflow_id
+            type: output
+            dataType: string
+            required: false
+            description: 'The ID of the workflow being triggered'
+          -
+            id: pipeline_id
+            name: pipeline_id
+            type: output
+            dataType: string
+            required: false
+            description: 'The ID of the pipeline being triggered'
+          -
+            id: timestamp
+            name: timestamp
+            type: output
+            dataType: number
+            required: false
+            description: 'Unix timestamp when the event occurred'
+          -
+            id: execution_id
+            name: execution_id
+            type: output
+            dataType: string
+            required: false
+            description: 'Unique execution ID for this trigger execution'
+          -
+            id: entity
+            name: entity
+            type: output
+            dataType: json
+            required: false
+            description: 'Full entity data including all fields'
+          -
+            id: entity_id
+            name: entity_id
+            type: output
+            dataType: number
+            required: false
+            description: 'Entity ID'
+          -
+            id: entity_type
+            name: entity_type
+            type: output
+            dataType: string
+            required: false
+            description: 'Entity type (node, user, taxonomy_term, etc.)'
+          -
+            id: bundle
+            name: bundle
+            type: output
+            dataType: string
+            required: false
+            description: 'Bundle (article, page, etc.)'
+          -
+            id: label
+            name: label
+            type: output
+            dataType: string
+            required: false
+            description: 'Entity label/title'
+          -
+            id: event_type
+            name: event_type
+            type: output
+            dataType: string
+            required: false
+            description: 'The event type that triggered (insert, update, etc.)'
+          -
+            id: original_entity
+            name: original_entity
+            type: output
+            dataType: json
+            required: false
+            description: 'Original entity data (for update events)'
+          -
+            id: changed_fields
+            name: changed_fields
+            type: output
+            dataType: array
+            required: false
+            description: 'List of fields that changed (for update events)'
+        config:
+          event_type: insert
+          entity_filter: '*'
+          auto_trigger: false
+          execution_mode: async
+        configSchema:
+          type: object
+          properties:
+            triggerData:
+              type: object
+              title: 'Trigger Data'
+              description: 'Default data to use when the trigger is activated'
+              default: {  }
+            workflowId:
+              type: string
+              title: 'Workflow ID'
+              description: 'The ID of the workflow to trigger'
+              default: ''
+            pipelineId:
+              type: string
+              title: 'Pipeline ID'
+              description: 'The ID of the pipeline to trigger'
+              default: ''
+            description:
+              type: string
+              title: Description
+              description: 'Optional description for this trigger'
+              default: ''
+            enabled:
+              type: boolean
+              title: Enabled
+              description: 'Whether this trigger is enabled'
+              default: true
+            event_type:
+              type: select
+              title: 'Event Type'
+              description: 'Which entity lifecycle event should trigger this workflow'
+              enum:
+                - create
+                - presave
+                - insert
+                - update
+                - predelete
+                - delete
+                - load
+                - view
+                - translation_create
+                - translation_insert
+                - translation_delete
+              enumNames:
+                - 'Initialize (entity created in memory)'
+                - 'Presave (before save)'
+                - 'Insert (after new entity saved)'
+                - 'Update (after existing entity saved)'
+                - 'Predelete (before delete)'
+                - 'Delete (after delete)'
+                - 'Load (entity loaded)'
+                - 'View (entity rendered)'
+                - 'Translation Create'
+                - 'Translation Insert'
+                - 'Translation Delete'
+              default: insert
+              required: true
+            entity_filter:
+              type: text
+              title: 'Entity Filter'
+              description: 'Wildcard filter: * (all), node (entity type), node::article (specific bundle)'
+              default: '*'
+            auto_trigger:
+              type: boolean
+              title: Auto-trigger
+              description: 'Automatically start workflow when matching events occur'
+              default: false
+            execution_mode:
+              type: select
+              title: 'Execution Mode'
+              description: 'How to execute the workflow when triggered'
+              enum:
+                - async
+                - sync
+              enumNames:
+                - 'Asynchronous (queue-based, recommended)'
+                - 'Synchronous (immediate, blocks request)'
+              default: async
+          required: {  }
+      nodeId: content_entity_trigger.4
+    deletable: true
+    measured:
+      width: 288
+      height: 1565
+    selected: false
+    dragging: false
+edges:
+  -
+    id: xy-edge__boolean_gateway.1boolean_gateway.1-output-True-node_field_extractor.2node_field_extractor.2-input-trigger
+    source: boolean_gateway.1
+    target: node_field_extractor.2
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: content
+    sourceHandle: boolean_gateway.1-output-True
+    targetHandle: node_field_extractor.2-input-trigger
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+    selected: false
+  -
+    id: xy-edge__node_field_extractor.2node_field_extractor.2-output-field_value-chat_model.1chat_model.1-input-message
+    source: node_field_extractor.2
+    target: chat_model.1
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: models
+    sourceHandle: node_field_extractor.2-output-field_value
+    targetHandle: chat_model.1-input-message
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+    selected: false
+  -
+    id: xy-edge__json_parser.1json_parser.1-output-parsed_data-node_metatag_updater.2node_metatag_updater.2-input-meta_title
+    source: json_parser.1
+    target: node_metatag_updater.2
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: content
+    sourceHandle: json_parser.1-output-parsed_data
+    targetHandle: node_metatag_updater.2-input-meta_title
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+    selected: false
+  -
+    id: xy-edge__json_parser.2json_parser.2-output-parsed_data-node_metatag_updater.2node_metatag_updater.2-input-meta_description
+    source: json_parser.2
+    target: node_metatag_updater.2
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: content
+    sourceHandle: json_parser.2-output-parsed_data
+    targetHandle: node_metatag_updater.2-input-meta_description
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+    selected: false
+  -
+    id: xy-edge__metatag_checker.2metatag_checker.2-output-needs_generation-boolean_gateway.1boolean_gateway.1-input-value
+    source: metatag_checker.2
+    target: boolean_gateway.1
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: logic
+    sourceHandle: metatag_checker.2-output-needs_generation
+    targetHandle: boolean_gateway.1-input-value
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+    selected: false
+  -
+    id: xy-edge__content_entity_trigger.3content_entity_trigger.3-output-entity_id-metatag_checker.2metatag_checker.2-input-entity_id
+    source: content_entity_trigger.3
+    target: metatag_checker.2
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: content
+    sourceHandle: content_entity_trigger.3-output-entity_id
+    targetHandle: metatag_checker.2-input-entity_id
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+    selected: false
+  -
+    id: xy-edge__content_entity_trigger.3content_entity_trigger.3-output-entity_id-node_field_extractor.2node_field_extractor.2-input-entity_id
+    source: content_entity_trigger.3
+    target: node_field_extractor.2
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: content
+    sourceHandle: content_entity_trigger.3-output-entity_id
+    targetHandle: node_field_extractor.2-input-entity_id
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+    selected: false
+  -
+    id: xy-edge__content_entity_trigger.4content_entity_trigger.4-output-entity_id-metatag_checker.2metatag_checker.2-input-entity_id
+    source: content_entity_trigger.4
+    target: metatag_checker.2
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: content
+    sourceHandle: content_entity_trigger.4-output-entity_id
+    targetHandle: metatag_checker.2-input-entity_id
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+    selected: false
+  -
+    id: xy-edge__content_entity_trigger.4content_entity_trigger.4-output-entity_id-node_field_extractor.2node_field_extractor.2-input-entity_id
+    source: content_entity_trigger.4
+    target: node_field_extractor.2
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: content
+    sourceHandle: content_entity_trigger.4-output-entity_id
+    targetHandle: node_field_extractor.2-input-entity_id
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+    selected: false
+  -
+    id: xy-edge__chat_model.1chat_model.1-output-response-json_parser.1json_parser.1-input-response
+    source: chat_model.1
+    target: json_parser.1
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: data
+    sourceHandle: chat_model.1-output-response
+    targetHandle: json_parser.1-input-response
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+  -
+    id: xy-edge__chat_model.1chat_model.1-output-response-json_parser.2json_parser.2-input-response
+    source: chat_model.1
+    target: json_parser.2
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: data
+    sourceHandle: chat_model.1-output-response
+    targetHandle: json_parser.2-input-response
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+  -
+    id: xy-edge__node_field_extractor.2node_field_extractor.2-output-node_id-node_metatag_updater.2node_metatag_updater.2-input-node_id
+    source: node_field_extractor.2
+    target: node_metatag_updater.2
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: content
+    sourceHandle: node_field_extractor.2-output-node_id
+    targetHandle: node_metatag_updater.2-input-node_id
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+metadata:
+  version: 1.0.0
+  createdAt: '2025-11-24T20:25:15.548Z'
+  updatedAt: '2025-11-25T11:26:14.911Z'
+created: 1764015487
+changed: 1764069974
+uid: 0

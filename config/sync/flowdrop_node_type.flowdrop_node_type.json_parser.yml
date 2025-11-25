@@ -1,0 +1,23 @@
+uuid: 48099215-918d-42fd-8be8-779c939abbb4
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+id: json_parser
+label: 'JSON Parser'
+description: 'Parse JSON strings and extract structured data (handles LLM responses)'
+category: data
+icon: 'mdi:code-json'
+color: '#f59e0b'
+version: 1.0.0
+enabled: true
+config: {  }
+tags:
+  - json
+  - parse
+  - data
+  - transform
+  - llm
+executor_plugin: json_parser

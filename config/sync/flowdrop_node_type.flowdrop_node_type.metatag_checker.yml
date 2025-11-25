@@ -1,0 +1,22 @@
+uuid: d160d404-7b2c-4287-98bd-4527fb42c35b
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+id: metatag_checker
+label: 'MetaTag Checker'
+description: 'Check if node metatags need generation (detects empty fields or token-only placeholders like [node:title])'
+category: content
+icon: 'mdi:tag-check-outline'
+color: '#10b981'
+version: 1.0.0
+enabled: true
+config: {  }
+tags:
+  - metatag
+  - seo
+  - validation
+  - checker
+executor_plugin: metatag_checker

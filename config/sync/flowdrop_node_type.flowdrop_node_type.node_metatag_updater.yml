@@ -1,0 +1,22 @@
+uuid: ea1e8593-bca5-48ff-bd0b-3db70dd5a319
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - flowdrop_demo
+id: node_metatag_updater
+label: 'Node MetaTag Updater'
+description: 'Update node meta tags (title and description) with infinite loop prevention'
+category: content
+icon: 'mdi:tag-multiple-outline'
+color: '#8b5cf6'
+version: 1.0.0
+enabled: true
+config: {  }
+tags:
+  - node
+  - metatag
+  - seo
+  - update
+executor_plugin: node_metatag_updater
