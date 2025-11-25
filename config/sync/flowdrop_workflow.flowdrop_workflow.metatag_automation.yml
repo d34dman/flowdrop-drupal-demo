@@ -4,135 +4,8 @@ status: true
 dependencies: {  }
 id: metatag_automation
 label: 'MetaTag Automation'
-description: TBD
+description: 'This workflow automates the generation, and updating of metadata (meta tags) for page content. It collects body content, then processes it to create structured metadata—including title, and description. The automation ensures consistent SEO optimisation and reduces manual effort by validating, formatting, and delivering the final metadata to the desired destination.'
 nodes:
-  -
-    id: chat_model.1
-    type: universalNode
-    position:
-      x: 710
-      'y': 1090
-    data:
-      label: 'Chat Model'
-      config:
-        model: 'llama3.2:latest'
-        temperature: 0.7
-        maxTokens: '1000'
-        systemPrompt: |-
-          You are an SEO metadata generator.
-          Given the following page content:
-
-          {{ field_content }}
-
-          Return a **strict JSON object only**:
-
-          {
-            "meta_title": "...",
-            "meta_description": "..."
-          }
-
-          Rules:
-          - meta_title: max 60 chars, compelling, human readable.
-          - meta_description: max 155 chars, enticing, summarizes content.
-          - No markdown, no commentary, no explanation.
-      metadata:
-        id: chat_model
-        name: 'Chat Model'
-        type: default
-        supportedTypes:
-          - default
-        description: 'AI chat model for conversation and text generation'
-        category: models
-        icon: 'mdi:robot'
-        color: '#8b5cf6'
-        version: 1.0.0
-        enabled: true
-        tags:
-          - model
-          - ai
-          - chat
-          - gpt
-        executor_plugin: chat_model
-        inputs:
-          -
-            id: message
-            name: Message
-            type: input
-            dataType: string
-            required: false
-            description: 'The message to send to the model'
-          -
-            id: trigger
-            name: Trigger
-            type: input
-            dataType: trigger
-            required: false
-            description: ''
-        outputs:
-          -
-            id: response
-            name: response
-            type: output
-            dataType: string
-            required: false
-            description: 'The model response'
-          -
-            id: model
-            name: model
-            type: output
-            dataType: string
-            required: false
-            description: 'The model used'
-          -
-            id: temperature
-            name: temperature
-            type: output
-            dataType: number
-            required: false
-            description: 'The temperature setting'
-          -
-            id: tokens_used
-            name: tokens_used
-            type: output
-            dataType: number
-            required: false
-            description: 'Number of tokens used'
-        config:
-          model: gpt-3.5-turbo
-          temperature: 0.7
-          maxTokens: 1000
-          systemPrompt: ''
-        configSchema:
-          type: object
-          properties:
-            model:
-              type: string
-              title: Model
-              description: 'The chat model to use'
-              default: gpt-3.5-turbo
-            temperature:
-              type: number
-              title: Temperature
-              description: 'Model temperature (0.0 to 2.0)'
-              default: 0.7
-            maxTokens:
-              type: integer
-              title: 'Max Tokens'
-              description: 'Maximum tokens in response'
-              default: 1000
-            systemPrompt:
-              type: string
-              title: 'System Prompt'
-              description: 'System prompt for the model'
-              format: multiline
-              default: ''
-      nodeId: chat_model.1
-    deletable: true
-    measured:
-      width: 288
-      height: 590
-    selected: false
-    dragging: false
   -
     id: boolean_gateway.1
     type: universalNode
@@ -932,7 +805,7 @@ nodes:
     measured:
       width: 288
       height: 1115
-    selected: true
+    selected: false
     dragging: true
   -
     id: content_entity_trigger.3
@@ -1460,6 +1333,141 @@ nodes:
       height: 1565
     selected: false
     dragging: false
+  -
+    id: chat_model.2
+    type: universalNode
+    position:
+      x: 680
+      'y': 1060
+    data:
+      label: 'Chat Model'
+      config:
+        model: 'deepseek-v3.1:671b-cloud'
+        temperature: 0.7
+        maxTokens: '1000'
+        systemPrompt: |-
+          You are an SEO metadata generator.
+          Given the following page content:
+
+          {{ field_content }}
+
+          Return a **strict JSON object only**:
+
+          {
+            "meta_title": "...",
+            "meta_description": "..."
+          }
+
+          Rules:
+          - meta_title: max 60 chars, compelling, human readable.
+          - meta_description: max 155 chars, enticing, summarizes content.
+          - No markdown, no commentary, no explanation.
+      metadata:
+        id: chat_model
+        name: 'Chat Model'
+        type: default
+        supportedTypes:
+          - default
+        description: 'AI chat model for conversation and text generation'
+        category: models
+        icon: 'mdi:robot'
+        color: '#8b5cf6'
+        version: 1.0.0
+        enabled: true
+        tags:
+          - model
+          - ai
+          - chat
+          - gpt
+        executor_plugin: chat_model
+        inputs:
+          -
+            id: message
+            name: Message
+            type: input
+            dataType: string
+            required: false
+            description: 'The message to send to the model'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: response
+            name: response
+            type: output
+            dataType: string
+            required: false
+            description: 'The model response'
+          -
+            id: model
+            name: model
+            type: output
+            dataType: string
+            required: false
+            description: 'The model used'
+          -
+            id: temperature
+            name: temperature
+            type: output
+            dataType: number
+            required: false
+            description: 'The temperature setting'
+          -
+            id: tokens_used
+            name: tokens_used
+            type: output
+            dataType: number
+            required: false
+            description: 'Number of tokens used'
+        config:
+          model: gpt-3.5-turbo
+          temperature: 0.7
+          maxTokens: 1000
+          systemPrompt: ''
+        configSchema:
+          type: object
+          properties:
+            model:
+              title: Model
+              description: 'Select a model (default: deepseek-v3.1:671b-cloud)'
+              default: 'deepseek-v3.1:671b-cloud'
+              type: select
+              enum:
+                - 'llama3.2:latest'
+                - 'dengcao/Qwen3-Reranker-8B:Q3_K_M'
+                - 'qwen3-embedding:latest'
+                - 'gpt-oss:latest'
+                - 'deepseek-v3.1:671b-cloud'
+                - 'thinkverse/towerinstruct:latest'
+                - 'mistral-nemo:latest'
+            temperature:
+              type: number
+              title: Temperature
+              description: 'Model temperature (0.0 to 2.0)'
+              default: 0.7
+            maxTokens:
+              type: integer
+              title: 'Max Tokens'
+              description: 'Maximum tokens in response'
+              default: 1000
+            systemPrompt:
+              type: string
+              title: 'System Prompt'
+              description: 'System prompt for the model'
+              format: multiline
+              default: ''
+      nodeId: chat_model.2
+    deletable: true
+    measured:
+      width: 288
+      height: 590
+    selected: true
+    dragging: true
 edges:
   -
     id: xy-edge__boolean_gateway.1boolean_gateway.1-output-True-node_field_extractor.2node_field_extractor.2-input-trigger
@@ -1471,23 +1479,6 @@ edges:
       targetCategory: content
     sourceHandle: boolean_gateway.1-output-True
     targetHandle: node_field_extractor.2-input-trigger
-    style: 'stroke: grey;'
-    markerEnd:
-      type: arrowclosed
-      width: 16
-      height: 16
-      color: grey
-    selected: false
-  -
-    id: xy-edge__node_field_extractor.2node_field_extractor.2-output-field_value-chat_model.1chat_model.1-input-message
-    source: node_field_extractor.2
-    target: chat_model.1
-    data:
-      isToolConnection: false
-      targetNodeType: universalNode
-      targetCategory: models
-    sourceHandle: node_field_extractor.2-output-field_value
-    targetHandle: chat_model.1-input-message
     style: 'stroke: grey;'
     markerEnd:
       type: arrowclosed
@@ -1615,38 +1606,6 @@ edges:
       color: grey
     selected: false
   -
-    id: xy-edge__chat_model.1chat_model.1-output-response-json_parser.1json_parser.1-input-response
-    source: chat_model.1
-    target: json_parser.1
-    data:
-      isToolConnection: false
-      targetNodeType: universalNode
-      targetCategory: data
-    sourceHandle: chat_model.1-output-response
-    targetHandle: json_parser.1-input-response
-    style: 'stroke: grey;'
-    markerEnd:
-      type: arrowclosed
-      width: 16
-      height: 16
-      color: grey
-  -
-    id: xy-edge__chat_model.1chat_model.1-output-response-json_parser.2json_parser.2-input-response
-    source: chat_model.1
-    target: json_parser.2
-    data:
-      isToolConnection: false
-      targetNodeType: universalNode
-      targetCategory: data
-    sourceHandle: chat_model.1-output-response
-    targetHandle: json_parser.2-input-response
-    style: 'stroke: grey;'
-    markerEnd:
-      type: arrowclosed
-      width: 16
-      height: 16
-      color: grey
-  -
     id: xy-edge__node_field_extractor.2node_field_extractor.2-output-node_id-node_metatag_updater.2node_metatag_updater.2-input-node_id
     source: node_field_extractor.2
     target: node_metatag_updater.2
@@ -1662,10 +1621,58 @@ edges:
       width: 16
       height: 16
       color: grey
+  -
+    id: xy-edge__node_field_extractor.2node_field_extractor.2-output-field_value-chat_model.2chat_model.2-input-message
+    source: node_field_extractor.2
+    target: chat_model.2
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: models
+    sourceHandle: node_field_extractor.2-output-field_value
+    targetHandle: chat_model.2-input-message
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+  -
+    id: xy-edge__chat_model.2chat_model.2-output-response-json_parser.1json_parser.1-input-response
+    source: chat_model.2
+    target: json_parser.1
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: data
+    sourceHandle: chat_model.2-output-response
+    targetHandle: json_parser.1-input-response
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
+  -
+    id: xy-edge__chat_model.2chat_model.2-output-response-json_parser.2json_parser.2-input-response
+    source: chat_model.2
+    target: json_parser.2
+    data:
+      isToolConnection: false
+      targetNodeType: universalNode
+      targetCategory: data
+    sourceHandle: chat_model.2-output-response
+    targetHandle: json_parser.2-input-response
+    style: 'stroke: grey;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: grey
 metadata:
   version: 1.0.0
   createdAt: '2025-11-24T20:25:15.548Z'
-  updatedAt: '2025-11-25T11:26:14.911Z'
+  updatedAt: '2025-11-25T14:10:10.680Z'
 created: 1764015487
-changed: 1764069974
+changed: 1764080130
 uid: 0

@@ -5,7 +5,7 @@ prompt_logging_tags: ''
 default_providers:
   chat:
     provider_id: ollama
-    model_id: 'llama3.2:latest'
+    model_id: 'deepseek-v3.1:671b-cloud'
   chat_with_complex_json:
     provider_id: ollama
     model_id: 'llama3.2:latest'
