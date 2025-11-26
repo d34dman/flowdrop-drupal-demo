@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\flowdrop_demo\Plugin\FlowDropNodeProcessor;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
@@ -98,7 +99,31 @@ class MetaTagChecker extends AbstractFlowDropNodeProcessor {
 
     // Get current metatag values.
     $metatag_value = $node->get('field_metatag')->value;
-    $metatags = !empty($metatag_value) ? unserialize($metatag_value) : [];
+
+    // Try to decode metatag value (handles both serialized and JSON formats).
+    $metatags = [];
+    if (!empty($metatag_value)) {
+      // First, try JSON decode (modern Drupal format).
+      $json_decoded = Json::decode($metatag_value, TRUE);
+      if (json_last_error() === JSON_ERROR_NONE && is_array($json_decoded)) {
+        $metatags = $json_decoded;
+      }
+      else {
+        // Fall back to unserialize for legacy serialized PHP format.
+        // Use @ to suppress warnings for invalid serialized data.
+        $unserialized = @unserialize($metatag_value);
+        if ($unserialized !== FALSE && is_array($unserialized)) {
+          $metatags = $unserialized;
+        }
+        else {
+          // Log the issue for debugging.
+          $this->getLogger()->warning('Could not decode metatag value for node @nid. Value: @value', [
+            '@nid' => $node_id,
+            '@value' => substr($metatag_value, 0, 100),
+          ]);
+        }
+      }
+    }
 
     $meta_title = $metatags['title'] ?? '';
     $meta_description = $metatags['description'] ?? '';
@@ -297,10 +322,16 @@ class MetaTagChecker extends AbstractFlowDropNodeProcessor {
     return [
       'type' => 'object',
       'properties' => [
+        'entity_id' => [
+          'type' => 'integer',
+          'title' => 'Entity ID',
+          'description' => 'Node ID from entity triggers',
+          'required' => FALSE,
+        ],
         'node_id' => [
           'type' => 'integer',
           'title' => 'Node ID',
-          'description' => 'The node ID to check',
+          'description' => 'Alternative node ID input',
           'required' => FALSE,
         ],
       ],
