@@ -1,0 +1,11 @@
+name: 'FlowDrop Entity Events'
+type: module
+description: 'Trigger FlowDrop workflows on Drupal content entity lifecycle events (insert, update, delete, etc.)'
+core_version_requirement: ^10 || ^11
+package: FlowDrop
+dependencies:
+  - flowdrop:flowdrop
+  - flowdrop:flowdrop_workflow
+  - flowdrop:flowdrop_pipeline
+  - flowdrop:flowdrop_runtime
+  - flowdrop:flowdrop_node_processor

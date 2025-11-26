@@ -1,0 +1,11 @@
+<?php
+
+/**
+ * @file
+ * FlowDrop Entity Events module.
+ *
+ * Entity event hooks are now implemented in:
+ * @see \Drupal\flowdrop_entity_events\Hook\EntityEventsHooks
+ */
+
+declare(strict_types=1);

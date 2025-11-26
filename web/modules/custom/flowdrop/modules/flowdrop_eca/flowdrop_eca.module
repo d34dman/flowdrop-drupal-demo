@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * FlowDrop ECA Integration module.
+ *
+ * Automatically triggers FlowDrop workflows based on ECA events.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_insert().
+ *
+ * Automatically triggers FlowDrop workflows with matching ECA triggers.
+ */
+function flowdrop_eca_entity_insert(EntityInterface $entity) {
+  /** @var \Drupal\flowdrop_eca\Service\EcaWorkflowTriggerService $trigger_service */
+  $trigger_service = \Drupal::service('flowdrop_eca.workflow_trigger');
+  $trigger_service->triggerWorkflows($entity, 'insert');
+}
+
+/**
+ * Implements hook_entity_update().
+ *
+ * Automatically triggers FlowDrop workflows with matching ECA triggers.
+ */
+function flowdrop_eca_entity_update(EntityInterface $entity) {
+  /** @var \Drupal\flowdrop_eca\Service\EcaWorkflowTriggerService $trigger_service */
+  $trigger_service = \Drupal::service('flowdrop_eca.workflow_trigger');
+  $trigger_service->triggerWorkflows($entity, 'update');
+}
+
+/**
+ * Implements hook_entity_delete().
+ *
+ * Automatically triggers FlowDrop workflows with matching ECA triggers.
+ */
+function flowdrop_eca_entity_delete(EntityInterface $entity) {
+  /** @var \Drupal\flowdrop_eca\Service\EcaWorkflowTriggerService $trigger_service */
+  $trigger_service = \Drupal::service('flowdrop_eca.workflow_trigger');
+  $trigger_service->triggerWorkflows($entity, 'delete');
+}

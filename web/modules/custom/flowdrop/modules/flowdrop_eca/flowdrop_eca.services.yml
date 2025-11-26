@@ -1,0 +1,4 @@
+services:
+  flowdrop_eca.workflow_trigger:
+    class: Drupal\flowdrop_eca\Service\EcaWorkflowTriggerService
+    arguments: ['@entity_type.manager', '@logger.factory']

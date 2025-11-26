@@ -1,0 +1,30 @@
+services:
+  flowdrop_entity_events.entity_data_extractor:
+    class: Drupal\flowdrop_entity_events\Service\EntityDataExtractor
+    arguments:
+      - '@entity_type.manager'
+      - '@entity_field.manager'
+
+  flowdrop_entity_events.workflow_matcher:
+    class: Drupal\flowdrop_entity_events\Service\WorkflowMatcher
+    arguments:
+      - '@entity_type.manager'
+      - '@logger.factory'
+
+  flowdrop_entity_events.workflow_trigger:
+    class: Drupal\flowdrop_entity_events\Service\WorkflowTriggerService
+    arguments:
+      - '@entity_type.manager'
+      - '@flowdrop_entity_events.workflow_matcher'
+      - '@flowdrop_entity_events.entity_data_extractor'
+      - '@logger.factory'
+
+  # Service aliases for autowiring.
+  Drupal\flowdrop_entity_events\Service\EntityDataExtractor:
+    alias: flowdrop_entity_events.entity_data_extractor
+
+  Drupal\flowdrop_entity_events\Service\WorkflowMatcher:
+    alias: flowdrop_entity_events.workflow_matcher
+
+  Drupal\flowdrop_entity_events\Service\WorkflowTriggerService:
+    alias: flowdrop_entity_events.workflow_trigger
