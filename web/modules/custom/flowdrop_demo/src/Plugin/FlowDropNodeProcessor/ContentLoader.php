@@ -9,8 +9,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\flowdrop\Attribute\FlowDropNodeProcessor;
 use Drupal\flowdrop\Plugin\FlowDropNodeProcessor\AbstractFlowDropNodeProcessor;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\flowdrop\DTO\ConfigInterface;
-use Drupal\flowdrop\DTO\InputInterface;
+use Drupal\flowdrop\DTO\ParameterBagInterface;
 use Drupal\flowdrop_demo\Service\ContentService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -66,11 +65,11 @@ class ContentLoader extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  protected function process(InputInterface $inputs, ConfigInterface $config): array {
-    $contentType = $config->getConfig('contentType', 'article');
-    $status = $config->getConfig('status', 'published');
-    $limit = $config->getConfig('limit', 50);
-    $fields = $config->getConfig('fields', ['title', 'body']);
+  protected function process(ParameterBagInterface $params): array {
+    $contentType = $params->getString('contentType', 'article');
+    $status = $params->getString('status', 'published');
+    $limit = $params->getInt('limit', 50);
+    $fields = $params->getArray('fields', ['title', 'body']);
 
     // Simulate loading content.
     $content = $this->contentService->loadContent($contentType, $status, $limit, $fields);
@@ -92,7 +91,7 @@ class ContentLoader extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function validateInputs(array $inputs): bool {
+  public function validateParams(array $inputs): bool {
     // Content loader can work with or without input filters.
     return TRUE;
   }
@@ -100,20 +99,96 @@ class ContentLoader extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function getInputSchema(): array {
+  public function getParameterSchema(): array {
     return [
       'type' => 'object',
       'properties' => [
+        // Input parameters.
         'tool' => [
           'type' => 'tool',
           'title' => 'Tool',
           'description' => 'Available Tools',
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => FALSE,
+          ],
         ],
         'filters' => [
           'type' => 'object',
           'title' => 'Additional Filters',
           'description' => 'Additional filtering criteria',
-          'required' => FALSE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => FALSE,
+          ],
+        ],
+        // Config parameters.
+        'nodeType' => [
+          'type' => 'select',
+          'title' => 'Node Type',
+          'description' => 'Choose the visual representation for this node',
+          'default' => 'tool',
+          'enum' => ['tool', 'default'],
+          'enumNames' => ['Tool Node (with metadata port)', 'Default Node (standard ports)'],
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'contentType' => [
+          'type' => 'string',
+          'title' => 'Content Type',
+          'description' => 'The content type to load',
+          'enum' => ['article', 'page', 'blog_post', 'news'],
+          'default' => 'article',
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'status' => [
+          'type' => 'string',
+          'title' => 'Publication Status',
+          'description' => 'Filter by publication status',
+          'enum' => ['published', 'unpublished', 'all'],
+          'default' => 'published',
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'limit' => [
+          'type' => 'integer',
+          'title' => 'Limit',
+          'description' => 'Maximum number of items to load',
+          'minimum' => 1,
+          'maximum' => 1000,
+          'default' => 50,
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'fields' => [
+          'type' => 'array',
+          'title' => 'Fields to Load',
+          'description' => 'Which fields to include in the output',
+          'items' => [
+            'type' => 'string',
+            'enum' => ['title', 'body', 'summary', 'author', 'created', 'tags'],
+          ],
+          'default' => ['title', 'body'],
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
         ],
       ],
     ];
@@ -146,57 +221,6 @@ class ContentLoader extends AbstractFlowDropNodeProcessor {
         'loaded_at' => [
           'type' => 'string',
           'description' => 'Timestamp when content was loaded',
-        ],
-      ],
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getConfigSchema(): array {
-    return [
-      'type' => 'object',
-      'properties' => [
-        'nodeType' => [
-          'type' => 'select',
-          'title' => 'Node Type',
-          'description' => 'Choose the visual representation for this node',
-          'default' => 'tool',
-          'enum' => ["tool", "default"],
-          'enumNames' => ["Tool Node (with metadata port)", "Default Node (standard ports)"],
-        ],
-        'contentType' => [
-          'type' => 'string',
-          'title' => 'Content Type',
-          'description' => 'The content type to load',
-          'enum' => ['article', 'page', 'blog_post', 'news'],
-          'default' => 'article',
-        ],
-        'status' => [
-          'type' => 'string',
-          'title' => 'Publication Status',
-          'description' => 'Filter by publication status',
-          'enum' => ['published', 'unpublished', 'all'],
-          'default' => 'published',
-        ],
-        'limit' => [
-          'type' => 'integer',
-          'title' => 'Limit',
-          'description' => 'Maximum number of items to load',
-          'minimum' => 1,
-          'maximum' => 1000,
-          'default' => 50,
-        ],
-        'fields' => [
-          'type' => 'array',
-          'title' => 'Fields to Load',
-          'description' => 'Which fields to include in the output',
-          'items' => [
-            'type' => 'string',
-            'enum' => ['title', 'body', 'summary', 'author', 'created', 'tags'],
-          ],
-          'default' => ['title', 'body'],
         ],
       ],
     ];

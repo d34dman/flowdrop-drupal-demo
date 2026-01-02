@@ -1,0 +1,30 @@
+services:
+  # AI-specific services
+  flowdrop_ai.model_service:
+    class: Drupal\flowdrop_ai\Service\AiModelService
+    arguments: ['@logger.factory']
+
+  flowdrop_ai.node_type:
+    class: Drupal\flowdrop_ai\Service\AiNodeTypeService
+    arguments: ['@logger.factory']
+
+  # Tool calling adapters
+  flowdrop_ai.adapter.openai:
+    class: Drupal\flowdrop_ai\Adapter\OpenAiToolCallingAdapter
+    arguments:
+      - '@http_client'
+      - '@config.factory'
+      - '@logger.factory'
+
+  flowdrop_ai.adapter.anthropic:
+    class: Drupal\flowdrop_ai\Adapter\AnthropicToolCallingAdapter
+    arguments:
+      - '@http_client'
+      - '@config.factory'
+      - '@logger.factory'
+
+  flowdrop_ai.adapter_factory:
+    class: Drupal\flowdrop_ai\Adapter\ToolCallingAdapterFactory
+    arguments:
+      - '@flowdrop_ai.adapter.openai'
+      - '@flowdrop_ai.adapter.anthropic'

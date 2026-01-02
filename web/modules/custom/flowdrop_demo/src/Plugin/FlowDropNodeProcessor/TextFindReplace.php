@@ -9,8 +9,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\flowdrop\Attribute\FlowDropNodeProcessor;
 use Drupal\flowdrop\Plugin\FlowDropNodeProcessor\AbstractFlowDropNodeProcessor;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\flowdrop\DTO\ConfigInterface;
-use Drupal\flowdrop\DTO\InputInterface;
+use Drupal\flowdrop\DTO\ParameterBagInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -62,14 +61,14 @@ class TextFindReplace extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  protected function process(InputInterface $inputs, ConfigInterface $config): array {
-    $findText = $config->getConfig('findText', '');
-    $replaceText = $config->getConfig('replaceText', '');
-    $caseSensitive = $config->getConfig('caseSensitive', FALSE);
-    $useRegex = $config->getConfig('useRegex', FALSE);
-    $wholeWordsOnly = $config->getConfig('wholeWordsOnly', FALSE);
+  protected function process(ParameterBagInterface $params): array {
+    $findText = $params->getString('findText', '');
+    $replaceText = $params->getString('replaceText', '');
+    $caseSensitive = $params->getBool('caseSensitive', FALSE);
+    $useRegex = $params->getBool('useRegex', FALSE);
+    $wholeWordsOnly = $params->getBool('wholeWordsOnly', FALSE);
 
-    $inputContent = $inputs->get('content');
+    $inputContent = $params->get('content');
     $processedItems = [];
     $totalReplacements = 0;
 
@@ -165,7 +164,7 @@ class TextFindReplace extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function validateInputs(array $inputs): bool {
+  public function validateParams(array $inputs): bool {
     // Validate that we have content to process.
     if (!isset($inputs['content'])) {
       return FALSE;
@@ -182,15 +181,76 @@ class TextFindReplace extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function getInputSchema(): array {
+  public function getParameterSchema(): array {
     return [
       'type' => 'object',
       'properties' => [
+        // Input parameters.
         'content' => [
           'type' => 'mixed',
           'title' => 'Content to Process',
           'description' => 'Text content or array of content items to process',
-          'required' => TRUE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => TRUE,
+          ],
+        ],
+        // Config parameters.
+        'findText' => [
+          'type' => 'string',
+          'title' => 'Find Text',
+          'description' => 'Text to search for',
+          'default' => 'XB',
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'replaceText' => [
+          'type' => 'string',
+          'title' => 'Replace Text',
+          'description' => 'Text to replace with',
+          'default' => 'Canvas',
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'caseSensitive' => [
+          'type' => 'boolean',
+          'title' => 'Case Sensitive',
+          'description' => 'Whether the search should be case sensitive',
+          'default' => FALSE,
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'useRegex' => [
+          'type' => 'boolean',
+          'title' => 'Use Regular Expressions',
+          'description' => 'Treat find text as a regular expression',
+          'default' => FALSE,
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'wholeWordsOnly' => [
+          'type' => 'boolean',
+          'title' => 'Whole Words Only',
+          'description' => 'Only match whole words, not partial matches',
+          'default' => TRUE,
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
         ],
       ],
     ];
@@ -222,47 +282,6 @@ class TextFindReplace extends AbstractFlowDropNodeProcessor {
         'processed_at' => [
           'type' => 'string',
           'description' => 'Timestamp when processing completed',
-        ],
-      ],
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getConfigSchema(): array {
-    return [
-      'type' => 'object',
-      'properties' => [
-        'findText' => [
-          'type' => 'string',
-          'title' => 'Find Text',
-          'description' => 'Text to search for',
-          'default' => 'XB',
-        ],
-        'replaceText' => [
-          'type' => 'string',
-          'title' => 'Replace Text',
-          'description' => 'Text to replace with',
-          'default' => 'Canvas',
-        ],
-        'caseSensitive' => [
-          'type' => 'boolean',
-          'title' => 'Case Sensitive',
-          'description' => 'Whether the search should be case sensitive',
-          'default' => FALSE,
-        ],
-        'useRegex' => [
-          'type' => 'boolean',
-          'title' => 'Use Regular Expressions',
-          'description' => 'Treat find text as a regular expression',
-          'default' => FALSE,
-        ],
-        'wholeWordsOnly' => [
-          'type' => 'boolean',
-          'title' => 'Whole Words Only',
-          'description' => 'Only match whole words, not partial matches',
-          'default' => TRUE,
         ],
       ],
     ];

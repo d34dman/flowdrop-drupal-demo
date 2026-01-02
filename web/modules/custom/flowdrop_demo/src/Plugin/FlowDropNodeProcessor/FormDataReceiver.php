@@ -9,8 +9,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\flowdrop\Attribute\FlowDropNodeProcessor;
 use Drupal\flowdrop\Plugin\FlowDropNodeProcessor\AbstractFlowDropNodeProcessor;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\flowdrop\DTO\ConfigInterface;
-use Drupal\flowdrop\DTO\InputInterface;
+use Drupal\flowdrop\DTO\ParameterBagInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -62,14 +61,14 @@ class FormDataReceiver extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  protected function process(InputInterface $inputs, ConfigInterface $config): array {
-    $formId = $config->getConfig('formId', 'contact_form');
-    $requiredFields = $config->getConfig('requiredFields', ['name', 'email', 'message']);
-    $validateEmail = $config->getConfig('validateEmail', TRUE);
+  protected function process(ParameterBagInterface $params): array {
+    $formId = $params->getString('formId', 'contact_form');
+    $requiredFields = $params->getArray('requiredFields', ['name', 'email', 'message']);
+    $validateEmail = $params->getBool('validateEmail', TRUE);
 
     // Extract form data from inputs.
-    $formData = $inputs->get('form_data', []);
-    $submissionId = $inputs->get('submission_id', uniqid('form_'));
+    $formData = $params->getArray('form_data', []);
+    $submissionId = $params->getString('submission_id', uniqid('form_'));
 
     // Validate and structure the form data.
     $processedData = $this->validateAndStructureFormData($formData, $requiredFields, $validateEmail);
@@ -226,7 +225,7 @@ class FormDataReceiver extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function validateInputs(array $inputs): bool {
+  public function validateParams(array $inputs): bool {
     // Validate that we have form data.
     if (!isset($inputs['form_data'])) {
       return FALSE;
@@ -243,26 +242,90 @@ class FormDataReceiver extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function getInputSchema(): array {
+  public function getParameterSchema(): array {
     return [
       'type' => 'object',
       'properties' => [
+        // Input parameters.
         'tool' => [
           'type' => 'tool',
           'title' => 'Tool',
           'description' => 'Available Tools',
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => FALSE,
+          ],
         ],
         'form_data' => [
           'type' => 'object',
           'title' => 'Form Data',
           'description' => 'Raw form submission data',
-          'required' => TRUE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => TRUE,
+          ],
         ],
         'submission_id' => [
           'type' => 'string',
           'title' => 'Submission ID',
           'description' => 'Unique identifier for this submission',
-          'required' => FALSE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => FALSE,
+          ],
+        ],
+        // Config parameters.
+        'nodeType' => [
+          'type' => 'select',
+          'title' => 'Node Type',
+          'description' => 'Choose the visual representation for this node',
+          'default' => 'tool',
+          'enum' => ['tool', 'default'],
+          'enumNames' => ['Tool Node (with metadata port)', 'Default Node (standard ports)'],
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'formId' => [
+          'type' => 'string',
+          'title' => 'Form ID',
+          'description' => 'Identifier for the form type',
+          'default' => 'contact_form',
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'requiredFields' => [
+          'type' => 'array',
+          'title' => 'Required Fields',
+          'description' => 'List of required form fields',
+          'items' => [
+            'type' => 'string',
+          ],
+          'default' => ['name', 'email', 'message'],
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'validateEmail' => [
+          'type' => 'boolean',
+          'title' => 'Validate Email',
+          'description' => 'Whether to validate email field format',
+          'default' => TRUE,
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
         ],
       ],
     ];
@@ -311,46 +374,6 @@ class FormDataReceiver extends AbstractFlowDropNodeProcessor {
         'processing_metadata' => [
           'type' => 'object',
           'description' => 'Additional metadata about the submission',
-        ],
-      ],
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getConfigSchema(): array {
-    return [
-      'type' => 'object',
-      'properties' => [
-        'nodeType' => [
-          'type' => 'select',
-          'title' => 'Node Type',
-          'description' => 'Choose the visual representation for this node',
-          'default' => 'tool',
-          'enum' => ["tool", "default"],
-          'enumNames' => ["Tool Node (with metadata port)", "Default Node (standard ports)"],
-        ],
-        'formId' => [
-          'type' => 'string',
-          'title' => 'Form ID',
-          'description' => 'Identifier for the form type',
-          'default' => 'contact_form',
-        ],
-        'requiredFields' => [
-          'type' => 'array',
-          'title' => 'Required Fields',
-          'description' => 'List of required form fields',
-          'items' => [
-            'type' => 'string',
-          ],
-          'default' => ['name', 'email', 'message'],
-        ],
-        'validateEmail' => [
-          'type' => 'boolean',
-          'title' => 'Validate Email',
-          'description' => 'Whether to validate email field format',
-          'default' => TRUE,
         ],
       ],
     ];

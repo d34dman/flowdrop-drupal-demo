@@ -9,8 +9,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\flowdrop\Attribute\FlowDropNodeProcessor;
 use Drupal\flowdrop\Plugin\FlowDropNodeProcessor\AbstractFlowDropNodeProcessor;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\flowdrop\DTO\ConfigInterface;
-use Drupal\flowdrop\DTO\InputInterface;
+use Drupal\flowdrop\DTO\ParameterBagInterface;
 use Drupal\flowdrop_demo\Service\CalendarService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -65,15 +64,15 @@ class CalendarAvailabilityChecker extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  protected function process(InputInterface $inputs, ConfigInterface $config): array {
-    $suggestedTeams = $inputs->get('suggested_teams', []);
-    $submissionId = $inputs->get('submission_id', 'unknown');
-    $priorityLevel = $inputs->get('priority_level', 'normal');
+  protected function process(ParameterBagInterface $params): array {
+    $suggestedTeams = $params->getArray('suggested_teams', []);
+    $submissionId = $params->getString('submission_id', 'unknown');
+    $priorityLevel = $params->getString('priority_level', 'normal');
 
-    $timeZone = $config->getConfig('timeZone', 'America/New_York');
-    $lookAheadDays = $config->getConfig('lookAheadDays', 7);
-    $meetingDuration = $config->getConfig('meetingDuration', 30);
-    $workingHours = $config->getConfig('workingHours', ['start' => '09:00', 'end' => '17:00']);
+    $timeZone = $params->getString('timeZone', 'America/New_York');
+    $lookAheadDays = $params->getInt('lookAheadDays', 7);
+    $meetingDuration = $params->getInt('meetingDuration', 30);
+    $workingHours = $params->getArray('workingHours', ['start' => '09:00', 'end' => '17:00']);
 
     // Get team member information.
     $teamMembers = $this->getTeamMembers($suggestedTeams);
@@ -239,7 +238,7 @@ class CalendarAvailabilityChecker extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function validateInputs(array $inputs): bool {
+  public function validateParams(array $inputs): bool {
     // Validate that we have suggested teams.
     if (!isset($inputs['suggested_teams'])) {
       return FALSE;
@@ -256,32 +255,112 @@ class CalendarAvailabilityChecker extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function getInputSchema(): array {
+  public function getParameterSchema(): array {
     return [
       'type' => 'object',
       'properties' => [
+        // Input parameters.
         'tool' => [
           'type' => 'tool',
           'title' => 'Tool',
           'description' => 'Available Tools',
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => FALSE,
+          ],
         ],
         'suggested_teams' => [
           'type' => 'array',
           'title' => 'Suggested Teams',
           'description' => 'Teams that should handle this request',
-          'required' => TRUE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => TRUE,
+          ],
         ],
         'submission_id' => [
           'type' => 'string',
           'title' => 'Submission ID',
           'description' => 'Unique submission identifier',
-          'required' => FALSE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => FALSE,
+          ],
         ],
         'priority_level' => [
           'type' => 'string',
           'title' => 'Priority Level',
           'description' => 'Priority level of the request',
-          'required' => FALSE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => FALSE,
+          ],
+        ],
+        // Config parameters.
+        'nodeType' => [
+          'type' => 'select',
+          'title' => 'Node Type',
+          'description' => 'Choose the visual representation for this node',
+          'default' => 'tool',
+          'enum' => ['tool', 'default'],
+          'enumNames' => ['Tool Node (with metadata port)', 'Default Node (standard ports)'],
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'timeZone' => [
+          'type' => 'string',
+          'title' => 'Time Zone',
+          'description' => 'Time zone for calendar operations',
+          'default' => 'America/New_York',
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'lookAheadDays' => [
+          'type' => 'integer',
+          'title' => 'Look Ahead Days',
+          'description' => 'Number of days to look ahead for availability',
+          'minimum' => 1,
+          'maximum' => 30,
+          'default' => 7,
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'meetingDuration' => [
+          'type' => 'integer',
+          'title' => 'Meeting Duration (minutes)',
+          'description' => 'Default meeting duration in minutes',
+          'minimum' => 15,
+          'maximum' => 240,
+          'default' => 30,
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'workingHours' => [
+          'type' => 'object',
+          'title' => 'Working Hours',
+          'description' => 'Working hours configuration',
+          'default' => ['start' => '09:00', 'end' => '17:00'],
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
         ],
       ],
     ];
@@ -330,64 +409,6 @@ class CalendarAvailabilityChecker extends AbstractFlowDropNodeProcessor {
         'calendar_metadata' => [
           'type' => 'object',
           'description' => 'Calendar configuration metadata',
-        ],
-      ],
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getConfigSchema(): array {
-    return [
-      'type' => 'object',
-      'properties' => [
-        'nodeType' => [
-          'type' => 'select',
-          'title' => 'Node Type',
-          'description' => 'Choose the visual representation for this node',
-          'default' => 'tool',
-          'enum' => ["tool", "default"],
-          'enumNames' => ["Tool Node (with metadata port)", "Default Node (standard ports)"],
-        ],
-        'timeZone' => [
-          'type' => 'string',
-          'title' => 'Time Zone',
-          'description' => 'Time zone for calendar operations',
-          'default' => 'America/New_York',
-        ],
-        'lookAheadDays' => [
-          'type' => 'integer',
-          'title' => 'Look Ahead Days',
-          'description' => 'Number of days to look ahead for availability',
-          'minimum' => 1,
-          'maximum' => 30,
-          'default' => 7,
-        ],
-        'meetingDuration' => [
-          'type' => 'integer',
-          'title' => 'Meeting Duration (minutes)',
-          'description' => 'Default meeting duration in minutes',
-          'minimum' => 15,
-          'maximum' => 240,
-          'default' => 30,
-        ],
-        'workingHours' => [
-          'type' => 'object',
-          'title' => 'Working Hours',
-          'description' => 'Working hours configuration',
-          'properties' => [
-            'start' => [
-              'type' => 'string',
-              'title' => 'Start Time',
-              'default' => '09:00',
-            ],
-            'end' => [
-              'type' => 'string',
-              'title' => 'End Time',
-              'default' => '17:00',
-            ],
-          ],
         ],
       ],
     ];

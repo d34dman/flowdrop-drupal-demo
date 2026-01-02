@@ -1,0 +1,17 @@
+services:
+  flowdrop_agent.tool_registry:
+    class: Drupal\flowdrop_agent\Service\ToolRegistry
+    arguments:
+      - '@flowdrop.node_processor_plugin_manager'
+      - '@logger.factory'
+
+  flowdrop_agent.executor:
+    class: Drupal\flowdrop_agent\Service\AgentExecutor
+    arguments:
+      - '@flowdrop_agent.tool_registry'
+      - '@flowdrop_ai.adapter_factory'
+      - '@flowdrop_conversation.manager'
+      - '@flowdrop_runtime.node_runtime'
+      - '@logger.factory'
+      - '@entity_type.manager'
+      - '@event_dispatcher'

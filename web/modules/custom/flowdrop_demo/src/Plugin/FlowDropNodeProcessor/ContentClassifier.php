@@ -9,8 +9,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\flowdrop\Attribute\FlowDropNodeProcessor;
 use Drupal\flowdrop\Plugin\FlowDropNodeProcessor\AbstractFlowDropNodeProcessor;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\flowdrop\DTO\ConfigInterface;
-use Drupal\flowdrop\DTO\InputInterface;
+use Drupal\flowdrop\DTO\ParameterBagInterface;
 use Drupal\flowdrop_demo\Service\TriageService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -66,15 +65,15 @@ class ContentClassifier extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  protected function process(InputInterface $inputs, ConfigInterface $config): array {
-    $classificationMode = $config->getConfig('classificationMode', 'full_analysis');
-    $confidenceThreshold = $config->getConfig('confidenceThreshold', 0.7);
-    $categories = $config->getConfig('categories', ['support', 'features', 'sales', 'general']);
+  protected function process(ParameterBagInterface $params): array {
+    $classificationMode = $params->getString('classificationMode', 'full_analysis');
+    $confidenceThreshold = $params->getFloat('confidenceThreshold', 0.7);
+    $categories = $params->getArray('categories', ['support', 'features', 'sales', 'general']);
 
     // Extract content to classify.
-    $submissionData = $inputs->get('structured_data', []);
-    $rawData = $inputs->get('raw_data', []);
-    $submissionId = $inputs->get('submission_id', 'unknown');
+    $submissionData = $params->getArray('structured_data', []);
+    $rawData = $params->getArray('raw_data', []);
+    $submissionId = $params->getString('submission_id', 'unknown');
 
     // Perform classification.
     $classificationResult = $this->classifyContent($submissionData, $rawData, $categories, $classificationMode, $confidenceThreshold);
@@ -390,7 +389,7 @@ class ContentClassifier extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function validateInputs(array $inputs): bool {
+  public function validateParams(array $inputs): bool {
     // Validate that we have structured data.
     if (!isset($inputs['structured_data'])) {
       return FALSE;
@@ -407,32 +406,105 @@ class ContentClassifier extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function getInputSchema(): array {
+  public function getParameterSchema(): array {
     return [
       'type' => 'object',
       'properties' => [
+        // Input parameters.
         'tool' => [
           'type' => 'tool',
           'title' => 'Tool',
           'description' => 'Available Tools',
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => FALSE,
+          ],
         ],
         'structured_data' => [
           'type' => 'object',
           'title' => 'Structured Data',
           'description' => 'Processed form data for classification',
-          'required' => TRUE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => TRUE,
+          ],
         ],
         'raw_data' => [
           'type' => 'object',
           'title' => 'Raw Data',
           'description' => 'Original form data',
-          'required' => FALSE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => FALSE,
+          ],
         ],
         'submission_id' => [
           'type' => 'string',
           'title' => 'Submission ID',
           'description' => 'Unique submission identifier',
-          'required' => FALSE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => FALSE,
+          ],
+        ],
+        // Config parameters.
+        'nodeType' => [
+          'type' => 'select',
+          'title' => 'Node Type',
+          'description' => 'Choose the visual representation for this node',
+          'default' => 'tool',
+          'enum' => ['tool', 'default'],
+          'enumNames' => ['Tool Node (with metadata port)', 'Default Node (standard ports)'],
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'classificationMode' => [
+          'type' => 'string',
+          'title' => 'Classification Mode',
+          'description' => 'Type of analysis to perform',
+          'enum' => ['keyword_only', 'sentiment_analysis', 'full_analysis'],
+          'default' => 'full_analysis',
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'confidenceThreshold' => [
+          'type' => 'number',
+          'title' => 'Confidence Threshold',
+          'description' => 'Minimum confidence for classification (0-1)',
+          'minimum' => 0,
+          'maximum' => 1,
+          'step' => '0.01',
+          'format' => 'range',
+          'default' => 0.8,
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'categories' => [
+          'type' => 'array',
+          'title' => 'Available Categories',
+          'description' => 'Categories to classify content into',
+          'items' => [
+            'type' => 'string',
+          ],
+          'default' => ['support', 'features', 'sales', 'general'],
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
         ],
       ],
     ];
@@ -485,49 +557,6 @@ class ContentClassifier extends AbstractFlowDropNodeProcessor {
         'classified_at' => [
           'type' => 'string',
           'description' => 'Classification timestamp',
-        ],
-      ],
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getConfigSchema(): array {
-    return [
-      'type' => 'object',
-      'properties' => [
-        'nodeType' => [
-          'type' => 'select',
-          'title' => 'Node Type',
-          'description' => 'Choose the visual representation for this node',
-          'default' => 'tool',
-          'enum' => ["tool", "default"],
-          'enumNames' => ["Tool Node (with metadata port)", "Default Node (standard ports)"],
-        ],
-        'classificationMode' => [
-          'type' => 'string',
-          'title' => 'Classification Mode',
-          'description' => 'Type of analysis to perform',
-          'enum' => ['keyword_only', 'sentiment_analysis', 'full_analysis'],
-          'default' => 'full_analysis',
-        ],
-        'confidenceThreshold' => [
-          'type' => 'number',
-          'title' => 'Confidence Threshold',
-          'description' => 'Minimum confidence for classification (0-1)',
-          'minimum' => 0,
-          'maximum' => 1,
-          'default' => 0.7,
-        ],
-        'categories' => [
-          'type' => 'array',
-          'title' => 'Available Categories',
-          'description' => 'Categories to classify content into',
-          'items' => [
-            'type' => 'string',
-          ],
-          'default' => ['support', 'features', 'sales', 'general'],
         ],
       ],
     ];

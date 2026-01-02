@@ -9,8 +9,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\flowdrop\Attribute\FlowDropNodeProcessor;
 use Drupal\flowdrop\Plugin\FlowDropNodeProcessor\AbstractFlowDropNodeProcessor;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\flowdrop\DTO\ConfigInterface;
-use Drupal\flowdrop\DTO\InputInterface;
+use Drupal\flowdrop\DTO\ParameterBagInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -63,13 +62,13 @@ class AiContentAnalyzer extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  protected function process(InputInterface $inputs, ConfigInterface $config): array {
-    $targetText = $config->getConfig('targetText', 'XB');
-    $replacementText = $config->getConfig('replacementText', 'Canvas');
-    $analysisMode = $config->getConfig('analysisMode', 'context_aware');
-    $confidence = $config->getConfig('confidenceThreshold', 0.8);
+  protected function process(ParameterBagInterface $params): array {
+    $targetText = $params->getString('targetText', 'XB');
+    $replacementText = $params->getString('replacementText', 'Canvas');
+    $analysisMode = $params->getString('analysisMode', 'context_aware');
+    $confidence = $params->getFloat('confidenceThreshold', 0.8);
 
-    $inputContent = $inputs->get('content');
+    $inputContent = $params->get('content');
     $analysisResults = [];
     $totalAnalyzed = 0;
     $totalReplacements = 0;
@@ -285,7 +284,7 @@ class AiContentAnalyzer extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function validateInputs(array $inputs): bool {
+  public function validateParams(array $inputs): bool {
     // Validate that we have content to analyze.
     if (!isset($inputs['content'])) {
       return FALSE;
@@ -302,20 +301,93 @@ class AiContentAnalyzer extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function getInputSchema(): array {
+  public function getParameterSchema(): array {
     return [
       'type' => 'object',
       'properties' => [
+        // Input parameters.
         'content' => [
           'type' => 'mixed',
           'title' => 'Content to Analyze',
           'description' => 'Text content or array of content items for AI analysis',
-          'required' => TRUE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => TRUE,
+          ],
         ],
         'tool' => [
           'type' => 'tool',
           'title' => 'Tool',
           'description' => 'Available Tools',
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => FALSE,
+          ],
+        ],
+        // Config parameters.
+        'nodeType' => [
+          'type' => 'select',
+          'title' => 'Node Type',
+          'description' => 'Choose the visual representation for this node',
+          'default' => 'tool',
+          'enum' => ['tool', 'default'],
+          'enumNames' => ['Tool Node (with metadata port)', 'Default Node (standard ports)'],
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'targetText' => [
+          'type' => 'string',
+          'title' => 'Target Text',
+          'description' => 'Text to analyze and potentially replace',
+          'default' => 'XB',
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'replacementText' => [
+          'type' => 'string',
+          'title' => 'Replacement Text',
+          'description' => 'Text to replace with when appropriate',
+          'default' => 'Canvas',
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'analysisMode' => [
+          'type' => 'string',
+          'title' => 'Analysis Mode',
+          'description' => 'Type of AI analysis to perform',
+          'enum' => ['acronym_detection', 'sentence_flow', 'context_aware'],
+          'default' => 'context_aware',
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'confidenceThreshold' => [
+          'type' => 'number',
+          'title' => 'Confidence Threshold',
+          'description' => 'Minimum confidence level for making replacements (0-1)',
+          'minimum' => 0,
+          'maximum' => 1,
+          'step' => '0.01',
+          'format' => 'range',
+          'default' => 0.8,
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
         ],
       ],
     ];
@@ -356,52 +428,6 @@ class AiContentAnalyzer extends AbstractFlowDropNodeProcessor {
         'analyzed_at' => [
           'type' => 'string',
           'description' => 'Timestamp when analysis was completed',
-        ],
-      ],
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getConfigSchema(): array {
-    return [
-      'type' => 'object',
-      'properties' => [
-        'nodeType' => [
-          'type' => 'select',
-          'title' => 'Node Type',
-          'description' => 'Choose the visual representation for this node',
-          'default' => 'tool',
-          'enum' => ["tool", "default"],
-          'enumNames' => ["Tool Node (with metadata port)", "Default Node (standard ports)"],
-        ],
-        'targetText' => [
-          'type' => 'string',
-          'title' => 'Target Text',
-          'description' => 'Text to analyze and potentially replace',
-          'default' => 'XB',
-        ],
-        'replacementText' => [
-          'type' => 'string',
-          'title' => 'Replacement Text',
-          'description' => 'Text to replace with when appropriate',
-          'default' => 'Canvas',
-        ],
-        'analysisMode' => [
-          'type' => 'string',
-          'title' => 'Analysis Mode',
-          'description' => 'Type of AI analysis to perform',
-          'enum' => ['acronym_detection', 'sentence_flow', 'context_aware'],
-          'default' => 'context_aware',
-        ],
-        'confidenceThreshold' => [
-          'type' => 'number',
-          'title' => 'Confidence Threshold',
-          'description' => 'Minimum confidence level for making replacements (0-1)',
-          'minimum' => 0,
-          'maximum' => 1,
-          'default' => 0.8,
         ],
       ],
     ];

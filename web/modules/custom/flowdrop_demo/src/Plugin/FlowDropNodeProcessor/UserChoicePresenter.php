@@ -9,8 +9,7 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\flowdrop\Attribute\FlowDropNodeProcessor;
 use Drupal\flowdrop\Plugin\FlowDropNodeProcessor\AbstractFlowDropNodeProcessor;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\flowdrop\DTO\ConfigInterface;
-use Drupal\flowdrop\DTO\InputInterface;
+use Drupal\flowdrop\DTO\ParameterBagInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -22,8 +21,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 #[FlowDropNodeProcessor(
   id: "user_choice_presenter",
   label: new TranslatableMarkup("User Choice Presenter"),
-  type: "tool",
-  supportedTypes: ["tool", "default"],
+  type: "default",
+  supportedTypes: ["default"],
   category: "ui",
   description: "Present meeting time options to users and capture their selection",
   version: "1.0.0",
@@ -62,14 +61,14 @@ class UserChoicePresenter extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  protected function process(InputInterface $inputs, ConfigInterface $config): array {
-    $suggestedTimes = $inputs->get('suggested_meeting_times', []);
-    $submissionId = $inputs->get('submission_id', 'unknown');
-    $priorityLevel = $inputs->get('priority_level', 'normal');
+  protected function process(ParameterBagInterface $params): array {
+    $suggestedTimes = $params->getArray('suggested_meeting_times', []);
+    $submissionId = $params->getString('submission_id', 'unknown');
+    $priorityLevel = $params->getString('priority_level', 'normal');
 
-    $presentationMode = $config->getConfig('presentationMode', 'interactive');
-    $autoSelectBest = $config->getConfig('autoSelectBest', FALSE);
-    $includeDeclineOption = $config->getConfig('includeDeclineOption', TRUE);
+    $presentationMode = $params->getString('presentationMode', 'interactive');
+    $autoSelectBest = $params->getBool('autoSelectBest', FALSE);
+    $includeDeclineOption = $params->getBool('includeDeclineOption', TRUE);
 
     // Generate user interface options.
     $presentationData = $this->generatePresentationData($suggestedTimes, $presentationMode, $includeDeclineOption);
@@ -259,32 +258,75 @@ class UserChoicePresenter extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function getInputSchema(): array {
+  public function getParameterSchema(): array {
     return [
       'type' => 'object',
       'properties' => [
-        'tool' => [
-          'type' => 'tool',
-          'title' => 'Tool',
-          'description' => 'Available Tools',
-        ],
+        // Input parameters.
         'suggested_meeting_times' => [
           'type' => 'array',
           'title' => 'Suggested Meeting Times',
           'description' => 'Available meeting time options',
-          'required' => TRUE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => TRUE,
+          ],
         ],
         'submission_id' => [
           'type' => 'string',
           'title' => 'Submission ID',
           'description' => 'Unique submission identifier',
-          'required' => FALSE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => FALSE,
+          ],
         ],
         'priority_level' => [
           'type' => 'string',
           'title' => 'Priority Level',
           'description' => 'Priority level of the request',
-          'required' => FALSE,
+          'flowdrop' => [
+            'configurable' => FALSE,
+            'connectable' => TRUE,
+            'required' => FALSE,
+          ],
+        ],
+        // Config parameters.
+        'presentationMode' => [
+          'type' => 'string',
+          'title' => 'Presentation Mode',
+          'description' => 'How to present options to the user',
+          'enum' => ['interactive', 'email', 'sms'],
+          'default' => 'interactive',
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'autoSelectBest' => [
+          'type' => 'boolean',
+          'title' => 'Auto-Select Best Option',
+          'description' => 'Automatically select the best available option',
+          'default' => FALSE,
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
+        ],
+        'includeDeclineOption' => [
+          'type' => 'boolean',
+          'title' => 'Include Decline Option',
+          'description' => 'Allow users to decline all suggested times',
+          'default' => TRUE,
+          'flowdrop' => [
+            'configurable' => TRUE,
+            'connectable' => FALSE,
+            'required' => FALSE,
+          ],
         ],
       ],
     ];
@@ -297,11 +339,6 @@ class UserChoicePresenter extends AbstractFlowDropNodeProcessor {
     return [
       'type' => 'object',
       'properties' => [
-        'tool' => [
-          'type' => 'tool',
-          'title' => 'Tool',
-          'description' => 'Available tools',
-        ],
         'submission_id' => [
           'type' => 'string',
           'description' => 'Unique submission identifier',
@@ -345,7 +382,7 @@ class UserChoicePresenter extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function validateInputs(array $inputs): bool {
+  public function validateParams(array $inputs): bool {
     // Validate that we have suggested meeting times.
     if (empty($inputs['suggested_meeting_times'])) {
       return FALSE;
@@ -357,44 +394,6 @@ class UserChoicePresenter extends AbstractFlowDropNodeProcessor {
     }
 
     return TRUE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getConfigSchema(): array {
-    return [
-      'type' => 'object',
-      'properties' => [
-        'nodeType' => [
-          'type' => 'select',
-          'title' => 'Node Type',
-          'description' => 'Choose the visual representation for this node',
-          'default' => 'tool',
-          'enum' => ["tool", "default"],
-          'enumNames' => ["Tool Node (with metadata port)", "Default Node (standard ports)"],
-        ],
-        'presentationMode' => [
-          'type' => 'string',
-          'title' => 'Presentation Mode',
-          'description' => 'How to present options to the user',
-          'enum' => ['interactive', 'email', 'sms'],
-          'default' => 'interactive',
-        ],
-        'autoSelectBest' => [
-          'type' => 'boolean',
-          'title' => 'Auto-Select Best Option',
-          'description' => 'Automatically select the best available option',
-          'default' => FALSE,
-        ],
-        'includeDeclineOption' => [
-          'type' => 'boolean',
-          'title' => 'Include Decline Option',
-          'description' => 'Allow users to decline all suggested times',
-          'default' => TRUE,
-        ],
-      ],
-    ];
   }
 
 }

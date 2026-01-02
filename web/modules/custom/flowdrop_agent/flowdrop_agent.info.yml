@@ -1,0 +1,15 @@
+name: 'FlowDrop Agent'
+type: module
+description: 'Provides LLM-powered Agent nodes for agentic workflows with tool calling.'
+package: FlowDrop
+core_version_requirement: ^10 || ^11
+dependencies:
+  - flowdrop:flowdrop
+  - flowdrop:flowdrop_node_type
+  - flowdrop:flowdrop_node_processor
+  - flowdrop:flowdrop_runtime
+  - flowdrop:flowdrop_workflow
+  - flowdrop:flowdrop_pipeline
+  - flowdrop:flowdrop_job
+  - flowdrop:flowdrop_ai
+  - flowdrop:flowdrop_conversation

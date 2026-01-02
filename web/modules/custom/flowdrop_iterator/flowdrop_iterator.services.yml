@@ -1,0 +1,19 @@
+services:
+  # Iterator Executor Service
+  # Executes Iterator nodes by creating child Pipelines and Jobs for each iteration.
+  flowdrop_iterator.iterator_executor:
+    class: Drupal\flowdrop_iterator\Service\IteratorExecutor
+    arguments:
+      - '@entity_type.manager'
+      - '@flowdrop_runtime.node_runtime'
+      - '@flowdrop_runtime.execution_context'
+      - '@logger.factory'
+      - '@event_dispatcher'
+      - '@flowdrop_iterator.sub_workflow_detector'
+
+  # Sub-Workflow Detector Service
+  # Detects nodes that form the sub-workflow of an Iterator.
+  flowdrop_iterator.sub_workflow_detector:
+    class: Drupal\flowdrop_iterator\Service\SubWorkflowDetector
+    arguments:
+      - '@logger.factory'
