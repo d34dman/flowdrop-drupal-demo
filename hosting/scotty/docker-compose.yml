@@ -50,6 +50,7 @@ services:
       - internal
     environment:
       PHP_MEMORY_LIMIT: 600M
+      ANTHROPIC_KEY: ${ANTHROPIC_KEY}
   db:
     image: wodby/mariadb:10.11-3.28.3
     stop_grace_period: 30s
