@@ -3,7 +3,8 @@ services:
     image: ghcr.io/d34dman/flowdrop-drupal-demo-cli:main
     networks:
       - internal
-
+    environment:
+      ANTHROPIC_KEY: ${ANTHROPIC_KEY}
   notification-server:
     image: ghcr.io/d34dman/notification-server:latest
     restart: unless-stopped
