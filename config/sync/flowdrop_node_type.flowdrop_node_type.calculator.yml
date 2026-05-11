@@ -1,22 +1,46 @@
-uuid: da41f466-7f6c-423e-a47d-a8de1f578f6e
+uuid: 0c189e09-b6c3-44e9-acb5-54dff7dea288
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - flowdrop_node_processor
 _core:
-  default_config_hash: GmZYp39_9Q1TxglFR9VaEp1RqQLEl4JdnEoLvmRM_EE
+  default_config_hash: J8y2BHYXNToQFzsGERNiSpaQ-RBlreHzqsJ06PsY-jg
 id: calculator
 label: Calculator
-description: 'Perform mathematical calculations'
-category: tool
-icon: 'mdi:calculator'
-color: '#6366f1'
-version: 1.0.0
+description: 'Perform mathematical operations on numeric values'
+category: tools
+icon: 'mdi:calculator-variant-outline'
+plugin_version: 1.0.0
 enabled: true
-config:
-  precision: 2
-tags:
-  - tools
-  - calculator
-  - math
-  - compute
-executor_plugin: calculator
+parameters:
+  operation:
+    configurable: true
+    connectable: false
+    required: false
+    default: add
+  precision:
+    configurable: true
+    connectable: false
+    required: false
+    default: 2
+  values:
+    configurable: false
+    connectable: true
+    required: false
+outputs:
+  operation:
+    exposed: true
+  precision:
+    exposed: true
+  result:
+    exposed: true
+  values:
+    exposed: true
+tags: {  }
+executor_plugin: 'flowdrop_node_processor:calculator'
+visual_type: default
+supported_visual_types:
+  - default
+unified_input_exposed: false
+unified_output_exposed: false

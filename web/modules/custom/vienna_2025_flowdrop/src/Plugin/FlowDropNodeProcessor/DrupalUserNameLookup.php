@@ -7,10 +7,12 @@ namespace Drupal\vienna_2025_flowdrop\Plugin\FlowDropNodeProcessor;
 use Drupal\Core\Http\ClientFactory;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\flowdrop\Attribute\FlowDropNodeProcessor;
+use Drupal\flowdrop\DTO\ParameterBagInterface;
 use Drupal\flowdrop\Plugin\FlowDropNodeProcessor\AbstractFlowDropNodeProcessor;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\flowdrop\DTO\ConfigInterface;
 use Drupal\flowdrop\DTO\InputInterface;
+use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
@@ -20,12 +22,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 #[FlowDropNodeProcessor(
   id: "drupal_username_lookup",
   label: new \Drupal\Core\StringTranslation\TranslatableMarkup("Drupal Username Lookup"),
-  type: "default",
-  supportedTypes: ["default"],
-  category: "output",
   description: "Lookup Drupal Username and fetch details about the user.",
   version: "1.0.0",
-  tags: ["drupal", "api"]
+)]
+#[AsTool(
+  name: 'drupal_username_lookup',
+  description: 'Lookup Drupal Username and fetch details about the user.',
+  method: 'fetchDrupalOrgUserInfo',
 )]
 class DrupalUserNameLookup extends AbstractFlowDropNodeProcessor {
 
@@ -62,11 +65,11 @@ class DrupalUserNameLookup extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  protected function process(InputInterface $inputs, ConfigInterface $config): array {
+  public function process(ParameterBagInterface $params): array {
     try {
-      $username = $inputs->get("text");
+      $username = $params->get("text");
       if (empty($username)) {
-        $dataInput = $inputs->get("data");
+        $dataInput = $params->get("data");
         if ($dataInput !== NULL && $dataInput !== "") {
           // Normalize input: handle both JSON strings and structured data
           $data = $this->normalizeDataInput($dataInput);
@@ -129,7 +132,7 @@ class DrupalUserNameLookup extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function getInputSchema(): array {
+  public function getParameterSchema(): array {
     return [
       'type' => 'object',
       'properties' => [

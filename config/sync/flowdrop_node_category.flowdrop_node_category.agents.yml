@@ -1,0 +1,12 @@
+uuid: 871e125d-ccfb-4415-91cd-56995d0db3b8
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: AR9WAfN3IeioMpUtacIoon_0UANhOlvDDcV2LDom9_E
+id: agents
+label: Agents
+description: 'Build intelligent AI agents that can reason, plan, use tools, and autonomously complete complex multi-step tasks.'
+icon: 'mdi:face-agent'
+color: '#28c3c0'
+enabled: true

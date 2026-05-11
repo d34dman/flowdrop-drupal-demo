@@ -1,12 +1,12 @@
-uuid: 9fcf8be4-0297-4e04-960a-413c96ad9de2
+uuid: e9433c99-fe43-4dbf-911e-95077fad314c
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: OAmqNI_PRfLvSUxkEJpVSXJ3T5TxLvXbR2tSQtdWswU
+  default_config_hash: WLjtq7YU13TWcjOWdmGHej19PldS3NrS0Nw5uShd7Bg
 id: data
 label: Data
-description: 'Node types for data storage, retrieval, and manipulation'
+description: 'Store, retrieve, and manage structured data including databases, key-value stores, and persistent storage solutions.'
 icon: 'mdi:database'
-color: '#607D8B'
+color: '#f97316'
 enabled: true

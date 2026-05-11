@@ -1,12 +1,12 @@
-uuid: e65a733b-f402-4cf0-9a37-ab97cb071f01
+uuid: f2963417-cde5-435f-8840-6a538dd70699
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: a9ZyEXXcH8mJMoiaZIgmNmPMo4zXmJxIZNKvSTqpedE
+  default_config_hash: F6dse-NCB8M_84IEngtO1rv8tbcaygCpwE3EZJnOYjo
 id: processing
 label: Processing
-description: 'Node types that process and transform data'
-icon: 'mdi:cog'
-color: '#2196F3'
+description: 'Transform, filter, parse, and manipulate data as it flows through your workflow to prepare it for the next step.'
+icon: 'mdi:application-braces-outline'
+color: '#14b8a6'
 enabled: true

@@ -1,0 +1,28 @@
+uuid: 2cb2e1ef-8d2a-4234-92b1-eca09e863cff
+langcode: en
+status: true
+dependencies:
+  module:
+    - flowdrop_ai_provider
+_core:
+  default_config_hash: gKKfm7dPQ6CXuknmLeBiRa1s2c0hnfZzVqNMJn5AI2U
+id: flowdrop_ai_provider_audio_to_audio
+label: 'Audio to Audio'
+description: 'AI audio to audio transformation'
+category: model
+icon: 'mdi:waveform'
+plugin_version: 1.0.0
+enabled: true
+parameters: {  }
+outputs: {  }
+tags:
+  - model
+  - ai
+  - audio
+  - transformation
+executor_plugin: 'flowdrop_ai_provider:audio_to_audio'
+visual_type: default
+supported_visual_types:
+  - default
+unified_input_exposed: false
+unified_output_exposed: false

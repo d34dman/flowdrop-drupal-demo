@@ -1,25 +1,59 @@
-uuid: 71662ce2-fedb-417e-a1c8-25ba8907154b
+uuid: d825883c-629e-4c42-8c89-21879bf8758a
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - flowdrop_node_processor
 _core:
-  default_config_hash: m1ZdspUJwl_42Y_Wh_xcFVRvnH0OMYC4DdZGUo0ZVMs
+  default_config_hash: pZQISl4pX4pIi7XEnjsCxSSgukZcL1tDf5IQ5DimJ3Y
 id: dataframe_operations
-label: 'DataFrame Operations'
-description: 'Perform operations on DataFrames'
-category: processing
-icon: 'mdi:table-cog'
-color: '#84cc16'
-version: 1.0.0
+label: 'Dataframe Operations'
+description: 'Operations on dataframe data'
+category: data
+icon: 'mdi:database-cog-outline'
+plugin_version: 1.0.0
 enabled: true
-config:
-  operation: filter
-  columnName: ''
-  filterValue: ''
-  ascending: true
-tags:
-  - processing
-  - dataframe
-  - table
-  - operations
-executor_plugin: dataframe_operations
+parameters:
+  columns:
+    configurable: true
+    connectable: false
+    required: false
+    default: {  }
+  condition:
+    configurable: true
+    connectable: false
+    required: false
+  dataframe:
+    configurable: false
+    connectable: true
+    required: false
+  operation:
+    configurable: true
+    connectable: false
+    required: false
+    default: head
+  rows:
+    configurable: true
+    connectable: false
+    required: false
+    default: 5
+outputs:
+  columns:
+    exposed: true
+  input_rows:
+    exposed: true
+  operation:
+    exposed: true
+  output_rows:
+    exposed: true
+  result:
+    exposed: true
+  rows:
+    exposed: true
+tags: {  }
+executor_plugin: 'flowdrop_node_processor:dataframe_operations'
+visual_type: default
+supported_visual_types:
+  - default
+unified_input_exposed: false
+unified_output_exposed: false

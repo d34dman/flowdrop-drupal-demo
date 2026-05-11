@@ -1,0 +1,28 @@
+uuid: 678ca70f-f1f4-4505-92f0-aa0ebd4e842f
+langcode: en
+status: true
+dependencies:
+  module:
+    - flowdrop_ai_provider
+_core:
+  default_config_hash: cYmKnUjIUlAmK_MT72-bqiWqVrfOioxIar35i9wfm34
+id: flowdrop_ai_provider_image_to_image
+label: 'Image to Image'
+description: 'Transform images using AI models (style transfer, enhancement, etc.)'
+category: model
+icon: 'mdi:image-edit'
+plugin_version: 1.0.0
+enabled: true
+parameters: {  }
+outputs: {  }
+tags:
+  - model
+  - ai
+  - image
+  - transformation
+executor_plugin: 'flowdrop_ai_provider:image_to_image'
+visual_type: default
+supported_visual_types:
+  - default
+unified_input_exposed: false
+unified_output_exposed: false

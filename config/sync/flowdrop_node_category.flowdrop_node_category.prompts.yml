@@ -1,0 +1,12 @@
+uuid: 5505366d-92cd-4be6-bb9c-cb1d323669f7
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: CfR0iCpxETgxwFiCYlGMTFb9welc4I5-QmW7qpEeGQc
+id: prompts
+label: Prompts
+description: 'Create and manage text prompts, templates, and instructions that guide AI models to produce better results.'
+icon: 'mdi:message-text'
+color: '#f59e0b'
+enabled: true

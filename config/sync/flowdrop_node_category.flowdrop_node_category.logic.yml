@@ -1,12 +1,12 @@
-uuid: 6b28c70f-f3a0-495f-8ee2-beb8c90763e6
+uuid: e007327e-3391-424b-8fb3-194246b25a1b
 langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: x_05341zlCPKTI3D0ybvxeh557c8FP46BOdSaqwdQkE
+  default_config_hash: ltoYLM5LRaQl9kXP8DE803AnjolVWLc0kMQdJoW_pqk
 id: logic
 label: Logic
-description: 'Node types for conditional logic and control flow'
-icon: 'mdi:git-branch'
-color: '#06b6d4'
+description: 'Control your workflow with conditional branching, loops, switches, and other decision-making nodes that determine which path to follow.'
+icon: 'mdi:source-branch'
+color: '#a855f7'
 enabled: true

@@ -1,0 +1,28 @@
+uuid: 233aaa88-e96e-4554-9bc8-6b2f235180fd
+langcode: en
+status: true
+dependencies:
+  module:
+    - flowdrop_ai_provider
+_core:
+  default_config_hash: XPZdWv0C2HqLQ4zfWcMTd2r9f0eEc__qqYf-5QbODj0
+id: flowdrop_ai_provider_speech_to_text
+label: 'Speech to Text'
+description: 'Convert speech audio to text using AI models'
+category: model
+icon: 'mdi:microphone'
+plugin_version: 1.0.0
+enabled: true
+parameters: {  }
+outputs: {  }
+tags:
+  - model
+  - ai
+  - stt
+  - transcription
+executor_plugin: 'flowdrop_ai_provider:speech_to_text'
+visual_type: default
+supported_visual_types:
+  - default
+unified_input_exposed: false
+unified_output_exposed: false

@@ -1,23 +1,48 @@
-uuid: 128b27d4-ad99-4204-8cb1-2dfe2828a54a
+uuid: 8d6d6d3e-4438-4acf-a7a5-29da1d727cb7
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - flowdrop_node_processor
 _core:
-  default_config_hash: zgM3ghaxWeD5uAKNHpAQYA4TJDyUaRCH3e1nlYSxdT8
+  default_config_hash: jqCdMxD2bm15vuYjuiK-qQ5AtIR7LGAPGpvXcWdATPc
 id: chat_output
 label: 'Chat Output'
-description: 'Display chat-style output with formatting'
-category: output
-icon: 'mdi:chat'
-color: '#8b5cf6'
-version: 1.0.0
+description: 'Output chat messages in various formats'
+category: processing
+icon: 'mdi:chat-alert-outline'
+plugin_version: 1.0.0
 enabled: true
-config:
-  showTimestamp: true
-  maxLength: 2000
-  markdown: true
-tags:
-  - output
-  - chat
-  - display
-executor_plugin: chat_output
+parameters:
+  format:
+    configurable: true
+    connectable: false
+    required: false
+    default: text
+  message:
+    configurable: false
+    connectable: true
+    required: false
+  showTimestamp:
+    configurable: true
+    connectable: false
+    required: false
+    default: false
+outputs:
+  format:
+    exposed: false
+  message:
+    exposed: false
+  metadata:
+    exposed: false
+  timestamp:
+    exposed: false
+tags: {  }
+executor_plugin: 'flowdrop_node_processor:chat_output'
+visual_type: default
+supported_visual_types:
+  - default
+  - simple
+  - square
+unified_input_exposed: false
+unified_output_exposed: false

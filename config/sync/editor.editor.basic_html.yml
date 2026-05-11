@@ -1,4 +1,4 @@
-uuid: bd0bcd0e-937a-4101-8843-a2d649316c0d
+uuid: f0808027-ca6b-413d-885d-dc5c0bd4c0e0
 langcode: en
 status: true
 dependencies:
@@ -6,91 +6,29 @@ dependencies:
     - filter.format.basic_html
   module:
     - ckeditor5
+_core:
+  default_config_hash: JrKgrmvARpUBMILom2cUF4pz3mwrBnCYSlHjGwsKZ64
 format: basic_html
 editor: ckeditor5
 settings:
   toolbar:
     items:
-      - undo
-      - redo
-      - '|'
       - bold
-      - underline
-      - strikethrough
       - italic
-      - subscript
-      - superscript
+      - '|'
+      - link
+      - '|'
       - bulletedList
       - numberedList
-      - indent
-      - alignment
-      - outdent
       - '|'
       - blockQuote
       - drupalInsertImage
-      - insertTable
       - '|'
       - heading
-      - link
-      - textPartLanguage
-      - codeBlock
-      - specialCharacters
-      - showBlocks
-      - removeFormat
-      - horizontalLine
-      - sourceEditing
       - code
+      - '|'
+      - sourceEditing
   plugins:
-    ckeditor5_alignment:
-      enabled_alignments:
-        - center
-        - justify
-        - left
-        - right
-    ckeditor5_codeBlock:
-      languages:
-        -
-          label: 'Plain text'
-          language: plaintext
-        -
-          label: C
-          language: c
-        -
-          label: 'C#'
-          language: cs
-        -
-          label: C++
-          language: cpp
-        -
-          label: CSS
-          language: css
-        -
-          label: Diff
-          language: diff
-        -
-          label: HTML
-          language: html
-        -
-          label: Java
-          language: java
-        -
-          label: JavaScript
-          language: javascript
-        -
-          label: PHP
-          language: php
-        -
-          label: Python
-          language: python
-        -
-          label: Ruby
-          language: ruby
-        -
-          label: TypeScript
-          language: typescript
-        -
-          label: XML
-          language: xml
     ckeditor5_heading:
       enabled_headings:
         - heading2
@@ -100,14 +38,30 @@ settings:
         - heading6
     ckeditor5_imageResize:
       allow_resize: true
-    ckeditor5_language:
-      language_list: un
     ckeditor5_list:
       properties:
-        reversed: true
+        reversed: false
         startIndex: true
+        styles: true
       multiBlock: true
     ckeditor5_sourceEditing:
-      allowed_tags: {  }
+      allowed_tags:
+        - '<cite>'
+        - '<dl>'
+        - '<dt>'
+        - '<dd>'
+        - '<a hreflang>'
+        - '<blockquote cite>'
+        - '<h2 id>'
+        - '<h3 id>'
+        - '<h4 id>'
+        - '<h5 id>'
+        - '<h6 id>'
 image_upload:
-  status: false
+  status: true
+  scheme: public
+  directory: inline-images
+  max_size: null
+  max_dimensions:
+    width: null
+    height: null

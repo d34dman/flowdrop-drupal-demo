@@ -1,23 +1,44 @@
-uuid: fa8e3b7e-fd42-4fc7-b296-fdff50119f68
+uuid: a8913370-3faf-4cfc-911e-a20c1b3e3f84
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - flowdrop_node_processor
 _core:
-  default_config_hash: 3AuU5IT38G4pvEt1sFuQ5SyCaVRr90dqeV1ZIftyHe0
+  default_config_hash: MmGDd61NMVaovfyUz2fK7qZ16jSw2AsCyiTqse0sYL0
 id: text_output
 label: 'Text Output'
-description: 'Simple text output for displaying data'
-category: output
-icon: 'mdi:text-box'
-color: '#ef4444'
-version: 1.0.0
+description: 'Basic text output'
+category: outputs
+icon: 'mdi:alphabetical-variant'
+plugin_version: 1.0.0
 enabled: true
-config:
-  format: plain
-  maxLength: 1000
-  showTimestamp: false
-tags:
-  - output
-  - text
-  - display
-executor_plugin: text_output
+parameters:
+  format:
+    configurable: true
+    connectable: false
+    required: false
+    default: plain
+  maxLength:
+    configurable: true
+    connectable: false
+    required: false
+    default: 1000
+  text:
+    configurable: true
+    connectable: true
+    required: false
+outputs:
+  length:
+    exposed: false
+  text:
+    exposed: false
+tags: {  }
+executor_plugin: 'flowdrop_node_processor:text_output'
+visual_type: default
+supported_visual_types:
+  - default
+  - simple
+  - square
+unified_input_exposed: false
+unified_output_exposed: false

@@ -8,6 +8,7 @@ use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\factorial_crm\DTO\Lead;
 use Drupal\factorial_crm\Service\FactorialCrm as FactorialCrmService;
 use Drupal\flowdrop\Attribute\FlowDropNodeProcessor;
+use Drupal\flowdrop\DTO\ParameterBagInterface;
 use Drupal\flowdrop\Plugin\FlowDropNodeProcessor\AbstractFlowDropNodeProcessor;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\flowdrop\DTO\ConfigInterface;
@@ -21,12 +22,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 #[FlowDropNodeProcessor(
   id: "factorial_crm",
   label: new \Drupal\Core\StringTranslation\TranslatableMarkup("Factorial CRM"),
-  type: "simple",
-  supportedTypes: ["simple", "square", "default"],
-  category: "output",
   description: "Submit to Factorial CRM",
   version: "1.0.0",
-  tags: ["crm", "save", "output"]
 )]
 class FactorialCrm extends AbstractFlowDropNodeProcessor {
 
@@ -63,9 +60,9 @@ class FactorialCrm extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  protected function process(InputInterface $inputs, ConfigInterface $config): array {
+  public function process(ParameterBagInterface $params): array {
     try {
-      $dataInput = $inputs->get("data");
+      $dataInput = $params->get("data");
       if ($dataInput === NULL || $dataInput === "") {
         $this->getLogger()->warning("No data provided to FactorialCrm processor");
         return [
@@ -157,37 +154,18 @@ class FactorialCrm extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function getConfigSchema(): array
+  public function getParameterSchema(): array
   {
     return [
       'type' => 'object',
       'properties' => [
-        'nodeType' => [
-          'type' => 'select',
-          'title' => 'Node Type',
-          'description' => 'Choose the visual representation for this node',
-          'default' => 'simple',
-          'enum' => ["simple", "square", "default"],
-          'enumNames' => ["Simple", "Square", "Default"],
-        ],
-      ]
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getInputSchema(): array {
-    return [
-      'type' => 'object',
-      'properties' => [
         'data' => [
-          'type' => 'json',
+          'type' => 'object',
           'title' => 'Data',
           'description' => 'Data to be submitted to CRM',
           'required' => FALSE,
         ],
-      ],
+      ]
     ];
   }
 

@@ -1,16 +1,22 @@
-uuid: f00c9568-7235-4534-94da-643289df0e4c
+uuid: 52ec582a-83d0-4703-b78f-e7b247378470
 langcode: en
 status: true
 dependencies:
+  config:
+    - filter.format.restricted_html
   module:
-    - flowdrop
+    - comment
+    - filter
+    - search
     - system
 _core:
-  default_config_hash: j5zLMOdJBqC0bMvSdth5UebkprJB8g_2FXHqhfpJzow
+  default_config_hash: xLG41YbRo2NP-0SgRNTkMzLEuaeibanGXgUTbdIcIIg
 id: anonymous
 label: 'Anonymous user'
 weight: 0
 is_admin: false
 permissions:
+  - 'access comments'
   - 'access content'
-  - 'administer flowdrop'
+  - 'search content'
+  - 'use text format restricted_html'

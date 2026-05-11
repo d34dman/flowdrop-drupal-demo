@@ -1,0 +1,10 @@
+_core:
+  default_config_hash: zm7y3S3iZFi4HNIWGS3re5WMh9xgL6xp6owTUbaPpws
+enabled: true
+allowed_event_types:
+  - form.submit
+allowed_form_ids:
+  - user_login_form
+excluded_form_ids: {  }
+include_form_values: true
+include_form_state: false

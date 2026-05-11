@@ -1,9 +1,0 @@
-name: 'FlowDrop Conversation'
-type: module
-description: 'Provides conversation history management for AI agents and chat interfaces in FlowDrop workflows.'
-package: FlowDrop
-core_version_requirement: ^10 || ^11
-dependencies:
-  - flowdrop:flowdrop
-  - flowdrop:flowdrop_node_type
-  - flowdrop:flowdrop_node_processor

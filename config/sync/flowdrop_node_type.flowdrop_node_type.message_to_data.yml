@@ -1,20 +1,46 @@
-uuid: b34fce5e-2f94-42a3-b6a3-6bbaa27059ec
+uuid: 3095a728-220e-4855-8f03-dfa3c340ebb2
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - flowdrop_node_processor
 _core:
-  default_config_hash: B4IMe4hSN-TH1YvR0cg7xYqLU0NytnBa2XDpxbCKZXM
+  default_config_hash: Q9kzk2q3lhs6Sx0jE7y2f7NWmXXX7Hrf0C4QknTlV6A
 id: message_to_data
 label: 'Message to Data'
-description: 'Convert Message objects to Data objects'
+description: 'Convert messages to structured data'
 category: data
-icon: 'mdi:message-arrow-right'
-color: '#f59e0b'
-version: 1.0.0
+icon: 'mdi:message-cog-outline'
+plugin_version: 1.0.0
 enabled: true
-config: {  }
-tags:
-  - data
-  - message
-  - convert
-executor_plugin: message_to_data
+parameters:
+  extractFields:
+    configurable: true
+    connectable: false
+    required: false
+    default: {  }
+  format:
+    configurable: true
+    connectable: false
+    required: false
+    default: json
+  message:
+    configurable: false
+    connectable: true
+    required: false
+outputs:
+  data:
+    exposed: true
+  extracted_fields:
+    exposed: true
+  format:
+    exposed: true
+  original_message:
+    exposed: true
+tags: {  }
+executor_plugin: 'flowdrop_node_processor:message_to_data'
+visual_type: default
+supported_visual_types:
+  - default
+unified_input_exposed: false
+unified_output_exposed: false

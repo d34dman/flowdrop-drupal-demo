@@ -1,24 +1,53 @@
-uuid: 0c35a566-2952-4508-a963-7e2fa07ed34f
+uuid: 7bcba75d-65a8-46c7-a381-f7443982f6e7
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - flowdrop_node_processor
+_core:
+  default_config_hash: _sXAlXSe3H8qayWJUyUm4T4Rwj5Vwg1WCtk7cYeE434
 id: if_else
 label: If/Else
-description: ''
-category: processing
-icon: 'mdi:cog'
-color: '#007cba'
-version: 1.0.0
+description: 'Simple boolean gateway with text input, match text, and operator'
+category: logic
+icon: 'mdi:source-branch'
+plugin_version: 1.0.0
 enabled: true
-config:
-  operator: equals
-  caseSensitive: 0
+parameters:
   branches:
-    -
-      name: 'True'
-      value: true
-    -
-      name: 'False'
-      value: false
+    configurable: true
+    connectable: false
+    required: false
+    default:
+      -
+        name: 'True'
+        value: true
+      -
+        name: 'False'
+        value: false
+  caseSensitive:
+    configurable: true
+    connectable: false
+    required: false
+    default: false
+  data:
+    configurable: false
+    connectable: true
+    required: false
+  matchText:
+    configurable: true
+    connectable: false
+    required: false
+  operator:
+    configurable: true
+    connectable: false
+    required: false
+    default: equals
+outputs: {  }
 tags: {  }
-executor_plugin: if_else
+executor_plugin: 'flowdrop_node_processor:if_else'
+visual_type: gateway
+supported_visual_types:
+  - gateway
+unified_input_exposed: false
+unified_output_exposed: false

@@ -1,31 +1,35 @@
-uuid: cee1efcd-8c52-4105-be21-0a93393898d0
+uuid: b82cb85c-6ae0-4d68-be48-8621570ba37b
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.page.field_content
+    - field.field.node.page.body
     - node.type.page
   module:
     - path
     - text
+_core:
+  default_config_hash: MzSYzZbqqlwSM8mtLwEdCerBZRNGvHZntu5u_Gao8LY
 id: node.page.default
 targetEntityType: node
 bundle: page
 mode: default
 content:
+  body:
+    type: text_textarea_with_summary
+    weight: 31
+    region: content
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
   created:
     type: datetime_timestamp
     weight: 10
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_content:
-    type: text_textarea
-    weight: 121
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
     third_party_settings: {  }
   path:
     type: path
@@ -33,23 +37,9 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  promote:
-    type: boolean_checkbox
-    weight: 15
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
   status:
     type: boolean_checkbox
     weight: 120
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  sticky:
-    type: boolean_checkbox
-    weight: 16
     region: content
     settings:
       display_label: true
@@ -72,4 +62,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  promote: true
+  sticky: true

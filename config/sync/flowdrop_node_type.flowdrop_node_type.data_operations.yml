@@ -1,24 +1,54 @@
-uuid: 37c1e510-0e49-4075-aca3-2a71b022ca33
+uuid: 475c26dc-5df5-4af0-861f-45e24b6b36cc
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - flowdrop_node_processor
 _core:
-  default_config_hash: QhFklxpVR_ViphDtgGVFxIsrISG_V1YYIn0D9Nn_a7k
+  default_config_hash: i2CGveqzKtBd2_ux7N26zGgukB7lFwBO8TMsqZbi9eM
 id: data_operations
 label: 'Data Operations'
-description: 'Perform operations on Data objects'
-category: processing
-icon: 'mdi:database-cog'
-color: '#6366f1'
-version: 1.0.0
+description: 'Perform various data operations on arrays and objects'
+category: data
+icon: 'mdi:database-cog-outline'
+plugin_version: 1.0.0
 enabled: true
-config:
-  operation: select_keys
-  keys: {  }
-  filterKey: ''
-  filterValue: ''
-tags:
-  - processing
-  - data
-  - operations
-executor_plugin: data_operations
+parameters:
+  condition:
+    configurable: true
+    connectable: false
+    required: false
+    default: equals
+  data:
+    configurable: false
+    connectable: true
+    required: false
+  key:
+    configurable: true
+    connectable: false
+    required: false
+  operation:
+    configurable: true
+    connectable: false
+    required: false
+    default: filter
+  value:
+    configurable: true
+    connectable: false
+    required: false
+outputs:
+  input_count:
+    exposed: true
+  operation:
+    exposed: true
+  output_count:
+    exposed: true
+  result:
+    exposed: true
+tags: {  }
+executor_plugin: 'flowdrop_node_processor:data_operations'
+visual_type: default
+supported_visual_types:
+  - default
+unified_input_exposed: false
+unified_output_exposed: false

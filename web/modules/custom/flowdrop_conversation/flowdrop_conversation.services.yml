@@ -1,7 +1,0 @@
-services:
-  flowdrop_conversation.manager:
-    class: Drupal\flowdrop_conversation\Service\ConversationManager
-    arguments:
-      - '@logger.factory'
-      - '@keyvalue'
-      - '@event_dispatcher'

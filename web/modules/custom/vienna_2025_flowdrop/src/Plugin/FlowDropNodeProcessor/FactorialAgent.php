@@ -6,10 +6,9 @@ namespace Drupal\vienna_2025_flowdrop\Plugin\FlowDropNodeProcessor;
 
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\flowdrop\Attribute\FlowDropNodeProcessor;
+use Drupal\flowdrop\DTO\ParameterBagInterface;
 use Drupal\flowdrop\Plugin\FlowDropNodeProcessor\AbstractFlowDropNodeProcessor;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\flowdrop\DTO\ConfigInterface;
-use Drupal\flowdrop\DTO\InputInterface;
 use Drupal\key\KeyRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use GuzzleHttp\ClientInterface;
@@ -21,12 +20,8 @@ use GuzzleHttp\Exception\GuzzleException;
 #[FlowDropNodeProcessor(
   id: "factorial_agent",
   label: new \Drupal\Core\StringTranslation\TranslatableMarkup("Factorial Agent"),
-  type: "simple",
-  supportedTypes: ["simple", "default"],
-  category: "ai",
   description: "Simple AI agent implementation",
   version: "1.0.0",
-  tags: ["ai", "agent", "simple"]
 )]
 class FactorialAgent extends AbstractFlowDropNodeProcessor {
 
@@ -72,18 +67,18 @@ class FactorialAgent extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  protected function process(InputInterface $inputs, ConfigInterface $config): array {
-    $systemPrompt = (string) $config->getConfig('systemPrompt', 'You are a helpful assistant.');
-    $temperature = (float) $config->getConfig('temperature', 0.7);
-    $maxTokens = (int) $config->getConfig('maxTokens', 1000);
-    $tools = (array) $config->getConfig('tools', []);
+  public function process(ParameterBagInterface $params): array {
+    $systemPrompt = $params->getString('systemPrompt', 'You are a helpful assistant.');
+    $temperature = $params->getFloat('temperature', 0.7);
+    $maxTokens = $params->getInt('maxTokens', 1000);
+    $tools = $params->getArray('tools', []);
 
     // Get the input message.
     // It can be a string or structured data (array) from data flow.
-    $messageInput = $inputs->get('message') ?: '';
+    $messageInput = $params->get('message') ?: '';
     $message = $this->normalizeMessage($messageInput);
 
-    $tools = $inputs->get('tools') ?: $tools;
+    $tools = $params->get('tools') ?: $tools;
 
     // Process the agent request with OpenAI API.
     $response = $this->processAgentRequest($message, $systemPrompt, $temperature, $maxTokens, $tools);
@@ -348,45 +343,7 @@ class FactorialAgent extends AbstractFlowDropNodeProcessor {
   /**
    * {@inheritdoc}
    */
-  public function getConfigSchema(): array {
-    return [
-      'type' => 'object',
-      'properties' => [
-        'nodeType' => [
-          'type' => 'select',
-          'title' => 'Node Type',
-          'description' => 'Choose the visual representation for this node',
-          'default' => 'simple',
-          'enum' => ["simple", "default"],
-          'enumNames' => ["Simple", "Default"],
-        ],
-        'systemPrompt' => [
-          'type' => 'string',
-          'title' => 'System Prompt',
-          'description' => 'System prompt for the agent',
-          'format' => 'multiline',
-          'default' => 'You are a helpful assistant.',
-        ],
-        'temperature' => [
-          'type' => 'number',
-          'title' => 'Temperature',
-          'description' => 'Temperature for response generation (0.0 to 1.0)',
-          'default' => 0.7,
-        ],
-        'maxTokens' => [
-          'type' => 'integer',
-          'title' => 'Max Tokens',
-          'description' => 'Maximum tokens for response',
-          'default' => 1000,
-        ],
-      ],
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getInputSchema(): array {
+  public function getParameterSchema(): array {
     return [
       'type' => 'object',
       'properties' => [
@@ -401,6 +358,29 @@ class FactorialAgent extends AbstractFlowDropNodeProcessor {
           'title' => 'Tools',
           'description' => 'Tools available to the agent',
           'default' => [],
+        ],
+        'systemPrompt' => [
+          'type' => 'string',
+          'title' => 'System Prompt',
+          'description' => 'System prompt for the agent',
+          'format' => 'multiline',
+          'default' => 'You are a helpful assistant.',
+        ],
+        'temperature' => [
+          'type' => 'number',
+          'title' => 'Temperature',
+          'description' => 'Temperature for response generation (0.0 to 1.0)',
+          'default' => 0.7,
+          'step' => 0.01,
+          'minimum' => 0,
+          'maximum' => 1,
+          'format' => 'range',
+        ],
+        'maxTokens' => [
+          'type' => 'integer',
+          'title' => 'Max Tokens',
+          'description' => 'Maximum tokens for response',
+          'default' => 1000,
         ],
       ],
     ];
