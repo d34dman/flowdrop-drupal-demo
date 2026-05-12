@@ -72,7 +72,7 @@ volumes:
   redis-data:
 
 networks:
-  web:
+  proxy:
     external: true
   internal:
     external: false
