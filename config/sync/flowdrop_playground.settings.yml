@@ -3,4 +3,4 @@ _core:
 default_session_timeout: 3600
 max_sessions_per_workflow: 10
 message_retention_days: 30
-auto_run: true
+auto_run: false

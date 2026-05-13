@@ -1,0 +1,843 @@
+uuid: 9e3f34d8-6aa6-424b-a35a-e7cb1c9b03cc
+langcode: en
+status: true
+dependencies: {  }
+id: level_3_9_url_summariser
+label: 'Level 3.9. URL summariser'
+description: 'Bring in external content.'
+nodes:
+  -
+    id: http_request.1
+    type: universalNode
+    position:
+      x: 320
+      'y': 380
+    data:
+      label: 'HTTP Request'
+      config:
+        method: GET
+        headers: {  }
+        body: ''
+        timeout: 30
+        follow_redirects: true
+      metadata:
+        id: http_request
+        name: 'HTTP Request'
+        type: default
+        supportedTypes:
+          - default
+        description: 'HTTP request operations'
+        category: tools
+        icon: 'mdi:api'
+        plugin_version: 1.0.0
+        enabled: true
+        tags: {  }
+        executor_plugin: 'flowdrop_node_processor:http_request'
+        inputs:
+          -
+            id: url
+            name: URL
+            type: input
+            dataType: string
+            required: false
+            description: 'The URL to request'
+            defaultValue: ''
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: status_code
+            name: status_code
+            type: output
+            dataType: number
+            required: false
+            description: 'HTTP response status code'
+          -
+            id: headers
+            name: headers
+            type: output
+            dataType: array
+            required: false
+            description: 'HTTP response headers'
+          -
+            id: body
+            name: body
+            type: output
+            dataType: string
+            required: false
+            description: 'HTTP response body'
+          -
+            id: json
+            name: json
+            type: output
+            dataType: array
+            required: false
+            description: 'Parsed JSON response (if applicable)'
+          -
+            id: url
+            name: url
+            type: output
+            dataType: string
+            required: false
+            description: 'The URL that was requested'
+          -
+            id: method
+            name: method
+            type: output
+            dataType: string
+            required: false
+            description: 'The HTTP method used'
+          -
+            id: request_time
+            name: request_time
+            type: output
+            dataType: string
+            required: false
+            description: 'Timestamp when request was made'
+          -
+            id: trigger
+            name: Trigger
+            type: output
+            dataType: trigger
+            required: false
+            description: 'Emitted when this node completes execution'
+        config:
+          method: GET
+          headers: {  }
+          body: ''
+          timeout: 30
+          follow_redirects: true
+        configSchema:
+          type: object
+          properties:
+            method:
+              type: string
+              title: 'HTTP Method'
+              description: 'The HTTP method to use'
+              default: GET
+              enum:
+                - GET
+                - POST
+                - PUT
+                - DELETE
+                - PATCH
+                - HEAD
+                - OPTIONS
+            headers:
+              type: object
+              format: json
+              title: Headers
+              description: 'HTTP headers to send'
+              default: {  }
+            body:
+              type: string
+              format: multiline
+              title: 'Request Body'
+              description: 'Request body for POST/PUT requests'
+              default: ''
+            timeout:
+              type: integer
+              title: Timeout
+              description: 'Request timeout in seconds'
+              default: 30
+              minimum: 1
+              maximum: 300
+            follow_redirects:
+              type: boolean
+              title: 'Follow Redirects'
+              description: 'Whether to follow HTTP redirects'
+              default: true
+            instanceTitle:
+              type: string
+              title: Title
+              description: 'Override the default node title for this instance.'
+              x-display-order: -2
+            instanceDescription:
+              type: string
+              title: Description
+              description: 'Override the default description for this instance.'
+              format: multiline
+              x-display-order: -1
+          required: {  }
+      nodeId: http_request.1
+    deletable: true
+    measured:
+      width: 290
+      height: 864
+    selected: false
+  -
+    id: html_to_markdown.1
+    type: universalNode
+    position:
+      x: 800
+      'y': 500
+    data:
+      label: 'HTML to Markdown'
+      config:
+        heading_style: atx
+        bold_style: '**'
+        italic_style: '*'
+        strip_placeholder_links: false
+      metadata:
+        id: html_to_markdown
+        name: 'HTML to Markdown'
+        type: default
+        supportedTypes:
+          - default
+        description: 'Convert HTML content to Markdown format'
+        category: data
+        icon: 'mdi:language-markdown'
+        plugin_version: 1.0.0
+        enabled: true
+        tags: {  }
+        executor_plugin: 'flowdrop_node_processor:html_to_markdown'
+        inputs:
+          -
+            id: html
+            name: HTML
+            type: input
+            dataType: string
+            required: false
+            description: 'The HTML content to convert to Markdown'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: markdown
+            name: markdown
+            type: output
+            dataType: string
+            required: false
+            description: 'The Markdown representation of the HTML content'
+          -
+            id: success
+            name: success
+            type: output
+            dataType: boolean
+            required: false
+            description: 'Whether the conversion was successful'
+          -
+            id: trigger
+            name: Trigger
+            type: output
+            dataType: trigger
+            required: false
+            description: 'Emitted when this node completes execution'
+        config:
+          heading_style: atx
+          bold_style: '**'
+          italic_style: '*'
+          strip_placeholder_links: false
+        configSchema:
+          type: object
+          properties:
+            heading_style:
+              type: string
+              title: 'Heading Style'
+              description: 'Heading format: atx (# Heading) or setext (underlined)'
+              enum:
+                - atx
+                - setext
+              default: atx
+            bold_style:
+              type: string
+              title: 'Bold Style'
+              description: 'Bold marker style'
+              enum:
+                - '**'
+                - __
+              default: '**'
+            italic_style:
+              type: string
+              title: 'Italic Style'
+              description: 'Italic marker style'
+              enum:
+                - '*'
+                - _
+              default: '*'
+            strip_placeholder_links:
+              type: boolean
+              title: 'Strip Placeholder Links'
+              description: 'Remove links with empty href attributes'
+              default: false
+            instanceTitle:
+              type: string
+              title: Title
+              description: 'Override the default node title for this instance.'
+              x-display-order: -2
+            instanceDescription:
+              type: string
+              title: Description
+              description: 'Override the default description for this instance.'
+              format: multiline
+              x-display-order: -1
+          required: {  }
+      nodeId: html_to_markdown.1
+    deletable: true
+    measured:
+      width: 290
+      height: 469
+    selected: false
+  -
+    id: chat_output.1
+    type: universalNode
+    position:
+      x: 1920
+      'y': 520
+    data:
+      label: 'Chat Output'
+      config:
+        format: text
+        showTimestamp: false
+        nodeType: default
+      metadata:
+        id: chat_output
+        name: 'Chat Output'
+        type: default
+        supportedTypes:
+          - default
+          - simple
+          - square
+        description: 'Output chat messages in various formats'
+        category: processing
+        icon: 'mdi:chat-alert-outline'
+        plugin_version: 1.0.0
+        enabled: true
+        tags: {  }
+        executor_plugin: 'flowdrop_node_processor:chat_output'
+        inputs:
+          -
+            id: message
+            name: Message
+            type: input
+            dataType: string
+            required: false
+            description: 'Default chat message'
+            defaultValue: ''
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: trigger
+            name: Trigger
+            type: output
+            dataType: trigger
+            required: false
+            description: 'Emitted when this node completes execution'
+        config:
+          format: text
+          showTimestamp: false
+          type: default
+        configSchema:
+          type: object
+          properties:
+            format:
+              type: string
+              title: Format
+              description: 'Message format (text, markdown, html)'
+              default: text
+            showTimestamp:
+              type: boolean
+              title: 'Show Timestamp'
+              description: 'Whether to include timestamp'
+              default: false
+            nodeType:
+              type: string
+              title: 'Visual Type'
+              description: 'Select the visual appearance for this node instance.'
+              enum:
+                - default
+                - simple
+                - square
+              default: default
+            instanceTitle:
+              type: string
+              title: Title
+              description: 'Override the default node title for this instance.'
+              x-display-order: -2
+            instanceDescription:
+              type: string
+              title: Description
+              description: 'Override the default description for this instance.'
+              format: multiline
+              x-display-order: -1
+          required: {  }
+      nodeId: chat_output.1
+    deletable: true
+    measured:
+      width: 290
+      height: 311
+    selected: true
+    dragging: false
+  -
+    id: text_input_interrupt.1
+    type: universalNode
+    position:
+      x: -320
+      'y': 300
+    data:
+      label: 'Text Input (Interrupt)'
+      config:
+        message: 'Please enter a URL'
+        placeholder: ''
+        multiline: false
+        default_value: ''
+        nodeType: default
+      metadata:
+        id: text_input_interrupt
+        name: 'Text Input (Interrupt)'
+        type: default
+        supportedTypes:
+          - default
+          - simple
+        description: 'Pauses workflow for user to enter text'
+        category: human_in_loop
+        icon: 'mdi:text-box-edit-outline'
+        plugin_version: 1.0.0
+        enabled: true
+        tags:
+          - human-in-loop
+          - interrupt
+          - text-input
+        executor_plugin: 'flowdrop_interrupt:text_input_interrupt'
+        inputs:
+          -
+            id: message
+            name: 'Prompt Message'
+            type: input
+            dataType: string
+            required: false
+            description: 'The message to display to the user'
+            defaultValue: 'Please enter text'
+          -
+            id: default_value
+            name: 'Default Value'
+            type: input
+            dataType: string
+            required: false
+            description: 'Default text to pre-fill in the input'
+            defaultValue: ''
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: text
+            name: text
+            type: output
+            dataType: string
+            required: false
+            description: 'The text entered by the user'
+          -
+            id: length
+            name: length
+            type: output
+            dataType: number
+            required: false
+            description: 'Character count of the entered text'
+          -
+            id: response_time
+            name: response_time
+            type: output
+            dataType: number
+            required: false
+            description: 'Unix timestamp when the user responded'
+          -
+            id: user_id
+            name: user_id
+            type: output
+            dataType: number
+            required: false
+            description: 'ID of the user who responded (null if anonymous)'
+          -
+            id: interrupt_id
+            name: interrupt_id
+            type: output
+            dataType: string
+            required: false
+            description: 'UUID of the interrupt that was resolved'
+          -
+            id: trigger
+            name: Trigger
+            type: output
+            dataType: trigger
+            required: false
+            description: 'Emitted when this node completes execution'
+        config:
+          message: 'Please enter text'
+          placeholder: ''
+          multiline: false
+          default_value: ''
+          type: default
+        configSchema:
+          type: object
+          properties:
+            message:
+              type: string
+              title: 'Prompt Message'
+              description: 'The message to display to the user'
+              default: 'Please enter text'
+              format: multiline
+            placeholder:
+              type: string
+              title: Placeholder
+              description: 'Placeholder text for the input field'
+              default: ''
+            multiline:
+              type: boolean
+              title: Multiline
+              description: 'Show a multiline text area instead of single line input'
+              default: false
+            min_length:
+              type: integer
+              title: 'Minimum Length'
+              description: 'Minimum number of characters required'
+              minimum: 0
+            max_length:
+              type: integer
+              title: 'Maximum Length'
+              description: 'Maximum number of characters allowed'
+              minimum: 1
+            default_value:
+              type: string
+              title: 'Default Value'
+              description: 'Default text to pre-fill in the input'
+              default: ''
+            nodeType:
+              type: string
+              title: 'Visual Type'
+              description: 'Select the visual appearance for this node instance.'
+              enum:
+                - default
+                - simple
+              default: default
+            instanceTitle:
+              type: string
+              title: Title
+              description: 'Override the default node title for this instance.'
+              x-display-order: -2
+            instanceDescription:
+              type: string
+              title: Description
+              description: 'Override the default description for this instance.'
+              format: multiline
+              x-display-order: -1
+          required: {  }
+      nodeId: text_input_interrupt.1
+      extensions:
+        ui:
+          hideUnconnectedHandles: false
+    deletable: true
+    measured:
+      width: 290
+      height: 785
+    selected: false
+    dragging: false
+  -
+    id: flowdrop_ai_provider_chat.1
+    type: universalNode
+    position:
+      x: 1400
+      'y': 380
+    data:
+      label: Chat
+      config:
+        model: claude-sonnet-4-5-20250929
+        temperature: 0.7
+        systemPrompt: 'Summarise user message.'
+      metadata:
+        id: flowdrop_ai_provider_chat
+        name: Chat
+        type: default
+        supportedTypes:
+          - default
+        description: 'AI chat model for conversation and text generation'
+        category: ai
+        icon: 'mdi:robot'
+        plugin_version: 1.0.0
+        enabled: true
+        tags:
+          - model
+          - ai
+        executor_plugin: 'flowdrop_ai_provider:chat'
+        inputs:
+          -
+            id: message
+            name: Message
+            type: input
+            dataType: string
+            required: false
+            description: 'Message to send to AI model'
+          -
+            id: systemPrompt
+            name: 'System Prompt'
+            type: input
+            dataType: string
+            required: false
+            description: 'System prompt to set AI behavior'
+            defaultValue: ''
+          -
+            id: history
+            name: 'Chat History'
+            type: input
+            dataType: array
+            required: false
+            description: 'Previous chat messages for multi-turn conversations. Each item should have "role" and "content" keys.'
+            defaultValue: {  }
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: response
+            name: response
+            type: output
+            dataType: string
+            required: false
+            description: 'The AI model response'
+          -
+            id: model
+            name: model
+            type: output
+            dataType: string
+            required: false
+            description: 'The model used'
+          -
+            id: provider
+            name: provider
+            type: output
+            dataType: string
+            required: false
+            description: 'The AI provider'
+          -
+            id: tokens_used
+            name: tokens_used
+            type: output
+            dataType: number
+            required: false
+            description: 'Number of tokens used'
+          -
+            id: temperature
+            name: temperature
+            type: output
+            dataType: number
+            required: false
+            description: 'The temperature setting'
+          -
+            id: max_tokens
+            name: max_tokens
+            type: output
+            dataType: number
+            required: false
+            description: 'Maximum tokens setting'
+          -
+            id: trigger
+            name: Trigger
+            type: output
+            dataType: trigger
+            required: false
+            description: 'Emitted when this node completes execution'
+        config:
+          model: claude-sonnet-4-6
+          temperature: 0.7
+          systemPrompt: ''
+        configSchema:
+          type: object
+          properties:
+            model:
+              type: string
+              title: Model
+              description: 'AI model to use for chat'
+              default: claude-sonnet-4-5-20250929
+              enum:
+                - claude-opus-4-7
+                - claude-sonnet-4-6
+                - claude-opus-4-6
+                - claude-opus-4-5-20251101
+                - claude-haiku-4-5-20251001
+                - claude-sonnet-4-5-20250929
+                - claude-opus-4-1-20250805
+                - claude-opus-4-20250514
+                - claude-sonnet-4-20250514
+              options:
+                -
+                  value: claude-opus-4-7
+                  label: 'Claude Opus 4.7 (anthropic)'
+                -
+                  value: claude-sonnet-4-6
+                  label: 'Claude Sonnet 4.6 (anthropic)'
+                -
+                  value: claude-opus-4-6
+                  label: 'Claude Opus 4.6 (anthropic)'
+                -
+                  value: claude-opus-4-5-20251101
+                  label: 'Claude Opus 4.5 (anthropic)'
+                -
+                  value: claude-haiku-4-5-20251001
+                  label: 'Claude Haiku 4.5 (anthropic)'
+                -
+                  value: claude-sonnet-4-5-20250929
+                  label: 'Claude Sonnet 4.5 (anthropic)'
+                -
+                  value: claude-opus-4-1-20250805
+                  label: 'Claude Opus 4.1 (anthropic)'
+                -
+                  value: claude-opus-4-20250514
+                  label: 'Claude Opus 4 (anthropic)'
+                -
+                  value: claude-sonnet-4-20250514
+                  label: 'Claude Sonnet 4 (anthropic)'
+            temperature:
+              type: number
+              title: Temperature
+              description: 'Model temperature (0.0 to 2.0)'
+              default: 0.7
+              minimum: 0
+              maximum: 2
+              step: '0.01'
+              format: range
+            systemPrompt:
+              type: string
+              title: 'System Prompt'
+              description: 'System prompt to set AI behavior'
+              default: ''
+              format: ai_prompt
+              x-ai-prompt:
+                promptTypes:
+                  - flowdrop
+                allowDirect: true
+                allowReference: true
+            instanceTitle:
+              type: string
+              title: Title
+              description: 'Override the default node title for this instance.'
+              x-display-order: -2
+            instanceDescription:
+              type: string
+              title: Description
+              description: 'Override the default description for this instance.'
+              format: multiline
+              x-display-order: -1
+          required: {  }
+      nodeId: flowdrop_ai_provider_chat.1
+      extensions:
+        ui:
+          hideUnconnectedHandles: false
+    deletable: true
+    measured:
+      width: 290
+      height: 963
+    selected: false
+    dragging: false
+edges:
+  -
+    id: xy-edge__text_input_interrupt.1text_input_interrupt.1-output-text-http_request.1http_request.1-input-url
+    source: text_input_interrupt.1
+    target: http_request.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: tools
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+    sourceHandle: text_input_interrupt.1-output-text
+    targetHandle: http_request.1-input-url
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    selected: false
+  -
+    id: xy-edge__http_request.1http_request.1-output-body-html_to_markdown.1html_to_markdown.1-input-html
+    source: http_request.1
+    target: html_to_markdown.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: data
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+    sourceHandle: http_request.1-output-body
+    targetHandle: html_to_markdown.1-input-html
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    selected: false
+  -
+    id: xy-edge__html_to_markdown.1html_to_markdown.1-output-markdown-flowdrop_ai_provider_chat.1flowdrop_ai_provider_chat.1-input-message
+    source: html_to_markdown.1
+    target: flowdrop_ai_provider_chat.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: ai
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+    sourceHandle: html_to_markdown.1-output-markdown
+    targetHandle: flowdrop_ai_provider_chat.1-input-message
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: xy-edge__flowdrop_ai_provider_chat.1flowdrop_ai_provider_chat.1-output-response-chat_output.1chat_output.1-input-message
+    source: flowdrop_ai_provider_chat.1
+    target: chat_output.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+    sourceHandle: flowdrop_ai_provider_chat.1-output-response
+    targetHandle: chat_output.1-input-message
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+metadata:
+  version: 1.0.0
+  createdAt: '2026-05-13T19:59:57.219Z'
+  updatedAt: '2026-05-13T20:03:03.300Z'
+  versionId: 1778702580678-awfi54i4v
+  updateNumber: 24
+  format: flowdrop
+created: 1778702386
+changed: 1778702583
+uid: 0

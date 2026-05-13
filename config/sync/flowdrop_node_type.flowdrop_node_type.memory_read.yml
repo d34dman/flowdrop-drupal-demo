@@ -1,0 +1,47 @@
+uuid: 0a7128ea-e29d-424d-95a6-04c9b2e7edd1
+langcode: en
+status: true
+dependencies:
+  module:
+    - flowdrop_memory
+_core:
+  default_config_hash: PoOQ5_YbYVYZ_OOlRN64ga9wmZDqqMEpLFgYdeWtwG0
+id: memory_read
+label: 'Memory Read'
+description: 'Read a value from scoped memory. Scope ID is automatically derived from the execution context.'
+category: memory
+icon: 'mdi:database-search'
+plugin_version: 1.0.0
+enabled: true
+parameters:
+  scope:
+    configurable: true
+    connectable: false
+    required: false
+    default: global
+  key:
+    configurable: false
+    connectable: true
+    required: true
+  default_value:
+    configurable: true
+    connectable: true
+    required: false
+outputs:
+  value:
+    exposed: true
+  found:
+    exposed: true
+  key:
+    exposed: false
+  scope:
+    exposed: false
+  resolved_scope_id:
+    exposed: false
+tags: {  }
+executor_plugin: 'flowdrop_memory:memory_read'
+visual_type: default
+supported_visual_types:
+  - default
+unified_input_exposed: false
+unified_output_exposed: false

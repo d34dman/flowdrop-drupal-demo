@@ -1,0 +1,50 @@
+uuid: 111222a1-ad96-4047-a243-0ad8586e851f
+langcode: en
+status: true
+dependencies:
+  module:
+    - flowdrop_memory
+_core:
+  default_config_hash: jptETWpHwyV0M6Ula9nPWpPCt14VxqFgZDMcc7DRBxk
+id: memory_write
+label: 'Memory Write'
+description: 'Write a value to scoped memory. Scope ID is automatically derived from the execution context.'
+category: memory
+icon: 'mdi:database-edit'
+plugin_version: 1.0.0
+enabled: true
+parameters:
+  scope:
+    configurable: true
+    connectable: false
+    required: false
+    default: global
+  key:
+    configurable: false
+    connectable: true
+    required: true
+  value:
+    configurable: false
+    connectable: true
+    required: true
+  ttl:
+    configurable: true
+    connectable: false
+    required: false
+    default: 0
+outputs:
+  success:
+    exposed: true
+  key:
+    exposed: false
+  scope:
+    exposed: false
+  resolved_scope_id:
+    exposed: false
+tags: {  }
+executor_plugin: 'flowdrop_memory:memory_write'
+visual_type: default
+supported_visual_types:
+  - default
+unified_input_exposed: false
+unified_output_exposed: false

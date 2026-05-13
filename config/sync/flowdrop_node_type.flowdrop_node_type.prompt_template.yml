@@ -22,17 +22,16 @@ parameters:
     configurable: false
     connectable: true
     required: false
-    default: {  }
 outputs:
   prompt:
     exposed: true
   template:
-    exposed: true
+    exposed: false
   variables:
-    exposed: true
+    exposed: false
 tags: {  }
 executor_plugin: 'flowdrop_node_processor:prompt_template'
-visual_type: simple
+visual_type: default
 supported_visual_types:
   - default
   - simple

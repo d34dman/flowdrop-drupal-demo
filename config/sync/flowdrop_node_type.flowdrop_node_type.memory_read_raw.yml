@@ -1,0 +1,49 @@
+uuid: 08f68751-9bcf-4ba5-9238-6e29e4ce7090
+langcode: en
+status: true
+dependencies:
+  module:
+    - flowdrop_memory
+_core:
+  default_config_hash: OElvr7dc5bB29s_YPmsEUXt286y1UuN7v1Q7Ei5-h0E
+id: memory_read_raw
+label: 'Memory Read (Explicit)'
+description: 'Read a value from memory with fully explicit scope and scope ID. No auto-population from execution context.'
+category: memory
+icon: 'mdi:database-search-outline'
+plugin_version: 1.0.0
+enabled: true
+parameters:
+  scope:
+    configurable: false
+    connectable: true
+    required: true
+  scope_id:
+    configurable: false
+    connectable: true
+    required: false
+    default: ''
+  key:
+    configurable: false
+    connectable: true
+    required: true
+  default_value:
+    configurable: true
+    connectable: true
+    required: false
+outputs:
+  value:
+    exposed: true
+  found:
+    exposed: true
+  key:
+    exposed: false
+  scope:
+    exposed: false
+tags: {  }
+executor_plugin: 'flowdrop_memory:memory_read_raw'
+visual_type: default
+supported_visual_types:
+  - default
+unified_input_exposed: false
+unified_output_exposed: false

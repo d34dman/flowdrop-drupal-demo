@@ -1,0 +1,469 @@
+uuid: 7a874419-2948-4f89-8d3b-4f9643da1c9f
+langcode: en
+status: true
+dependencies: {  }
+id: level_2_6_simple_ai_chat
+label: 'Level 2.6. Simple AI chat'
+description: 'Prove the AI provider works on the canvas.'
+nodes:
+  -
+    id: chat_input.1
+    type: universalNode
+    position:
+      x: 220
+      'y': 180
+    data:
+      label: 'Chat Input'
+      config:
+        nodeType: default
+      metadata:
+        id: chat_input
+        name: 'Chat Input'
+        type: default
+        supportedTypes:
+          - default
+          - simple
+          - square
+        description: 'Chat input for playground workflows with optional conversation history'
+        category: inputs
+        icon: 'mdi:chat-plus-outline'
+        plugin_version: 1.0.0
+        enabled: true
+        tags: {  }
+        executor_plugin: 'flowdrop_node_processor:chat_input'
+        inputs:
+          -
+            id: message
+            name: Message
+            type: input
+            dataType: string
+            required: false
+            description: 'The chat message content (typically injected from playground)'
+            defaultValue: ''
+          -
+            id: history
+            name: 'Conversation History'
+            type: input
+            dataType: array
+            required: false
+            description: 'Optional conversation history for context-aware processing'
+          -
+            id: sessionId
+            name: 'Session ID'
+            type: input
+            dataType: number
+            required: false
+            description: 'Playground session ID (for tracking)'
+          -
+            id: messageId
+            name: 'Message ID'
+            type: input
+            dataType: number
+            required: false
+            description: 'Playground message ID (for tracking)'
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: message
+            name: message
+            type: output
+            dataType: string
+            required: false
+            description: 'The chat message content'
+          -
+            id: trigger
+            name: Trigger
+            type: output
+            dataType: trigger
+            required: false
+            description: 'Emitted when this node completes execution'
+        config:
+          type: default
+        configSchema:
+          type: object
+          properties:
+            sessionId:
+              type: integer
+              title: 'Session ID'
+              description: 'Playground session ID (for tracking)'
+            messageId:
+              type: integer
+              title: 'Message ID'
+              description: 'Playground message ID (for tracking)'
+            nodeType:
+              type: string
+              title: 'Visual Type'
+              description: 'Select the visual appearance for this node instance.'
+              enum:
+                - default
+                - simple
+                - square
+              default: default
+            instanceTitle:
+              type: string
+              title: Title
+              description: 'Override the default node title for this instance.'
+              x-display-order: -2
+            instanceDescription:
+              type: string
+              title: Description
+              description: 'Override the default description for this instance.'
+              format: multiline
+              x-display-order: -1
+          required: {  }
+      nodeId: chat_input.1
+    deletable: true
+    measured:
+      width: 290
+      height: 647
+    selected: true
+    dragging: false
+  -
+    id: flowdrop_ai_provider_chat.1
+    type: universalNode
+    position:
+      x: 640
+      'y': 180
+    data:
+      label: Chat
+      config:
+        model: claude-haiku-4-5-20251001
+        temperature: 0.7
+        systemPrompt: ''
+      metadata:
+        id: flowdrop_ai_provider_chat
+        name: Chat
+        type: default
+        supportedTypes:
+          - default
+        description: 'AI chat model for conversation and text generation'
+        category: ai
+        icon: 'mdi:robot'
+        plugin_version: 1.0.0
+        enabled: true
+        tags:
+          - model
+          - ai
+        executor_plugin: 'flowdrop_ai_provider:chat'
+        inputs:
+          -
+            id: message
+            name: Message
+            type: input
+            dataType: string
+            required: false
+            description: 'Message to send to AI model'
+          -
+            id: systemPrompt
+            name: 'System Prompt'
+            type: input
+            dataType: string
+            required: false
+            description: 'System prompt to set AI behavior'
+            defaultValue: ''
+          -
+            id: history
+            name: 'Chat History'
+            type: input
+            dataType: array
+            required: false
+            description: 'Previous chat messages for multi-turn conversations. Each item should have "role" and "content" keys.'
+            defaultValue: {  }
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: response
+            name: response
+            type: output
+            dataType: string
+            required: false
+            description: 'The AI model response'
+          -
+            id: model
+            name: model
+            type: output
+            dataType: string
+            required: false
+            description: 'The model used'
+          -
+            id: provider
+            name: provider
+            type: output
+            dataType: string
+            required: false
+            description: 'The AI provider'
+          -
+            id: tokens_used
+            name: tokens_used
+            type: output
+            dataType: number
+            required: false
+            description: 'Number of tokens used'
+          -
+            id: temperature
+            name: temperature
+            type: output
+            dataType: number
+            required: false
+            description: 'The temperature setting'
+          -
+            id: max_tokens
+            name: max_tokens
+            type: output
+            dataType: number
+            required: false
+            description: 'Maximum tokens setting'
+          -
+            id: trigger
+            name: Trigger
+            type: output
+            dataType: trigger
+            required: false
+            description: 'Emitted when this node completes execution'
+        config:
+          model: claude-sonnet-4-6
+          temperature: 0.7
+          systemPrompt: ''
+        configSchema:
+          type: object
+          properties:
+            model:
+              type: string
+              title: Model
+              description: 'AI model to use for chat'
+              default: claude-sonnet-4-5-20250929
+              enum:
+                - claude-opus-4-7
+                - claude-sonnet-4-6
+                - claude-opus-4-6
+                - claude-opus-4-5-20251101
+                - claude-haiku-4-5-20251001
+                - claude-sonnet-4-5-20250929
+                - claude-opus-4-1-20250805
+                - claude-opus-4-20250514
+                - claude-sonnet-4-20250514
+              options:
+                -
+                  value: claude-opus-4-7
+                  label: 'Claude Opus 4.7 (anthropic)'
+                -
+                  value: claude-sonnet-4-6
+                  label: 'Claude Sonnet 4.6 (anthropic)'
+                -
+                  value: claude-opus-4-6
+                  label: 'Claude Opus 4.6 (anthropic)'
+                -
+                  value: claude-opus-4-5-20251101
+                  label: 'Claude Opus 4.5 (anthropic)'
+                -
+                  value: claude-haiku-4-5-20251001
+                  label: 'Claude Haiku 4.5 (anthropic)'
+                -
+                  value: claude-sonnet-4-5-20250929
+                  label: 'Claude Sonnet 4.5 (anthropic)'
+                -
+                  value: claude-opus-4-1-20250805
+                  label: 'Claude Opus 4.1 (anthropic)'
+                -
+                  value: claude-opus-4-20250514
+                  label: 'Claude Opus 4 (anthropic)'
+                -
+                  value: claude-sonnet-4-20250514
+                  label: 'Claude Sonnet 4 (anthropic)'
+            temperature:
+              type: number
+              title: Temperature
+              description: 'Model temperature (0.0 to 2.0)'
+              default: 0.7
+              minimum: 0
+              maximum: 2
+              step: '0.01'
+              format: range
+            systemPrompt:
+              type: string
+              title: 'System Prompt'
+              description: 'System prompt to set AI behavior'
+              default: ''
+              format: ai_prompt
+              x-ai-prompt:
+                promptTypes:
+                  - flowdrop
+                allowDirect: true
+                allowReference: true
+            instanceTitle:
+              type: string
+              title: Title
+              description: 'Override the default node title for this instance.'
+              x-display-order: -2
+            instanceDescription:
+              type: string
+              title: Description
+              description: 'Override the default description for this instance.'
+              format: multiline
+              x-display-order: -1
+          required: {  }
+      nodeId: flowdrop_ai_provider_chat.1
+      extensions:
+        ui:
+          hideUnconnectedHandles: false
+    deletable: true
+    measured:
+      width: 290
+      height: 963
+    selected: false
+    dragging: false
+  -
+    id: chat_output.1
+    type: universalNode
+    position:
+      x: 1040
+      'y': 304
+    data:
+      label: 'Chat Output'
+      config:
+        format: text
+        showTimestamp: false
+        nodeType: default
+      metadata:
+        id: chat_output
+        name: 'Chat Output'
+        type: default
+        supportedTypes:
+          - default
+          - simple
+          - square
+        description: 'Output chat messages in various formats'
+        category: processing
+        icon: 'mdi:chat-alert-outline'
+        plugin_version: 1.0.0
+        enabled: true
+        tags: {  }
+        executor_plugin: 'flowdrop_node_processor:chat_output'
+        inputs:
+          -
+            id: message
+            name: Message
+            type: input
+            dataType: string
+            required: false
+            description: 'Default chat message'
+            defaultValue: ''
+          -
+            id: trigger
+            name: Trigger
+            type: input
+            dataType: trigger
+            required: false
+            description: ''
+        outputs:
+          -
+            id: trigger
+            name: Trigger
+            type: output
+            dataType: trigger
+            required: false
+            description: 'Emitted when this node completes execution'
+        config:
+          format: text
+          showTimestamp: false
+          type: default
+        configSchema:
+          type: object
+          properties:
+            format:
+              type: string
+              title: Format
+              description: 'Message format (text, markdown, html)'
+              default: text
+            showTimestamp:
+              type: boolean
+              title: 'Show Timestamp'
+              description: 'Whether to include timestamp'
+              default: false
+            nodeType:
+              type: string
+              title: 'Visual Type'
+              description: 'Select the visual appearance for this node instance.'
+              enum:
+                - default
+                - simple
+                - square
+              default: default
+            instanceTitle:
+              type: string
+              title: Title
+              description: 'Override the default node title for this instance.'
+              x-display-order: -2
+            instanceDescription:
+              type: string
+              title: Description
+              description: 'Override the default description for this instance.'
+              format: multiline
+              x-display-order: -1
+          required: {  }
+      nodeId: chat_output.1
+    deletable: true
+    measured:
+      width: 290
+      height: 311
+edges:
+  -
+    id: xy-edge__chat_input.1chat_input.1-output-message-flowdrop_ai_provider_chat.1flowdrop_ai_provider_chat.1-input-message
+    source: chat_input.1
+    target: flowdrop_ai_provider_chat.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: ai
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+    sourceHandle: chat_input.1-output-message
+    targetHandle: flowdrop_ai_provider_chat.1-input-message
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: xy-edge__flowdrop_ai_provider_chat.1flowdrop_ai_provider_chat.1-output-response-chat_output.1chat_output.1-input-message
+    source: flowdrop_ai_provider_chat.1
+    target: chat_output.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+    sourceHandle: flowdrop_ai_provider_chat.1-output-response
+    targetHandle: chat_output.1-input-message
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+metadata:
+  version: 1.0.0
+  createdAt: '2026-05-13T19:29:23.599Z'
+  updatedAt: '2026-05-13T19:30:16.619Z'
+  versionId: 1778700599832-wghremfr9
+  updateNumber: 7
+  format: flowdrop
+created: 1778700556
+changed: 1778700616
+uid: 0

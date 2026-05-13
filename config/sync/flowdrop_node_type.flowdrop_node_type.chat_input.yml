@@ -20,7 +20,7 @@ parameters:
     required: false
   message:
     configurable: false
-    connectable: false
+    connectable: true
     required: false
   messageId:
     configurable: true
