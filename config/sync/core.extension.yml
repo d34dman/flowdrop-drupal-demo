@@ -50,6 +50,7 @@ module:
   image: 0
   key: 0
   link: 0
+  markdown_easy: 0
   menu_link_content: 0
   menu_ui: 0
   modeler_api: 0
