@@ -20,23 +20,24 @@ parameters:
     required: false
     default: {  }
   maxTokens:
-    configurable: false
+    configurable: true
     connectable: false
     required: false
     default: 1000
   message:
     configurable: false
     connectable: true
-    required: false
+    required: true
   model:
     configurable: true
     connectable: false
     required: false
-    default: claude-sonnet-4-6
+    default: ''
   systemPrompt:
     configurable: true
     connectable: true
     required: false
+    default: ''
   temperature:
     configurable: true
     connectable: false
@@ -44,17 +45,17 @@ parameters:
     default: 0.7
 outputs:
   max_tokens:
-    exposed: true
+    exposed: false
   model:
-    exposed: true
+    exposed: false
   provider:
-    exposed: true
+    exposed: false
   response:
     exposed: true
   temperature:
-    exposed: true
+    exposed: false
   tokens_used:
-    exposed: true
+    exposed: false
 tags:
   - model
   - ai

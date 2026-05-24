@@ -9,12 +9,32 @@ _core:
 id: flowdrop_ai_provider_image_classification
 label: 'Image Classification'
 description: 'Classify images and identify their content using AI models'
-category: model
+category: ai
 icon: 'mdi:image-search'
 plugin_version: 1.0.0
 enabled: true
-parameters: {  }
-outputs: {  }
+parameters:
+  image_file:
+    configurable: false
+    connectable: true
+    required: true
+  labels:
+    configurable: true
+    connectable: true
+    required: false
+    default: {  }
+  model:
+    configurable: true
+    connectable: false
+    required: false
+    default: ''
+outputs:
+  classifications:
+    exposed: true
+  model:
+    exposed: false
+  provider:
+    exposed: false
 tags:
   - model
   - ai

@@ -9,11 +9,21 @@ _core:
 id: flowdrop_ai_provider_simple_chat
 label: 'Simple Chat'
 description: 'AI chat model with a plain text system prompt'
-category: model
+category: ai
 icon: 'mdi:robot'
 plugin_version: 1.0.0
 enabled: true
 parameters:
+  history:
+    configurable: false
+    connectable: true
+    required: false
+    default: {  }
+  maxTokens:
+    configurable: true
+    connectable: false
+    required: false
+    default: 1000
   message:
     configurable: false
     connectable: true
@@ -33,28 +43,18 @@ parameters:
     connectable: false
     required: false
     default: 0.7
-  maxTokens:
-    configurable: true
-    connectable: false
-    required: false
-    default: 1000
-  history:
-    configurable: false
-    connectable: true
-    required: false
-    default: {  }
 outputs:
-  response:
-    exposed: true
+  max_tokens:
+    exposed: false
   model:
     exposed: false
   provider:
     exposed: false
-  tokens_used:
-    exposed: false
+  response:
+    exposed: true
   temperature:
     exposed: false
-  max_tokens:
+  tokens_used:
     exposed: false
 tags:
   - model

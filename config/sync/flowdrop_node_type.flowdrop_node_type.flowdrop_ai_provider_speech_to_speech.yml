@@ -9,12 +9,27 @@ _core:
 id: flowdrop_ai_provider_speech_to_speech
 label: 'Speech to Speech'
 description: 'AI speech to speech transformation'
-category: model
+category: ai
 icon: 'mdi:account-voice'
 plugin_version: 1.0.0
 enabled: true
-parameters: {  }
-outputs: {  }
+parameters:
+  audio_file:
+    configurable: false
+    connectable: true
+    required: true
+  model:
+    configurable: true
+    connectable: false
+    required: false
+    default: ''
+outputs:
+  audio:
+    exposed: true
+  model:
+    exposed: false
+  provider:
+    exposed: false
 tags:
   - model
   - ai

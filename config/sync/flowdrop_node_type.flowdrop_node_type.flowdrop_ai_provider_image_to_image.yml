@@ -9,12 +9,37 @@ _core:
 id: flowdrop_ai_provider_image_to_image
 label: 'Image to Image'
 description: 'Transform images using AI models (style transfer, enhancement, etc.)'
-category: model
+category: ai
 icon: 'mdi:image-edit'
 plugin_version: 1.0.0
 enabled: true
-parameters: {  }
-outputs: {  }
+parameters:
+  image_file:
+    configurable: false
+    connectable: true
+    required: true
+  model:
+    configurable: true
+    connectable: false
+    required: false
+    default: ''
+  prompt:
+    configurable: true
+    connectable: true
+    required: false
+    default: ''
+  strength:
+    configurable: true
+    connectable: false
+    required: false
+    default: 0.8
+outputs:
+  image:
+    exposed: true
+  model:
+    exposed: false
+  provider:
+    exposed: false
 tags:
   - model
   - ai

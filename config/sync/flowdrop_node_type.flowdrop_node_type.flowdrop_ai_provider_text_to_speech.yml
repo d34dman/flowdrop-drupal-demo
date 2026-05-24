@@ -9,12 +9,32 @@ _core:
 id: flowdrop_ai_provider_text_to_speech
 label: 'Text to Speech'
 description: 'Convert text to speech using AI models'
-category: model
+category: ai
 icon: 'mdi:volume-high'
 plugin_version: 1.0.0
 enabled: true
-parameters: {  }
-outputs: {  }
+parameters:
+  model:
+    configurable: true
+    connectable: false
+    required: false
+    default: ''
+  text:
+    configurable: false
+    connectable: true
+    required: true
+  voice:
+    configurable: true
+    connectable: false
+    required: false
+    default: default
+outputs:
+  audio:
+    exposed: true
+  model:
+    exposed: false
+  provider:
+    exposed: false
 tags:
   - model
   - ai

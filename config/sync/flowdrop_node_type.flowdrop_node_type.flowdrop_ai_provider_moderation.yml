@@ -9,12 +9,29 @@ _core:
 id: flowdrop_ai_provider_moderation
 label: 'Content Moderation'
 description: 'Moderate content for inappropriate or harmful material using AI'
-category: model
+category: ai
 icon: 'mdi:shield-check'
 plugin_version: 1.0.0
 enabled: true
-parameters: {  }
-outputs: {  }
+parameters:
+  model:
+    configurable: true
+    connectable: false
+    required: false
+    default: ''
+  text:
+    configurable: false
+    connectable: true
+    required: true
+outputs:
+  flagged:
+    exposed: true
+  model:
+    exposed: false
+  provider:
+    exposed: false
+  results:
+    exposed: true
 tags:
   - model
   - ai
