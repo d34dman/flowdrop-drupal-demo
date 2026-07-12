@@ -1,14 +1,17 @@
 uuid: 04c473a9-6df8-4abf-bbce-5e9c04c76eb9
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - flowdrop_node_type.flowdrop_node_type.chat_input
+    - flowdrop_node_type.flowdrop_node_type.chat_output
+    - flowdrop_node_type.flowdrop_node_type.prompt_template
 id: level_1_4_polite_greeter_templating
 label: 'Level 1.4. Polite greeter (templating)'
 description: 'Turn raw input into structured prompts.'
 nodes:
   -
     id: prompt_template.1
-    type: universalNode
     position:
       x: 550
       'y': 195
@@ -18,95 +21,15 @@ nodes:
         template: 'prompt_template` (`"Hello {{ variables }}, welcome back!"'
         nodeType: default
       metadata:
-        id: prompt_template
-        name: 'Prompt Template'
-        type: default
-        supportedTypes:
-          - default
-          - simple
-        description: 'Create prompts using templates with variable substitution'
-        category: prompts
-        icon: 'mdi:code-block-braces'
-        plugin_version: 1.0.0
-        enabled: true
-        tags: {  }
-        executor_plugin: 'flowdrop_node_processor:prompt_template'
-        inputs:
-          -
-            id: variables
-            name: Variables
-            type: input
-            dataType: mixed
-            required: false
-            description: 'Default variables for the template'
-            defaultValue: {  }
-          -
-            id: trigger
-            name: Trigger
-            type: input
-            dataType: trigger
-            required: false
-            description: ''
-        outputs:
-          -
-            id: prompt
-            name: prompt
-            type: output
-            dataType: string
-            required: false
-            description: 'The generated prompt'
-          -
-            id: trigger
-            name: Trigger
-            type: output
-            dataType: trigger
-            required: false
-            description: 'Emitted when this node completes execution'
-        config:
-          template: ''
-          type: default
-        configSchema:
-          type: object
-          properties:
-            template:
-              type: string
-              title: Template
-              description: 'The prompt template with variables in {{variable}} format'
-              default: ''
-              format: template
-            nodeType:
-              type: string
-              title: 'Visual Type'
-              description: 'Select the visual appearance for this node instance.'
-              enum:
-                - default
-                - simple
-              default: default
-            instanceTitle:
-              type: string
-              title: Title
-              description: 'Override the default node title for this instance.'
-              x-display-order: -2
-            instanceDescription:
-              type: string
-              title: Description
-              description: 'Override the default description for this instance.'
-              format: multiline
-              x-display-order: -1
-          required: {  }
-      nodeId: prompt_template.1
+        node_type_id: prompt_template
       extensions:
         ui:
           hideUnconnectedHandles: false
-    deletable: true
     measured:
       width: 290
       height: 410
-    selected: false
-    dragging: false
   -
     id: chat_output.1
-    type: universalNode
     position:
       x: 960
       'y': 244
@@ -117,90 +40,12 @@ nodes:
         showTimestamp: false
         nodeType: default
       metadata:
-        id: chat_output
-        name: 'Chat Output'
-        type: default
-        supportedTypes:
-          - default
-          - simple
-          - square
-        description: 'Output chat messages in various formats'
-        category: processing
-        icon: 'mdi:chat-alert-outline'
-        plugin_version: 1.0.0
-        enabled: true
-        tags: {  }
-        executor_plugin: 'flowdrop_node_processor:chat_output'
-        inputs:
-          -
-            id: message
-            name: Message
-            type: input
-            dataType: string
-            required: false
-            description: 'Default chat message'
-            defaultValue: ''
-          -
-            id: trigger
-            name: Trigger
-            type: input
-            dataType: trigger
-            required: false
-            description: ''
-        outputs:
-          -
-            id: trigger
-            name: Trigger
-            type: output
-            dataType: trigger
-            required: false
-            description: 'Emitted when this node completes execution'
-        config:
-          format: text
-          showTimestamp: false
-          type: default
-        configSchema:
-          type: object
-          properties:
-            format:
-              type: string
-              title: Format
-              description: 'Message format (text, markdown, html)'
-              default: text
-            showTimestamp:
-              type: boolean
-              title: 'Show Timestamp'
-              description: 'Whether to include timestamp'
-              default: false
-            nodeType:
-              type: string
-              title: 'Visual Type'
-              description: 'Select the visual appearance for this node instance.'
-              enum:
-                - default
-                - simple
-                - square
-              default: default
-            instanceTitle:
-              type: string
-              title: Title
-              description: 'Override the default node title for this instance.'
-              x-display-order: -2
-            instanceDescription:
-              type: string
-              title: Description
-              description: 'Override the default description for this instance.'
-              format: multiline
-              x-display-order: -1
-          required: {  }
-      nodeId: chat_output.1
-    deletable: true
+        node_type_id: chat_output
     measured:
       width: 290
       height: 311
   -
     id: chat_input.1
-    type: universalNode
     position:
       x: 140
       'y': 76
@@ -209,113 +54,10 @@ nodes:
       config:
         nodeType: default
       metadata:
-        id: chat_input
-        name: 'Chat Input'
-        type: default
-        supportedTypes:
-          - default
-          - simple
-          - square
-        description: 'Chat input for playground workflows with optional conversation history'
-        category: inputs
-        icon: 'mdi:chat-plus-outline'
-        plugin_version: 1.0.0
-        enabled: true
-        tags: {  }
-        executor_plugin: 'flowdrop_node_processor:chat_input'
-        inputs:
-          -
-            id: message
-            name: Message
-            type: input
-            dataType: string
-            required: false
-            description: 'The chat message content (typically injected from playground)'
-            defaultValue: ''
-          -
-            id: history
-            name: 'Conversation History'
-            type: input
-            dataType: array
-            required: false
-            description: 'Optional conversation history for context-aware processing'
-          -
-            id: sessionId
-            name: 'Session ID'
-            type: input
-            dataType: number
-            required: false
-            description: 'Playground session ID (for tracking)'
-          -
-            id: messageId
-            name: 'Message ID'
-            type: input
-            dataType: number
-            required: false
-            description: 'Playground message ID (for tracking)'
-          -
-            id: trigger
-            name: Trigger
-            type: input
-            dataType: trigger
-            required: false
-            description: ''
-        outputs:
-          -
-            id: message
-            name: message
-            type: output
-            dataType: string
-            required: false
-            description: 'The chat message content'
-          -
-            id: trigger
-            name: Trigger
-            type: output
-            dataType: trigger
-            required: false
-            description: 'Emitted when this node completes execution'
-        config:
-          type: default
-        configSchema:
-          type: object
-          properties:
-            sessionId:
-              type: integer
-              title: 'Session ID'
-              description: 'Playground session ID (for tracking)'
-            messageId:
-              type: integer
-              title: 'Message ID'
-              description: 'Playground message ID (for tracking)'
-            nodeType:
-              type: string
-              title: 'Visual Type'
-              description: 'Select the visual appearance for this node instance.'
-              enum:
-                - default
-                - simple
-                - square
-              default: default
-            instanceTitle:
-              type: string
-              title: Title
-              description: 'Override the default node title for this instance.'
-              x-display-order: -2
-            instanceDescription:
-              type: string
-              title: Description
-              description: 'Override the default description for this instance.'
-              format: multiline
-              x-display-order: -1
-          required: {  }
-      nodeId: chat_input.1
-    deletable: true
+        node_type_id: chat_input
     measured:
       width: 290
       height: 647
-    selected: true
-    dragging: false
 edges:
   -
     id: xy-edge__prompt_template.1prompt_template.1-output-prompt-chat_output.1chat_output.1-input-message
@@ -363,7 +105,7 @@ metadata:
   updateNumber: 12
   format: flowdrop
 created: 1778696388
-changed: 1779588079
+changed: 1783869799
 uid: 0
 input_ports: null
 output_ports: null

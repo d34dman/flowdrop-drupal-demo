@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0acc5b77ac947791a48b1d4d828a286",
+    "content-hash": "0c2d475db575ca015d5a22d066feafb3",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2455,11 +2455,17 @@
         },
         {
             "name": "drupal/flowdrop",
-            "version": "dev-1.x",
+            "version": "2.0.0-alpha6",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flowdrop.git",
-                "reference": "fdaa8d8"
+                "reference": "2.0.0-alpha6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/flowdrop-2.0.0-alpha6.zip",
+                "reference": "2.0.0-alpha6",
+                "shasum": "aa0ee6ef025f7b4c392ce800d9c683f41294ead6"
             },
             "require": {
                 "d34dman/vanilla-icon-picker": "^1.4",
@@ -2473,6 +2479,7 @@
                 "symfony/property-access": "^7.0 || ^8.0"
             },
             "require-dev": {
+                "drupal/ai_agents": "^1.3.2",
                 "drupal/ai_provider_anthropic": "^1.2.2",
                 "drupal/ai_provider_mistral": "^1.1@beta",
                 "drupal/ai_provider_ollama": "^1.2.0-rc2",
@@ -2484,6 +2491,7 @@
                 "drupal/flowdrop_job": "*",
                 "drupal/flowdrop_memory": "*",
                 "drupal/flowdrop_node_category": "*",
+                "drupal/flowdrop_node_processor": "*",
                 "drupal/flowdrop_node_type": "*",
                 "drupal/flowdrop_orchestration": "*",
                 "drupal/flowdrop_pipeline": "*",
@@ -2511,15 +2519,12 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "1.6.0+2-dev",
-                    "datestamp": "1783342773",
+                    "version": "2.0.0-alpha6",
+                    "datestamp": "1783718060",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -2553,10 +2558,15 @@
                     "Drupal\\Tests\\flowdrop_interrupt\\": "modules/flowdrop_interrupt/tests/src/",
                     "Drupal\\Tests\\flowdrop_memory\\": "modules/flowdrop_memory/tests/src/",
                     "Drupal\\Tests\\flowdrop_node_processor\\": "modules/flowdrop_node_processor/tests/src/",
+                    "Drupal\\Tests\\flowdrop_node_type\\": "modules/flowdrop_node_type/tests/src/",
                     "Drupal\\Tests\\flowdrop_orchestration\\": "modules/flowdrop_orchestration/tests/src/",
+                    "Drupal\\Tests\\flowdrop_pipeline\\": "modules/flowdrop_pipeline/tests/src/",
+                    "Drupal\\Tests\\flowdrop_playground\\": "modules/flowdrop_playground/tests/src/",
+                    "Drupal\\Tests\\flowdrop_runtime\\": "modules/flowdrop_runtime/tests/src/",
                     "Drupal\\Tests\\flowdrop_session\\": "modules/flowdrop_session/tests/src/",
                     "Drupal\\Tests\\flowdrop_stategraph\\": "modules/flowdrop_stategraph/tests/src/",
                     "Drupal\\Tests\\flowdrop_trigger\\": "modules/flowdrop_trigger/tests/src/",
+                    "Drupal\\Tests\\flowdrop_workflow\\": "modules/flowdrop_workflow/tests/src/",
                     "Drupal\\Tests\\flowdrop_workflow_executor\\": "modules/flowdrop_workflow_executor/tests/src/"
                 }
             },
@@ -2594,17 +2604,11 @@
         },
         {
             "name": "drupal/flowdrop_ai_provider",
-            "version": "1.0.5",
+            "version": "dev-2.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flowdrop_ai_provider.git",
-                "reference": "1.0.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/flowdrop_ai_provider-1.0.5.zip",
-                "reference": "1.0.5",
-                "shasum": "b3c830b763507379701310e102d0fa2d54b85150"
+                "reference": "7f77db526d42e16a4d78b37c89d7216393523595"
             },
             "require": {
                 "drupal/ai": "*",
@@ -2619,17 +2623,20 @@
             "require-dev": {
                 "drupal/ai": "^1.2.0",
                 "drupal/ai_agents": "1.3.x-dev",
-                "drupal/flowdrop": "1.x-dev",
+                "drupal/flowdrop": "^2.0",
                 "drush/drush": "^13.0"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
                 "drupal": {
-                    "version": "1.0.5",
-                    "datestamp": "1778080160",
+                    "version": "2.x-dev",
+                    "datestamp": "1783717400",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -2712,20 +2719,20 @@
         },
         {
             "name": "drupal/flowdrop_job",
-            "version": "1.6.0",
+            "version": "2.0.0-alpha6",
             "require": {
-                "drupal/core": "^11.2",
-                "drupal/flowdrop": "^1",
+                "drupal/core": "^11.3",
+                "drupal/flowdrop": "^2",
                 "drupal/flowdrop_node_type": "*"
             },
             "type": "metapackage",
             "extra": {
                 "drupal": {
-                    "version": "1.6.0",
-                    "datestamp": "1782952011",
+                    "version": "2.0.0-alpha6",
+                    "datestamp": "1783718060",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -2898,10 +2905,10 @@
         },
         {
             "name": "drupal/flowdrop_pipeline",
-            "version": "1.6.0",
+            "version": "2.0.0-alpha6",
             "require": {
-                "drupal/core": "^11.2",
-                "drupal/flowdrop": "^1",
+                "drupal/core": "^11.3",
+                "drupal/flowdrop": "^2",
                 "drupal/flowdrop_job": "*",
                 "drupal/flowdrop_node_type": "*",
                 "drupal/flowdrop_workflow": "*"
@@ -2909,11 +2916,11 @@
             "type": "metapackage",
             "extra": {
                 "drupal": {
-                    "version": "1.6.0",
-                    "datestamp": "1782952011",
+                    "version": "2.0.0-alpha6",
+                    "datestamp": "1783718060",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -2998,10 +3005,10 @@
         },
         {
             "name": "drupal/flowdrop_session",
-            "version": "1.6.0",
+            "version": "2.0.0-alpha6",
             "require": {
-                "drupal/core": "^11.2",
-                "drupal/flowdrop": "^1",
+                "drupal/core": "^11.3",
+                "drupal/flowdrop": "^2",
                 "drupal/flowdrop_job": "*",
                 "drupal/flowdrop_orchestration": "*",
                 "drupal/flowdrop_pipeline": "*",
@@ -3011,11 +3018,11 @@
             "type": "metapackage",
             "extra": {
                 "drupal": {
-                    "version": "1.6.0",
-                    "datestamp": "1782952011",
+                    "version": "2.0.0-alpha6",
+                    "datestamp": "1783718060",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -3151,19 +3158,19 @@
         },
         {
             "name": "drupal/flowdrop_ui_components",
-            "version": "1.6.0",
+            "version": "2.0.0-alpha6",
             "require": {
-                "drupal/core": "^11.2",
-                "drupal/flowdrop": "^1"
+                "drupal/core": "^11.3",
+                "drupal/flowdrop": "^2"
             },
             "type": "metapackage",
             "extra": {
                 "drupal": {
-                    "version": "1.6.0",
-                    "datestamp": "1782952011",
+                    "version": "2.0.0-alpha6",
+                    "datestamp": "1783718060",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Alpha releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -12050,7 +12057,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/ai_agents": 20,
-        "drupal/flowdrop": 20,
+        "drupal/flowdrop_ai_provider": 20,
         "drupal/notification_server": 15,
         "drupal/pm": 15
     },

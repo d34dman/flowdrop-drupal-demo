@@ -1,14 +1,18 @@
 uuid: f1d74f45-db3e-49e6-a2d9-2921193502ef
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - flowdrop_node_type.flowdrop_node_type.chat_input
+    - flowdrop_node_type.flowdrop_node_type.chat_output
+    - flowdrop_node_type.flowdrop_node_type.if_else
+    - flowdrop_node_type.flowdrop_node_type.prompt_template
 id: level_1_5_conditional_reply
 label: 'Level 1.5. Conditional reply'
 description: 'Show routing logic.'
 nodes:
   -
     id: chat_input.1
-    type: universalNode
     position:
       x: -140
       'y': 16
@@ -17,116 +21,12 @@ nodes:
       config:
         nodeType: default
       metadata:
-        id: chat_input
-        name: 'Chat Input'
-        type: default
-        supportedTypes:
-          - default
-          - simple
-          - square
-        description: 'Chat input for playground workflows with optional conversation history'
-        category: inputs
-        icon: 'mdi:chat-plus-outline'
-        plugin_version: 1.0.0
-        enabled: true
-        tags: {  }
-        executor_plugin: 'flowdrop_node_processor:chat_input'
-        inputs:
-          -
-            id: message
-            name: Message
-            type: input
-            dataType: string
-            required: false
-            description: 'The chat message content (typically injected from playground)'
-            defaultValue: ''
-          -
-            id: history
-            name: 'Conversation History'
-            type: input
-            dataType: array
-            required: false
-            description: 'Optional conversation history for context-aware processing'
-          -
-            id: sessionId
-            name: 'Session ID'
-            type: input
-            dataType: number
-            required: false
-            description: 'Playground session ID (for tracking)'
-          -
-            id: messageId
-            name: 'Message ID'
-            type: input
-            dataType: number
-            required: false
-            description: 'Playground message ID (for tracking)'
-          -
-            id: trigger
-            name: Trigger
-            type: input
-            dataType: trigger
-            required: false
-            description: ''
-        outputs:
-          -
-            id: message
-            name: message
-            type: output
-            dataType: string
-            required: false
-            description: 'The chat message content'
-          -
-            id: trigger
-            name: Trigger
-            type: output
-            dataType: trigger
-            required: false
-            description: 'Emitted when this node completes execution'
-        config:
-          type: default
-        configSchema:
-          type: object
-          properties:
-            sessionId:
-              type: integer
-              title: 'Session ID'
-              description: 'Playground session ID (for tracking)'
-            messageId:
-              type: integer
-              title: 'Message ID'
-              description: 'Playground message ID (for tracking)'
-            nodeType:
-              type: string
-              title: 'Visual Type'
-              description: 'Select the visual appearance for this node instance.'
-              enum:
-                - default
-                - simple
-                - square
-              default: default
-            instanceTitle:
-              type: string
-              title: Title
-              description: 'Override the default node title for this instance.'
-              x-display-order: -2
-            instanceDescription:
-              type: string
-              title: Description
-              description: 'Override the default description for this instance.'
-              format: multiline
-              x-display-order: -1
-          required: {  }
-      nodeId: chat_input.1
-    deletable: true
+        node_type_id: chat_input
     measured:
       width: 290
       height: 647
-    selected: false
-    dragging: false
   -
     id: if_else.1
-    type: universalNode
     position:
       x: 270
       'y': 175
@@ -144,123 +44,15 @@ nodes:
             name: 'False'
             value: false
       metadata:
-        id: if_else
-        name: If/Else
-        type: gateway
-        supportedTypes:
-          - gateway
-        description: 'Simple boolean gateway with text input, match text, and operator'
-        category: logic
-        icon: 'mdi:source-branch'
-        plugin_version: 1.0.0
-        enabled: true
-        tags: {  }
-        executor_plugin: 'flowdrop_node_processor:if_else'
-        inputs:
-          -
-            id: data
-            name: 'Input Data'
-            type: input
-            dataType: mixed
-            required: false
-            description: 'Data to be evaluated'
-          -
-            id: trigger
-            name: Trigger
-            type: input
-            dataType: trigger
-            required: false
-            description: ''
-        outputs:
-          -
-            id: trigger
-            name: Trigger
-            type: output
-            dataType: trigger
-            required: false
-            description: 'Emitted when this node completes execution'
-        config:
-          matchText: ''
-          operator: equals
-          caseSensitive: false
-          branches:
-            -
-              name: 'True'
-              value: true
-            -
-              name: 'False'
-              value: false
-        configSchema:
-          type: object
-          properties:
-            matchText:
-              type: string
-              title: 'Match Text'
-              description: 'The text to match against'
-              default: ''
-            operator:
-              type: string
-              title: Operator
-              description: 'The comparison operator to use'
-              default: equals
-              enum:
-                - equals
-                - not_equals
-                - contains
-                - starts_with
-                - ends_with
-                - regex
-            caseSensitive:
-              type: boolean
-              title: 'Case Sensitive'
-              description: 'Whether string comparisons are case sensitive'
-              default: false
-            branches:
-              type: array
-              description: 'The active branches'
-              readOnly: true
-              default:
-                -
-                  name: 'True'
-                  value: true
-                -
-                  name: 'False'
-                  value: false
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    description: 'The name of the branch'
-                  value:
-                    type: boolean
-                    description: 'The value of the branch'
-                description: 'The active branch'
-            instanceTitle:
-              type: string
-              title: Title
-              description: 'Override the default node title for this instance.'
-              x-display-order: -2
-            instanceDescription:
-              type: string
-              title: Description
-              description: 'Override the default description for this instance.'
-              format: multiline
-              x-display-order: -1
-          required: {  }
-      nodeId: if_else.1
+        node_type_id: if_else
       extensions:
         ui:
           hideUnconnectedHandles: false
-    deletable: true
     measured:
       width: 290
       height: 330
-    selected: false
-    dragging: false
   -
     id: prompt_template.1
-    type: universalNode
     position:
       x: 680
       'y': -90
@@ -270,95 +62,15 @@ nodes:
         template: 'Correct Password :)'
         nodeType: default
       metadata:
-        id: prompt_template
-        name: 'Prompt Template'
-        type: default
-        supportedTypes:
-          - default
-          - simple
-        description: 'Create prompts using templates with variable substitution'
-        category: prompts
-        icon: 'mdi:code-block-braces'
-        plugin_version: 1.0.0
-        enabled: true
-        tags: {  }
-        executor_plugin: 'flowdrop_node_processor:prompt_template'
-        inputs:
-          -
-            id: variables
-            name: Variables
-            type: input
-            dataType: mixed
-            required: false
-            description: 'Default variables for the template'
-            defaultValue: {  }
-          -
-            id: trigger
-            name: Trigger
-            type: input
-            dataType: trigger
-            required: false
-            description: ''
-        outputs:
-          -
-            id: prompt
-            name: prompt
-            type: output
-            dataType: string
-            required: false
-            description: 'The generated prompt'
-          -
-            id: trigger
-            name: Trigger
-            type: output
-            dataType: trigger
-            required: false
-            description: 'Emitted when this node completes execution'
-        config:
-          template: ''
-          type: default
-        configSchema:
-          type: object
-          properties:
-            template:
-              type: string
-              title: Template
-              description: 'The prompt template with variables in {{variable}} format'
-              default: ''
-              format: template
-            nodeType:
-              type: string
-              title: 'Visual Type'
-              description: 'Select the visual appearance for this node instance.'
-              enum:
-                - default
-                - simple
-              default: default
-            instanceTitle:
-              type: string
-              title: Title
-              description: 'Override the default node title for this instance.'
-              x-display-order: -2
-            instanceDescription:
-              type: string
-              title: Description
-              description: 'Override the default description for this instance.'
-              format: multiline
-              x-display-order: -1
-          required: {  }
-      nodeId: prompt_template.1
+        node_type_id: prompt_template
       extensions:
         ui:
           hideUnconnectedHandles: false
-    deletable: true
     measured:
       width: 290
       height: 410
-    selected: false
-    dragging: false
   -
     id: prompt_template.2
-    type: universalNode
     position:
       x: 680
       'y': 360
@@ -368,95 +80,15 @@ nodes:
         template: 'You shall not pass!'
         nodeType: default
       metadata:
-        id: prompt_template
-        name: 'Prompt Template'
-        type: default
-        supportedTypes:
-          - default
-          - simple
-        description: 'Create prompts using templates with variable substitution'
-        category: prompts
-        icon: 'mdi:code-block-braces'
-        plugin_version: 1.0.0
-        enabled: true
-        tags: {  }
-        executor_plugin: 'flowdrop_node_processor:prompt_template'
-        inputs:
-          -
-            id: variables
-            name: Variables
-            type: input
-            dataType: mixed
-            required: false
-            description: 'Default variables for the template'
-            defaultValue: {  }
-          -
-            id: trigger
-            name: Trigger
-            type: input
-            dataType: trigger
-            required: false
-            description: ''
-        outputs:
-          -
-            id: prompt
-            name: prompt
-            type: output
-            dataType: string
-            required: false
-            description: 'The generated prompt'
-          -
-            id: trigger
-            name: Trigger
-            type: output
-            dataType: trigger
-            required: false
-            description: 'Emitted when this node completes execution'
-        config:
-          template: ''
-          type: default
-        configSchema:
-          type: object
-          properties:
-            template:
-              type: string
-              title: Template
-              description: 'The prompt template with variables in {{variable}} format'
-              default: ''
-              format: template
-            nodeType:
-              type: string
-              title: 'Visual Type'
-              description: 'Select the visual appearance for this node instance.'
-              enum:
-                - default
-                - simple
-              default: default
-            instanceTitle:
-              type: string
-              title: Title
-              description: 'Override the default node title for this instance.'
-              x-display-order: -2
-            instanceDescription:
-              type: string
-              title: Description
-              description: 'Override the default description for this instance.'
-              format: multiline
-              x-display-order: -1
-          required: {  }
-      nodeId: prompt_template.2
+        node_type_id: prompt_template
       extensions:
         ui:
           hideUnconnectedHandles: false
-    deletable: true
     measured:
       width: 290
       height: 410
-    selected: false
-    dragging: false
   -
     id: chat_output.1
-    type: universalNode
     position:
       x: 1090
       'y': 184
@@ -467,84 +99,7 @@ nodes:
         showTimestamp: false
         nodeType: default
       metadata:
-        id: chat_output
-        name: 'Chat Output'
-        type: default
-        supportedTypes:
-          - default
-          - simple
-          - square
-        description: 'Output chat messages in various formats'
-        category: processing
-        icon: 'mdi:chat-alert-outline'
-        plugin_version: 1.0.0
-        enabled: true
-        tags: {  }
-        executor_plugin: 'flowdrop_node_processor:chat_output'
-        inputs:
-          -
-            id: message
-            name: Message
-            type: input
-            dataType: string
-            required: false
-            description: 'Default chat message'
-            defaultValue: ''
-          -
-            id: trigger
-            name: Trigger
-            type: input
-            dataType: trigger
-            required: false
-            description: ''
-        outputs:
-          -
-            id: trigger
-            name: Trigger
-            type: output
-            dataType: trigger
-            required: false
-            description: 'Emitted when this node completes execution'
-        config:
-          format: text
-          showTimestamp: false
-          type: default
-        configSchema:
-          type: object
-          properties:
-            format:
-              type: string
-              title: Format
-              description: 'Message format (text, markdown, html)'
-              default: text
-            showTimestamp:
-              type: boolean
-              title: 'Show Timestamp'
-              description: 'Whether to include timestamp'
-              default: false
-            nodeType:
-              type: string
-              title: 'Visual Type'
-              description: 'Select the visual appearance for this node instance.'
-              enum:
-                - default
-                - simple
-                - square
-              default: default
-            instanceTitle:
-              type: string
-              title: Title
-              description: 'Override the default node title for this instance.'
-              x-display-order: -2
-            instanceDescription:
-              type: string
-              title: Description
-              description: 'Override the default description for this instance.'
-              format: multiline
-              x-display-order: -1
-          required: {  }
-      nodeId: chat_output.1
-    deletable: true
+        node_type_id: chat_output
     measured:
       width: 290
       height: 311
@@ -652,7 +207,7 @@ metadata:
   updateNumber: 19
   format: flowdrop
 created: 1778700211
-changed: 1779588079
+changed: 1783869799
 uid: 0
 input_ports: null
 output_ports: null
