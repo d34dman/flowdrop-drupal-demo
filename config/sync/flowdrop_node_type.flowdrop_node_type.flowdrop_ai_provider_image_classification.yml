@@ -18,6 +18,11 @@ parameters:
     configurable: false
     connectable: true
     required: true
+  image_url:
+    configurable: true
+    connectable: true
+    required: false
+    default: ''
   labels:
     configurable: true
     connectable: true
@@ -47,3 +52,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

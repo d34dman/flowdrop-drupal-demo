@@ -39,11 +39,17 @@ parameters:
     required: false
     default: 512
 outputs:
+  height:
+    exposed: false
   images:
     exposed: true
   model:
     exposed: false
+  prompt:
+    exposed: false
   provider:
+    exposed: false
+  width:
     exposed: false
 tags:
   - model
@@ -56,3 +62,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

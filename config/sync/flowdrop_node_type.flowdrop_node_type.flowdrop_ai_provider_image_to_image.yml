@@ -18,6 +18,11 @@ parameters:
     configurable: false
     connectable: true
     required: true
+  image_url:
+    configurable: true
+    connectable: true
+    required: false
+    default: ''
   model:
     configurable: true
     connectable: false
@@ -34,9 +39,11 @@ parameters:
     required: false
     default: 0.8
 outputs:
-  image:
+  images:
     exposed: true
   model:
+    exposed: false
+  prompt:
     exposed: false
   provider:
     exposed: false
@@ -51,3 +58,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

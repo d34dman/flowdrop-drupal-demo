@@ -9,4 +9,3 @@ allowed_entity_types:
 allowed_bundles:
   - 'node:article'
   - 'node:page'
-log_entity_changes: false

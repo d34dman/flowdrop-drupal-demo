@@ -101,11 +101,8 @@ metadata:
   version: 1.0.0
   createdAt: '2026-05-13T18:21:42.338Z'
   updatedAt: '2026-05-13T19:22:17.144Z'
-  versionId: 1778700123686-95eocdkfc
-  updateNumber: 12
-  format: flowdrop
 created: 1778696388
-changed: 1783869799
+changed: 1787771561
 uid: 0
 input_ports: null
 output_ports: null

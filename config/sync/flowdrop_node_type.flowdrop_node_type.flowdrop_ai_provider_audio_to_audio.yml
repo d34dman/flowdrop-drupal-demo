@@ -14,6 +14,10 @@ icon: 'mdi:waveform'
 plugin_version: 1.0.0
 enabled: true
 parameters:
+  audio:
+    configurable: false
+    connectable: true
+    required: false
   audio_file:
     configurable: false
     connectable: true
@@ -24,7 +28,7 @@ parameters:
     required: false
     default: ''
 outputs:
-  audio:
+  audio_files:
     exposed: true
   model:
     exposed: false
@@ -41,3 +45,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

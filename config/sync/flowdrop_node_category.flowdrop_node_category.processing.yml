@@ -9,4 +9,3 @@ label: Processing
 description: 'Transform, filter, parse, and manipulate data as it flows through your workflow to prepare it for the next step.'
 icon: 'mdi:application-braces-outline'
 color: '#14b8a6'
-enabled: true

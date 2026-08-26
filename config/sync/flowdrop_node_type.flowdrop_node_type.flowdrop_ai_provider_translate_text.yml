@@ -40,6 +40,8 @@ outputs:
     exposed: false
   source_language:
     exposed: true
+  target_language:
+    exposed: true
   translated_text:
     exposed: true
 tags:
@@ -53,3 +55,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

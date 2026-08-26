@@ -9,4 +9,3 @@ label: Inputs
 description: 'Bring data into your workflow from various sources like text fields, file uploads, API endpoints, or user interactions.'
 icon: 'mdi:arrow-down-circle'
 color: '#10b981'
-enabled: true

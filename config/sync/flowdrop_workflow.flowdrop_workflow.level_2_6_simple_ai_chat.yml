@@ -102,11 +102,8 @@ metadata:
   version: 1.0.0
   createdAt: '2026-05-13T19:29:23.599Z'
   updatedAt: '2026-05-13T19:30:16.619Z'
-  versionId: 1778700599832-wghremfr9
-  updateNumber: 7
-  format: flowdrop
 created: 1778700556
-changed: 1783869799
+changed: 1787771561
 uid: 0
 input_ports: null
 output_ports: null

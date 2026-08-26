@@ -9,4 +9,3 @@ label: Data
 description: 'Store, retrieve, and manage structured data including databases, key-value stores, and persistent storage solutions.'
 icon: 'mdi:database'
 color: '#f97316'
-enabled: true

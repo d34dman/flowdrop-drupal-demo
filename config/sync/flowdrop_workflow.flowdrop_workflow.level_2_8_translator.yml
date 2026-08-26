@@ -25,11 +25,8 @@ metadata:
   version: 1.0.0
   createdAt: '2026-05-13T19:55:45.885Z'
   updatedAt: '2026-05-13T20:05:41.069Z'
-  format: flowdrop
-  created: 1778700935
-  changed: 1778702148
 created: 1778700935
-changed: 1783869799
+changed: 1787771561
 uid: 0
 input_ports: null
 output_ports: null

@@ -33,6 +33,11 @@ parameters:
     connectable: false
     required: false
     default: ''
+  operation_type:
+    configurable: true
+    connectable: false
+    required: false
+    default: chat
   systemPrompt:
     configurable: true
     connectable: true
@@ -65,3 +70,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

@@ -29,11 +29,15 @@ parameters:
     required: false
     default: default
 outputs:
-  audio:
+  audio_files:
     exposed: true
   model:
     exposed: false
   provider:
+    exposed: false
+  text:
+    exposed: false
+  voice:
     exposed: false
 tags:
   - model
@@ -46,3 +50,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

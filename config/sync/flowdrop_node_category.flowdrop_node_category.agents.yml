@@ -9,4 +9,3 @@ label: Agents
 description: 'Build intelligent AI agents that can reason, plan, use tools, and autonomously complete complex multi-step tasks.'
 icon: 'mdi:face-agent'
 color: '#28c3c0'
-enabled: true

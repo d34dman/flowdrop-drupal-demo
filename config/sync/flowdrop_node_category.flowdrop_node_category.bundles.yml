@@ -9,4 +9,3 @@ label: Bundles
 description: 'Pre-built workflow components and reusable node packages that combine multiple nodes into a single, easy-to-use building block.'
 icon: 'mdi:package-variant'
 color: '#64748b'
-enabled: true

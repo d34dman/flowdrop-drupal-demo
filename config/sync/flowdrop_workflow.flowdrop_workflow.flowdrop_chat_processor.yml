@@ -454,11 +454,8 @@ metadata:
   version: 1.0.0
   createdAt: '2026-04-07T00:00:00.000Z'
   updatedAt: '2026-05-13T19:58:24.901Z'
-  versionId: 1778702302045-7jnja4sn9
-  updateNumber: 23
-  format: flowdrop
 created: 1778701992
-changed: 1783869799
+changed: 1787771561
 uid: 0
 input_ports: null
 output_ports: null

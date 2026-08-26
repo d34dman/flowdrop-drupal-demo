@@ -9,4 +9,3 @@ label: Helpers
 description: 'Handy utility nodes for common tasks like formatting, validation, debugging, logging, and workflow organization.'
 icon: 'mdi:help-circle'
 color: '#64748b'
-enabled: true

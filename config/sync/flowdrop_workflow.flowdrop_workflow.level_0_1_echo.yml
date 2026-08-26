@@ -63,13 +63,8 @@ metadata:
   version: 1.0.0
   createdAt: '2026-05-13T18:10:42.750Z'
   updatedAt: '2026-05-13T19:20:37.903Z'
-  created: 1778695834
-  changed: 1778695917
-  versionId: 1778700037006-owoqjps2h
-  updateNumber: 8
-  format: flowdrop
 created: 1778695834
-changed: 1783869799
+changed: 1787771561
 uid: 0
 input_ports: null
 output_ports: null

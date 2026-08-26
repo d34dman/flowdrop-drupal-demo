@@ -20,20 +20,26 @@ parameters:
     required: false
     default: start
 outputs:
-  data:
+  cron:
     exposed: true
-  user:
+    exposed_by_default: false
+  data:
     exposed: true
   form:
     exposed: true
-  form_values:
-    exposed: true
+    exposed_by_default: false
   form_id:
     exposed: true
+    exposed_by_default: false
   form_state:
     exposed: true
-  cron:
+    exposed_by_default: false
+  form_values:
     exposed: true
+    exposed_by_default: false
+  user:
+    exposed: true
+    exposed_by_default: false
 tags: {  }
 executor_plugin: 'flowdrop_trigger:trigger'
 visual_type: terminal
@@ -43,3 +49,6 @@ supported_visual_types:
   - terminal
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

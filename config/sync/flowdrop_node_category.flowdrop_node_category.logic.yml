@@ -9,4 +9,3 @@ label: Logic
 description: 'Control your workflow with conditional branching, loops, switches, and other decision-making nodes that determine which path to follow.'
 icon: 'mdi:source-branch'
 color: '#a855f7'
-enabled: true

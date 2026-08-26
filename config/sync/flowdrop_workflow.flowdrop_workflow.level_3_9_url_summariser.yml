@@ -123,7 +123,6 @@ edges:
       height: 16
       color: var(--fd-edge-data)
     class: flowdrop--edge--data
-    selected: false
   -
     id: xy-edge__http_request.1http_request.1-output-body-html_to_markdown.1html_to_markdown.1-input-html
     source: http_request.1
@@ -143,7 +142,6 @@ edges:
       height: 16
       color: var(--fd-edge-data)
     class: flowdrop--edge--data
-    selected: false
   -
     id: xy-edge__html_to_markdown.1html_to_markdown.1-output-markdown-flowdrop_ai_provider_chat.1flowdrop_ai_provider_chat.1-input-message
     source: html_to_markdown.1
@@ -186,11 +184,8 @@ metadata:
   version: 1.0.0
   createdAt: '2026-05-13T19:59:57.219Z'
   updatedAt: '2026-05-13T20:03:03.300Z'
-  versionId: 1778702580678-awfi54i4v
-  updateNumber: 24
-  format: flowdrop
 created: 1778702386
-changed: 1783869799
+changed: 1787771561
 uid: 0
 input_ports: null
 output_ports: null

@@ -208,7 +208,6 @@ edges:
       height: 16
       color: var(--fd-edge-data)
     class: flowdrop--edge--data
-    selected: false
   -
     id: xy-edge__chat_input.1chat_input.1-output-message-flowdrop_ai_provider_chat.1flowdrop_ai_provider_chat.1-input-message
     source: chat_input.1
@@ -308,13 +307,8 @@ metadata:
   version: 1.0.0
   createdAt: '2026-04-28T17:41:17.568Z'
   updatedAt: '2026-05-11T22:20:56.832Z'
-  versionId: 1778538045864-qbkq5z7p6
-  updateNumber: 106
-  format: flowdrop
-  created: 1777398022
-  changed: 1778538016
 created: 1777398022
-changed: 1783869799
+changed: 1787771561
 uid: 0
 input_ports: null
 output_ports: null

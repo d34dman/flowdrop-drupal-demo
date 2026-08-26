@@ -9,4 +9,3 @@ label: Outputs
 description: 'Send results from your workflow to destinations like displays, files, APIs, or external services.'
 icon: 'mdi:arrow-up-circle'
 color: '#3b82f6'
-enabled: true

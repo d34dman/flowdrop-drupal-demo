@@ -14,10 +14,18 @@ icon: 'mdi:video-plus'
 plugin_version: 1.0.0
 enabled: true
 parameters:
+  audio:
+    configurable: false
+    connectable: true
+    required: false
   audio_file:
     configurable: false
     connectable: true
     required: true
+  image:
+    configurable: false
+    connectable: true
+    required: false
   image_file:
     configurable: false
     connectable: true
@@ -32,7 +40,7 @@ outputs:
     exposed: false
   provider:
     exposed: false
-  video:
+  video_files:
     exposed: true
 tags:
   - model
@@ -47,3 +55,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

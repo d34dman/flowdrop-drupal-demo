@@ -203,11 +203,8 @@ metadata:
   version: 1.0.0
   createdAt: '2026-05-13T19:24:25.028Z'
   updatedAt: '2026-05-13T19:28:08.629Z'
-  versionId: 1778700486727-zi6iq7ll7
-  updateNumber: 19
-  format: flowdrop
 created: 1778700211
-changed: 1783869799
+changed: 1787771561
 uid: 0
 input_ports: null
 output_ports: null
