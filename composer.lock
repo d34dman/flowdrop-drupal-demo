@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd2bd0b5b9f7345eb59596ec448c3732",
+    "content-hash": "1684ed01ddd0dbd3b06ef60fb20e64c4",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1668,6 +1668,116 @@
             }
         },
         {
+            "name": "drupal/ai_assistant_api",
+            "version": "1.4.7",
+            "require": {
+                "drupal/ai": "*",
+                "drupal/core": "^10.4 || ^11"
+            },
+            "type": "metapackage",
+            "extra": {
+                "drupal": {
+                    "version": "1.4.7",
+                    "datestamp": "1787148538",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "a.dmitriiev",
+                    "homepage": "https://www.drupal.org/user/3235287"
+                },
+                {
+                    "name": "abhisekmazumdar",
+                    "homepage": "https://www.drupal.org/user/3557964"
+                },
+                {
+                    "name": "ahmad khader",
+                    "homepage": "https://www.drupal.org/user/3727855"
+                },
+                {
+                    "name": "andrewbelcher",
+                    "homepage": "https://www.drupal.org/user/655282"
+                },
+                {
+                    "name": "anjaliprasannan",
+                    "homepage": "https://www.drupal.org/user/3637917"
+                },
+                {
+                    "name": "b_sharpe",
+                    "homepage": "https://www.drupal.org/user/2512258"
+                },
+                {
+                    "name": "fago",
+                    "homepage": "https://www.drupal.org/user/16747"
+                },
+                {
+                    "name": "gxleano",
+                    "homepage": "https://www.drupal.org/user/3591999"
+                },
+                {
+                    "name": "kevinquillen",
+                    "homepage": "https://www.drupal.org/user/317279"
+                },
+                {
+                    "name": "kristen pol",
+                    "homepage": "https://www.drupal.org/user/8389"
+                },
+                {
+                    "name": "marcus_johansson",
+                    "homepage": "https://www.drupal.org/user/385947"
+                },
+                {
+                    "name": "michaellander",
+                    "homepage": "https://www.drupal.org/user/636494"
+                },
+                {
+                    "name": "murz",
+                    "homepage": "https://www.drupal.org/user/157092"
+                },
+                {
+                    "name": "mxr576",
+                    "homepage": "https://www.drupal.org/user/315522"
+                },
+                {
+                    "name": "robloach",
+                    "homepage": "https://www.drupal.org/user/61114"
+                },
+                {
+                    "name": "scott_euser",
+                    "homepage": "https://www.drupal.org/user/3267594"
+                },
+                {
+                    "name": "seogow",
+                    "homepage": "https://www.drupal.org/user/3065779"
+                },
+                {
+                    "name": "valthebald",
+                    "homepage": "https://www.drupal.org/user/239562"
+                },
+                {
+                    "name": "wouters_f",
+                    "homepage": "https://www.drupal.org/user/721548"
+                },
+                {
+                    "name": "yautja_cetanu",
+                    "homepage": "https://www.drupal.org/user/626050"
+                }
+            ],
+            "description": "Adds decoupled AI Assistants for any frontend to work with.",
+            "homepage": "https://www.drupal.org/project/ai",
+            "support": {
+                "source": "https://git.drupalcode.org/project/ai"
+            }
+        },
+        {
             "name": "drupal/ai_provider_anthropic",
             "version": "1.2.2",
             "source": {
@@ -2459,17 +2569,17 @@
         },
         {
             "name": "drupal/flowdrop",
-            "version": "2.4.1",
+            "version": "2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flowdrop.git",
-                "reference": "2.4.1"
+                "reference": "2.4.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/flowdrop-2.4.1.zip",
-                "reference": "2.4.1",
-                "shasum": "97a3bbfede936bba58f04b6da858174ba1074166"
+                "url": "https://ftp.drupal.org/files/projects/flowdrop-2.4.2.zip",
+                "reference": "2.4.2",
+                "shasum": "7be3f3f4af0ce8ecab70787ae0d8eaf011d50551"
             },
             "require": {
                 "d34dman/vanilla-icon-picker": "^1.4",
@@ -2526,8 +2636,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.4.1",
-                    "datestamp": "1787791431",
+                    "version": "2.4.2",
+                    "datestamp": "1787831447",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -2607,6 +2717,62 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/flowdrop",
                 "issues": "https://www.drupal.org/project/issues/flowdrop"
+            }
+        },
+        {
+            "name": "drupal/flowdrop_agents",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/flowdrop_agents.git",
+                "reference": "2.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/flowdrop_agents-2.0.0.zip",
+                "reference": "2.0.0",
+                "shasum": "031607db173d5bb0ba070ff850c3b1a751c5994b"
+            },
+            "require": {
+                "drupal/ai": "*",
+                "drupal/ai_agents": "*",
+                "drupal/core": "^10 || ^11 || ^12",
+                "drupal/flowdrop": "*",
+                "drupal/flowdrop_interrupt": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.0",
+                    "datestamp": "1785167650",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "gxleano",
+                    "homepage": "https://www.drupal.org/user/3591999"
+                },
+                {
+                    "name": "joevagyok",
+                    "homepage": "https://www.drupal.org/user/2876343"
+                }
+            ],
+            "description": "This module is integrating AI Agents with Flowdrop core plugins",
+            "homepage": "https://www.drupal.org/project/flowdrop_agents",
+            "support": {
+                "source": "https://git.drupalcode.org/project/flowdrop_agents"
             }
         },
         {
@@ -3158,6 +3324,80 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/flowdrop_ui",
                 "issues": "https://drupal.org/project/issues/flowdrop_ui"
+            }
+        },
+        {
+            "name": "drupal/flowdrop_ui_agents",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/flowdrop_ui_agents.git",
+                "reference": "2.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/flowdrop_ui_agents-2.0.0.zip",
+                "reference": "2.0.0",
+                "shasum": "1f45547aa67d2643994568e324cb6151dc53f311"
+            },
+            "require": {
+                "drupal/ai": "*",
+                "drupal/ai_agents": "^1.2.1",
+                "drupal/ai_assistant_api": "*",
+                "drupal/core": "^11",
+                "drupal/flowdrop_ui": "*",
+                "drupal/flowdrop_ui_components": "*",
+                "drupal/modeler_api": "*"
+            },
+            "require-dev": {
+                "mglaman/phpstan-drupal": "^2.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan": "^2.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.0",
+                    "datestamp": "1785238555",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Drupal\\flowdrop_ui_agents\\": "src/"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "d34dman",
+                    "homepage": "https://www.drupal.org/user/751698"
+                },
+                {
+                    "name": "gxleano",
+                    "homepage": "https://www.drupal.org/user/3591999"
+                },
+                {
+                    "name": "yautja_cetanu",
+                    "homepage": "https://www.drupal.org/user/626050"
+                }
+            ],
+            "description": "Provides FlowDrop visual editor integration for AI Agents using Modeler API.",
+            "homepage": "https://www.drupal.org/project/flowdrop_ui_agents",
+            "keywords": [
+                "AI",
+                "Agents",
+                "Drupal",
+                "FlowDrop"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/flowdrop_ui_agents"
             }
         },
         {
