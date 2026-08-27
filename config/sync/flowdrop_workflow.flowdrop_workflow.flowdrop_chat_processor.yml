@@ -84,9 +84,7 @@ nodes:
       label: 'Read History'
       config:
         scope: global
-        key: ''
         default_value: {  }
-        backend: entity
       metadata:
         node_type_id: memory_read
       extensions:
@@ -120,10 +118,13 @@ nodes:
     data:
       label: Chat
       config:
-        model: ''
+        model: claude-sonnet-5
         temperature: 0.7
         maxTokens: 4000
         systemPrompt: ''
+        operation_type: chat
+        maxRetries: 0
+        requiresConfirmation: ''
       metadata:
         node_type_id: flowdrop_ai_provider_chat
       extensions:
@@ -143,7 +144,6 @@ nodes:
         scope: global
         key: ''
         role: user
-        content: ''
         max_messages: 100
         backend: entity
       metadata:
@@ -162,7 +162,6 @@ nodes:
         scope: global
         key: ''
         role: assistant
-        content: ''
         max_messages: 100
         backend: entity
       metadata:
@@ -451,11 +450,10 @@ edges:
       color: var(--fd-edge-trigger)
     class: flowdrop--edge--trigger
 metadata:
-  version: 1.0.0
   createdAt: '2026-04-07T00:00:00.000Z'
-  updatedAt: '2026-05-13T19:58:24.901Z'
+  updatedAt: '2026-08-26T19:24:50.030Z'
 created: 1778701992
-changed: 1787771561
+changed: 1787772290
 uid: 0
 input_ports: null
 output_ports: null

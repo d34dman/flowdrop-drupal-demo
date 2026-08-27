@@ -1,59 +1,55 @@
-uuid: 051c2247-2bbd-4106-9897-a798f2755f18
+uuid: 30928cdb-f7e1-4387-9e0c-9729cc4e4bfc
 langcode: en
 status: true
 dependencies:
   module:
     - flowdrop_node_processor
-_core:
-  default_config_hash: WhnXU1q592GuiS2u56hFST1C0cpq7AgW2TrKrhyeFM4
-id: chat_input
-label: 'Chat Input'
-description: 'Chat input for playground workflows with optional conversation history'
-category: inputs
-icon: 'mdi:chat-plus-outline'
-plugin_version: 1.0.0
+id: flowdrop_node_processor_tool_invoke
+label: 'Invoke tools'
+description: 'Run a batch of tool calls (each an auditable node execution via the tool invoker), at most once per tool_call_id'
+category: processing
+icon: 'mdi:cog'
+plugin_version: 1.1.0
 enabled: true
 parameters:
-  history:
+  tool:
     configurable: false
     connectable: true
     exposed_by_default: true
     required: false
-  message:
+  tool_calls:
     configurable: false
     connectable: true
     exposed_by_default: true
     required: false
-  messageId:
-    configurable: true
-    connectable: true
-    exposed_by_default: true
-    required: false
-  sessionId:
-    configurable: true
-    connectable: true
-    exposed_by_default: true
-    required: false
+    default: {  }
 outputs:
-  history:
+  executed:
     exposed: true
     exposed_by_default: false
-  message:
+  executed_any:
+    exposed: true
+    exposed_by_default: false
+  ok:
+    exposed: true
+    exposed_by_default: false
+  skipped:
+    exposed: true
+    exposed_by_default: false
+  tool_artifacts:
+    exposed: true
+    exposed_by_default: false
+  tool_messages:
+    exposed: true
+    exposed_by_default: false
+  tool_results:
     exposed: true
     exposed_by_default: true
-  messageId:
-    exposed: true
-    exposed_by_default: false
-  sessionId:
-    exposed: true
-    exposed_by_default: false
 tags: {  }
-executor_plugin: 'flowdrop_node_processor:chat_input'
+executor_plugin: 'flowdrop_node_processor:tool_invoke'
 visual_type: default
 supported_visual_types:
   - default
-  - simple
-  - square
 unified_input_exposed: false
 unified_output_exposed: false
 tool_exposed: false

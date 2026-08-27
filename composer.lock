@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "952326c94fb4a02f1d27f5d2a32cd4bd",
+    "content-hash": "cd2bd0b5b9f7345eb59596ec448c3732",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2459,17 +2459,17 @@
         },
         {
             "name": "drupal/flowdrop",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flowdrop.git",
-                "reference": "2.4.0"
+                "reference": "2.4.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/flowdrop-2.4.0.zip",
-                "reference": "2.4.0",
-                "shasum": "6f908c6d5efec55f8c919fbe775b0c67f1f18eaf"
+                "url": "https://ftp.drupal.org/files/projects/flowdrop-2.4.1.zip",
+                "reference": "2.4.1",
+                "shasum": "97a3bbfede936bba58f04b6da858174ba1074166"
             },
             "require": {
                 "d34dman/vanilla-icon-picker": "^1.4",
@@ -2502,7 +2502,7 @@
                 "drupal/flowdrop_runtime": "*",
                 "drupal/flowdrop_session": "*",
                 "drupal/flowdrop_stategraph": "*",
-                "drupal/flowdrop_tool_provider": "dev-1.0.x",
+                "drupal/flowdrop_tool_provider": "^1",
                 "drupal/flowdrop_trigger": "*",
                 "drupal/flowdrop_ui_components": "*",
                 "drupal/flowdrop_workflow": "*",
@@ -2526,8 +2526,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.4.0",
-                    "datestamp": "1787503290",
+                    "version": "2.4.1",
+                    "datestamp": "1787791431",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3787,6 +3787,54 @@
             "homepage": "https://www.drupal.org/project/pm",
             "support": {
                 "source": "https://git.drupalcode.org/project/pm"
+            }
+        },
+        {
+            "name": "drupal/revision_graph",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/revision_graph.git",
+                "reference": "4.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/revision_graph-4.0.0.zip",
+                "reference": "4.0.0",
+                "shasum": "d0c30d8f37943adc0cabc014ab5662d30057d19c"
+            },
+            "require": {
+                "drupal/core": "^11 || ^12"
+            },
+            "require-dev": {
+                "drush/drush": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "4.0.0",
+                    "datestamp": "1786816222",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Shibin Das",
+                    "homepage": "https://www.drupal.org/user/751698",
+                    "email": "shibinkidd@gmail.com"
+                }
+            ],
+            "description": "Provides an alternative visualisation for Node revisions based on Git Graph.js.",
+            "homepage": "https://www.drupal.org/project/revision_graph",
+            "support": {
+                "source": "https://git.drupalcode.org/project/revision_graph"
             }
         },
         {

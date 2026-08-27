@@ -22,6 +22,7 @@ parameters:
   message:
     configurable: false
     connectable: true
+    exposed_by_default: true
     required: false
   showTimestamp:
     configurable: true
@@ -30,13 +31,17 @@ parameters:
     default: false
 outputs:
   format:
-    exposed: false
+    exposed: true
+    exposed_by_default: false
   message:
-    exposed: false
+    exposed: true
+    exposed_by_default: true
   metadata:
-    exposed: false
+    exposed: true
+    exposed_by_default: false
   timestamp:
-    exposed: false
+    exposed: true
+    exposed_by_default: false
 tags: {  }
 executor_plugin: 'flowdrop_node_processor:chat_output'
 visual_type: default
@@ -46,3 +51,10 @@ supported_visual_types:
   - square
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation:
+  author_controls:
+    - waive
+    - require
+  dynamic_controls: {  }
+reserved_port_exposure: {  }
