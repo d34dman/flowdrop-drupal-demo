@@ -1,0 +1,4 @@
+page,control_file,denoised_bytes,competitor_mentions,drupal_mentions
+small,bench_1_reference__small__r10__1788101327.md,6648,0,247
+medium,bench_1_reference__medium__r10__1788101327.md,12550,36,46
+large,bench_1_reference__large__r10__1788101327.md,50082,5,664
