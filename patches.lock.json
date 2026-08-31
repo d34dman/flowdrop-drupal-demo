@@ -1,4 +1,17 @@
 {
-    "_hash": "6142bfcb78f54dfbf5247ae5e463f25bdb8fff1890806e2e45aa81a59c211653",
-    "patches": []
+    "_hash": "175a2583bba05eef7bea24a125c034e5c94298ed24b1ca86ab2fb2a3c3f75dc7",
+    "patches": {
+        "drupal/flowdrop": [
+            {
+                "package": "drupal/flowdrop",
+                "description": "Make MemoryManager::MAX_VALUE_BYTES configurable (#3592436)",
+                "url": "patches/flowdrop-memory-configurable-max-value-bytes.patch",
+                "sha256": "410f7264c0c459ed8d8a24297d857cbfa15ad495c7785a6baf58a3658adab263",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ]
+    }
 }

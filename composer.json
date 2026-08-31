@@ -21,6 +21,7 @@
         "cweagans/composer-patches": "^2.0",
         "drupal/ai": "^1.4.7",
         "drupal/ai_agents": "1.3.x-dev",
+        "drupal/ai_metering": "^1.0",
         "drupal/ai_provider_anthropic": "^1.2.2",
         "drupal/coffee": "^2.0.1",
         "drupal/composer_deploy": "^1.10",
@@ -33,6 +34,7 @@
         "drupal/flowdrop": "^2.4.2",
         "drupal/flowdrop_agents": "^2",
         "drupal/flowdrop_ai_provider": "2.x-dev",
+        "drupal/flowdrop_tool_provider": "^1.0@alpha",
         "drupal/flowdrop_ui": "^1.7",
         "drupal/flowdrop_ui-flowdrop_ui": "0.0.36",
         "drupal/flowdrop_ui_agents": "^2.0",
@@ -116,7 +118,7 @@
             ],
             "post-create-project-cmd-message": [
                 "<bg=blue;fg=white>                                                         </>",
-                "<bg=blue;fg=white>  Congratulations, you’ve installed the Drupal codebase  </>",
+                "<bg=blue;fg=white>  Congratulations, you\u2019ve installed the Drupal codebase  </>",
                 "<bg=blue;fg=white>  from the drupal/recommended-project template!          </>",
                 "<bg=blue;fg=white>                                                         </>",
                 "",
@@ -129,6 +131,11 @@
                 "  * Remove the plugin that prints this message:",
                 "      composer remove drupal/core-project-message"
             ]
+        },
+        "patches": {
+            "drupal/flowdrop": {
+                "Make MemoryManager::MAX_VALUE_BYTES configurable (#3592436)": "patches/flowdrop-memory-configurable-max-value-bytes.patch"
+            }
         }
     }
 }
