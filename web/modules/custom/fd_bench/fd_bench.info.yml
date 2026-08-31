@@ -1,0 +1,7 @@
+name: 'FlowDrop Benchmark Support'
+type: module
+description: 'Supporting plugins for the FlowDrop pipeline-vs-agent benchmark. Provides an HTTP fetch tool so a Drupal AI Agent can retrieve a URL itself, making it comparable with a FlowDrop agent that has the same capability in its toolbox.'
+package: FlowDrop
+core_version_requirement: ^11
+dependencies:
+  - ai:ai

@@ -1,0 +1,20 @@
+ [warning] Cross-iteration data read on pipeline 135: job 1560 (node message_assemble.1, iteration 1) is satisfied by source node conversation_buffer.4 (job 1555, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [error]  Node flowdrop_node_processor_reason.1 execution failed after 0.012 seconds: Monthly AI token quota exceeded for anonymous traffic. Budget: 498000 tokens, consumed: 487150 tokens. 
+ [error]  Job 1561 failed: Node execution failed for flowdrop_node_processor_reason.1: Monthly AI token quota exceeded for anonymous traffic. Budget: 498000 tokens, consumed: 487150 tokens. 
+ [error]  StateGraph orchestration failed: Node execution failed for flowdrop_node_processor_reason.1: Monthly AI token quota exceeded for anonymous traffic. Budget: 498000 tokens, consumed: 487150 tokens. 
+ [error]  Job 1547 failed: Sub-workflow react_agent_with_tools failed: StateGraph orchestration failed: Node execution failed for flowdrop_node_processor_reason.1: Monthly AI token quota exceeded for anonymous traffic. Budget: 498000 tokens, consumed: 487150 tokens. 
+ [error]  Synchronous pipeline execution failed for pipeline 134: Sub-workflow react_agent_with_tools failed: StateGraph orchestration failed: Node execution failed for flowdrop_node_processor_reason.1: Monthly AI token quota exceeded for anonymous traffic. Budget: 498000 tokens, consumed: 487150 tokens. 
+ [error]  Execution failed for pipeline 134: Synchronous pipeline execution failed: Sub-workflow react_agent_with_tools failed: StateGraph orchestration failed: Node execution failed for flowdrop_node_processor_reason.1: Monthly AI token quota exceeded for anonymous traffic. Budget: 498000 tokens, consumed: 487150 tokens. (Drupal\flowdrop_runtime\Exception\OrchestrationException) 
+workflow : bench_5_react_agent
+url      : https://www.ibm.com/think/topics/drupal-wordpress
+pipeline : 134
+status   : failed
+wall     : 12.20s
+
+nodes:
+   chat_output                                    idle       ?s
+   flowdrop_workflow_react_agent_with_tools       failed     11s
+
+llm calls: 1
+   claude-sonnet-4-6          in=819     out=72     cached=0      $0.003537 completed
+totals   : in=819 out=72 cached=0 cost=$0.003537

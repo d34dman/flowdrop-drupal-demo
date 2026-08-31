@@ -1,0 +1,22 @@
+ [warning] Cross-iteration data read on pipeline 399: job 3178 (node message_assemble.1, iteration 1) is satisfied by source node conversation_buffer.4 (job 3173, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Removed disallowed Markdown link with URL: http://www.gnu.org/copyleft/gpl.html
+ [warning] Removed disallowed Markdown link with URL: https://twitter.com/intent/tweet?text=Drupal%E2%80%99s%20the%20content%20management%20system%20behind%20many%20of%20the%20digital%20experiences%20you%20love.%20And%20it%20will%20always%20be%20free.%20https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://twitter.com/intent/tweet?text=Drupal%E2%80%99s%20the%20content%20management%20system%20behind%20many%20of%20the%20digital%20experiences%20you%20love.%20And%20it%20will%20always%20be%20free.%20https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://digital.gov/resources/content-management-systems-used-by-government-agencies/
+ [warning] Removed disallowed Markdown link with URL: https://www.london.gov.uk/
+ [warning] Removed disallowed Markdown link with URL: http://www.gouvernement.fr/
+ [warning] Removed disallowed Markdown link with URL: http://www.bbc.com/
+ [warning] Removed disallowed Markdown link with URL: http://www.nbc.com/
+ [warning] Removed disallowed Markdown link with URL: http://www.mtv.co.uk/
+ [warning] Removed disallowed Markdown link with URL: http://www.amnesty.org/
+ [warning] Removed disallowed Markdown link with URL: http://www.ox.ac.uk/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/case-studies
+ [warning] Removed disallowed Markdown link with URL: http://localize.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://jobs.drupal.org/
+  bench_5_react_agent          small   r1   completed  wall=  19.68s pipeline=398
+ [warning] Cross-iteration data read on pipeline 401: job 3197 (node message_assemble.1, iteration 1) is satisfied by source node conversation_buffer.4 (job 3192, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+  bench_5_react_agent          medium  r1   completed  wall=  63.53s pipeline=400
+ [warning] Cross-iteration data read on pipeline 403: job 3216 (node message_assemble.1, iteration 1) is satisfied by source node conversation_buffer.4 (job 3211, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Cross-iteration data read on pipeline 403: job 3225 (node message_assemble.1, iteration 2) is satisfied by source node conversation_buffer.4 (job 3211, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+  bench_5_react_agent          large   r1   completed  wall= 269.06s pipeline=402
+appended to /var/www/html/scratchpad/bench/results/runs.jsonl
