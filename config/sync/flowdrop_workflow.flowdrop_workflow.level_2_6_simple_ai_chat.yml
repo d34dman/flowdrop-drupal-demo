@@ -32,9 +32,13 @@ nodes:
     data:
       label: Chat
       config:
-        model: claude-haiku-4-5-20251001
-        temperature: 0.7
+        model: claude-sonnet-4-6
+        temperature: 0
         systemPrompt: ''
+        operation_type: chat
+        maxTokens: 1000
+        maxRetries: 0
+        requiresConfirmation: ''
       metadata:
         node_type_id: flowdrop_ai_provider_chat
       extensions:
@@ -99,11 +103,10 @@ edges:
       color: var(--fd-edge-data)
     class: flowdrop--edge--data
 metadata:
-  version: 1.0.0
   createdAt: '2026-05-13T19:29:23.599Z'
-  updatedAt: '2026-05-13T19:30:16.619Z'
+  updatedAt: '2026-08-28T12:36:52.853Z'
 created: 1778700556
-changed: 1787771561
+changed: 1787920613
 uid: 0
 input_ports: null
 output_ports: null

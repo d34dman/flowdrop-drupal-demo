@@ -1,0 +1,39 @@
+uuid: e0886b84-290e-44fb-a2e6-24493e02d981
+langcode: en
+status: true
+dependencies:
+  config:
+    - flowdrop_node_type.flowdrop_node_type.text_output
+id: repro_port_hidden
+label: 'Repro: systemPrompt port hidden'
+description: ''
+nodes:
+  -
+    id: text_output.1
+    position:
+      x: 100
+      'y': 100
+    data:
+      label: 'Text Output'
+      config:
+        text: CONFIGURED-VALUE
+        ports:
+          inputs:
+            -
+              id: text
+              exposed: false
+          outputs:
+            -
+              id: text
+      metadata:
+        node_type_id: text_output
+edges: {  }
+metadata: {  }
+created: 1788170094
+changed: 1788170094
+uid: 0
+input_ports: null
+output_ports: null
+parameter_schema: null
+output_schema: null
+schema_version: 0.0.0

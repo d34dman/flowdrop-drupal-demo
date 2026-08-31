@@ -1,0 +1,920 @@
+uuid: 2f3e8d5c-90fa-4671-8a17-49d82fa1f64b
+langcode: en
+status: true
+dependencies:
+  config:
+    - flowdrop_node_type.flowdrop_node_type.boolean_gateway
+    - flowdrop_node_type.flowdrop_node_type.calculator
+    - flowdrop_node_type.flowdrop_node_type.chat_input
+    - flowdrop_node_type.flowdrop_node_type.chat_output
+    - flowdrop_node_type.flowdrop_node_type.conversation_buffer
+    - flowdrop_node_type.flowdrop_node_type.flowdrop_node_processor_reason
+    - flowdrop_node_type.flowdrop_node_type.flowdrop_node_processor_tool_invoke
+    - flowdrop_node_type.flowdrop_node_type.message_assemble
+    - flowdrop_node_type.flowdrop_node_type.prompt_template
+id: lets_create_a_reasoner_with_tools
+label: 'Lets create a Reasoner with tools'
+description: ''
+nodes:
+  -
+    id: conversation_buffer.1
+    position:
+      x: -120
+      'y': 600
+    data:
+      label: 'Conversation Buffer'
+      config:
+        scope: pipeline
+        key: loop
+        max_messages: 0
+        backend: entity
+        maxRetries: 0
+        requiresConfirmation: ''
+        role: user
+        ports:
+          inputs:
+            -
+              id: key
+              exposed: false
+            -
+              id: role
+              exposed: false
+            -
+              id: content
+              exposed: false
+            -
+              id: loop_back
+              exposed: true
+            -
+              id: trigger
+              exposed: false
+            -
+              id: message
+              exposed: true
+          outputs:
+            -
+              id: messages
+            -
+              id: count
+            -
+              id: appended_any
+              exposed: false
+            -
+              id: appended
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+      metadata:
+        node_type_id: conversation_buffer
+    measured:
+      width: 280
+      height: 342
+  -
+    id: flowdrop_node_processor_reason.1
+    position:
+      x: 940
+      'y': 280
+    data:
+      label: 'Reason (agent step)'
+      config:
+        messages: {  }
+        operation_type: chat
+        model: claude-sonnet-5
+        temperature: 0
+        maxTokens: 1024
+        systemPrompt: ''
+        maxRetries: 0
+        requiresConfirmation: ''
+        ports:
+          inputs:
+            -
+              id: messages
+            -
+              id: systemPrompt
+            -
+              id: tool
+              exposed: true
+            -
+              id: loop_back
+              exposed: true
+            -
+              id: trigger
+              exposed: true
+          outputs:
+            -
+              id: tool_calls
+              exposed: true
+            -
+              id: text
+            -
+              id: has_tool_calls
+              exposed: true
+            -
+              id: assistant_message
+              exposed: true
+            -
+              id: trigger
+            -
+              id: error
+      metadata:
+        node_type_id: flowdrop_node_processor_reason
+    measured:
+      width: 280
+      height: 642
+  -
+    id: chat_output.1
+    position:
+      x: 2020
+      'y': 760
+    data:
+      label: 'Chat Output'
+      config:
+        format: text
+        showTimestamp: false
+        nodeType: default
+        maxRetries: 0
+        requiresConfirmation: ''
+        ports:
+          outputs:
+            -
+              id: message
+            -
+              id: format
+            -
+              id: timestamp
+            -
+              id: metadata
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+      metadata:
+        node_type_id: chat_output
+    measured:
+      width: 280
+      height: 302
+  -
+    id: chat_input.1
+    position:
+      x: -920
+      'y': 220
+    data:
+      label: 'Chat Input'
+      config:
+        nodeType: default
+        maxRetries: 0
+        requiresConfirmation: ''
+        ports:
+          inputs:
+            -
+              id: message
+            -
+              id: history
+              exposed: false
+            -
+              id: sessionId
+              exposed: false
+            -
+              id: messageId
+              exposed: false
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+          outputs:
+            -
+              id: message
+            -
+              id: history
+            -
+              id: sessionId
+            -
+              id: messageId
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+      metadata:
+        node_type_id: chat_input
+    measured:
+      width: 280
+      height: 262
+  -
+    id: calculator.1
+    position:
+      x: 380
+      'y': 880
+    data:
+      label: Calculator
+      config:
+        operation: add
+        precision: 2
+        maxRetries: 0
+        requiresConfirmation: ''
+        ports:
+          outputs:
+            -
+              id: result
+            -
+              id: operation
+              exposed: false
+            -
+              id: values
+              exposed: false
+            -
+              id: precision
+              exposed: false
+            -
+              id: trigger
+              exposed: false
+            -
+              id: tool
+              exposed: true
+            -
+              id: error
+          inputs:
+            -
+              id: values
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+        instanceTitle: Adder
+        instanceDescription: 'Adds provided values'
+      metadata:
+        node_type_id: calculator
+    measured:
+      width: 280
+      height: 302
+  -
+    id: boolean_gateway.1
+    position:
+      x: 1320
+      'y': 620
+    data:
+      label: 'Boolean Gateway'
+      config:
+        branches:
+          -
+            name: 'True'
+            value: true
+          -
+            name: 'False'
+            value: false
+        maxRetries: 0
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: boolean_gateway
+    measured:
+      width: 280
+      height: 382
+  -
+    id: chat_output.2
+    position:
+      x: 1720
+      'y': 140
+    data:
+      label: 'Chat Output'
+      config:
+        format: text
+        showTimestamp: false
+        nodeType: default
+        maxRetries: 0
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: chat_output
+    measured:
+      width: 280
+      height: 362
+  -
+    id: prompt_template.1
+    position:
+      x: 1280
+      'y': 100
+    data:
+      label: 'Prompt Template'
+      config:
+        template: |-
+          Tool call is being made with following data
+
+          ```
+          {{ variables|json_encode|raw }}
+          ```
+        nodeType: default
+        maxRetries: 0
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: prompt_template
+    measured:
+      width: 280
+      height: 382
+  -
+    id: flowdrop_node_processor_tool_invoke.1
+    position:
+      x: 2300
+      'y': 180
+    data:
+      label: 'Invoke tools'
+      config:
+        maxRetries: 0
+        requiresConfirmation: ''
+        ports:
+          outputs:
+            -
+              id: tool_messages
+              exposed: true
+            -
+              id: tool_results
+            -
+              id: tool_artifacts
+            -
+              id: ok
+            -
+              id: skipped
+            -
+              id: executed_any
+              exposed: true
+            -
+              id: executed
+            -
+              id: trigger
+            -
+              id: error
+      metadata:
+        node_type_id: flowdrop_node_processor_tool_invoke
+    measured:
+      width: 280
+      height: 582
+  -
+    id: conversation_buffer.2
+    position:
+      x: 3180
+      'y': 340
+    data:
+      label: 'Conversation Buffer'
+      config:
+        scope: pipeline
+        key: loop
+        max_messages: 60
+        backend: entity
+        maxRetries: 0
+        requiresConfirmation: ''
+        role: user
+        ports:
+          inputs:
+            -
+              id: key
+              exposed: false
+            -
+              id: role
+              exposed: false
+            -
+              id: content
+              exposed: false
+            -
+              id: loop_back
+            -
+              id: message
+              exposed: true
+            -
+              id: trigger
+          outputs:
+            -
+              id: messages
+              exposed: false
+            -
+              id: count
+            -
+              id: appended_any
+            -
+              id: appended
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+      metadata:
+        node_type_id: conversation_buffer
+    measured:
+      width: 280
+      height: 342
+  -
+    id: boolean_gateway.2
+    position:
+      x: 2720
+      'y': 500
+    data:
+      label: 'Boolean Gateway'
+      config:
+        branches:
+          -
+            name: 'True'
+            value: true
+          -
+            name: 'False'
+            value: false
+        maxRetries: 0
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: boolean_gateway
+    measured:
+      width: 280
+      height: 382
+  -
+    id: conversation_buffer.3
+    position:
+      x: 1120
+      'y': 900
+    data:
+      label: 'Conversation Buffer'
+      config:
+        scope: pipeline
+        key: loop
+        max_messages: 60
+        backend: entity
+        maxRetries: 0
+        requiresConfirmation: ''
+        role: assistant
+        ports:
+          inputs:
+            -
+              id: key
+              exposed: false
+            -
+              id: message
+              exposed: true
+            -
+              id: role
+              exposed: false
+            -
+              id: content
+              exposed: false
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+          outputs:
+            -
+              id: messages
+              exposed: false
+            -
+              id: count
+            -
+              id: appended_any
+              exposed: false
+            -
+              id: appended
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+      metadata:
+        node_type_id: conversation_buffer
+    measured:
+      width: 280
+      height: 222
+  -
+    id: conversation_buffer.4
+    position:
+      x: -540
+      'y': 260
+    data:
+      label: 'Conversation Buffer'
+      config:
+        scope: session
+        key: chat_history
+        max_messages: 60
+        backend: entity
+        maxRetries: 0
+        requiresConfirmation: ''
+        role: user
+        ports:
+          inputs:
+            -
+              id: key
+              exposed: false
+            -
+              id: message
+            -
+              id: role
+              exposed: false
+            -
+              id: content
+            -
+              id: loop_back
+            -
+              id: trigger
+      metadata:
+        node_type_id: conversation_buffer
+    measured:
+      width: 280
+      height: 462
+  -
+    id: message_assemble.1
+    position:
+      x: 360
+      'y': 380
+    data:
+      label: 'Assemble Messages'
+      config:
+        dynamicInputs:
+          -
+            name: conversation
+            label: conversation
+            description: ''
+            dataType: messages
+            required: false
+          -
+            name: scratchpad
+            label: scratchpad
+            description: ''
+            dataType: messages
+            required: false
+        maxRetries: 0
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: message_assemble
+    measured:
+      width: 280
+      height: 442
+edges:
+  -
+    id: xy-edge__flowdrop_node_processor_reason.1flowdrop_node_processor_reason.1-output-text-chat_output.1chat_output.1-input-message
+    source: flowdrop_node_processor_reason.1
+    target: chat_output.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+    sourceHandle: flowdrop_node_processor_reason.1-output-text
+    targetHandle: chat_output.1-input-message
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: xy-edge__calculator.1calculator.1-output-tool-flowdrop_node_processor_reason.1flowdrop_node_processor_reason.1-input-tool
+    source: calculator.1
+    target: flowdrop_node_processor_reason.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: ai
+      metadata:
+        edgeType: tool
+        sourcePortDataType: tool
+    sourceHandle: calculator.1-output-tool
+    targetHandle: flowdrop_node_processor_reason.1-input-tool
+    style: 'stroke: var(--fd-edge-tool); stroke-dasharray: 5 3;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-tool)
+    class: flowdrop--edge--tool
+  -
+    id: xy-edge__flowdrop_node_processor_reason.1flowdrop_node_processor_reason.1-output-has_tool_calls-boolean_gateway.1boolean_gateway.1-input-value
+    source: flowdrop_node_processor_reason.1
+    target: boolean_gateway.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: logic
+      metadata:
+        edgeType: data
+        sourcePortDataType: boolean
+    sourceHandle: flowdrop_node_processor_reason.1-output-has_tool_calls
+    targetHandle: boolean_gateway.1-input-value
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: xy-edge__boolean_gateway.1boolean_gateway.1-output-False-chat_output.1chat_output.1-input-trigger
+    source: boolean_gateway.1
+    target: chat_output.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: trigger
+        sourcePortDataType: trigger
+    sourceHandle: boolean_gateway.1-output-False
+    targetHandle: chat_output.1-input-trigger
+    style: 'stroke: var(--fd-edge-trigger); stroke-width: var(--fd-edge-trigger-width);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-trigger)
+    class: flowdrop--edge--trigger
+  -
+    id: xy-edge__boolean_gateway.1boolean_gateway.1-output-True-chat_output.2chat_output.2-input-trigger
+    source: boolean_gateway.1
+    target: chat_output.2
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: trigger
+        sourcePortDataType: trigger
+    sourceHandle: boolean_gateway.1-output-True
+    targetHandle: chat_output.2-input-trigger
+    style: 'stroke: var(--fd-edge-trigger); stroke-width: var(--fd-edge-trigger-width);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-trigger)
+    class: flowdrop--edge--trigger
+  -
+    id: xy-edge__prompt_template.1prompt_template.1-output-prompt-chat_output.2chat_output.2-input-message
+    source: prompt_template.1
+    target: chat_output.2
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+    sourceHandle: prompt_template.1-output-prompt
+    targetHandle: chat_output.2-input-message
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: xy-edge__flowdrop_node_processor_reason.1flowdrop_node_processor_reason.1-output-tool_calls-prompt_template.1prompt_template.1-input-variables
+    source: flowdrop_node_processor_reason.1
+    target: prompt_template.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: prompts
+      metadata:
+        edgeType: data
+        sourcePortDataType: array
+    sourceHandle: flowdrop_node_processor_reason.1-output-tool_calls
+    targetHandle: prompt_template.1-input-variables
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: xy-edge__flowdrop_node_processor_reason.1flowdrop_node_processor_reason.1-output-tool_calls-flowdrop_node_processor_tool_invoke.1flowdrop_node_processor_tool_invoke.1-input-tool_calls
+    source: flowdrop_node_processor_reason.1
+    target: flowdrop_node_processor_tool_invoke.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: data
+        sourcePortDataType: array
+    sourceHandle: flowdrop_node_processor_reason.1-output-tool_calls
+    targetHandle: flowdrop_node_processor_tool_invoke.1-input-tool_calls
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: xy-edge__calculator.1calculator.1-output-tool-flowdrop_node_processor_tool_invoke.1flowdrop_node_processor_tool_invoke.1-input-tool
+    source: calculator.1
+    target: flowdrop_node_processor_tool_invoke.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: tool
+        sourcePortDataType: tool
+    sourceHandle: calculator.1-output-tool
+    targetHandle: flowdrop_node_processor_tool_invoke.1-input-tool
+    style: 'stroke: var(--fd-edge-tool); stroke-dasharray: 5 3;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-tool)
+    class: flowdrop--edge--tool
+  -
+    id: xy-edge__chat_output.2chat_output.2-output-trigger-flowdrop_node_processor_tool_invoke.1flowdrop_node_processor_tool_invoke.1-input-trigger
+    source: chat_output.2
+    target: flowdrop_node_processor_tool_invoke.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: trigger
+        sourcePortDataType: trigger
+    sourceHandle: chat_output.2-output-trigger
+    targetHandle: flowdrop_node_processor_tool_invoke.1-input-trigger
+    style: 'stroke: var(--fd-edge-trigger); stroke-width: var(--fd-edge-trigger-width);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-trigger)
+    class: flowdrop--edge--trigger
+  -
+    id: xy-edge__flowdrop_node_processor_tool_invoke.1flowdrop_node_processor_tool_invoke.1-output-executed_any-boolean_gateway.2boolean_gateway.2-input-value
+    source: flowdrop_node_processor_tool_invoke.1
+    target: boolean_gateway.2
+    data:
+      targetNodeType: universalNode
+      targetCategory: logic
+      metadata:
+        edgeType: data
+        sourcePortDataType: boolean
+    sourceHandle: flowdrop_node_processor_tool_invoke.1-output-executed_any
+    targetHandle: boolean_gateway.2-input-value
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: xy-edge__boolean_gateway.2boolean_gateway.2-output-True-conversation_buffer.2conversation_buffer.2-input-trigger
+    source: boolean_gateway.2
+    target: conversation_buffer.2
+    data:
+      targetNodeType: universalNode
+      targetCategory: memories
+      metadata:
+        edgeType: trigger
+        sourcePortDataType: trigger
+    sourceHandle: boolean_gateway.2-output-True
+    targetHandle: conversation_buffer.2-input-trigger
+    style: 'stroke: var(--fd-edge-trigger); stroke-width: var(--fd-edge-trigger-width);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-trigger)
+    class: flowdrop--edge--trigger
+  -
+    id: xy-edge__conversation_buffer.2conversation_buffer.2-output-appended_any-conversation_buffer.1conversation_buffer.1-input-loop_back
+    source: conversation_buffer.2
+    target: conversation_buffer.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: memories
+      metadata:
+        edgeType: loopback
+        sourcePortDataType: boolean
+    sourceHandle: conversation_buffer.2-output-appended_any
+    targetHandle: conversation_buffer.1-input-loop_back
+    style: 'stroke: var(--fd-edge-loopback); stroke-dasharray: var(--fd-edge-loopback-dasharray); stroke-width: var(--fd-edge-loopback-width); opacity: var(--fd-edge-loopback-opacity);'
+    markerEnd:
+      type: arrowclosed
+      width: 14
+      height: 14
+      color: var(--fd-edge-loopback)
+    class: flowdrop--edge--loopback
+  -
+    id: xy-edge__flowdrop_node_processor_tool_invoke.1flowdrop_node_processor_tool_invoke.1-output-tool_messages-conversation_buffer.2conversation_buffer.2-input-message
+    source: flowdrop_node_processor_tool_invoke.1
+    target: conversation_buffer.2
+    data:
+      targetNodeType: universalNode
+      targetCategory: memories
+      metadata:
+        edgeType: data
+        sourcePortDataType: array
+    sourceHandle: flowdrop_node_processor_tool_invoke.1-output-tool_messages
+    targetHandle: conversation_buffer.2-input-message
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: xy-edge__flowdrop_node_processor_reason.1flowdrop_node_processor_reason.1-output-assistant_message-conversation_buffer.3conversation_buffer.3-input-message
+    source: flowdrop_node_processor_reason.1
+    target: conversation_buffer.3
+    data:
+      targetNodeType: universalNode
+      targetCategory: memories
+      metadata:
+        edgeType: data
+        sourcePortDataType: json
+    sourceHandle: flowdrop_node_processor_reason.1-output-assistant_message
+    targetHandle: conversation_buffer.3-input-message
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: xy-edge__chat_input.1chat_input.1-output-message-conversation_buffer.4conversation_buffer.4-input-content
+    source: chat_input.1
+    target: conversation_buffer.4
+    data:
+      targetNodeType: universalNode
+      targetCategory: memories
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+    sourceHandle: chat_input.1-output-message
+    targetHandle: conversation_buffer.4-input-content
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: xy-edge__conversation_buffer.1conversation_buffer.1-output-messages-message_assemble.1message_assemble.1-input-scratchpad
+    source: conversation_buffer.1
+    target: message_assemble.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: data
+        sourcePortDataType: messages
+    sourceHandle: conversation_buffer.1-output-messages
+    targetHandle: message_assemble.1-input-scratchpad
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: xy-edge__conversation_buffer.4conversation_buffer.4-output-messages-message_assemble.1message_assemble.1-input-conversation
+    source: conversation_buffer.4
+    target: message_assemble.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: data
+        sourcePortDataType: messages
+    sourceHandle: conversation_buffer.4-output-messages
+    targetHandle: message_assemble.1-input-conversation
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: xy-edge__message_assemble.1message_assemble.1-output-messages-flowdrop_node_processor_reason.1flowdrop_node_processor_reason.1-input-messages
+    source: message_assemble.1
+    target: flowdrop_node_processor_reason.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: ai
+      metadata:
+        edgeType: data
+        sourcePortDataType: messages
+    sourceHandle: message_assemble.1-output-messages
+    targetHandle: flowdrop_node_processor_reason.1-input-messages
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+metadata:
+  createdAt: '2026-08-26T19:53:50.286Z'
+  updatedAt: '2026-08-26T23:13:18.050Z'
+created: 1787817260
+changed: 1787817260
+uid: 1
+input_ports: null
+output_ports: null
+parameter_schema: null
+output_schema: null
+schema_version: 0.0.0

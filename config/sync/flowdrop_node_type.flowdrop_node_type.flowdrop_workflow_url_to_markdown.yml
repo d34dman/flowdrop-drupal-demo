@@ -1,51 +1,49 @@
-uuid: a8913370-3faf-4cfc-911e-a20c1b3e3f84
+uuid: a31ce16b-3cd9-4a7b-8a70-61d46ade0f5c
 langcode: en
 status: true
 dependencies:
   module:
-    - flowdrop_node_processor
-_core:
-  default_config_hash: MmGDd61NMVaovfyUz2fK7qZ16jSw2AsCyiTqse0sYL0
-id: text_output
-label: 'Text Output'
-description: 'Basic text output'
-category: outputs
-icon: 'mdi:alphabetical-variant'
+    - flowdrop_workflow_executor
+id: flowdrop_workflow_url_to_markdown
+label: 'Run workflow: URL to Markdown'
+description: ''
+category: tools
+icon: 'mdi:language-markdown'
 plugin_version: 1.0.0
 enabled: true
 parameters:
-  format:
+  executionMode:
     configurable: true
     connectable: false
     required: false
-    default: plain
-  maxLength:
-    configurable: true
-    connectable: false
-    required: false
-    default: 1000
-  text:
+    default: job
+  url:
     configurable: true
     connectable: true
     exposed_by_default: true
     required: false
 outputs:
-  length:
+  body:
     exposed: true
     exposed_by_default: false
-  text:
+  markdown:
+    exposed: true
+    exposed_by_default: true
+  status_code:
+    exposed: true
+    exposed_by_default: false
+  success:
     exposed: true
     exposed_by_default: false
 tags: {  }
-executor_plugin: 'flowdrop_node_processor:text_output'
+executor_plugin: 'flowdrop_workflow_executor:flowdrop_workflow:url_to_markdown'
 visual_type: default
 supported_visual_types:
   - default
-  - simple
-  - square
+  - tool
 unified_input_exposed: false
 unified_output_exposed: false
-tool_exposed: false
+tool_exposed: true
 confirmation:
   author_controls:
     - waive

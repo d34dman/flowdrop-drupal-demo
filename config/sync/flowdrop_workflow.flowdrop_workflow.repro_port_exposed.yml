@@ -1,0 +1,39 @@
+uuid: 3cd7fc4f-b194-4f31-92e6-835074660e4f
+langcode: en
+status: true
+dependencies:
+  config:
+    - flowdrop_node_type.flowdrop_node_type.text_output
+id: repro_port_exposed
+label: 'Repro: systemPrompt port exposed'
+description: ''
+nodes:
+  -
+    id: text_output.1
+    position:
+      x: 100
+      'y': 100
+    data:
+      label: 'Text Output'
+      config:
+        text: CONFIGURED-VALUE
+        ports:
+          inputs:
+            -
+              id: text
+              exposed: true
+          outputs:
+            -
+              id: text
+      metadata:
+        node_type_id: text_output
+edges: {  }
+metadata: {  }
+created: 1788170094
+changed: 1788170094
+uid: 0
+input_ports: null
+output_ports: null
+parameter_schema: null
+output_schema: null
+schema_version: 0.0.0

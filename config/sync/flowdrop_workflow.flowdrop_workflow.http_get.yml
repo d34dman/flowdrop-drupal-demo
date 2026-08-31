@@ -1,0 +1,103 @@
+uuid: 66458430-8a33-4dc6-b763-bbda2e2e3de9
+langcode: en
+status: true
+dependencies:
+  config:
+    - flowdrop_node_type.flowdrop_node_type.http_request
+id: http_get
+label: 'HTTP GET'
+description: 'A Simple web fetcher. Provide a URL and it gives back the content at the url.'
+nodes:
+  -
+    id: http_request.1
+    position:
+      x: 880
+      'y': 240
+    data:
+      label: 'HTTP Request'
+      config:
+        url: ''
+        method: GET
+        headers: {  }
+        body: ''
+        timeout: 300
+        follow_redirects: true
+        maxRetries: 0
+        requiresConfirmation: ''
+        ports:
+          outputs:
+            -
+              id: status_code
+              exposed: false
+            -
+              id: headers
+              exposed: false
+            -
+              id: body
+            -
+              id: json
+              exposed: false
+            -
+              id: url
+              exposed: false
+            -
+              id: method
+              exposed: false
+            -
+              id: request_time
+              exposed: false
+            -
+              id: trigger
+              exposed: false
+            -
+              id: tool
+            -
+              id: error
+          inputs:
+            -
+              id: url
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+      metadata:
+        node_type_id: http_request
+    measured:
+      width: 280
+      height: 242
+edges: {  }
+metadata:
+  createdAt: '2026-08-28T08:40:22.510Z'
+  updatedAt: '2026-08-28T08:45:18.068Z'
+created: 1787906415
+changed: 1787906718
+uid: 0
+input_ports:
+  -
+    name: url
+    node_id: http_request.1
+    port: url
+    title: URL
+    description: 'The URL to request'
+output_ports:
+  -
+    name: body
+    node_id: http_request.1
+    port: body
+parameter_schema:
+  type: object
+  properties:
+    url:
+      type: string
+      title: URL
+      description: 'The URL to request'
+      x-data-type: string
+      default: ''
+output_schema:
+  type: object
+  properties:
+    body:
+      type: string
+      x-data-type: string
+schema_version: 1.0.0
