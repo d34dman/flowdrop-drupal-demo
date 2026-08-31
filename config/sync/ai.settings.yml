@@ -5,21 +5,21 @@ prompt_logging_tags: ''
 default_providers:
   chat:
     provider_id: anthropic
-    model_id: claude-sonnet-5
+    model_id: claude-sonnet-4-6
   chat_with_complex_json:
     provider_id: anthropic
-    model_id: claude-opus-4-8
+    model_id: claude-sonnet-4-6
   chat_with_image_vision:
     provider_id: anthropic
-    model_id: claude-opus-5
+    model_id: claude-sonnet-4-6
   chat_with_structured_response:
     provider_id: anthropic
-    model_id: claude-opus-4-8
+    model_id: claude-sonnet-4-6
   chat_with_tools:
     provider_id: anthropic
-    model_id: claude-opus-5
+    model_id: claude-sonnet-4-6
 default_vdb_provider: ''
-request_timeout: 60
+request_timeout: 3600
 allowed_hosts: {  }
 allowed_hosts_rewrite_links: false
 global_guardrails: {  }

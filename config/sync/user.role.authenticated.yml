@@ -6,6 +6,7 @@ dependencies:
     - filter.format.basic_html
     - filter.format.markdown
   module:
+    - ai_metering
     - comment
     - file
     - filter
@@ -26,5 +27,6 @@ permissions:
   - 'post comments'
   - 'search content'
   - 'skip comment approval'
+  - 'use ai_metering'
   - 'use text format basic_html'
   - 'use text format markdown'

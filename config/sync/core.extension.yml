@@ -4,6 +4,7 @@ module:
   address: 0
   ai: 0
   ai_agents: 0
+  ai_metering: 0
   ai_provider_anthropic: 0
   announcements_feed: 0
   automated_cron: 0
@@ -16,17 +17,20 @@ module:
   comment: 0
   config: 0
   contextual: 0
+  csv_serialization: 0
   datetime: 0
   datetime_range: 0
   dblog: 0
   dynamic_entity_reference: 0
   dynamic_page_cache: 0
   editor: 0
+  fd_bench: 0
   field: 0
   field_ui: 0
   file: 0
   filter: 0
   flowdrop: 0
+  flowdrop_agents: 0
   flowdrop_ai_provider: 0
   flowdrop_chat: 0
   flowdrop_interrupt: 0
@@ -41,10 +45,14 @@ module:
   flowdrop_runtime: 0
   flowdrop_session: 0
   flowdrop_stategraph: 0
+  flowdrop_tool_provider: 0
   flowdrop_trigger: 0
+  flowdrop_ui: 0
+  flowdrop_ui_agents: 0
   flowdrop_ui_components: 0
   flowdrop_workflow: 0
   flowdrop_workflow_executor: 0
+  flowdrop_workflow_tool_provider: 0
   help: 0
   history: 0
   image: 0
@@ -71,10 +79,13 @@ module:
   system: 0
   taxonomy: 0
   text: 0
+  tool: 0
+  tool_explorer: 0
   toolbar: 0
   update: 0
   user: 0
   verf: 0
+  views_data_export: 0
   views_ui: 0
   views: 10
   standard: 1000
