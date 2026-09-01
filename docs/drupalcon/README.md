@@ -32,6 +32,10 @@ of eight FlowDrop workflow variants, plus the ideas for turning it into 45 minut
 
 ## Published artifacts (interactive, for reference or live demo)
 
+Full index of everything (published pages + repo files): [ARTIFACTS.md](ARTIFACTS.md),
+also as a shareable page — <https://claude.ai/code/artifact/47c9cb5c-16cf-43a4-96e9-cb05836a2dd0>
+
+
 - **Benchmark overview, all variants, global filters** — <https://claude.ai/code/artifact/33ba2dce-38f5-4f19-b3a1-eff81053bc93>
 - **Threshold explorer** (parallel coordinates, drag to set acceptable cost/time/quality) — see `bench-explorer.html`
 - **ReAct Redactor Deep Dive** (B5 across four models) — <https://claude.ai/code/artifact/e2a1cb1f-59b2-4cf8-a383-8394b394facd>
