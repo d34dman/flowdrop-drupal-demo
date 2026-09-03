@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redaction Benchmark</title>
+<style>
+:root{color-scheme:light dark;--bg:#EDEFF2;--ink:#14171C;--ink-2:#464D5B;--muted:#7E8696;--rule:#C9CED8;--accent:#F2C230}
+@media (prefers-color-scheme:dark){:root{--bg:#15171B;--ink:#F1F2F4;--ink-2:#B8BEC9;--muted:#7C8494;--rule:#353A44;--accent:#E0B12A}}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 "IBM Plex Sans",system-ui,sans-serif;padding:7vh 7vw 10vh;max-width:64ch}
+h1{font-family:Archivo,"Helvetica Neue",Arial,sans-serif;font-weight:800;font-size:2.4rem;letter-spacing:-.02em;line-height:1.05;margin:0 0 1rem}
+h1 .bars{display:inline-block;background:var(--ink);color:transparent;border-radius:1px;vertical-align:-.06em;line-height:1}
+h2{font-family:"IBM Plex Mono",ui-monospace,monospace;font-weight:500;font-size:.75rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:2.4rem 0 .4rem}
+p{color:var(--ink-2);margin:0 0 1rem}
+ul{list-style:none;padding:0;margin:0}
+li{border-top:1px solid var(--rule);padding:.85rem 0}
+li:last-child{border-bottom:1px solid var(--rule)}
+a{color:var(--ink);font-weight:600;text-decoration:none;border-bottom:3px solid var(--accent)}
+p a{font-weight:500;border-bottom-width:2px}
+.crumb{margin:0 0 2rem;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.8rem}
+.crumb a{font-weight:500;border-bottom-width:2px}
+small{display:block;color:var(--ink-2);font-size:.85rem;margin-top:.25rem}
+</style>
+</head>
+<body>
+<p class="crumb"><a href="../">All studies</a></p>
+<h1>Seven ways to <span class="bars">▌▌▌▌</span> a page</h1>
+<p>Everything published from the FlowDrop AI-pattern benchmark: one task, eight pipeline architectures, four models, 170 metered runs, 30 August to 1 September 2026. Research notes, the failure gallery and the raw CSV live in the <a href="https://github.com/d34dman/flowdrop-drupal-demo/tree/main/docs/drupalcon">repository</a>.</p>
+
+<h2>Slides</h2>
+<ul>
+  <li><a href="slides/tech-all-hands-2026-09-04.html">Tech all-hands, 4 September 2026</a><small>20 min · 15 slides · arrow keys to move, N for speaker notes</small></li>
+</ul>
+
+<h2>Interactive pages</h2>
+<ul>
+  <li><a href="artifacts/why-your-ai-agent-hallucinates.html">Why Your AI Agent Hallucinates</a><small>Talk-companion page: the failure modes and lessons behind the DrupalCon session abstract. · 2026-09-01</small></li>
+  <li><a href="artifacts/caching-the-agent-route.html">Caching the Agent Route</a><small>Token economy, and why prompt caching is unreachable for the agentic variants. · 2026-09-01</small></li>
+  <li><a href="artifacts/redaction-tradeoff-explorer.html">Redaction Tradeoff Explorer</a><small>Parallel-coordinates threshold explorer. Drag to set acceptable cost, time and quality. · 2026-08-31</small></li>
+  <li><a href="artifacts/redaction-benchmark-plots.html">Redaction Benchmark Plots</a><small>Benchmark overview across all variants with global filters. · 2026-08-31</small></li>
+  <li><a href="artifacts/url-shaped-tool-deep-dive.html">URL-Shaped Tool Deep Dive</a><small>B5 vs B7: what changes when a tool takes a URL instead of the content. · 2026-08-31</small></li>
+  <li><a href="artifacts/how-the-redaction-benchmark-works.html">How the Redaction Benchmark Works</a><small>Method explainer: the task, the variants, the metric caveats. · 2026-08-30</small></li>
+  <li><a href="artifacts/seven-ways-to-redact-a-page.html">Seven Ways to Redact a Page</a><small>The eight workflow architectures compared side by side. · 2026-08-30</small></li>
+  <li><a href="artifacts/redactor-model-matrix.html">Redactor Model Matrix</a><small>Variant × model results grid. · 2026-08-30</small></li>
+  <li><a href="artifacts/react-redactor-deep-dive.html">ReAct Redactor Deep Dive</a><small>The B5 ReAct agent variant across four models. · 2026-08-30</small></li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why Your AI Agent Hallucinates</title>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F6F1E8; --surface:#FFFDF8; --ink:#221D16; --muted:#6F6557;
+  --line:#E3D9C8; --cinnabar:#C93A2A; --cinnabar-soft:#F7E4DF;
+  --rail:#D8CDBA; --chip-ink:#FFFDF8; --code-bg:#EFE7D8; --bubble:#E9F0E6; --bubble-ink:#3A5C38;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#171310; --surface:#211B15; --ink:#EFE7DA; --muted:#A29685;
+    --line:#372F27; --cinnabar:#FF6B54; --cinnabar-soft:#3B211B;
+    --rail:#3E362C; --chip-ink:#171310; --code-bg:#2A231B; --bubble:#23301F; --bubble-ink:#A6C9A0;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#171310; --surface:#211B15; --ink:#EFE7DA; --muted:#A29685;
+  --line:#372F27; --cinnabar:#FF6B54; --cinnabar-soft:#3B211B;
+  --rail:#3E362C; --chip-ink:#171310; --code-bg:#2A231B; --bubble:#23301F; --bubble-ink:#A6C9A0;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font:16.5px/1.6 "Source Sans 3",-apple-system,sans-serif; margin:0; padding:0 20px}
+.wrap{max-width:760px; margin:0 auto; padding:60px 0 80px}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif; text-wrap:balance; margin:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+code{font-family:"IBM Plex Mono",monospace; font-size:.85em; background:var(--code-bg); padding:1px 6px; border-radius:3px}
+p{max-width:42em}
+
+/* hero */
+.eyebrow{font-size:12.5px; letter-spacing:.15em; text-transform:uppercase; color:var(--cinnabar); font-weight:600}
+h1{font-size:clamp(36px,6vw,58px); font-weight:700; line-height:1.06; margin:16px 0 12px}
+.redact{position:relative; white-space:nowrap; display:inline-block}
+.redact .veil{position:absolute; inset:.08em -.04em .02em -.04em; background:var(--ink); animation:lift 1s ease 2s forwards}
+@keyframes lift{to{transform:scaleX(0); transform-origin:left}}
+@media (prefers-reduced-motion:reduce){.redact .veil{display:none}}
+.sub{font-size:19px; color:var(--muted); margin:0 0 16px; font-family:"Fraunces",serif; font-style:italic; font-weight:400}
+.meta{font-size:14px; color:var(--muted)}
+.meta b{color:var(--ink)}
+
+/* cast + gag */
+.cast{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:20px 24px; margin:38px 0 0}
+.cast h3{font-size:13px; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); font-family:"Source Sans 3",sans-serif; font-weight:600; margin-bottom:12px}
+.cast dl{margin:0; display:grid; gap:8px}
+.cast dl div{display:grid; grid-template-columns:110px 1fr; gap:14px}
+.cast dt{font-family:"Fraunces",serif; font-weight:600; color:var(--cinnabar)}
+.cast dd{margin:0; color:var(--muted)}
+.bubble{
+  display:inline-flex; align-items:center; gap:8px; background:var(--bubble); color:var(--bubble-ink);
+  border-radius:18px 18px 18px 4px; padding:8px 16px; font-size:14.5px; margin-top:8px;
+}
+.bubble::before{content:"✓"; font-weight:700}
+.gag-note{font-size:13.5px; color:var(--muted); margin-top:10px; font-style:italic}
+
+/* acts */
+.act{margin-top:64px}
+.act-head{display:flex; align-items:baseline; gap:16px; border-bottom:2px solid var(--rail); padding-bottom:10px; margin-bottom:22px}
+.act-head .when{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--cinnabar); white-space:nowrap}
+.act-head h2{font-size:27px; font-weight:600; flex:1}
+.act-head .dur{font-size:13px; color:var(--muted); white-space:nowrap}
+
+/* cold open slab */
+.slab{background:var(--ink); color:var(--bg); border-radius:8px; padding:22px 26px; font-family:"IBM Plex Mono",monospace; font-size:14.5px; line-height:1.75; overflow-x:auto; margin:16px 0}
+:root[data-theme="dark"] .slab{background:#0D0B09; color:#EFE7DA; border:1px solid var(--line)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .slab{background:#0D0B09; color:#EFE7DA; border:1px solid var(--line)}}
+.slab .g{color:var(--cinnabar); font-weight:600}
+.aside{font-family:"Fraunces",serif; font-style:italic; font-size:18px; line-height:1.5; color:var(--ink); margin:14px 0; max-width:36em}
+
+/* episodes */
+.ep{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:24px 28px; margin-bottom:20px}
+.ep-head{display:flex; align-items:baseline; gap:12px; margin-bottom:14px; flex-wrap:wrap}
+.ep-head .no{font-family:"Fraunces",serif; font-style:italic; font-size:14px; color:var(--muted)}
+.ep-head h3{font-size:22px; font-weight:700; flex:1}
+.ep-head .dur{font-size:12.5px; color:var(--muted); font-family:"IBM Plex Mono",monospace}
+.ep p{margin:0 0 12px}
+.ep .lbl{font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:600; color:var(--cinnabar); display:block; margin-bottom:3px}
+.moral{
+  border-left:3px solid var(--cinnabar); background:var(--cinnabar-soft);
+  border-radius:0 6px 6px 0; padding:12px 18px; margin-top:16px;
+  font-family:"Fraunces",serif; font-size:17.5px; line-height:1.45;
+}
+.moral small{display:block; font-family:"Source Sans 3",sans-serif; font-size:13px; color:var(--muted); margin-top:5px}
+
+/* field cards — the take-away per episode */
+.field{border:1px solid var(--line); border-radius:6px; margin-top:12px; overflow:hidden; background:var(--bg)}
+.field .fh{font-size:11px; letter-spacing:.13em; text-transform:uppercase; font-weight:600; color:var(--muted); padding:8px 16px; border-bottom:1px solid var(--line); background:var(--code-bg)}
+.field .fr{display:grid; grid-template-columns:92px 1fr; gap:12px; padding:10px 16px; font-size:14px; line-height:1.5}
+.field .fr + .fr{border-top:1px solid var(--line)}
+.field .fk{font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--cinnabar); font-weight:500; padding-top:2px}
+.field .fr.fix .fk{color:var(--bubble-ink)}
+@media (max-width:560px){.field .fr{grid-template-columns:1fr; gap:2px}}
+
+/* field guide — twelve rules on one screen */
+.guide{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px}
+@media (max-width:640px){.guide{grid-template-columns:1fr}}
+.gg{background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:16px 20px}
+.gg h3{font-size:12px; letter-spacing:.13em; text-transform:uppercase; color:var(--cinnabar); font-family:"Source Sans 3",sans-serif; font-weight:600; margin-bottom:10px}
+.gg ol{margin:0; padding:0; list-style:none; counter-reset:none}
+.gg li{display:grid; grid-template-columns:26px 1fr; gap:8px; font-size:14px; line-height:1.45; margin-bottom:8px}
+.gg li b{font-weight:600}
+.gg .n{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--muted); padding-top:2px}
+
+/* three-draws mini viz */
+.draws{margin:18px 0 6px}
+.draws .row{display:grid; grid-template-columns:200px 1fr; gap:14px; align-items:center; margin-bottom:10px; font-size:13.5px}
+.draws .trk{position:relative; height:26px; background:var(--code-bg); border-radius:4px}
+.draws .pt{position:absolute; top:4px; width:18px; height:18px; border-radius:50%; background:var(--cinnabar); color:var(--chip-ink); font-size:9.5px; font-family:"IBM Plex Mono",monospace; display:flex; align-items:center; justify-content:center; transform:translateX(-50%)}
+.draws .row.calm .pt{background:var(--ink); color:var(--bg)}
+:root[data-theme="dark"] .draws .row.calm .pt{background:#EFE7DA; color:#171310}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .draws .row.calm .pt{background:#EFE7DA; color:#171310}}
+.draws .cap{font-size:12.5px; color:var(--muted); margin-top:2px}
+
+/* placeholders */
+.ph{border:1.5px dashed var(--cinnabar); border-radius:6px; padding:10px 15px; font-size:13.5px; color:var(--muted); margin-top:14px}
+.ph b{color:var(--cinnabar); font-size:11px; letter-spacing:.11em; text-transform:uppercase; display:block; margin-bottom:3px}
+
+/* footer */
+.foot{margin-top:64px; border-top:2px solid var(--rail); padding-top:32px; display:grid; grid-template-columns:1fr 1fr; gap:32px}
+@media (max-width:640px){.foot{grid-template-columns:1fr}}
+.foot h3{font-size:16.5px; margin-bottom:10px}
+.foot ol,.foot ul{margin:0; padding-left:20px; font-size:14px}
+.foot li{margin-bottom:7px}
+.src-note{margin-top:44px; font-size:12.5px; color:var(--muted); text-align:center}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">DrupalCon Rotterdam 2026 · Talk plan v3 — story + take-aways</p>
+    <h1>Why Your AI Agent <span class="redact">Hallucinates<span class="veil" aria-hidden="true"></span></span></h1>
+    <p class="sub">A sitcom in five episodes — and every episode pays out a field card the audience takes home.</p>
+    <p class="meta"><b>Tue 29 Sep · 13:30</b> · Mees Room I · 45 min · per episode two photographable slides: the moral, then the field card (Gotcha / Watch for / The fix). Twelve rules total, collected on one Field Guide slide at the end.</p>
+
+    <div class="cast">
+      <h3>Recurring cast</h3>
+      <dl>
+        <div><dt>The user</dt><dd>real person; hand-picks colours; asks for “darker”.</dd></div>
+        <div><dt>The agent</dt><dd>always cheerful, always says Done.</dd></div>
+        <div><dt>Me</dt><dd>keeps believing the agent; keeps being wrong.</dd></div>
+      </dl>
+      <div class="bubble">Done — your palette is ready.</div>
+      <p class="gag-note">The running gag: this bubble reappears, unchanged, after every disaster. By episode three the room says it with you — and it quietly carries the whole thesis: every failure was silent.</p>
+    </div>
+  </header>
+
+  <div class="act">
+    <div class="act-head"><span class="when">00:00</span><h2>Cold open</h2><span class="dur">4 min</span></div>
+    <p>No title slide. Just this:</p>
+    <div class="slab"><span class="g">▌▌▌▌</span> versus <span class="g">▌▌▌▌</span><br><br><span class="g">▌▌▌▌</span> and <span class="g">▌▌▌▌</span> are among the most popular content<br>management systems…</div>
+    <p>“I asked an AI agent to redact WordPress from a page. Anyone want to guess what the page was about?” — <em>Drupal versus WordPress.</em> It redacted <strong>Drupal</strong>. All 46 mentions. In this building, that’s a firing offence.</p>
+    <p class="aside">Then, quieter: “My metrics scored this run the best in the table. Zero leaks. Most redactions. Gold star.”</p>
+    <p>Only now the title slide — and the material promise, made up front: <em>“You’ll leave with twelve rules. Each one cost me a production incident, and I’ll show you the incident.”</em></p>
+  </div>
+
+  <div class="act">
+    <div class="act-head"><span class="when">04:00</span><h2>Act I — It worked in the demo</h2><span class="dur">4 min</span></div>
+    <p>Thirty seconds of the honeymoon, recorded: chat builds a page, styles a brand, everyone claps. <em>“This is the part you’ve all seen. It’s also the last time today anything works.”</em> One slide on what Atelier and FlowDrop are — sixty seconds, case study not pitch.</p>
+    <p><span class="lbl" style="font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:600;color:var(--cinnabar);display:block;margin-bottom:3px">The on-ramp (90 s) — for everyone who has never built one of these</span>Told through our own naive history, not a definitions slide. <em>“Our first agent wasn’t an agent — it was one chat call. Tool results were never fed back in.”</em> <strong>An agent is a chat call in a while-loop that feeds tool results back.</strong> A workflow engine is that loop drawn as a graph you can look at. Two quick beats from week one: our agent had <em>amnesia</em> — every turn started from scratch, and the transcripts were already in the database, nobody was reading them back; and the first cost surprise — the user types <code>2+2</code> and the meter says <strong>“3 AI calls · $0.0013”</strong>, because one user sentence is never one model call. <em>“That’s the whole mental model you need for the next forty minutes. Now let’s meet the first real user.”</em></p>
+  </div>
+
+  <div class="act">
+    <div class="act-head"><span class="when">08:00</span><h2>Act II — Five episodes</h2><span class="dur">~23 min</span></div>
+
+    <div class="ep">
+      <div class="ep-head"><span class="no">Episode 1</span><h3>“Make it darker”</h3><span class="dur">5 min</span></div>
+      <p><span class="lbl">The scene</span>The agent sets the brand green. The user hand-picks yellow. “Make it darker” → a darker <em>green</em>. A week later, same words, different bug: a darker <em>brown</em>. Best line, verbatim from the transcript — the agent looks at her yellow and says <em>“it looks like the blue change from last turn didn’t actually land.”</em> It’s gaslighting her with its own memory.</p>
+      <p><span class="lbl">The twist</span>The model never hallucinated. Once the prompt carried a remembered value, once no value, once <code>var(--color-yellow-100)</code> — an alias: a colour with no colour in it. Fifteen-second bonus: the model insists <code>oklch(0.98 0.01 0)</code> is white. Show the pink.</p>
+      <div class="bubble">Done — your palette is ready.</div>
+      <div class="moral">Never let the model re-type reality. Feed tools ground truth over a wire the model can’t touch.<small>First upstream cameo: we got that wire added to FlowDrop itself.</small></div>
+      <div class="field">
+        <div class="fh">Field card 1 · ground truth</div>
+        <div class="fr"><span class="fk">Gotcha</span><span>An alias (<code>var(--x)</code>) or an unreadable value (oklch, rem) in a prompt is a value the model can’t reason from — it reasons confidently from the wrong neighbour. An orchestrator restating state restates its <em>memory</em> of state.</span></div>
+        <div class="fr"><span class="fk">Watch for</span><span>Prompts echoing raw config values; the agent narrating numbers it never read back; “changed the wrong thing” reports right after a <em>human</em> edit.</span></div>
+        <div class="fr fix"><span class="fk">The fix</span><span>One resolver + one model-facing renderer for every state echo. Annotate oklch with hex, rem with px. For relative asks, show the whole ramp with the current rung marked ◀ — give the model a discrete neighbour to step <em>to</em>. Mark stale values in place (<code>[SUPERSEDED — …]</code>), never in a header. Wire tool inputs from run state so the model never carries them.</span></div>
+      </div>
+    </div>
+
+    <div class="ep">
+      <div class="ep-head"><span class="no">Episode 2</span><h3>“The cheerful liar”</h3><span class="dur">5 min</span></div>
+      <p><span class="lbl">The scene</span>Brand changes apply roughly half the time. The agent reports success every time. The users think it’s moody. I think it’s the model. Everyone is wrong.</p>
+      <p><span class="lbl">The twist</span>The specialists write their JSON in a fence — <em>and then add a rationale after it.</em> My regex assumed the fence ended the string. One slide, one regex, one red circle: the villain of this episode is seventeen characters of PHP. Decode failed → “intentional no-op” →</p>
+      <div class="bubble">Done — your palette is ready.</div>
+      <div class="moral">“Completed” is a scheduler status, not a quality signal. Parse model output where a failure leaves a body — in the graph, where every step is a recorded job.</div>
+      <div class="field">
+        <div class="fh">Field card 2 · model output</div>
+        <div class="fr"><span class="fk">Gotcha</span><span>A NULL inside your code leaves no trace, and a validator that substitutes a default (<code>[]</code>) converts a mis-shaped op into a reported success. Models stringify JSON props, unquote numbers, and HTML-escape (<code>&amp;</code> → <code>&amp;amp;</code>) — strict type gates silently drop all of it.</span></div>
+        <div class="fr"><span class="fk">Watch for</span><span>Regexes over model output; <code>is_array($x) ? $x : []</code>; success text written before validation runs; “intermittent” bugs — type-dependent failures look random.</span></div>
+        <div class="fr fix"><span class="fk">The fix</span><span>Parse in the workflow graph (tolerant JSON node) so a failure is a recorded job. Validate inside the sub-workflow so <code>rejected: [{token, reason}]</code> reaches the model <em>before</em> its closing prose. Repair the shapes models actually write at one choke point, then reject the rest <em>by name</em> (“Skipped: … Fix and re-send: …”). Decode HTML entities once, JSON-aware, at the tool boundary.</span></div>
+      </div>
+      <div class="ph"><b>Placeholder — injection aside</b>[ Run the injection probe (~$0.20) and give it 40 seconds here — or say plainly: “gates are the half I have data for.” Either way, one line: fencing lowers the odds; the tool gate is what makes being fooled non-catastrophic. ]</div>
+    </div>
+
+    <div class="ep">
+      <div class="ep-head"><span class="no">Episode 3</span><h3>“Seeing double”</h3><span class="dur">4 min</span></div>
+      <p><span class="lbl">The scene</span>From the hosted demo: every page comes out with two heroes, two feature bands, two CTAs. Not a retry — two complete pages with <em>different copy</em>. The agent wrote it twice, on purpose, both times convinced it hadn’t.</p>
+      <p><span class="lbl">The twist</span>A scheduler race cloned a step; the clone re-read the conversation <em>before the writes landed</em>; the agent saw no page, so it built one. A stale read <em>becomes</em> a hallucination — the model was, again, right about what it was shown.</p>
+      <div class="bubble">Done — your page is ready.</div>
+      <div class="moral">Exactly-once is an agent feature. One ledger line per tool call — “already invoked” must be a total answer.</div>
+      <div class="field">
+        <div class="fh">Field card 3 · scheduling</div>
+        <div class="fr"><span class="fk">Gotcha</span><span>Any step with two upstream triggers can be cloned by a late-routing predecessor; the clone reads older state and the model “forgets” what it just did. Cousin bug: per-execution identity (interrupt ids, approvals) copied into clones = stale approval — human-in-the-loop silently bypassed.</span></div>
+        <div class="fr"><span class="fk">Watch for</span><span>Doubled output with <em>different</em> copy; loop merges reading 2+ re-executing inputs; approval prompts that stop appearing after the first iteration.</span></div>
+        <div class="fr fix"><span class="fk">The fix</span><span>A run-scoped execution ledger keyed on <code>tool_call_id</code> — repeats emit <em>no</em> tool message, which is what stops the wave. Staleness gates phrased to fail <em>open</em> (<code>stalled != true</code> — fail-closed strands the agent after its first call). Dispatch every loop input from the same loopback. Never <code>array_merge</code> job metadata into clones.</span></div>
+      </div>
+    </div>
+
+    <div class="ep">
+      <div class="ep-head"><span class="no">Episode 4</span><h3>“Whatscombe”</h3><span class="dur">4 min</span></div>
+      <p><span class="lbl">The scene</span>The weather tool returns a blank card. The model’s call: <code>args: []</code>. And when the fallback kicked in, it geocoded the first word of “Whats the weather in Berlin” and cheerfully reported the weather in <strong>Whatscombe</strong> — a hamlet in Devon. Lovely weather, apparently.</p>
+      <p><span class="lbl">The twist</span>The canvas editor writes <code>location: ''</code> into the node config by default — and an empty string counted as “the author pinned this”, which deletes the parameter from the schema the model sees. We’d blindfolded it and were grading its aim. Retracted upstream five days after it bit us — second cameo.</p>
+      <div class="bubble">Done — here’s the weather.</div>
+      <div class="moral">Most “the agent called the tool wrong” bugs are your schema plumbing. The model can only fill the form you actually sent.</div>
+      <div class="field">
+        <div class="fh">Field card 4 · tool schemas</div>
+        <div class="fr"><span class="fk">Gotcha</span><span>Config hides a parameter in <em>both</em> directions: an instance value pins it out of the schema (<code>''</code> counts!), and a missing declaration (<code>parameters: {}</code>) drops the model’s args on arrival. Same symptom either way — and no-arg tools mask the defect. Bonus: gateways return tool calls under <code>finish_reason: stop</code>, and a parser keyed on the configured provider id drops the whole call.</span></div>
+        <div class="fr"><span class="fk">Watch for</span><span><code>args: []</code> on a tool with required params; capabilities that only work when they take no arguments; “empty answer” turns with no exception anywhere.</span></div>
+        <div class="fr fix"><span class="fk">The fix</span><span>Debug from the schema the model actually <em>received</em> — it’s in the job trail — not the one you wrote. A param must be <em>absent</em> from config to be model-fillable. Parse responses by shape, never by configured provider id. A call whose args won’t parse is skipped, not dispatched empty — a recovered nothing beats a wrong action.</span></div>
+      </div>
+    </div>
+
+    <div class="ep">
+      <div class="ep-head"><span class="no">Episode 5</span><h3>“Lost in translation”</h3><span class="dur">5 min</span></div>
+      <p><span class="lbl">The scene</span>By now I’ve stopped trusting anecdotes — I built a ten-case live eval. Four cases won’t pass. “Make it blue” produces the same weird hand-computed colour every run, fails accessibility, and the agent narrates it as “AA-safe”. I blame the model. I have never been more sure.</p>
+      <p><span class="lbl">The twist</span>The job trail shows the middle manager. The orchestrator <em>reworded</em> the user before delegating: “darker” became <em>“step down its ramp”</em> (obeyed literally — one rung); “blue” became <em>“a blue hue”</em> (the word “hue” flips the specialist into computing a literal). Both prompts already stated the right rule. The failure was the translation layer between two correct prompts. Fix: pass the user’s own words through. Four “model problems”, zero model changes.</p>
+      <p><span class="lbl">The kicker</span>I ship the release — and my own test fails the build, because it pinned the <em>old</em> prompt text. My test defended yesterday’s prompt against today’s. Annoying — and exactly right: prompt edits should cost something.</p>
+      <div class="bubble">Done — set to an AA-safe blue.</div>
+      <div class="moral">Multi-agent hand-offs fail between two correct prompts. Test the seams in a live turn, against the job trail — green unit suites can’t see any of this.</div>
+      <div class="field">
+        <div class="fh">Field card 5 · seams &amp; proof</div>
+        <div class="fr"><span class="fk">Gotcha</span><span>Every hand-off is a lossy translation — the orchestrator’s paraphrase is a new prompt nobody reviewed. And “flaky” is just uncounted: 0/6 in one mode vs 6/8 in another is a diagnosis, not noise. A truncated call writes <em>no</em> usage row — the costliest failures are invisible in the cost report.</span></div>
+        <div class="fr"><span class="fk">Watch for</span><span>The literal ask text in the trail (read what the specialist was actually asked, not what you meant); output caps set two levels down — a thinking model burns thousands of tokens before its first output token.</span></div>
+        <div class="fr fix"><span class="fk">The fix</span><span>Pass the user’s own words through — the ask carries <em>what</em> and scope, the specialist owns <em>how</em>. Run a live-turn eval that asserts on the job trail; a key never observed must fail — silence is a finding, not a pass. <code>expected_fail</code> turns known-opens into counts and XPASSes the moment they’re fixed. Fingerprint the prompt sources so a cheap unit test goes red when you owe the expensive re-run. Pin load-bearing prompt substrings in tests, each needle annotated with <em>why</em>.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="act">
+    <div class="act-head"><span class="when">31:00</span><h2>Act III — The bake-off</h2><span class="dur">6 min</span></div>
+    <p>“After a year of episodes I stopped trusting my own war stories: the same dumb task — fetch a page, convert it, redact the competitors — eight architectures, four models, everything metered.” One slide for the eight contestants (the cold open was contestant B4). Then the only chart in the talk:</p>
+    <div class="draws" role="img" aria-label="Three identical runs where the tool takes the content: 51, 71 and 95 percent of the document survives. Three identical runs where the tool takes a URL: 94.6 percent every time.">
+      <div class="row"><span>Tool takes the <b>content</b></span><span class="trk"><span class="pt" style="left:51%">51</span><span class="pt" style="left:71%">71</span><span class="pt" style="left:95%">95</span></span></div>
+      <div class="row calm"><span>Tool takes a <b>URL</b></span><span class="trk"><span class="pt" style="left:94.6%">95</span><span class="pt" style="left:94.6%"></span><span class="pt" style="left:94.6%"></span></span></div>
+      <p class="cap">Same model, same prompt, same page, three draws — % of the document that survives.</p>
+    </div>
+    <p class="aside">“If the document travels through the model’s mouth, how much survives is a coin flip. Take it out of its mouth.”</p>
+    <p>The standings: <strong>the boring one wins</strong> — deterministic convert plus one LLM call, cheapest and best, and its only failure was <em>loud</em>. Then the lab’s own confession (30 s): one whole arm ran with an <em>erased</em> system prompt for hours; only a marker test caught it — put BANANA in the prompt and check the behaviour changes. 338 tokens of prompt bought 64 points of quality.</p>
+    <p>Close the act on the hierarchy, spoken not charted: <em>structure, then caching, then — a distant third — model choice.</em> (Caching gets that one word and nothing more — it’s a cost story, not a hallucination story; the full study lives at the QR.)</p>
+    <div class="moral">The variant with the least agency was the only one that never failed silently.</div>
+    <div class="field">
+      <div class="fh">Field card 6 · from the lab</div>
+      <div class="fr fix"><span class="fk">The fix</span><span><b>Take the document out of the model’s mouth</b> — tools take references (URL, id), not content: 18.5× fewer tokens, 6× cheaper, variance → 0. <b>Pre-convert deterministically</b> — HTML→Markdown before the model: 73,380 → 4,924 input tokens, one job instead of two. <b>Marker-test your prompts</b> — put BANANA in the system prompt and assert the behaviour changes; it’s the only reason I know one whole benchmark arm ran promptless. <b>Order payloads stable-first</b> (tools → system → history → the new turn) and keep per-request values out of the prefix — it’s what makes prompt caching possible later, and it costs nothing now.</span></div>
+    </div>
+  </div>
+
+  <div class="act">
+    <div class="act-head"><span class="when">37:00</span><h2>The Field Guide</h2><span class="dur">3 min</span></div>
+    <p>Twenty-second warm-up before the rules — <strong>the scar map</strong>: “Want to know where your agents hallucinate? Sort your prompts by size. Our typography specialist is 277 words. Our colour specialist is 1,561 — seventeen numbered rules. Same team, same product, 5.6× the size, because colour is where it lied to us. <em>Prompt length is scar tissue.</em> Here are our scars, as rules:”</p>
+    <p>“You’ve already seen all twelve — here they are on one screen.” Walked in 90 seconds; this slide holds through the confession reel and Q&amp;A. <em>The</em> take-home slide, with the QR to the long-form notes.</p>
+    <div class="guide">
+      <div class="gg"><h3>Ground truth</h3><ol>
+        <li><span class="n">01</span><span><b>Never let a model re-type state.</b> Wire it.</span></li>
+        <li><span class="n">02</span><span><b>Resolve aliases before they reach a prompt;</b> annotate unreadable values (oklch → hex).</span></li>
+        <li><span class="n">03</span><span><b>Give relative asks a discrete neighbour</b> — show the ramp, mark the rung.</span></li>
+      </ol></div>
+      <div class="gg"><h3>Model output</h3><ol>
+        <li><span class="n">04</span><span><b>Parse where failure leaves a body</b> — a NULL in PHP leaves no trace.</span></li>
+        <li><span class="n">05</span><span><b>Never substitute a default silently;</b> reject by name, before the closing prose.</span></li>
+        <li><span class="n">06</span><span><b>Repair the shapes models actually write,</b> once, at one choke point.</span></li>
+      </ol></div>
+      <div class="gg"><h3>Tools &amp; scheduling</h3><ol>
+        <li><span class="n">07</span><span><b>Exactly-once per tool call;</b> staleness gates fail open.</span></li>
+        <li><span class="n">08</span><span><b>Debug the schema the model received,</b> not the one you wrote.</span></li>
+        <li><span class="n">09</span><span><b>Parse responses by shape</b> — configured ids lie.</span></li>
+      </ol></div>
+      <div class="gg"><h3>Seams &amp; proof</h3><ol>
+        <li><span class="n">10</span><span><b>Pass the user’s words through</b> every hand-off.</span></li>
+        <li><span class="n">11</span><span><b>Eval live turns against the execution trail;</b> make “flaky” a count.</span></li>
+        <li><span class="n">12</span><span><b>Prompts are config:</b> version, pin, fingerprint — edits should cost something.</span></li>
+      </ol></div>
+    </div>
+    <div class="ph"><b>Placeholder — closing QR</b>[ Short link to the published benchmark data + long-form field notes — decide the public home first. ]</div>
+  </div>
+
+  <div class="act">
+    <div class="act-head"><span class="when">40:00</span><h2>Still broken + the confession reel</h2><span class="dur">2 min</span></div>
+    <p>Three real upstream issues, one line each: the prompt-eraser, the ReAct loop that re-sends its transcript uncached, prompt caching that’s unreachable through the OpenAI-compatible endpoint — zero cache hits in 330 metered calls, and the meter couldn’t even <em>see</em> a hit: on a cached call, <code>input_tokens</code> excludes the prefix, so a cache-blind meter under-bills by ~100%. Silent, plausible, wrong — same disease, cost edition. (The full caching study lives at the QR, not here.) Then, fast and self-deprecating: <code>| tail</code> ate my test failures for two phases · my eval’s first run reported $0.0000 because drush froze time at breakfast · the doc about keeping prompts fresh went stale · and our test docs record two environment variables that <em>don’t exist</em> — humans hallucinated them into blog posts, and we had to write down what <em>isn’t</em> true. Same disease, same fix.</p>
+    <p class="aside">“Your harness lies to you the same way your agent does — silently, with a plausible number.”</p>
+    <p>The Field Guide slide returns and stays up.</p>
+  </div>
+
+  <div class="act">
+    <div class="act-head"><span class="when">42:00</span><h2>Q&amp;A</h2><span class="dur">3 min</span></div>
+    <p>Prepped: “Which model?” → roles, not models — swapping tiers re-ran the whole eval with zero config changes. “Outside FlowDrop?” → every moral is pattern-first. “MCP?” → one sentence, pointer to the repo.</p>
+  </div>
+
+  <div class="foot">
+    <div>
+      <h3>Prep, by risk</h3>
+      <ol>
+        <li><strong>Export bench workflows to config</strong> — the benchmark currently dies with the laptop.</li>
+        <li><strong>Run the injection probe</strong> (~$0.20) — decides Episode 2’s aside.</li>
+        <li><strong>Publish the long-form field notes</strong> somewhere linkable — the Field Guide QR depends on it.</li>
+        <li>Get written OK for the user’s transcript lines (the “didn’t land” quote).</li>
+        <li>Decide the stale-doc line: fix it, or use it in the confession reel.</li>
+        <li>Pre-record everything. Demo nothing live (agent runs: 30–580 s, 1-in-6 fails).</li>
+      </ol>
+    </div>
+    <div>
+      <h3>Cut order, if running long</h3>
+      <ol>
+        <li>Episode 3 compresses to 90 s (scene + moral, drop the mechanism)</li>
+        <li>The oklch-pink beat in Episode 1</li>
+        <li>The release kicker in Episode 5</li>
+        <li>Confession reel shrinks to <code>| tail</code> alone</li>
+      </ol>
+      <p style="font-size:13px; color:var(--muted); margin-top:14px"><strong>Never cut a field card — they’re the deliverable.</strong> The abstract’s seven learning objectives all land inside the twelve rules — the mapping lives in <span class="mono">talk-plan.md</span>, never on a slide.</p>
+    </div>
+  </div>
+
+  <p class="src-note">Sources: <span class="mono">apps/drupalcon/raw/talk-plan.md</span> (v3, story + take-aways) · evidence in <span class="mono">fd-drupal-demo-research/</span> and <span class="mono">atelier-field-notes/</span></p>
+</div>
+</body>
+</html>

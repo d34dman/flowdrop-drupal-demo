@@ -32,6 +32,9 @@ of eight FlowDrop workflow variants, plus the ideas for turning it into 45 minut
 
 ## Published artifacts (interactive, for reference or live demo)
 
+Public copies of every page, plus the tech all-hands slides, are served from GitHub Pages:
+<https://d34dman.github.io/flowdrop-drupal-demo/redaction-benchmark/> (source in `site/redaction-benchmark/`).
+
 Full index of everything (published pages + repo files): [ARTIFACTS.md](ARTIFACTS.md),
 also as a shareable page — <https://claude.ai/code/artifact/47c9cb5c-16cf-43a4-96e9-cb05836a2dd0>
 
