@@ -35,6 +35,12 @@ Everything produced for the DrupalCon Rotterdam 2026 talk research
 - [objective-mapping.md](ideas/objective-mapping.md) — learning objectives ↔ evidence, gaps included
 - [open-questions.md](ideas/open-questions.md) — experiments still to run, with cost estimates
 
+### Slides (`docs/drupalcon/slides/`)
+
+- [tech-all-hands-2026-09-04.html](slides/tech-all-hands-2026-09-04.html) — 20-minute internal
+  tech all-hands deck, 15 slides with speaker notes and time budget. Published copy:
+  <https://claude.ai/code/artifact/2d42a0fa-c75e-43a0-8fbc-4f84d7a00eb5>
+
 ### Data (`docs/drupalcon/data/`)
 
 - [runs.csv](data/runs.csv) — frozen snapshot of all 170 benchmark runs (the durable copy)
@@ -49,6 +55,6 @@ Everything produced for the DrupalCon Rotterdam 2026 talk research
 
 ## Status
 
-Research complete and reproducible; slides not yet built. Biggest gap:
+Research complete and reproducible; the 20-minute internal deck is built (see Slides), the 45-minute DrupalCon deck is not. Biggest gap:
 prompt injection (learning objective 3) has no experimental data —
 see [ideas/open-questions.md](ideas/open-questions.md).
