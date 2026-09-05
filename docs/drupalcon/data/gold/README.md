@@ -63,10 +63,9 @@ Two corrections to the v1 numbers follow from this:
   **medium:** 68 of 68 sentences present; the 12 live paragraphs absent from the gold are all
   IBM promo blocks. **large:** 172 of 172 sentences present at ≥ 0.84 similarity; the
   differences are citation-marker residue in the gold and small Wikipedia edits since the
-  fetch. **small:** not verified. drupal.org now serves a JavaScript bot challenge to
-  non-browser clients (3 KB, no article), and the Wayback Machine copy fetched the same
-  challenge. The small gold body rests on the B1 control fetched on 2026-08-30, which every
-  benchmark run also saw, so the grading is internally consistent; a check against the live
-  page needs a real browser session. For medium and large, the gold bodies are live-page
-  content; nothing in them was invented by the converter.
+  fetch. **small:** 43 of 43 sentences present. drupal.org serves a JavaScript challenge
+  to requests that carry a browser user agent without running JavaScript, but a plain fetch
+  (what the harness's `http_request` node sends) gets the article, so the benchmark remains
+  reproducible. All three gold bodies are live-page content; nothing in them was
+  invented by the converter.
 - ~~The rubric's fidelity scorer~~ — done: `../score_v2.py`, results in `../RUNS_V2.md`.
