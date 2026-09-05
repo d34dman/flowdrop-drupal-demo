@@ -32,7 +32,6 @@ control**, and it is the page on which the worst failure in the whole dataset sh
 | **B3** | `bench_3_markdown_llm` | Deterministic HTML→Markdown → one LLM call | low |
 | **B4** | `bench_4_ai_agent_tool` | Drupal `ai_agents` agent with a tool | medium |
 | **B5** | `bench_5_react_agent` | FlowDrop ReAct agent, `html_to_markdown` tool | high |
-| **B5a** | `bench_5a_react_agent_naive` | As B5, deliberately naive prompt | high |
 | **B6** | `bench_6_agent_autonomous` | Autonomous agent | high |
 | **B7** | `bench_7_react_optimized` | FlowDrop ReAct agent, **`url_to_markdown` tool** | high |
 | **B8** | `bench_8_react_with_tools_in_parent` | B5's shape and prompt; the **parent** agent is handed `url_to_markdown` | high |
@@ -44,7 +43,8 @@ understood — workflow `react_agent_with_optimized_tools`.
 B8 and B9 were added on 2026-09-05 on the new `react_agent_engine` and
 `reflexion_agent_engine` sub-workflows. B8 isolates the tool-shape fix from B7's prompt
 change; B9 asks whether a critic loop buys anything a single pass does not. They ran on
-Haiku 4.5, Sonnet 4.6 and Sonnet 5 — **not** Opus 5. B9 failed on three of nine cells
+Haiku 4.5, Sonnet 4.6 and Sonnet 5 in this report; the Opus 5 cells were run later on
+2026-09-05 and appear only in [report v2](../v2/README.md). B9 failed on three of nine cells
 inside FlowDrop's loop runtime; FlowDrop fixed it the same day and the three cells were
 rerun on the fixed module (see [06-flowdrop-findings.md](06-flowdrop-findings.md), #4).
 
@@ -89,11 +89,16 @@ Plone).
 1. **Mostly n=1.** Only the small page has n=3, and only for B5/B7. A single B5 draw of
    one cell landed at 51%, 71% and 95% on three attempts — so treat every single-draw
    number as one sample from a distribution whose width is unknown.
-2. **B5, B5a and the first three B7 runs executed with an empty system prompt** because
-   of a FlowDrop bug found mid-research (see
-   [06-flowdrop-findings.md](06-flowdrop-findings.md)). The task still reached the model
-   through the user message, so those runs attempted the job — but without their detailed
-   instructions. They are marked, not deleted.
+2. **The first three B7 runs executed with an empty system prompt** because of a
+   FlowDrop bug found mid-research (see
+   [06-flowdrop-findings.md](06-flowdrop-findings.md)). They are marked, not deleted.
+   **B5 was wrongly given the same marking until 2026-09-05.** Its parent workflow
+   forwards the system prompt into the sub-workflow's `system_prompt` input port, which
+   lands on the Reason node as a non-empty runtime input — so the exposed port carried the
+   full prompt rather than shadowing it. Every B5 sub-pipeline's stored initial data holds
+   the 489-character prompt, and the first-call input token count is identical before and
+   after the port fix (754 / 766 / 763 on Sonnet 5 for small / medium / large). B5's
+   fidelity numbers are valid.
    *Assumed but not exhaustively verified:* B2/B3/B4/B6 use different node types and were
    not affected.
 3. **Retention above 100% means the run did not produce Markdown at all** — see failure

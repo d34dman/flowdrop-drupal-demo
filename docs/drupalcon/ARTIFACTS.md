@@ -32,11 +32,25 @@ page exported into this repo and served from GitHub Pages: <https://d34dman.gith
 - [05-cost-and-caching.md](research/05-cost-and-caching.md) — token economy, caching, what this cost
 - [06-flowdrop-findings.md](research/06-flowdrop-findings.md) — FlowDrop bugs found; four issues filed upstream
 
+### Report v2 (`docs/drupalcon/v2/`, 2026-09-05)
+
+The same runs re-graded against hand-cleaned gold documents; supersedes the conclusions in
+`research/02` and `research/03`, which stay frozen as the record of what was published first.
+
+- [v2/README.md](v2/README.md) — index and the one-sentence finding
+- [v2/00-what-changed.md](v2/00-what-changed.md) — why v1's metrics were replaced; the v1 → v2 autopsy
+- [v2/01-method.md](v2/01-method.md) — gold documents, gates, axes, outcome classes
+- [v2/02-scorecard.md](v2/02-scorecard.md) — outcome-class matrix and per-axis tables
+- [v2/03-failure-gallery.md](v2/03-failure-gallery.md) — six failures, and the axis that catches each
+- [v2/04-cost-per-correct.md](v2/04-cost-per-correct.md) — cost conditioned on class
+- [v2/05-flowdrop-findings.md](v2/05-flowdrop-findings.md) — carried forward, plus the confirmation-gate pauses
+
 ### Talk preparation (`docs/drupalcon/ideas/`)
 
 - [talk-outline.md](ideas/talk-outline.md) — 45-minute slide-by-slide plan
 - [objective-mapping.md](ideas/objective-mapping.md) — learning objectives ↔ evidence, gaps included
 - [open-questions.md](ideas/open-questions.md) — experiments still to run, with cost estimates
+- [report-v2-rubric.md](ideas/report-v2-rubric.md) — the rubric v2 proposal and re-report plan
 
 ### Published site (`docs/drupalcon/site/`)
 
@@ -48,7 +62,10 @@ page exported into this repo and served from GitHub Pages: <https://d34dman.gith
 
 ### Data (`docs/drupalcon/data/`)
 
-- [runs.csv](data/runs.csv) — frozen snapshot of all 192 benchmark runs (the durable copy)
+- [runs.csv](data/runs.csv) — frozen snapshot of all 203 benchmark runs (the durable copy)
+- [runs_v2.csv](data/runs_v2.csv), [RUNS_V2.md](data/RUNS_V2.md) — the same runs under rubric v2, and how to read them
+- [gold/](data/gold/) — the hand-cleaned gold documents v2 grades against
+- [outputs/](data/outputs/) — the verbatim output of every run
 - [controls.csv](data/controls.csv) — control-run baselines
 
 ### Harness (`scratchpad/bench/`, commit a86dfa8)
@@ -60,6 +77,8 @@ page exported into this repo and served from GitHub Pages: <https://d34dman.gith
 
 ## Status
 
+Report v2 (rubric with gold documents, outcome classes) is drafted in `v2/`; the interactive
+pages below still plot v1 metrics and are marked superseded only by this note.
 Research complete and reproducible; the 20-minute internal deck is built (see Slides), the 45-minute DrupalCon deck is not.
 B8 and B9 (2026-09-05) are in the data, the three data-driven pages and the research docs, including the B9 cells rerun after the FlowDrop fix; the narrative pages
 (Seven Ways, URL-Shaped Tool Deep Dive, the deck) still describe eight variants. Biggest gap:

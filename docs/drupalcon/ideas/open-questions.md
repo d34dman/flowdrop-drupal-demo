@@ -20,9 +20,9 @@ itself; if it fails, that is more interesting still.
 Add a variant with the page content wrapped in `<untrusted_content>…</untrusted_content>`
 to measure whether wrapping alone changes the outcome.
 
-## 2. Re-run B5/B5a across the matrix with prompts applied · ~$5 · 1 hr
+## 2. Re-run B5 across the matrix with prompts applied · ~$5 · 1 hr
 
-Every B5/B5a row in [02-results-matrix.md](../research/02-results-matrix.md) ran with an
+Every B5 row in [02-results-matrix.md](../research/02-results-matrix.md) ran with an
 erased system prompt. They are honestly marked, but a clean matrix would let you compare
 all ten variants on equal terms, which is currently impossible.
 
@@ -30,11 +30,11 @@ all ten variants on equal terms, which is currently impossible.
 the B5/B7 head-to-head was re-run clean and is the load-bearing comparison. This is
 completeness, not correctness.
 
-## 3. Give B5a its own sub-workflow · free · 30 min
+## 3. ~~Give B5a its own sub-workflow~~ · **dropped 2026-09-05**
 
-B5a shares `react_agent_with_tools` with B5, so the prompt-sensitivity arm **does not
-exist as a distinct condition.** Either split it or drop B5a from the deck. Currently
-listed as a variant but not defensible as a contrast.
+B5a shared `react_agent_with_tools` with B5, so the prompt-sensitivity arm never existed
+as a distinct condition. Removed from the report (method, results matrix, plots, tradeoff
+explorer). Its 12 rows stay in `data/runs.csv` as the frozen ledger.
 
 ## 4. ~~Export bench workflows to `config/sync`~~ · **done 2026-09-05**
 
@@ -88,7 +88,8 @@ than one that doesn't.
 |---|---|---|
 | "Retention is 46% — the model dropped content" | Control was 59% link markup; de-noising moved B3-large to 84% | Reading the control |
 | "Two models can't produce byte-identical output" | A third run was 99.72% line-identical — convergence is normal here | A third run |
-| "Setting `systemPrompt` fixed B5: 51% → 93%" | Prompt never reached the model; 93% was variance | The `QQZZX9` marker test |
+| "Setting `systemPrompt` fixed B5: 51% → 93%" | The prompt was already arriving via the parent's forwarded input; 93% was variance | The `QQZZX9` marker test |
+| "B5 ran without its system prompt" | Only the first three B7 draws did. B5's parent forwarded the prompt through the sub-workflow input port; first-call tokens are identical before and after the port fix | Reading the sub-pipeline's stored initial data and the metering rows (2026-09-05) |
 | "Redactions were zero across the board" | The key doesn't exist in `metrics.jsonl`; `.get(k, 0)` fabricated a column of zeros | Cross-checking glyph counts in the files |
 | "Caching would save 28% / $5.01" | 13% / $2.31, from real per-call sequences | Measuring instead of assuming a prefix |
 | "The node type declares no input ports" | It declares `system_prompt` under `parameters` | Reading the right array key |

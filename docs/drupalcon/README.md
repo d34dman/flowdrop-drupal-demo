@@ -29,7 +29,8 @@ plus the ideas for turning it into 45 minutes.
 | [ideas/objective-mapping.md](ideas/objective-mapping.md) | The seven learning objectives ↔ the evidence, **including the gaps** |
 | [ideas/talk-outline.md](ideas/talk-outline.md) | A 45-minute slide-by-slide plan |
 | [ideas/open-questions.md](ideas/open-questions.md) | What to run before the talk, with cost estimates |
-| [data/](data/) | **Frozen CSV snapshot of all 192 runs** — the scratchpad is not committed, this is the durable copy |
+| [data/](data/) | **Frozen CSV snapshot of all 203 runs** — the scratchpad is not committed, this is the durable copy |
+| [v2/](v2/) | **Report v2** — the same runs re-graded against gold documents into Correct / Degraded / Silent / Format / Loud. Start with [v2/README.md](v2/README.md) |
 
 ## Published artifacts (interactive, for reference or live demo)
 
@@ -51,8 +52,11 @@ also as a shareable page — <https://claude.ai/code/artifact/47c9cb5c-16cf-43a4
 > with the least agency was the only one that never failed silently** — and every failure
 > that mattered was silent.
 
+Report v2 sharpens this: of 116 graded runs, 7 failed silently, 6 of them in variants that
+let the model decide what to do with the page. See [v2/README.md](v2/README.md).
+
 ## Status
 
-Research is complete and reproducible; the narrative is drafted but not slide-built.
+Research is complete and reproducible; report v2 is drafted in `v2/`; the narrative is drafted but not slide-built.
 Known gaps are listed in [ideas/open-questions.md](ideas/open-questions.md) — the biggest
 is that **prompt injection (learning objective 3) has no experimental data at all.**

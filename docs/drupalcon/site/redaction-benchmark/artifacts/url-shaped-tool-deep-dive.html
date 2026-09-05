@@ -295,10 +295,11 @@ footer li{margin-bottom:.4rem}
     <div class="note warn">
       <h3>Three early B7 runs are on this page but excluded from every figure</h3>
       <p>The first three B7 draws returned 30% retention and looked like a failure of the
-      approach. They were not: they hit the same FlowDrop bug that invalidated the B5
-      rows — an <em>exposed but unconnected</em> input port resolves to empty and silently
-      shadows the node's configured system prompt, so the agent ran with no instructions at
-      all. Their input token count gives it away: 9,061 against 9,399 once the prompt
+      approach. They were not: they hit a FlowDrop bug — an <em>exposed but unconnected</em>
+      input port resolves to empty and silently shadows the node's configured system prompt,
+      so the agent ran with no instructions at all. (B5 was long believed to share this
+      fault; it does not. Its parent forwards the prompt through the sub-workflow input port,
+      which is why its token counts never showed the gap.) Their input token count gives it away: 9,061 against 9,399 once the prompt
       reaches the model. They are listed in the table, marked, and excluded from Figures 01
       to 05. Filed upstream as
       <code>flowdrop#3592438</code>.</p>

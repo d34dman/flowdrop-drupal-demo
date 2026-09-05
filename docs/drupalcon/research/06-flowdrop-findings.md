@@ -12,9 +12,9 @@ they are ordinary Drupal plugin/config bugs whose symptom is "the AI is unreliab
 
 ### Symptom
 
-The ReAct agent ran with **no system prompt at all**. Nothing errored. The runs completed,
-produced clean Markdown, cost normal money, and returned ~30% of the document instead of
-~95%. It looked exactly like "the model isn't good enough at this task."
+The first three B7 draws ran with **no system prompt at all**. Nothing errored. The runs
+completed, produced clean Markdown, cost normal money, and returned ~30% of the document
+instead of ~95%. It looked exactly like "the model isn't good enough at this task."
 
 ### Cause
 
@@ -57,6 +57,22 @@ Identical workflow, same model, same page:
 
 **338 tokens of system prompt were worth 64 points of fidelity.** The 338-token delta is
 also the only externally visible sign that anything was wrong.
+
+### Correction (2026-09-05): B5 was not affected
+
+B5 was marked as shadowed alongside B7 because it used the same exposed port. It was not.
+B5's parent workflow sets `system_prompt` on the sub-workflow node, the sub-workflow
+declares that as an input port wired to the Reason node's `systemPrompt`, and the runtime
+merges that node-keyed initial data into the node's runtime inputs. The exposed port was
+therefore *non-empty*: it carried the parent's prompt, and there was nothing to shadow.
+B7's parent forwarded only `message`, which is why the bug bit B7 and not B5.
+
+Verified from the local database: every B5 (and B5a) sub-pipeline's initial data holds
+the 489-character prompt, and the first LLM call's input tokens are identical with the
+port exposed and with it closed (Sonnet 5: 754 / 766 / 763 for small / medium / large).
+The `prompt_shadowed` flag in `data/runs.csv` is now 0 for B5 and B5a. The lesson in the
+next section holds with extra force: the marker test would have caught this too, had it
+been run on B5 rather than assumed from B7.
 
 ### Why this belongs in the talk
 

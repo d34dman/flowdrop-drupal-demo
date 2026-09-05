@@ -20,9 +20,11 @@ Control competitor mentions: **small 0 · medium 36 · large 5**.
 
 ## The model matrix — one draw per cell
 
-⚠️ **B5 and B5a rows ran with an empty system prompt** (FlowDrop port bug, found after
-these runs). The task reached the model via the user message; the detailed instructions
-did not. Marked, not deleted — see [06-flowdrop-findings.md](06-flowdrop-findings.md).
+Until 2026-09-05 the B5 rows carried a "ran with an empty system prompt" warning. That
+was wrong: the parent workflow forwarded the full prompt through the sub-workflow input
+port, and the first-call token counts prove it arrived. See honesty constraint 2 in
+[01-method.md](01-method.md) and the correction in
+[06-flowdrop-findings.md](06-flowdrop-findings.md).
 
 ### B2 — raw HTML → one LLM call
 
@@ -73,7 +75,7 @@ visible at a glance, and cheap. Every other variant's failures had to be hunted 
 
 ❌ The 70-glyph cell is failure #2 — it redacted "Drupal" itself, all 46 mentions.
 
-### B5 — FlowDrop ReAct, `html_to_markdown` tool ⚠️ no system prompt
+### B5 — FlowDrop ReAct, `html_to_markdown` tool
 
 | Page | Model | Calls | Tokens in | Cost | Wall | Kept | Red | Leak |
 |---|---|---|---|---|---|---|---|---|
@@ -88,24 +90,6 @@ visible at a glance, and cheap. Every other variant's failures had to be hunted 
 | large | opus-5 | 2 | 337,512 | $2.4270 | 272.9s | 84.1% | 4 | 0 |
 
 ❌ The Haiku medium cell is failure #1 — converted perfectly, redacted nothing.
-
-### B5a — as B5, naive prompt ⚠️ no system prompt
-
-| Page | Model | Calls | Tokens in | Cost | Wall | Kept | Red | Leak |
-|---|---|---|---|---|---|---|---|---|
-| small | haiku-4.5 | 3 | 34,092 | $0.0420 | 18.3s | 45.2% | 3 | 0 |
-| medium | haiku-4.5 | 3 | 138,941 | $0.1583 | 55.7s | 67.1% | 26 | 2 |
-| large | haiku-4.5 | 1 | 746 | $0.0012 | 5.4s | **failed** | 0 | 0 |
-| small | sonnet-5 | 3 | 47,391 | $0.1306 | 35.0s | 51.4% | 0 | 0 |
-| medium | sonnet-5 | 2 | 91,470 | $0.2187 | 34.5s | 80.7% | 29 | 0 |
-| large | sonnet-5 | 3 | 675,883 | $1.4556 | 110.5s | 42.9% | 4 | 0 |
-| small | opus-5 | 2 | 22,256 | $0.1571 | 22.6s | 50.7% | 0 | 0 |
-| medium | opus-5 | 2 | 91,390 | $0.5463 | 41.3s | 79.9% | 30 | 0 |
-| large | opus-5 | 2 | 337,323 | $1.8785 | 88.1s | 44.4% | 3 | 1 |
-
-> B5a was meant to be the prompt-sensitivity arm, but **it currently shares a sub-workflow
-> with B5**, so the two are not yet a clean contrast. Do not present B5-vs-B5a as a
-> prompt-quality result. See [ideas/open-questions.md](../ideas/open-questions.md).
 
 ### B6 — autonomous agent
 
@@ -190,8 +174,8 @@ critic is worth it is a model-dependent answer, and n=1 everywhere.
 
 ## Haiku's cliff
 
-Haiku 4.5 failed outright on the large page in **four of six agentic variants**
-(B2, B4, B5, B5a, B6 — with B2 and B4 dying at 2.0s having consumed nothing). It is the
+Haiku 4.5 failed outright on the large page in **three of five agentic variants**
+(B2, B4, B5 — with B2 and B4 dying at 2.0s having consumed nothing). It is the
 only model in the set that does not complete the matrix. Cheap models fail the *loud*
 way here, which is the good way — except in B5-medium, where it failed the silent way.
 

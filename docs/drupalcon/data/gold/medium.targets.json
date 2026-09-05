@@ -1,0 +1,218 @@
+{
+ "page": "medium",
+ "source": "bench_1_reference__medium__r10__1788101327.md",
+ "rules": {
+  "keep": [
+   [
+    19,
+    280
+   ]
+  ],
+  "drop": [
+   [
+    25,
+    25
+   ],
+   [
+    71,
+    71
+   ],
+   [
+    75,
+    79
+   ],
+   [
+    115,
+    127
+   ],
+   [
+    240,
+    260
+   ]
+  ],
+  "why": "Lines 1-18 are the IBM header; 281-373 are Resources, Related solutions and Take-the-next-step product promos."
+ },
+ "count": 30,
+ "mentions": [
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 1,
+   "col": 16
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 3,
+   "col": 17
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 5,
+   "col": 0
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 11,
+   "col": 0
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 11,
+   "col": 172
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 11,
+   "col": 296
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 15,
+   "col": 74
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 17,
+   "col": 101
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 21,
+   "col": 0
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 23,
+   "col": 248
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 25,
+   "col": 192
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 29,
+   "col": 5
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 31,
+   "col": 0
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 33,
+   "col": 267
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 35,
+   "col": 22
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 37,
+   "col": 40
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 41,
+   "col": 50
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 43,
+   "col": 23
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 43,
+   "col": 140
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress.",
+   "line": 45,
+   "col": 286
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 47,
+   "col": 285
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 51,
+   "col": 0
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 57,
+   "col": 69
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 57,
+   "col": 113
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 59,
+   "col": 0
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 61,
+   "col": 136
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress.",
+   "line": 67,
+   "col": 67
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 69,
+   "col": 47
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 75,
+   "col": 5
+  },
+  {
+   "name": "WordPress",
+   "surface": "WordPress",
+   "line": 77,
+   "col": 27
+  }
+ ]
+}

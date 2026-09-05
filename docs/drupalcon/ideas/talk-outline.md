@@ -105,7 +105,6 @@ developers. The Drupal one is funnier and lands harder.
 ## Things to cut if you're over time
 
 - The full model matrix — one table, referenced, not walked through
-- B5a entirely (it isn't a clean contrast yet)
 - Pricing tables — put them in the repo, not on a slide
 - Cross-model B7 verification — one sentence, not a chart
 

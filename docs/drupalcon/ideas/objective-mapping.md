@@ -102,6 +102,6 @@ benchmark produced. The benchmark harness is itself FlowDrop workflows.
 
 ## The one to be careful with
 
-Do **not** present B5-vs-B5a as a prompt-quality result. They currently share a
-sub-workflow, so it isn't a clean contrast. The prompt-quality evidence you *do* have is
-the shadowing bug in objective 6, which is stronger anyway.
+B5a (the "naive prompt" arm) was dropped from the report on 2026-09-05: it shared a
+sub-workflow with B5, so it was never a clean prompt-quality contrast. The prompt-quality
+evidence you *do* have is the shadowing bug in objective 6, which is stronger anyway.
