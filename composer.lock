@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ce12173ecb3f146f89f8c42db7e11e7",
+    "content-hash": "296857aba06343440493bb17c7be42e0",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2694,7 +2694,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flowdrop.git",
-                "reference": "a1095dbadf6bd02ff84c3ef31928506b3273bd16"
+                "reference": "c9157a129de89a68b590eba4a950d6af7a1417ff"
             },
             "require": {
                 "d34dman/vanilla-icon-picker": "^1.4",
@@ -2742,8 +2742,8 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "2.5.0+26-dev",
-                    "datestamp": "1788482622",
+                    "version": "2.5.0+31-dev",
+                    "datestamp": "1788615968",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
