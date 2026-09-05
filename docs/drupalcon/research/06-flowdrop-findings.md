@@ -1,6 +1,6 @@
 # What broke in FlowDrop itself
 
-Three bugs found while running the benchmark, all filed upstream. These are the most
+Four bugs found while running the benchmark, all filed upstream. These are the most
 *Drupal-specific* material in the research and the best fit for a DrupalCon audience —
 they are ordinary Drupal plugin/config bugs whose symptom is "the AI is unreliable."
 
@@ -101,11 +101,63 @@ the patch, not the model choice.**
 
 ---
 
+## 4. A skipped tool branch fails a re-entered loop instead of skipping downstream
+
+**[flowdrop#3592443](https://git.drupalcode.org/project/flowdrop/-/work_items/3592443)** · found 2026-09-05
+
+### Symptom
+
+B9's Reflexion engine failed on 3 of 9 cells (Haiku small + medium, Sonnet 4.6 small):
+
+```
+Job 4862 failed: port 'value' cannot be satisfied in round 2 — its only in-loop source
+'flowdrop_node_processor_tool_invoke.1' can no longer produce a value for this round
+```
+
+The agent had already written its revised answer. Nothing was emitted.
+
+### Cause
+
+When the critic sends the answer back, the loop re-enters and the agent usually revises
+*without* calling a tool — it already has the page. The has-tool-calls gateway routes away
+from `tool_invoke`, so the gateway that reads its `executed_any` output has an idle
+round-2 job whose only source completed in round 1. Clause 2 of the per-iteration
+staleness barrier (`JobGenerationService::getUnsatisfiableJobs()`) reads that as "value
+exists but from the wrong round" and fails the job. It has no error edge, so the
+sub-workflow fails, then the parent.
+
+The method's own docblock says a source that a gateway routed away from means the
+consumer "was not meant to run" and must terminate through the BR-7 skip sweep, not a
+failure. The restriction meant to keep Clause 2 narrow looks at the source's *newest
+completed* job — the round-1 one — so it cannot tell "skipped this round" from
+"round-behind". A secondary bug: the message fell back to the degraded wording instead
+of naming the gateway that routed away.
+
+### Why it matters
+
+Whether a run succeeds is decided by whether the model happens to call a tool on the
+revision round. Sonnet 5 always did, so it completed 9/9; Haiku and Sonnet 4.6 did not.
+A plain ReAct engine (B8) never hits it because the loop exits on the first no-tool
+round. Any critic / reflexion / retry pattern built on FlowDrop loops does.
+
+### Two harness-side traps found the same day, not bugs
+
+- The new workflows declared the **asynchronous orchestrator**; `launch.php` cannot
+  `wait` on that and every cell errored in 0.1s. Pin `flowdrop_runtime:synchronous`.
+- B8 ended in both a `chat_output` and a `text_output` capped at **1,000 characters**;
+  the collector took the last output node and silently kept the truncated copy. Five of
+  six B8 cells read as 2–11% retention until `collect.php` was changed to keep the
+  longest output. Same class of error as the failure gallery: a plausible number, no
+  error attached.
+
+---
+
 ## Also worth a mention
 
 - **`url_to_markdown` raises a `schema_form` interrupt** unless the node sets
   `requiresConfirmation: 'waive'`, which pauses headless runs indefinitely
   (`scratchpad/bench/waive_utm.php`). A human-in-the-loop default that becomes a hang in
   automation.
-- **Bench workflows exist only in the database** and have not been exported to
-  `config/sync` — see [ideas/open-questions.md](../ideas/open-questions.md).
+- **Bench workflows are now in `config/sync`** (commits 7e51e62, 9c8b9f6) — the
+  reproducibility risk flagged in [ideas/open-questions.md](../ideas/open-questions.md)
+  is closed.

@@ -135,6 +135,53 @@ visible at a glance, and cheap. Every other variant's failures had to be hunted 
 **Two calls in every single cell, on both models.** No other variant is stable in call
 count across pages or models.
 
+### B8 — FlowDrop ReAct, `url_to_markdown` given to the parent agent ✅ prompt applied
+
+Added 2026-09-05. B5's prompt and shape; only the tool changes. No Opus 5 run.
+
+| Page | Model | Calls | Tokens in | Cost | Wall | Kept | Red | Leak |
+|---|---|---|---|---|---|---|---|---|
+| small | haiku-4.5 | 2 | 7,456 | $0.0312 | 57.5s | 94.1% | 0 | 0 |
+| medium | haiku-4.5 | 2 | 5,954 | $0.0211 | 44.4s | 91.4% | 40 | **10** |
+| large | haiku-4.5 | 2 | 40,897 | $0.1524 | 236.2s | 80.4% | 0 | 4 |
+| small | sonnet-4.6 | 2 | 7,444 | $0.0661 | 53.5s | 69.3% | 0 | 0 |
+| medium | sonnet-4.6 | 2 | 5,928 | $0.0710 | 87.0s | 97.1% | 56 | 3 |
+| large | sonnet-4.6 | 2 | 40,866 | $0.3693 | 327.0s | 82.2% | 4 | 2 |
+| small | sonnet-5 | 2 | 9,412 | $0.0816 | 50.9s | 94.0% | 0 | 0 |
+| medium | sonnet-5 | 2 | 7,489 | $0.0634 | 42.4s | 96.5% | 56 | 2 |
+| large | sonnet-5 | 2 | 56,968 | $0.3351 | 165.9s | 81.9% | 8 | 0 |
+
+**Two calls in every cell, on all three models** — the same signature as B7, and on
+Sonnet 4.6 the small-page output is byte-for-byte the same length as B7's. The URL-shaped
+tool, not the prompt rewrite, is what made B7 predictable. B8 places more `▌▌▌▌` than
+the control has competitor mentions (56 vs 36 on medium) because it also redacts variant
+spellings and link text; Drupal mentions survive (38 of 46), so this is not failure #2.
+
+### B9 — as B8, Reflexion engine (critic + up to 3 revisions) ✅ prompt applied
+
+| Page | Model | Calls | Tokens in | Cost | Wall | Kept | Red | Leak |
+|---|---|---|---|---|---|---|---|---|
+| small | haiku-4.5 | 4 | 19,275 | $0.0444 | 62.0s | **failed** ⚠️ | — | — |
+| medium | haiku-4.5 | 6 | 29,511 | $0.0588 | 80.8s | **failed** ⚠️ | — | — |
+| large | haiku-4.5 | 7 | 212,845 | $0.4969 | 637.0s | 75.5% | 8 | 0 |
+| small | sonnet-4.6 | 4 | 16,797 | $0.0954 | 60.9s | **failed** ⚠️ | — | — |
+| medium | sonnet-4.6 | 3 | 9,027 | $0.0799 | 79.9s | 94.5% | 56 | 3 |
+| large | sonnet-4.6 | 7 | 199,271 | $1.2054 | 863.7s | 80.0% | 6 | 1 |
+| small | sonnet-5 | 5 | 28,742 | $0.1925 | 122.6s | 94.4% | 0 | 0 |
+| medium | sonnet-5 | 7 | 47,703 | $0.2676 | 157.2s | 96.8% | 70 | **0** |
+| large | sonnet-5 | 7 | 265,477 | $1.2823 | 641.8s | 76.5% | 8 | **0** |
+
+⚠️ The three failed cells are **FlowDrop, not the model**: on the revision round the agent
+answered without calling a tool, and the loop runtime failed the consumer of the tool node
+instead of skipping it — [flowdrop#3592443](https://git.drupalcode.org/project/flowdrop/-/work_items/3592443).
+Their cost is what each burned before dying.
+
+**What the critic bought.** On Sonnet 5, B9 is the only variant with zero leaks on every
+page — at 5–7 calls, ~4× B8's cost, and 10+ minutes on the large page. On Sonnet 4.6 the
+critic accepted the medium draft unchanged (3 calls, same output profile as B8) and its
+large-page revisions cut leaks from 2 to 1 for 3× the cost and 14 minutes. Whether a
+critic is worth it is a model-dependent answer, and n=1 everywhere.
+
 ## Haiku's cliff
 
 Haiku 4.5 failed outright on the large page in **four of six agentic variants**

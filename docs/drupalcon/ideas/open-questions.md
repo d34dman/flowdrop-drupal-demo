@@ -24,7 +24,7 @@ to measure whether wrapping alone changes the outcome.
 
 Every B5/B5a row in [02-results-matrix.md](../research/02-results-matrix.md) ran with an
 erased system prompt. They are honestly marked, but a clean matrix would let you compare
-all eight variants on equal terms, which is currently impossible.
+all ten variants on equal terms, which is currently impossible.
 
 **Decide first whether you need it.** The talk's argument does not depend on those rows —
 the B5/B7 head-to-head was re-run clean and is the load-bearing comparison. This is
@@ -36,15 +36,19 @@ B5a shares `react_agent_with_tools` with B5, so the prompt-sensitivity arm **doe
 exist as a distinct condition.** Either split it or drop B5a from the deck. Currently
 listed as a variant but not defensible as a contrast.
 
-## 4. Export bench workflows to `config/sync` · free · 20 min
+## 4. ~~Export bench workflows to `config/sync`~~ · **done 2026-09-05**
 
-All eight bench workflows live **only in the database**. If the laptop dies before
-29 September, the benchmark is unreproducible. This is the highest-risk item on the list
-and the cheapest to fix.
+All bench workflows, engines and node types are exported (commits 7e51e62, 9c8b9f6).
+Note `set_model.php` writes the model into the workflows, so a config export after a
+sweep carries whatever model ran last.
 
-```
-ddev drush config:export   # note: vendor/bin/drush fails — "container is not initialized"
-```
+## 4b. B8/B9 on Opus 5, and a B9 rerun once flowdrop#3592443 is fixed · ~$6 · 1 hr
+
+B8 and B9 have Haiku, Sonnet 4.6 and Sonnet 5 rows but no Opus 5, so the model matrix
+has two variants on three columns. B9 also has three failed cells that are a FlowDrop
+bug, not a result — rerun them after the fix, or accept the gaps and say why. The
+narrative pages (Seven Ways, URL-Shaped Tool Deep Dive, the all-hands deck) still say
+eight variants.
 
 ## 5. A real rubric, replacing byte-retention · ~$2 · 2 hrs
 

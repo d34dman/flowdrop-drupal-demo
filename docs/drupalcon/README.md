@@ -13,13 +13,14 @@ motivated by four named failure patterns: *hallucinated field names, half-applie
 changes, prompt-injection through user content, runaway token costs.*
 
 This folder holds the **evidence** gathered on 2026-08-30/31 from a controlled benchmark
-of eight FlowDrop workflow variants, plus the ideas for turning it into 45 minutes.
+of eight FlowDrop workflow variants, extended on 2026-09-05 with two more (B8, B9),
+plus the ideas for turning it into 45 minutes.
 
 ## What's here
 
 | File | What it is |
 |---|---|
-| [research/01-method.md](research/01-method.md) | Benchmark design, the eight variants, what the metrics can and cannot say |
+| [research/01-method.md](research/01-method.md) | Benchmark design, the ten variants, what the metrics can and cannot say |
 | [research/02-results-matrix.md](research/02-results-matrix.md) | The full numbers — every variant × model × page |
 | [research/03-failure-gallery.md](research/03-failure-gallery.md) | **Four named failure modes with exact evidence.** The heart of the talk |
 | [research/04-tool-shape.md](research/04-tool-shape.md) | B5 vs B7: what changes when a tool takes a URL instead of the content |
@@ -28,7 +29,7 @@ of eight FlowDrop workflow variants, plus the ideas for turning it into 45 minut
 | [ideas/objective-mapping.md](ideas/objective-mapping.md) | The seven learning objectives ↔ the evidence, **including the gaps** |
 | [ideas/talk-outline.md](ideas/talk-outline.md) | A 45-minute slide-by-slide plan |
 | [ideas/open-questions.md](ideas/open-questions.md) | What to run before the talk, with cost estimates |
-| [data/](data/) | **Frozen CSV snapshot of all 170 runs** — the scratchpad is not committed, this is the durable copy |
+| [data/](data/) | **Frozen CSV snapshot of all 188 runs** — the scratchpad is not committed, this is the durable copy |
 
 ## Published artifacts (interactive, for reference or live demo)
 

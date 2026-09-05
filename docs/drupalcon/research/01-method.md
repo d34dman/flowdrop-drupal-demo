@@ -22,7 +22,7 @@ the document survived?), and it is boring enough that nobody argues about prompt
 The small page has nothing to redact. That is deliberate — it is the **false-positive
 control**, and it is the page on which the worst failure in the whole dataset shows up.
 
-## The eight variants
+## The ten variants
 
 | ID | Workflow | Architecture | Agency |
 |---|---|---|---|
@@ -35,9 +35,17 @@ control**, and it is the page on which the worst failure in the whole dataset sh
 | **B5a** | `bench_5a_react_agent_naive` | As B5, deliberately naive prompt | high |
 | **B6** | `bench_6_agent_autonomous` | Autonomous agent | high |
 | **B7** | `bench_7_react_optimized` | FlowDrop ReAct agent, **`url_to_markdown` tool** | high |
+| **B8** | `bench_8_react_with_tools_in_parent` | B5's shape and prompt; the **parent** agent is handed `url_to_markdown` | high |
+| **B9** | `bench_9_reflexion_with_tools_in_parent` | As B8, on a **Reflexion** engine: a critic reviews the answer, up to 3 revisions | high |
 
 B7 was built during the research, in the FlowDrop UI, after B5's failure mode was
 understood — workflow `react_agent_with_optimized_tools`.
+
+B8 and B9 were added on 2026-09-05 on the new `react_agent_engine` and
+`reflexion_agent_engine` sub-workflows. B8 isolates the tool-shape fix from B7's prompt
+change; B9 asks whether a critic loop buys anything a single pass does not. They ran on
+Haiku 4.5, Sonnet 4.6 and Sonnet 5 — **not** Opus 5 — and B9 failed on three of nine cells
+inside FlowDrop's loop runtime (see [06-flowdrop-findings.md](06-flowdrop-findings.md), #4).
 
 ## Models
 

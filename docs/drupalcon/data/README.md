@@ -1,10 +1,11 @@
 # Data snapshot
 
-Frozen 2026-08-31 from `scratchpad/bench/results/metrics.jsonl` plus the output documents,
+Frozen 2026-08-31 from `scratchpad/bench/results/metrics.jsonl` plus the output documents
+(B8/B9 rows appended 2026-09-05, tags `bench89-*`),
 so this folder stays reproducible if the scratchpad is lost. **The scratchpad is not
 committed; this is the durable copy.**
 
-## `runs.csv` — 170 runs, one row each
+## `runs.csv` — 188 runs, one row each
 
 | Column | Notes |
 |---|---|

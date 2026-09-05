@@ -4,7 +4,8 @@ Covers the abstract's fourth failure pattern — **runaway token costs**.
 
 ## What this research cost
 
-**$47.94** metered across **170 harness runs**, in about a day.
+**$52.85** metered across **188 harness runs** — $47.94 over the original two days, plus
+$4.91 for the B8/B9 sweeps on 2026-09-05.
 
 | Tag | Spend |
 |---|---|
@@ -16,19 +17,22 @@ Covers the abstract's fourth failure pattern — **runaway token costs**.
 | `bench6-fill` | $2.23 |
 | `verify-sonnet-5` (the rerun that caught a bad draw) | $2.02 |
 | `post-patch-10mb` | $1.90 |
+| `bench89-claude-sonnet-5` (B8/B9) | $2.22 |
+| `bench89-claude-sonnet-4-6` (B8/B9) | $1.89 |
 | `matrix-claude-haiku-4-5` | $1.20 |
+| `bench89-claude-haiku-4-5` (B8/B9) | $0.80 |
 | everything else (13 tags) | $3.10 |
 
 By model:
 
 | Model | Spend | Runs |
 |---|---|---|
-| Sonnet 5 | $17.07 | 46 |
+| Sonnet 5 | $19.29 | 52 |
 | Opus 5 | $15.89 | 18 |
-| Sonnet 4.6 | $13.64 | 22 |
-| Haiku 4.5 | $1.34 | 18 |
+| Sonnet 4.6 | $15.53 | 28 |
+| Haiku 4.5 | $2.15 | 24 |
 
-> Opus ran 18 times and cost more than Sonnet 5's 46. **Model choice is a 12× lever on
+> Opus ran 18 times and cost nearly as much as Sonnet 5's 52. **Model choice is a 12× lever on
 > this workload** — but see below, because architecture is a bigger one.
 
 The Anthropic billing export for 30 August showed a higher total (~$69) than the metered
@@ -73,7 +77,13 @@ The ReAct loop re-sends the entire conversation on every iteration. On the large
 | B5 + Sonnet 5 | 4 | **1,055,106** |
 | B5 + Sonnet 4.6 | 3 | 503,345 |
 | B5 + Opus 5 | 2 | 337,512 |
+| B9 + Sonnet 5 (critic, 3 revisions) | 7 | 265,477 |
 | **B7 + Sonnet 5** | **2** | **56,955** |
+| **B8 + Sonnet 5** | **2** | **56,968** |
+
+B9 is the new cautionary row: a critic loop re-sends the transcript on every revision, so
+it lands at a quarter of B5's tokens for the same page and roughly four times B8's cost.
+It would be the biggest beneficiary of caching if caching were reachable.
 
 Two things are compounding: the page is re-sent per iteration, *and* B5's document also
 travels as output tokens. Fewer, more decisive iterations are a real cost lever — and in

@@ -25,12 +25,12 @@ page exported into this repo and served from GitHub Pages: <https://d34dman.gith
 
 ### Research (`docs/drupalcon/research/`, commit 81c349b)
 
-- [01-method.md](research/01-method.md) — benchmark design, the eight variants, metric caveats
+- [01-method.md](research/01-method.md) — benchmark design, the ten variants, metric caveats
 - [02-results-matrix.md](research/02-results-matrix.md) — the full numbers, every variant × model × page
 - [03-failure-gallery.md](research/03-failure-gallery.md) — four named failure modes with exact evidence
 - [04-tool-shape.md](research/04-tool-shape.md) — B5 vs B7: URL-shaped vs content-shaped tools
 - [05-cost-and-caching.md](research/05-cost-and-caching.md) — token economy, caching, what this cost
-- [06-flowdrop-findings.md](research/06-flowdrop-findings.md) — FlowDrop bugs found; three issues filed upstream
+- [06-flowdrop-findings.md](research/06-flowdrop-findings.md) — FlowDrop bugs found; four issues filed upstream
 
 ### Talk preparation (`docs/drupalcon/ideas/`)
 
@@ -48,7 +48,7 @@ page exported into this repo and served from GitHub Pages: <https://d34dman.gith
 
 ### Data (`docs/drupalcon/data/`)
 
-- [runs.csv](data/runs.csv) — frozen snapshot of all 170 benchmark runs (the durable copy)
+- [runs.csv](data/runs.csv) — frozen snapshot of all 188 benchmark runs (the durable copy)
 - [controls.csv](data/controls.csv) — control-run baselines
 
 ### Harness (`scratchpad/bench/`, commit a86dfa8)
@@ -60,6 +60,8 @@ page exported into this repo and served from GitHub Pages: <https://d34dman.gith
 
 ## Status
 
-Research complete and reproducible; the 20-minute internal deck is built (see Slides), the 45-minute DrupalCon deck is not. Biggest gap:
+Research complete and reproducible; the 20-minute internal deck is built (see Slides), the 45-minute DrupalCon deck is not.
+B8 and B9 (2026-09-05) are in the data, the three data-driven pages and the research docs; the narrative pages
+(Seven Ways, URL-Shaped Tool Deep Dive, the deck) still describe eight variants. Biggest gap:
 prompt injection (learning objective 3) has no experimental data —
 see [ideas/open-questions.md](ideas/open-questions.md).
