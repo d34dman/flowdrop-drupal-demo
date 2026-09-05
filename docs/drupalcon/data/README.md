@@ -1,16 +1,16 @@
 # Data snapshot
 
 Frozen 2026-08-31 from `scratchpad/bench/results/metrics.jsonl` plus the output documents
-(B8/B9 rows appended 2026-09-05, tags `bench89-*`),
+(B8/B9 rows appended 2026-09-05, tags `bench89-*`; B9 reruns after the FlowDrop fix, tags `b9fix-*`),
 so this folder stays reproducible if the scratchpad is lost. **The scratchpad is not
 committed; this is the durable copy.**
 
-## `runs.csv` — 188 runs, one row each
+## `runs.csv` — 192 runs, one row each
 
 | Column | Notes |
 |---|---|
 | `run_id` `tag` `variant` `page` `model` `rep` | identity |
-| `status` `calls` | `pipeline_status`; LLM round-trips |
+| `status` `calls` | `pipeline_status` (`completed`, `failed`, or `paused` for the one B9 attempt that stalled); LLM round-trips |
 | `input_tokens` `output_tokens` `cached_tokens` `cost_usd` | metered from `ai_metering_usage` via the run's `aim_context` tag. `cached_tokens` is **0 on every row** — see research/05 |
 | `wall_seconds` `output_chars` | measured |
 | `denoised_bytes` `retention_pct` | vs the control in `controls.csv`; identical de-noising both sides |

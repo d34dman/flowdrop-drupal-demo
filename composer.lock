@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "296857aba06343440493bb17c7be42e0",
+    "content-hash": "3ce12173ecb3f146f89f8c42db7e11e7",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2694,7 +2694,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flowdrop.git",
-                "reference": "41779a34eedc3bde1c3448dfe298b6eb38f0ddf9"
+                "reference": "a1095dbadf6bd02ff84c3ef31928506b3273bd16"
             },
             "require": {
                 "d34dman/vanilla-icon-picker": "^1.4",

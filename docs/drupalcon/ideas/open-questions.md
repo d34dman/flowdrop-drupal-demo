@@ -42,11 +42,13 @@ All bench workflows, engines and node types are exported (commits 7e51e62, 9c8b9
 Note `set_model.php` writes the model into the workflows, so a config export after a
 sweep carries whatever model ran last.
 
-## 4b. B8/B9 on Opus 5, and a B9 rerun once flowdrop#3592443 is fixed · ~$6 · 1 hr
+## 4b. B8/B9 on Opus 5 · ~$5 · 45 min
 
 B8 and B9 have Haiku, Sonnet 4.6 and Sonnet 5 rows but no Opus 5, so the model matrix
-has two variants on three columns. B9 also has three failed cells that are a FlowDrop
-bug, not a result — rerun them after the fix, or accept the gaps and say why. The
+has two variants on three columns. ~~B9 also has three failed cells~~ — done 2026-09-05:
+FlowDrop fixed flowdrop#3592443 the same day and all three cells were rerun and completed
+($1.08, tags `b9fix-*`). One Haiku small attempt on the fixed module paused instead of
+completing (see 06-flowdrop-findings #4); worth a second look if it recurs. The
 narrative pages (Seven Ways, URL-Shaped Tool Deep Dive, the all-hands deck) still say
 eight variants.
 

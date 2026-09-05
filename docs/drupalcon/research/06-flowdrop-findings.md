@@ -103,11 +103,12 @@ the patch, not the model choice.**
 
 ## 4. A skipped tool branch fails a re-entered loop instead of skipping downstream
 
-**[flowdrop#3592443](https://git.drupalcode.org/project/flowdrop/-/work_items/3592443)** · found 2026-09-05
+**[flowdrop#3592443](https://git.drupalcode.org/project/flowdrop/-/work_items/3592443)** · found 2026-09-05 · **fixed upstream the same day** (`872ca8d9`, in `a1095dba`)
 
 ### Symptom
 
-B9's Reflexion engine failed on 3 of 9 cells (Haiku small + medium, Sonnet 4.6 small):
+B9's Reflexion engine failed on 3 of 9 cells (Haiku small + medium, Sonnet 4.6 small) on
+module `41779a34`:
 
 ```
 Job 4862 failed: port 'value' cannot be satisfied in round 2 — its only in-loop source
@@ -139,6 +140,18 @@ Whether a run succeeds is decided by whether the model happens to call a tool on
 revision round. Sonnet 5 always did, so it completed 9/9; Haiku and Sonnet 4.6 did not.
 A plain ReAct engine (B8) never hits it because the loop exits on the first no-tool
 round. Any critic / reflexion / retry pattern built on FlowDrop loops does.
+
+### After the fix
+
+All three cells were rerun on `a1095dba` (tags `b9fix-*`) and completed: Sonnet 4.6 small
+in 170s, Haiku medium in 221s, Haiku small in 281s. One wrinkle: the **first** Haiku small
+attempt on the fixed module ended `paused`, not `completed`. Its Reflexion sub-pipeline
+ran seven reason rounds and three critic rounds, then stopped scheduling while
+`Max revisions reached? #3` was already `pending`, and logged
+`paused on unknown budget with ready jobs remaining` — neither the 100-iteration cap (67
+used) nor a time budget had fired, and no job failed. The parent marked the sub-workflow
+node `interrupted` and paused too. The identical cell completed on the next attempt, so it
+looks intermittent and is not yet understood or filed.
 
 ### Two harness-side traps found the same day, not bugs
 

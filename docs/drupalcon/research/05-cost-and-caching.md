@@ -4,8 +4,9 @@ Covers the abstract's fourth failure pattern — **runaway token costs**.
 
 ## What this research cost
 
-**$52.85** metered across **188 harness runs** — $47.94 over the original two days, plus
-$4.91 for the B8/B9 sweeps on 2026-09-05.
+**$53.94** metered across **192 harness runs** — $47.94 over the original two days, plus
+$4.91 for the B8/B9 sweeps and $1.08 for the B9 reruns after the FlowDrop fix, both on
+2026-09-05.
 
 | Tag | Spend |
 |---|---|
@@ -21,6 +22,7 @@ $4.91 for the B8/B9 sweeps on 2026-09-05.
 | `bench89-claude-sonnet-4-6` (B8/B9) | $1.89 |
 | `matrix-claude-haiku-4-5` | $1.20 |
 | `bench89-claude-haiku-4-5` (B8/B9) | $0.80 |
+| `b9fix-*` (B9 cells rerun on the fixed module) | $1.08 |
 | everything else (13 tags) | $3.10 |
 
 By model:
@@ -29,8 +31,8 @@ By model:
 |---|---|---|
 | Sonnet 5 | $19.29 | 52 |
 | Opus 5 | $15.89 | 18 |
-| Sonnet 4.6 | $15.53 | 28 |
-| Haiku 4.5 | $2.15 | 24 |
+| Sonnet 4.6 | $15.87 | 29 |
+| Haiku 4.5 | $2.88 | 27 |
 
 > Opus ran 18 times and cost nearly as much as Sonnet 5's 52. **Model choice is a 12× lever on
 > this workload** — but see below, because architecture is a bigger one.

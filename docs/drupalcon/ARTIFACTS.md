@@ -48,7 +48,7 @@ page exported into this repo and served from GitHub Pages: <https://d34dman.gith
 
 ### Data (`docs/drupalcon/data/`)
 
-- [runs.csv](data/runs.csv) — frozen snapshot of all 188 benchmark runs (the durable copy)
+- [runs.csv](data/runs.csv) — frozen snapshot of all 192 benchmark runs (the durable copy)
 - [controls.csv](data/controls.csv) — control-run baselines
 
 ### Harness (`scratchpad/bench/`, commit a86dfa8)
@@ -61,7 +61,7 @@ page exported into this repo and served from GitHub Pages: <https://d34dman.gith
 ## Status
 
 Research complete and reproducible; the 20-minute internal deck is built (see Slides), the 45-minute DrupalCon deck is not.
-B8 and B9 (2026-09-05) are in the data, the three data-driven pages and the research docs; the narrative pages
+B8 and B9 (2026-09-05) are in the data, the three data-driven pages and the research docs, including the B9 cells rerun after the FlowDrop fix; the narrative pages
 (Seven Ways, URL-Shaped Tool Deep Dive, the deck) still describe eight variants. Biggest gap:
 prompt injection (learning objective 3) has no experimental data —
 see [ideas/open-questions.md](ideas/open-questions.md).

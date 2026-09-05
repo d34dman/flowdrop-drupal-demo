@@ -29,7 +29,7 @@ plus the ideas for turning it into 45 minutes.
 | [ideas/objective-mapping.md](ideas/objective-mapping.md) | The seven learning objectives ↔ the evidence, **including the gaps** |
 | [ideas/talk-outline.md](ideas/talk-outline.md) | A 45-minute slide-by-slide plan |
 | [ideas/open-questions.md](ideas/open-questions.md) | What to run before the talk, with cost estimates |
-| [data/](data/) | **Frozen CSV snapshot of all 188 runs** — the scratchpad is not committed, this is the durable copy |
+| [data/](data/) | **Frozen CSV snapshot of all 192 runs** — the scratchpad is not committed, this is the durable copy |
 
 ## Published artifacts (interactive, for reference or live demo)
 

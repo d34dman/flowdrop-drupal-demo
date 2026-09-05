@@ -44,8 +44,9 @@ understood — workflow `react_agent_with_optimized_tools`.
 B8 and B9 were added on 2026-09-05 on the new `react_agent_engine` and
 `reflexion_agent_engine` sub-workflows. B8 isolates the tool-shape fix from B7's prompt
 change; B9 asks whether a critic loop buys anything a single pass does not. They ran on
-Haiku 4.5, Sonnet 4.6 and Sonnet 5 — **not** Opus 5 — and B9 failed on three of nine cells
-inside FlowDrop's loop runtime (see [06-flowdrop-findings.md](06-flowdrop-findings.md), #4).
+Haiku 4.5, Sonnet 4.6 and Sonnet 5 — **not** Opus 5. B9 failed on three of nine cells
+inside FlowDrop's loop runtime; FlowDrop fixed it the same day and the three cells were
+rerun on the fixed module (see [06-flowdrop-findings.md](06-flowdrop-findings.md), #4).
 
 ## Models
 

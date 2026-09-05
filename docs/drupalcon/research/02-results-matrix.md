@@ -161,23 +161,29 @@ spellings and link text; Drupal mentions survive (38 of 46), so this is not fail
 
 | Page | Model | Calls | Tokens in | Cost | Wall | Kept | Red | Leak |
 |---|---|---|---|---|---|---|---|---|
-| small | haiku-4.5 | 4 | 19,275 | $0.0444 | 62.0s | **failed** ⚠️ | — | — |
-| medium | haiku-4.5 | 6 | 29,511 | $0.0588 | 80.8s | **failed** ⚠️ | — | — |
+| small | haiku-4.5 | 9 | 125,817 | $0.2303 | 281.5s | 94.9% ⚠️ | 0 | 0 |
+| medium | haiku-4.5 | 9 | 195,056 | $0.2620 | 221.1s | 93.0% ⚠️ | 58 | 0 |
 | large | haiku-4.5 | 7 | 212,845 | $0.4969 | 637.0s | 75.5% | 8 | 0 |
-| small | sonnet-4.6 | 4 | 16,797 | $0.0954 | 60.9s | **failed** ⚠️ | — | — |
+| small | sonnet-4.6 | 9 | 78,856 | $0.3456 | 169.7s | 69.3% ⚠️ | 0 | 0 |
 | medium | sonnet-4.6 | 3 | 9,027 | $0.0799 | 79.9s | 94.5% | 56 | 3 |
 | large | sonnet-4.6 | 7 | 199,271 | $1.2054 | 863.7s | 80.0% | 6 | 1 |
 | small | sonnet-5 | 5 | 28,742 | $0.1925 | 122.6s | 94.4% | 0 | 0 |
 | medium | sonnet-5 | 7 | 47,703 | $0.2676 | 157.2s | 96.8% | 70 | **0** |
 | large | sonnet-5 | 7 | 265,477 | $1.2823 | 641.8s | 76.5% | 8 | **0** |
 
-⚠️ The three failed cells are **FlowDrop, not the model**: on the revision round the agent
-answered without calling a tool, and the loop runtime failed the consumer of the tool node
-instead of skipping it — [flowdrop#3592443](https://git.drupalcode.org/project/flowdrop/-/work_items/3592443).
-Their cost is what each burned before dying.
+⚠️ These three cells **failed on the first sweep and were rerun on 2026-09-05** after FlowDrop
+fixed [flowdrop#3592443](https://git.drupalcode.org/project/flowdrop/-/work_items/3592443)
+(module `a1095dba`, tags `b9fix-*`): on the revision round the agent answered without calling
+a tool, and the loop runtime failed the consumer of the tool node instead of skipping it. The
+failed rows stay in `runs.csv` at $0.04–$0.10 each. The Haiku small cell took two attempts
+on the fixed module: the first stalled after the third critic round with a job still
+pending and paused (see [06-flowdrop-findings.md](06-flowdrop-findings.md), #4); the
+second completed. Sonnet 4.6's small-page run ended at 69%: the critic sent the draft back three times and the
+agent landed on the same 4,608-character document its B7 and B8 runs produced on this page.
 
 **What the critic bought.** On Sonnet 5, B9 is the only variant with zero leaks on every
-page — at 5–7 calls, ~4× B8's cost, and 10+ minutes on the large page. On Sonnet 4.6 the
+page, and Haiku 4.5 also lands at zero leaks on all three pages once the loop runs to the end
+— the small page has no competitor names to redact, so zero redactions there is correct — at 5–7 calls, ~4× B8's cost, and 10+ minutes on the large page. On Sonnet 4.6 the
 critic accepted the medium draft unchanged (3 calls, same output profile as B8) and its
 large-page revisions cut leaks from 2 to 1 for 3× the cost and 14 minutes. Whether a
 critic is worth it is a model-dependent answer, and n=1 everywhere.
