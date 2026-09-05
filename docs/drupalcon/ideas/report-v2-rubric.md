@@ -177,7 +177,8 @@ superseded in `ARTIFACTS.md`.
 
 ## 4. Decisions needed
 
-1. **Correct thresholds** in 2.4 — proposed 0.95/0.95/0.95/0.90/0.05. Tighten fidelity
+1. **Correct thresholds** in 2.4 — proposed 0.95/0.95/0.95/0.90/0.05. **Decided 2026-09-05: fidelity
+   tightened to 0.95; no graded run changed class.** Tighten fidelity
    to 0.95 if the gold body is clean enough that Sonnet 5 B3 still passes.
 2. **Which Phase B runs to buy**, if any. Phase A alone is enough to release v2; Phase B
    turns single draws into rates.

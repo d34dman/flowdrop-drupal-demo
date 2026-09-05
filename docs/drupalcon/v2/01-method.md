@@ -94,7 +94,7 @@ sentences and headings; `▌+` is one redaction mark and a wildcard token in mat
 
 | Class | Rule |
 |---|---|
-| **correct** | all gates pass; recall ≥ 0.95, precision ≥ 0.95, subject ≥ 0.95, fidelity ≥ 0.90, fabrication ≤ 0.05 |
+| **correct** | all gates pass; recall ≥ 0.95, precision ≥ 0.95, subject ≥ 0.95, fidelity ≥ 0.95, fabrication ≤ 0.05 |
 | **degraded** | all gates pass; every axis ≥ 0.75, not correct. Visible on inspection, usable with a fix |
 | **silent** | all gates pass, or G2 fails, and some axis < 0.75. The pipeline said success; the document is wrong |
 | **format** | G0 passes, G1 fails: HTML came back |
@@ -125,6 +125,7 @@ joke the audience makes first.
 2. **The first three B7 draws ran with an empty system prompt** (flowdrop#3592438) and
    are excluded. B5 was wrongly given the same mark until 2026-09-05; its parent forwarded
    the prompt and its rows are in.
-3. **Thresholds are the rubric proposal, unchanged.** `degraded` on the medium page is
+3. **Thresholds are the rubric proposal, with fidelity tightened from 0.90 to 0.95 on
+   2026-09-05.** No graded run changed class; the lowest fidelity among correct runs is 0.965. `degraded` on the medium page is
    almost always recall 0.90–0.93: two or three of 30 WordPress mentions left readable.
 4. **Total spend is $61.39 over 203 runs.** Nothing was rerun for this report.

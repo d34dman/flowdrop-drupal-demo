@@ -15,7 +15,7 @@ site/
 
 | Folder | Study |
 |---|---|
-| `redaction-benchmark/` | Seven ways to redact a page. 20-minute tech all-hands deck (4 Sep 2026) plus the nine interactive pages built during the research, exported from claude.ai and wrapped as standalone HTML. |
+| `redaction-benchmark/` | Seven ways to redact a page. 20-minute tech all-hands deck (4 Sep 2026) plus the nine interactive pages built during the research, exported from claude.ai and wrapped as standalone HTML, and `artifacts/rubric-v2-scorecard.html`, generated from `data/runs_v2.csv` by `data/build_site_v2.py` (regenerate, do not edit). The three v1 data pages carry a superseded banner. |
 
 All pages are self-contained apart from Google Fonts. Open any file directly in a
 browser, or serve the folder with `python3 -m http.server`.

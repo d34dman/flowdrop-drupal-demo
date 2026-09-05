@@ -245,6 +245,7 @@ artefact, now collapsed in `build_gold.py`).
 
 - Sentence matching is fuzzy; a heavily paraphrased sentence counts as missing (fidelity)
   or invented (fabrication). Spot-check with `--explain` before quoting a single cell.
-- Thresholds are the proposal from the rubric doc, unchanged. `degraded` on the medium
+- Thresholds are the proposal from the rubric doc, with fidelity tightened to 0.95 on 2026-09-05
+  (no graded run changed class). `degraded` on the medium
   page is almost always recall 0.90–0.93: two or three of 30 WordPress mentions left readable.
 - n is still 1 for most cells. The class matrix shows draws, not rates.

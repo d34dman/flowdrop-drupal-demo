@@ -18,7 +18,7 @@ CONTROL = {p: f'bench_1_reference__{p}__r10__1788101327.md' for p in ('small', '
 EXPLAIN = '--explain' in sys.argv
 MIN_WORDS = 4          # sentences shorter than this are not scored for fidelity
 MATCH = 0.90           # similarity for "same sentence"
-THRESH = dict(recall=0.95, precision=0.95, subject=0.95, fidelity=0.90, fabrication=0.05)
+THRESH = dict(recall=0.95, precision=0.95, subject=0.95, fidelity=0.95, fabrication=0.05)
 DEGRADED = 0.75
 
 # Backdrop CMS (a 2013 Drupal fork) was a target in v1 and is dropped here: models split

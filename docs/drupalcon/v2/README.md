@@ -34,7 +34,8 @@ tables with `python3 docs/drupalcon/data/tables_v2.py`, a single run's reasoning
 
 ## Status
 
-Phase A (rescore) and the fold are done. This folder is Phase C, first draft. Not done:
-the site pages (Tradeoff Explorer, Model Matrix) still plot v1 metrics; the v1 pages carry
-no banner; the by-eye read of the gold bodies against the live pages is pending; most cells
-are one draw.
+Phase A (rescore) and the fold are done. This folder is Phase C, first draft. The site has a
+generated [Rubric v2 Scorecard](../site/redaction-benchmark/artifacts/rubric-v2-scorecard.html)
+page (`data/build_site_v2.py`) and the three v1 data pages carry a superseded banner. Not done:
+the by-eye read of the gold bodies against the live pages; the talk outline and decks still cite
+v1 numbers; most cells are one draw.
