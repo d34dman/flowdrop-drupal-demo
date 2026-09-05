@@ -8,7 +8,11 @@ dependencies:
     - flowdrop_node_type.flowdrop_node_type.flowdrop_node_processor_reason
     - flowdrop_node_type.flowdrop_node_type.flowdrop_node_processor_tool_invoke
     - flowdrop_node_type.flowdrop_node_type.flowdrop_node_processor_toolbox
+    - flowdrop_node_type.flowdrop_node_type.if_else
     - flowdrop_node_type.flowdrop_node_type.message_assemble
+    - flowdrop_node_type.flowdrop_node_type.message_from_text
+    - flowdrop_node_type.flowdrop_node_type.prompt_template
+    - flowdrop_node_type.flowdrop_node_type.text_input
     - flowdrop_node_type.flowdrop_node_type.text_output
 id: reflexion_agent_engine
 label: 'Reflexion Agent Engine'
@@ -438,61 +442,6 @@ nodes:
       width: 280
       height: 362
   -
-    id: conversation_buffer.5
-    position:
-      x: 1900
-      'y': 1100
-    data:
-      label: 'Conversation Buffer'
-      config:
-        scope: pipeline
-        key: loop
-        max_messages: 0
-        backend: entity
-        maxRetries: 0
-        requiresConfirmation: ''
-        role: user
-        instanceTitle: 'Read draft + scratchpad'
-        ports:
-          inputs:
-            -
-              id: key
-              exposed: false
-            -
-              id: message
-              exposed: false
-            -
-              id: role
-              exposed: false
-            -
-              id: content
-              exposed: true
-            -
-              id: loop_back
-              exposed: false
-            -
-              id: trigger
-              exposed: true
-          outputs:
-            -
-              id: messages
-            -
-              id: count
-            -
-              id: appended_any
-            -
-              id: appended
-              exposed: false
-            -
-              id: trigger
-            -
-              id: error
-      metadata:
-        node_type_id: conversation_buffer
-    measured:
-      width: 280
-      height: 222
-  -
     id: message_assemble.2
     position:
       x: 2300
@@ -502,14 +451,14 @@ nodes:
       config:
         dynamicInputs:
           -
-            name: conversation
-            label: conversation
+            name: ask
+            label: ask
             description: ''
             dataType: messages
             required: false
           -
-            name: scratchpad
-            label: scratchpad
+            name: draft
+            label: draft
             description: ''
             dataType: messages
             required: false
@@ -540,7 +489,7 @@ nodes:
         model: claude-opus-5
         temperature: 0
         maxTokens: 800000
-        systemPrompt: "You are a strict reviewer. The last assistant message is a draft answer to the user's request. Judge it against the request and any tool results in the conversation. Your reply must begin with exactly one line: VERDICT: ACCEPT if the draft fully and correctly answers the request, or VERDICT: REVISE if it does not. After a REVISE verdict, list concretely what is wrong or missing and what the next draft must change. Do not write the answer yourself."
+        systemPrompt: "You are a strict reviewer. You see exactly two things: the user's request and a draft answer to it. Judge the draft against the request alone: does it fully and correctly answer what was asked? Your reply must begin with exactly one line: VERDICT: ACCEPT if it does, or VERDICT: REVISE if it does not. After a REVISE verdict, list concretely what is wrong or missing and what the next draft must change. Do not write the answer yourself."
         maxRetries: 0
         requiresConfirmation: ''
         instanceTitle: Critic
@@ -753,7 +702,7 @@ nodes:
       label: 'Message From Text'
       config:
         role: user
-        text: 'Review the most recent assistant draft above against my original request. Begin your reply with VERDICT: ACCEPT or VERDICT: REVISE, then explain.'
+        text: 'Review the draft answer above against my request above. Begin your reply with VERDICT: ACCEPT or VERDICT: REVISE, then explain.'
         tool_call_id: ''
         maxRetries: 0
         requiresConfirmation: ''
@@ -783,12 +732,7 @@ nodes:
     data:
       label: 'Prompt Template'
       config:
-        template: |-
-          REVIEWER FEEDBACK on your previous draft (this is not a message from the user):
-
-          {{ critique }}
-
-          Address every point above and reply with the COMPLETE revised answer to the user's original request. Do not reply to the reviewer, do not explain the changes, output only the revised answer.
+        template: "REVIEWER FEEDBACK on your previous draft (this is not a message from the user):\n\n{{ critique }}\n\nAddress every point above and reply with the COMPLETE revised answer to the user's original request. Do not reply to the reviewer, do not explain the changes, output only the revised answer."
         dynamicInputs:
           -
             name: critique
@@ -804,6 +748,84 @@ nodes:
     measured:
       width: 280
       height: 302
+  -
+    id: text_input.1
+    position:
+      x: -200
+      'y': 220
+    data:
+      label: 'Text Input'
+      config:
+        defaultValue: ''
+        nodeType: simple
+        instanceTitle: 'User ask'
+      metadata:
+        node_type_id: text_input
+    measured:
+      width: 290
+      height: 100
+  -
+    id: message_from_text.2
+    position:
+      x: 1900
+      'y': 800
+    data:
+      label: 'Message From Text'
+      config:
+        role: user
+        text: ''
+        tool_call_id: ''
+        maxRetries: 0
+        requiresConfirmation: ''
+        instanceTitle: 'Ask as message'
+        ports:
+          outputs:
+            -
+              id: message
+              exposed: false
+            -
+              id: messages
+              exposed: true
+            -
+              id: trigger
+            -
+              id: error
+      metadata:
+        node_type_id: message_from_text
+    measured:
+      width: 280
+      height: 262
+  -
+    id: message_from_text.3
+    position:
+      x: 1900
+      'y': 1100
+    data:
+      label: 'Message From Text'
+      config:
+        role: assistant
+        text: ''
+        tool_call_id: ''
+        maxRetries: 0
+        requiresConfirmation: ''
+        instanceTitle: 'Draft as message'
+        ports:
+          outputs:
+            -
+              id: message
+              exposed: false
+            -
+              id: messages
+              exposed: true
+            -
+              id: trigger
+            -
+              id: error
+      metadata:
+        node_type_id: message_from_text
+    measured:
+      width: 280
+      height: 262
 edges:
   -
     id: xy-edge__flowdrop_node_processor_reason.1flowdrop_node_processor_reason.1-output-has_tool_calls-boolean_gateway.1boolean_gateway.1-input-value
@@ -1091,63 +1113,6 @@ edges:
       color: var(--fd-edge-trigger)
     class: flowdrop--edge--trigger
   -
-    id: xy-edge__boolean_gateway.1boolean_gateway.1-output-False-conversation_buffer.5conversation_buffer.5-input-trigger
-    source: boolean_gateway.1
-    target: conversation_buffer.5
-    data:
-      targetNodeType: universalNode
-      targetCategory: memories
-      metadata:
-        edgeType: trigger
-        sourcePortDataType: trigger
-    sourceHandle: boolean_gateway.1-output-False
-    targetHandle: conversation_buffer.5-input-trigger
-    style: 'stroke: var(--fd-edge-trigger); stroke-width: var(--fd-edge-trigger-width);'
-    markerEnd:
-      type: arrowclosed
-      width: 16
-      height: 16
-      color: var(--fd-edge-trigger)
-    class: flowdrop--edge--trigger
-  -
-    id: xy-edge__conversation_buffer.4conversation_buffer.4-output-messages-message_assemble.2message_assemble.2-input-conversation
-    source: conversation_buffer.4
-    target: message_assemble.2
-    data:
-      targetNodeType: universalNode
-      targetCategory: processing
-      metadata:
-        edgeType: data
-        sourcePortDataType: messages
-    sourceHandle: conversation_buffer.4-output-messages
-    targetHandle: message_assemble.2-input-conversation
-    style: 'stroke: var(--fd-edge-data);'
-    markerEnd:
-      type: arrowclosed
-      width: 16
-      height: 16
-      color: var(--fd-edge-data)
-    class: flowdrop--edge--data
-  -
-    id: xy-edge__conversation_buffer.5conversation_buffer.5-output-messages-message_assemble.2message_assemble.2-input-scratchpad
-    source: conversation_buffer.5
-    target: message_assemble.2
-    data:
-      targetNodeType: universalNode
-      targetCategory: processing
-      metadata:
-        edgeType: data
-        sourcePortDataType: messages
-    sourceHandle: conversation_buffer.5-output-messages
-    targetHandle: message_assemble.2-input-scratchpad
-    style: 'stroke: var(--fd-edge-data);'
-    markerEnd:
-      type: arrowclosed
-      width: 16
-      height: 16
-      color: var(--fd-edge-data)
-    class: flowdrop--edge--data
-  -
     id: xy-edge__message_assemble.2message_assemble.2-output-messages-flowdrop_node_processor_reason.2flowdrop_node_processor_reason.2-input-messages
     source: message_assemble.2
     target: flowdrop_node_processor_reason.2
@@ -1375,9 +1340,99 @@ edges:
       height: 16
       color: var(--fd-edge-data)
     class: flowdrop--edge--data
+  -
+    id: xy-edge__text_input.1text_input.1-output-text-conversation_buffer.4conversation_buffer.4-input-content
+    source: text_input.1
+    target: conversation_buffer.4
+    data:
+      edgeType: data
+    sourceHandle: text_input.1-output-text
+    targetHandle: conversation_buffer.4-input-content
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__text_input.1text_input.1-output-text-message_from_text.2message_from_text.2-input-text
+    source: text_input.1
+    target: message_from_text.2
+    data:
+      edgeType: data
+    sourceHandle: text_input.1-output-text
+    targetHandle: message_from_text.2-input-text
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__flowdrop_node_processor_reason.1flowdrop_node_processor_reason.1-output-text-message_from_text.3message_from_text.3-input-text
+    source: flowdrop_node_processor_reason.1
+    target: message_from_text.3
+    data:
+      edgeType: data
+    sourceHandle: flowdrop_node_processor_reason.1-output-text
+    targetHandle: message_from_text.3-input-text
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__boolean_gateway.1boolean_gateway.1-output-False-message_from_text.3message_from_text.3-input-trigger
+    source: boolean_gateway.1
+    target: message_from_text.3
+    data:
+      edgeType: trigger
+    sourceHandle: boolean_gateway.1-output-False
+    targetHandle: message_from_text.3-input-trigger
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-trigger)
+    class: flowdrop--edge--trigger
+    type: default
+  -
+    id: xy-edge__message_from_text.2message_from_text.2-output-messages-message_assemble.2message_assemble.2-input-ask
+    source: message_from_text.2
+    target: message_assemble.2
+    data:
+      edgeType: data
+    sourceHandle: message_from_text.2-output-messages
+    targetHandle: message_assemble.2-input-ask
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__message_from_text.3message_from_text.3-output-messages-message_assemble.2message_assemble.2-input-draft
+    source: message_from_text.3
+    target: message_assemble.2
+    data:
+      edgeType: data
+    sourceHandle: message_from_text.3-output-messages
+    targetHandle: message_assemble.2-input-draft
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
 metadata:
   createdAt: '2026-08-26T19:53:50.286Z'
-  updatedAt: '2026-09-03T23:09:39.501Z'
+  updatedAt: '2026-09-05T01:20:22.000Z'
 created: 1788567483
 changed: 1788567483
 uid: 1
@@ -1390,8 +1445,8 @@ input_ports:
     description: 'Instructions for the agent (its role, when to use which tool, when to stop).'
   -
     name: message
-    node_id: conversation_buffer.4
-    port: content
+    node_id: text_input.1
+    port: data
     title: Message
     description: 'The message content.'
   -
@@ -1441,7 +1496,7 @@ parameter_schema:
       description: 'Instructions for the critic. Its reply must begin with VERDICT: ACCEPT or VERDICT: REVISE, then give the critique.'
       format: multiline
       x-data-type: string
-      default: "You are a strict reviewer. The last assistant message is a draft answer to the user's request. Judge it against the request and any tool results in the conversation. Your reply must begin with exactly one line: VERDICT: ACCEPT if the draft fully and correctly answers the request, or VERDICT: REVISE if it does not. After a REVISE verdict, list concretely what is wrong or missing and what the next draft must change. Do not write the answer yourself."
+      default: "You are a strict reviewer. You see exactly two things: the user's request and a draft answer to it. Judge the draft against the request alone: does it fully and correctly answer what was asked? Your reply must begin with exactly one line: VERDICT: ACCEPT if it does, or VERDICT: REVISE if it does not. After a REVISE verdict, list concretely what is wrong or missing and what the next draft must change. Do not write the answer yourself."
 output_schema:
   type: object
   properties:
@@ -1455,3 +1510,4 @@ output_schema:
       type: string
       x-data-type: string
 schema_version: 1.0.0
+
