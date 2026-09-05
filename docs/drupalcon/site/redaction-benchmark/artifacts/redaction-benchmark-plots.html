@@ -18,7 +18,7 @@
   --accent:#1B6FA8; --accent-soft:#E3EDF4;
   --signal:#B0531D; --good:#2E7355; --bad:#AB3427;
   --c1:#2E7355; --c2:#B0531D; --c3:#1B6FA8; --c4:#8A4F9E; --c5:#B03A5B; --c6:#0F7C86;
-  --c7:#8A6D1F;
+  --c7:#8A6D1F; --c8:#3F6F2A; --c9:#6B4FBB;
   --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
   --body:'Source Serif 4',Georgia,serif;
   --mono:'IBM Plex Mono','SFMono-Regular',Menlo,monospace;
@@ -31,7 +31,7 @@
     --accent:#5AA8DC; --accent-soft:#152836;
     --signal:#D98A4A; --good:#5FBF92; --bad:#E0705F;
     --c1:#5FBF92; --c2:#D98A4A; --c3:#5AA8DC; --c4:#BE8FD1; --c5:#E0798F; --c6:#4FC2CC;
-    --c7:#D4B44A;
+    --c7:#D4B44A; --c8:#8FCC6A; --c9:#B39DEB;
   }
 }
 :root[data-theme="dark"]{
@@ -40,7 +40,7 @@
   --accent:#5AA8DC; --accent-soft:#152836;
   --signal:#D98A4A; --good:#5FBF92; --bad:#E0705F;
   --c1:#5FBF92; --c2:#D98A4A; --c3:#5AA8DC; --c4:#BE8FD1; --c5:#E0798F; --c6:#4FC2CC;
-    --c7:#D4B44A;
+    --c7:#D4B44A; --c8:#8FCC6A; --c9:#B39DEB;
 }
 
 *{box-sizing:border-box}
@@ -87,6 +87,8 @@ svg{display:block;min-width:560px;width:100%;height:auto}
 .dot{stroke:var(--surf);stroke-width:1.5}
 .dot:hover{stroke:var(--ink);stroke-width:2}
 .ring{fill:none;stroke:var(--bad);stroke-width:1.6;stroke-dasharray:3 2.5}
+.dot.other{stroke:var(--ink);stroke-width:1.3}
+.trail.other{stroke-dasharray:5 4;opacity:.7}
 .ref100{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 4;opacity:.7}
 
 .legend{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;padding:.85rem 1.1rem;
@@ -136,12 +138,14 @@ footer li{margin-bottom:.4rem}
   <div class="wrap">
     <p class="kicker">FlowDrop Benchmark · Plots</p>
     <h1>Redaction Benchmark Plots</h1>
-    <p class="lede">The same 24 runs, plotted five ways. <em>Each chart is here because it shows
+    <p class="lede">The same 30 runs, plotted five ways. <em>Each chart is here because it shows
     something a table hides</em> — a tradeoff curve, a scaling slope, or a correlation that only
     becomes obvious once the points are on axes. <em>Small, medium and large are input page
-    sizes</em> — ~38 KB, ~164 KB and ~535 KB of raw HTML — not models: every model call in every
-    cell uses the same <code>claude-sonnet-4-6</code>. Each line is one variant across the three
-    pages; the marker shape tells you which page a point is.</p>
+    sizes</em> — ~38 KB, ~164 KB and ~535 KB of raw HTML — not models: B1 to B7 all run on
+    <code>claude-sonnet-4-6</code>. <em>B8 and B9, added 5 September, run on
+    <code>claude-sonnet-5</code></em> and are drawn with dashed trails and outlined markers so
+    the model change is never hidden. Each line is one variant across the three pages; the
+    marker shape tells you which page a point is.</p>
     <p class="lede"><em>The bar below filters every chart at once.</em> Switch variants and page
     sizes off to isolate a comparison — the axes rescale to what is left, so two variants alone
     are read at full resolution rather than squeezed against the most expensive run on the
@@ -158,6 +162,7 @@ footer li{margin-bottom:.4rem}
     <div class="chipgrp">
       <button class="chip" id="fall" aria-pressed="false">reset</button>
       <button class="chip" id="fclean" aria-pressed="false" title="Hide B5 and B5a, whose system prompt never reached the model">only valid runs</button>
+      <button class="chip" id="fsame" aria-pressed="false" title="Hide B8 and B9, which ran on claude-sonnet-5 rather than claude-sonnet-4-6">same model only</button>
     </div>
     <span class="fcount" id="fcount"></span>
   </div>
@@ -181,6 +186,21 @@ footer li{margin-bottom:.4rem}
       applied, and one tool changed: instead of passing page content <em>into</em> a converter
       as an argument, it passes a URL and receives Markdown. On the large page that is 18×
       fewer input tokens and roughly a sixth of the cost, at higher fidelity.</p>
+    </div>
+    <div class="note">
+      <h3>B8 and B9 ran on a different model</h3>
+      <p>Added 5 September, one draw per page, on <code>claude-sonnet-5</code> rather than the
+      <code>claude-sonnet-4-6</code> every other cell uses. Sonnet 5 is priced at $2 / $10 per
+      million tokens against Sonnet 4.6's $3 / $15, so a cost gap of up to a third is the price
+      list, not the architecture. Compare shapes and call counts across the model line; compare
+      dollars only within it. The <em>same model only</em> filter hides both.</p>
+      <p><strong>B8</strong> is B5's shape with the URL tool given to the parent agent — the
+      same fix as B7, applied without changing the prompt. It lands where B7 does: exactly two
+      calls on every page. <strong>B9</strong> wraps that agent in a critic that can send the
+      answer back up to three times. It is the only variant with zero competitor leaks on every
+      page, at four to seven calls and roughly four times B8's cost, and it needs more than ten
+      minutes on the large page. On Haiku 4.5 it failed on two of three pages inside FlowDrop's
+      loop runtime — a bug, not a model result — so only its Sonnet 5 cells are shown.</p>
     </div>
   </div>
 </section>
@@ -267,7 +287,7 @@ footer li{margin-bottom:.4rem}
       <div class="fig-bd"><svg id="f2" viewBox="0 0 900 430" role="img"
         aria-label="Two scatter plots comparing latency against input and output tokens"></svg></div>
       <div class="legend" id="lg2"></div>
-      <div class="fig-cap">Same 18 model runs in both panels; only the horizontal axis changes.
+      <div class="fig-cap">Same 24 model runs in both panels; only the horizontal axis changes.
         Each line is one variant walked small → medium → large. The red ring is the run whose
         output was not Markdown — its tokens and latency are real, its output is not a document.</div>
     </div>
@@ -351,8 +371,9 @@ footer li{margin-bottom:.4rem}
         is actually correct. That needs an eval pass, which has not been run.</li>
       <li><strong>The Bench 5 large point requires a patch</strong> raising FlowDrop's memory
         ceiling from 1 MB to 10 MB. Unpatched, that run fails and delivers nothing.</li>
-      <li><strong>All cells use <code>claude-sonnet-4-6</code></strong> and the synchronous
-        orchestrator. No queue latency is included anywhere.</li>
+      <li><strong>B1–B7 use <code>claude-sonnet-4-6</code>; B8 and B9 use
+        <code>claude-sonnet-5</code></strong>. All use the synchronous orchestrator. No queue
+        latency is included anywhere. Cross-model dollar comparisons carry the price-list gap.</li>
       <li><strong>Filtering rescales the axes.</strong> That is deliberate — it is what makes a
         two-variant comparison legible — but it means absolute positions are not comparable
         between two different filter states. Compare shapes and orderings across filters, and
@@ -362,17 +383,19 @@ footer li{margin-bottom:.4rem}
 </footer>
 
 <script>
-const D = {"runs":[{"wf":"bench_1_reference","name":"B1 Deterministic","page":"small","wall":0.2,"tin":0,"tout":0,"cost":0,"chars":16240,"red":0,"leak":0,"calls":0,"tags":0,"tagdens":0.0,"rawhtml":false,"den":6648},{"wf":"bench_2_raw_html_llm","name":"B2 Raw HTML","page":"small","wall":252.7,"tin":13671,"tout":13616,"cost":0.2453,"chars":27886,"red":0,"leak":0,"calls":1,"tags":665,"tagdens":23.85,"rawhtml":true,"den":27096},{"wf":"bench_3_markdown_llm","name":"B3 Markdown first","page":"small","wall":82.1,"tin":4916,"tout":4707,"cost":0.0854,"chars":8581,"red":0,"leak":0,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":6276},{"wf":"bench_4_ai_agent_tool","name":"B4 Agent (fed)","page":"small","wall":224.3,"tin":40096,"tout":13219,"cost":0.3186,"chars":8253,"red":0,"leak":6,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false,"den":6805},{"wf":"bench_5_react_agent","name":"B5 FlowDrop ReAct","page":"small","wall":106.7,"tin":38400,"tout":5735,"cost":0.2012,"chars":5658,"red":0,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":4694},{"wf":"bench_5a_react_agent_naive","name":"B5a ReAct naive","page":"small","wall":48.6,"tin":34760,"tout":2272,"cost":0.1384,"chars":3608,"red":3,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":3253},{"wf":"bench_1_reference","name":"B1 Deterministic","page":"medium","wall":1.3,"tin":0,"tout":0,"cost":0,"chars":14497,"red":0,"leak":38,"calls":0,"tags":9,"tagdens":0.62,"rawhtml":false,"den":12550},{"wf":"bench_2_raw_html_llm","name":"B2 Raw HTML","page":"medium","wall":53.7,"tin":59150,"tout":2060,"cost":0.2084,"chars":8638,"red":28,"leak":1,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":8638},{"wf":"bench_3_markdown_llm","name":"B3 Markdown first","page":"medium","wall":51.4,"tin":3502,"tout":2086,"cost":0.0418,"chars":8678,"red":30,"leak":0,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":8678},{"wf":"bench_4_ai_agent_tool","name":"B4 Agent (fed)","page":"medium","wall":110.4,"tin":124193,"tout":5189,"cost":0.4504,"chars":10138,"red":29,"leak":0,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false,"den":10138},{"wf":"bench_5_react_agent","name":"B5 FlowDrop ReAct","page":"medium","wall":154.8,"tin":141783,"tout":6523,"cost":0.5232,"chars":10946,"red":28,"leak":2,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":10945},{"wf":"bench_5a_react_agent_naive","name":"B5a ReAct naive","page":"medium","wall":108.3,"tin":140203,"tout":4829,"cost":0.493,"chars":8672,"red":29,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":8671},{"wf":"bench_1_reference","name":"B1 Deterministic","page":"large","wall":0.8,"tin":0,"tout":0,"cost":0,"chars":101790,"red":0,"leak":2,"calls":0,"tags":14,"tagdens":0.14,"rawhtml":false,"den":50082},{"wf":"bench_2_raw_html_llm","name":"B2 Raw HTML","page":"large","wall":165.1,"tin":211994,"tout":7244,"cost":0.7446,"chars":21807,"red":4,"leak":1,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":21807},{"wf":"bench_3_markdown_llm","name":"B3 Markdown first","page":"large","wall":398.0,"tin":34822,"tout":22585,"cost":0.4432,"chars":46948,"red":2,"leak":0,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":41931},{"wf":"bench_4_ai_agent_tool","name":"B4 Agent (fed)","page":"large","wall":163.6,"tin":432407,"tout":7517,"cost":1.41,"chars":13051,"red":0,"leak":9,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false,"den":13051},{"wf":"bench_5a_react_agent_naive","name":"B5a ReAct naive","page":"large","wall":303.9,"tin":487871,"tout":10819,"cost":1.6259,"chars":20615,"red":9,"leak":5,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":20615},{"wf":"bench_6_agent_autonomous","name":"B6 Agent (auto)","page":"small","wall":95.2,"tin":34564,"tout":5370,"cost":0.1842,"chars":5620,"red":0,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":4683},{"wf":"bench_6_agent_autonomous","name":"B6 Agent (auto)","page":"medium","wall":127.5,"tin":125833,"tout":5512,"cost":0.4602,"chars":10869,"red":28,"leak":1,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":10868},{"wf":"bench_6_agent_autonomous","name":"B6 Agent (auto)","page":"large","wall":555.0,"tin":452913,"tout":27431,"cost":1.7702,"chars":37340,"red":2,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":37336},{"wf":"bench_5_react_agent","name":"B5 FlowDrop ReAct","page":"large","wall":553.2,"tin":503345,"tout":25694,"cost":1.8954,"chars":37512,"red":2,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":37511},{"wf":"bench_7_react_optimized","name":"B7 ReAct (url tool)","page":"small","wall":57.0,"tin":7434,"tout":2916,"cost":0.066,"chars":4608,"den":4607,"red":0,"leak":0,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false},{"wf":"bench_7_react_optimized","name":"B7 ReAct (url tool)","page":"medium","wall":85.1,"tin":5910,"tout":3256,"cost":0.0666,"chars":11482,"den":11714,"red":28,"leak":2,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false},{"wf":"bench_7_react_optimized","name":"B7 ReAct (url tool)","page":"large","wall":327.0,"tin":40856,"tout":15997,"cost":0.3625,"chars":40167,"den":40515,"red":2,"leak":2,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false}],"overhead":[{"wf":"bench_0_floor","page":"small","overhead":1.061,"payload":66,"jobs":1},{"wf":"bench_0_floor","page":"small","overhead":0.1739,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.1191,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0304,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1105,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0144,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.351,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0359,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0808,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0265,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1273,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0185,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.2636,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0152,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0649,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0159,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1163,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0223,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.6048,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0478,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.1083,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0233,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1211,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0174,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.5741,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0241,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0766,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0187,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1284,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.022,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.4251,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0245,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0585,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0213,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.0796,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0249,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.3554,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0278,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0944,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.028,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.091,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0153,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.4197,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0142,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0947,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0297,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1448,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0253,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.5177,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0251,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0737,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0215,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.0877,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0179,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.5288,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0479,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.1253,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0284,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1131,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0201,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.56,"payload":1998365,"jobs":3}],"ref":{"small":16240,"medium":14497,"large":101790},"refden":{"small":6648,"medium":12550,"large":50082}};
+const D = {"runs":[{"wf":"bench_1_reference","name":"B1 Deterministic","page":"small","wall":0.2,"tin":0,"tout":0,"cost":0,"chars":16240,"red":0,"leak":0,"calls":0,"tags":0,"tagdens":0.0,"rawhtml":false,"den":6648},{"wf":"bench_2_raw_html_llm","name":"B2 Raw HTML","page":"small","wall":252.7,"tin":13671,"tout":13616,"cost":0.2453,"chars":27886,"red":0,"leak":0,"calls":1,"tags":665,"tagdens":23.85,"rawhtml":true,"den":27096},{"wf":"bench_3_markdown_llm","name":"B3 Markdown first","page":"small","wall":82.1,"tin":4916,"tout":4707,"cost":0.0854,"chars":8581,"red":0,"leak":0,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":6276},{"wf":"bench_4_ai_agent_tool","name":"B4 Agent (fed)","page":"small","wall":224.3,"tin":40096,"tout":13219,"cost":0.3186,"chars":8253,"red":0,"leak":6,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false,"den":6805},{"wf":"bench_5_react_agent","name":"B5 FlowDrop ReAct","page":"small","wall":106.7,"tin":38400,"tout":5735,"cost":0.2012,"chars":5658,"red":0,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":4694},{"wf":"bench_5a_react_agent_naive","name":"B5a ReAct naive","page":"small","wall":48.6,"tin":34760,"tout":2272,"cost":0.1384,"chars":3608,"red":3,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":3253},{"wf":"bench_1_reference","name":"B1 Deterministic","page":"medium","wall":1.3,"tin":0,"tout":0,"cost":0,"chars":14497,"red":0,"leak":38,"calls":0,"tags":9,"tagdens":0.62,"rawhtml":false,"den":12550},{"wf":"bench_2_raw_html_llm","name":"B2 Raw HTML","page":"medium","wall":53.7,"tin":59150,"tout":2060,"cost":0.2084,"chars":8638,"red":28,"leak":1,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":8638},{"wf":"bench_3_markdown_llm","name":"B3 Markdown first","page":"medium","wall":51.4,"tin":3502,"tout":2086,"cost":0.0418,"chars":8678,"red":30,"leak":0,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":8678},{"wf":"bench_4_ai_agent_tool","name":"B4 Agent (fed)","page":"medium","wall":110.4,"tin":124193,"tout":5189,"cost":0.4504,"chars":10138,"red":29,"leak":0,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false,"den":10138},{"wf":"bench_5_react_agent","name":"B5 FlowDrop ReAct","page":"medium","wall":154.8,"tin":141783,"tout":6523,"cost":0.5232,"chars":10946,"red":28,"leak":2,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":10945},{"wf":"bench_5a_react_agent_naive","name":"B5a ReAct naive","page":"medium","wall":108.3,"tin":140203,"tout":4829,"cost":0.493,"chars":8672,"red":29,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":8671},{"wf":"bench_1_reference","name":"B1 Deterministic","page":"large","wall":0.8,"tin":0,"tout":0,"cost":0,"chars":101790,"red":0,"leak":2,"calls":0,"tags":14,"tagdens":0.14,"rawhtml":false,"den":50082},{"wf":"bench_2_raw_html_llm","name":"B2 Raw HTML","page":"large","wall":165.1,"tin":211994,"tout":7244,"cost":0.7446,"chars":21807,"red":4,"leak":1,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":21807},{"wf":"bench_3_markdown_llm","name":"B3 Markdown first","page":"large","wall":398.0,"tin":34822,"tout":22585,"cost":0.4432,"chars":46948,"red":2,"leak":0,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":41931},{"wf":"bench_4_ai_agent_tool","name":"B4 Agent (fed)","page":"large","wall":163.6,"tin":432407,"tout":7517,"cost":1.41,"chars":13051,"red":0,"leak":9,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false,"den":13051},{"wf":"bench_5a_react_agent_naive","name":"B5a ReAct naive","page":"large","wall":303.9,"tin":487871,"tout":10819,"cost":1.6259,"chars":20615,"red":9,"leak":5,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":20615},{"wf":"bench_6_agent_autonomous","name":"B6 Agent (auto)","page":"small","wall":95.2,"tin":34564,"tout":5370,"cost":0.1842,"chars":5620,"red":0,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":4683},{"wf":"bench_6_agent_autonomous","name":"B6 Agent (auto)","page":"medium","wall":127.5,"tin":125833,"tout":5512,"cost":0.4602,"chars":10869,"red":28,"leak":1,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":10868},{"wf":"bench_6_agent_autonomous","name":"B6 Agent (auto)","page":"large","wall":555.0,"tin":452913,"tout":27431,"cost":1.7702,"chars":37340,"red":2,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":37336},{"wf":"bench_5_react_agent","name":"B5 FlowDrop ReAct","page":"large","wall":553.2,"tin":503345,"tout":25694,"cost":1.8954,"chars":37512,"red":2,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":37511},{"wf":"bench_7_react_optimized","name":"B7 ReAct (url tool)","page":"small","wall":57.0,"tin":7434,"tout":2916,"cost":0.066,"chars":4608,"den":4607,"red":0,"leak":0,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false},{"wf":"bench_7_react_optimized","name":"B7 ReAct (url tool)","page":"medium","wall":85.1,"tin":5910,"tout":3256,"cost":0.0666,"chars":11482,"den":11714,"red":28,"leak":2,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false},{"wf":"bench_7_react_optimized","name":"B7 ReAct (url tool)","page":"large","wall":327.0,"tin":40856,"tout":15997,"cost":0.3625,"chars":40167,"den":40515,"red":2,"leak":2,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false},{"wf":"bench_8_react_with_tools_in_parent","name":"B8 ReAct (parent tool) · S5","page":"small","wall":50.9,"tin":9412,"tout":6274,"cost":0.0816,"chars":8614,"den":6252,"red":0,"leak":0,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false,"model":"claude-sonnet-5"},{"wf":"bench_9_reflexion_with_tools_in_parent","name":"B9 Reflexion (critic) · S5","page":"small","wall":122.6,"tin":28742,"tout":13501,"cost":0.1925,"chars":8660,"den":6277,"red":0,"leak":0,"calls":5,"tags":0,"tagdens":0.0,"rawhtml":false,"model":"claude-sonnet-5"},{"wf":"bench_8_react_with_tools_in_parent","name":"B8 ReAct (parent tool) · S5","page":"medium","wall":42.4,"tin":7489,"tout":4844,"cost":0.0634,"chars":11607,"den":12108,"red":56,"leak":2,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false,"model":"claude-sonnet-5"},{"wf":"bench_9_reflexion_with_tools_in_parent","name":"B9 Reflexion (critic) · S5","page":"medium","wall":157.2,"tin":47703,"tout":17216,"cost":0.2676,"chars":11937,"den":12154,"red":70,"leak":0,"calls":7,"tags":0,"tagdens":0.0,"rawhtml":false,"model":"claude-sonnet-5"},{"wf":"bench_8_react_with_tools_in_parent","name":"B8 ReAct (parent tool) · S5","page":"large","wall":165.9,"tin":56968,"tout":22113,"cost":0.3351,"chars":40650,"den":40996,"red":8,"leak":0,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false,"model":"claude-sonnet-5"},{"wf":"bench_9_reflexion_with_tools_in_parent","name":"B9 Reflexion (critic) · S5","page":"large","wall":641.8,"tin":265477,"tout":75130,"cost":1.2823,"chars":37951,"den":38315,"red":8,"leak":0,"calls":7,"tags":0,"tagdens":0.0,"rawhtml":false,"model":"claude-sonnet-5"}],"overhead":[{"wf":"bench_0_floor","page":"small","overhead":1.061,"payload":66,"jobs":1},{"wf":"bench_0_floor","page":"small","overhead":0.1739,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.1191,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0304,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1105,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0144,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.351,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0359,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0808,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0265,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1273,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0185,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.2636,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0152,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0649,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0159,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1163,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0223,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.6048,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0478,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.1083,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0233,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1211,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0174,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.5741,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0241,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0766,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0187,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1284,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.022,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.4251,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0245,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0585,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0213,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.0796,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0249,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.3554,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0278,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0944,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.028,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.091,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0153,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.4197,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0142,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0947,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0297,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1448,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0253,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.5177,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0251,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0737,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0215,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.0877,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0179,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.5288,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0479,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.1253,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0284,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1131,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0201,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.56,"payload":1998365,"jobs":3}],"ref":{"small":16240,"medium":14497,"large":101790},"refden":{"small":6648,"medium":12550,"large":50082}};
 const NS = 'http://www.w3.org/2000/svg';
 const PAGES = ['small', 'medium', 'large'];
 const ORDER = ['bench_1_reference','bench_2_raw_html_llm','bench_3_markdown_llm',
                'bench_4_ai_agent_tool','bench_5_react_agent','bench_5a_react_agent_naive',
-               'bench_6_agent_autonomous','bench_7_react_optimized'];
+               'bench_6_agent_autonomous','bench_7_react_optimized',
+               'bench_8_react_with_tools_in_parent','bench_9_reflexion_with_tools_in_parent'];
 const COLOR = {
   bench_1_reference:'var(--c1)', bench_2_raw_html_llm:'var(--c2)',
   bench_3_markdown_llm:'var(--c3)', bench_4_ai_agent_tool:'var(--c4)',
   bench_5_react_agent:'var(--c5)', bench_5a_react_agent_naive:'var(--faint)',
-  bench_6_agent_autonomous:'var(--c6)', bench_7_react_optimized:'var(--c7)'
+  bench_6_agent_autonomous:'var(--c6)', bench_7_react_optimized:'var(--c7)',
+  bench_8_react_with_tools_in_parent:'var(--c8)', bench_9_reflexion_with_tools_in_parent:'var(--c9)'
 };
 const NAME = {};
 D.runs.forEach(r => NAME[r.wf] = r.name);
@@ -410,6 +433,16 @@ const NOSYS = r => noPrompt(r)
     'reached the model (flowdrop#3592438). Cost and latency are real;\n' +
     'treat the fidelity number as an uninstructed agent, not this design.'
   : '';
+// B8 and B9 ran on claude-sonnet-5; every other cell on claude-sonnet-4-6.
+// Drawn dashed and outlined so the model boundary is visible on every chart.
+const OTHER = new Set(['bench_8_react_with_tools_in_parent','bench_9_reflexion_with_tools_in_parent']);
+const isOther = w => OTHER.has(w);
+const OTHERKEY = '<span class="lg"><span class="sw" style="background:none;' +
+  'border:1.3px solid var(--ink)"></span>claude-sonnet-5 (B1–B7 are claude-sonnet-4-6)</span>';
+const MODEL = r => r.model
+  ? `\n\nMODEL: ${r.model} — other cells are claude-sonnet-4-6.\n` +
+    `Compare shape and call count across models; dollars only within one.`
+  : '';
 const NOTMD = r => r.rawhtml
   ? `\n\nOUTPUT NOT MARKDOWN — ${r.tags} raw HTML tags (${r.tagdens} per 1k chars).\n` +
     `Cost and time are real; the output is not a document.`
@@ -435,7 +468,7 @@ const txt = (s, a = {}) => { const t = el('text', a); t.textContent = s; return 
 const fmt = v => v >= 1000 ? (v / 1000).toFixed(v >= 10000 ? 0 : 1) + 'k' : String(v);
 
 // Marker shapes carry page size, so colour stays free to carry variant.
-function marker(g, shape, x, y, r, fill, title) {
+function marker(g, shape, x, y, r, fill, title, other = false) {
   let s;
   if (shape === 'square') {
     s = el('rect', {x: x - r, y: y - r, width: r * 2, height: r * 2, rx: 1.5});
@@ -446,7 +479,7 @@ function marker(g, shape, x, y, r, fill, title) {
     s = el('circle', {cx: x, cy: y, r: r});
   }
   s.setAttribute('fill', fill);
-  s.setAttribute('class', 'dot');
+  s.setAttribute('class', 'dot' + (other ? ' other' : ''));
   const t = el('title'); t.textContent = title; s.appendChild(t);
   g.appendChild(s);
   return s;
@@ -516,7 +549,7 @@ function fig1() {  // no page filter: the trajectory is the chart
     if (pts.length > 1) {
       svg.appendChild(el('polyline', {
         points: pts.map(p => `${p.x},${p.y}`).join(' '),
-        class: 'trail', stroke: COLOR[wf]
+        class: 'trail' + (isOther(wf) ? ' other' : ''), stroke: COLOR[wf]
       }));
     }
     pts.forEach(p => {
@@ -530,7 +563,7 @@ function fig1() {  // no page filter: the trajectory is the chart
             `(${pct(p.r).toFixed(0)}% of control)\n` +
             `${p.r.chars.toLocaleString()} chars raw ` +
             `(${rawPct(p.r).toFixed(0)}% before normalising)\n`) +
-        `${p.r.wall}s · ${p.r.calls} call(s)`);
+        `${p.r.wall}s · ${p.r.calls} call(s)${MODEL(p.r)}`, isOther(wf));
       flagIf(svg, p.r, p.x, p.y, 11);
     });
     if (pts.length) {
@@ -539,7 +572,7 @@ function fig1() {  // no page filter: the trajectory is the chart
         fill: COLOR[wf]}));
     }
   });
-  legendVariants('lg1', shownWfs(), RINGKEY);
+  legendVariants('lg1', shownWfs(), RINGKEY + OTHERKEY);
 }
 
 /* ---------- Fig 2: latency vs tokens, two panels ---------- */
@@ -568,13 +601,13 @@ function fig2() {
       if (pts.length > 1) {
         svg.appendChild(el('polyline', {
           points: pts.map(p => `${p.x},${p.y}`).join(' '),
-          class: 'trail', stroke: COLOR[wf]
+          class: 'trail' + (isOther(wf) ? ' other' : ''), stroke: COLOR[wf]
         }));
       }
       pts.forEach(p => {
         marker(svg, MARK[p.r.page], p.x, p.y, 5.5, COLOR[wf],
           `${p.r.name} · ${p.r.page} page (${PGKB[p.r.page]})\n${pn.label}: ${p.r[pn.key].toLocaleString()}\n` +
-          `${p.r.wall}s${NOTMD(p.r)}`);
+          `${p.r.wall}s${NOTMD(p.r)}${MODEL(p.r)}`, isOther(wf));
         flagIf(svg, p.r, p.x, p.y, 10);
       });
       if (pts.length) {
@@ -584,7 +617,7 @@ function fig2() {
       }
     });
   });
-  legendVariants('lg2', shownWfs().filter(w => w !== 'bench_1_reference'), RINGKEY);
+  legendVariants('lg2', shownWfs().filter(w => w !== 'bench_1_reference'), RINGKEY + OTHERKEY);
 }
 
 /* ---------- Fig 3: input tokens by page, log ---------- */
@@ -611,25 +644,26 @@ function fig3() {
     if (pts.length < 2) return;
     svg.appendChild(el('polyline', {
       points: pts.map(p => `${p.x},${p.y}`).join(' '),
-      fill: 'none', stroke: COLOR[wf], 'stroke-width': 2, opacity: .85
+      fill: 'none', stroke: COLOR[wf], 'stroke-width': 2, opacity: .85,
+      'stroke-dasharray': isOther(wf) ? '5 4' : 'none'
     }));
     pts.forEach(p => {
       marker(svg, MARK[p.r.page], p.x, p.y, 5, COLOR[wf],
-        `${p.r.name} · ${p.r.page} page (${PGKB[p.r.page]})\n${p.r.tin.toLocaleString()} input tokens${NOTMD(p.r)}`);
+        `${p.r.name} · ${p.r.page} page (${PGKB[p.r.page]})\n${p.r.tin.toLocaleString()} input tokens${NOTMD(p.r)}${MODEL(p.r)}`, isOther(wf));
       flagIf(svg, p.r, p.x, p.y, 9.5);
     });
     const last = pts[pts.length - 1];
     svg.appendChild(txt(NAME[wf].split(' ')[0], {x: last.x + 11, y: last.y + 3.5,
       class: 'pl', fill: COLOR[wf]}));
   });
-  legendVariants('lg3', shownWfs().filter(w => w !== 'bench_1_reference'), RINGKEY);
+  legendVariants('lg3', shownWfs().filter(w => w !== 'bench_1_reference'), RINGKEY + OTHERKEY);
 }
 
 /* ---------- Fig 4: cost per 1k retained ---------- */
 function fig4() {
   const svg = document.getElementById('f4');
   svg.innerHTML = '';
-  const m = {l: 148, r: 60, t: 18, b: 52}, w = 900 - m.l - m.r, h = 380 - m.t - m.b;
+  const m = {l: 178, r: 60, t: 18, b: 52}, w = 900 - m.l - m.r, h = 380 - m.t - m.b;
   const rows = visRuns(r => r.calls > 0 && VC(r) > 0)
     .map(r => ({...r, eff: r.cost / (VC(r) / 1000)}))
     .sort((a, b) => a.eff - b.eff);
@@ -647,7 +681,9 @@ function fig4() {
   rows.forEach((r, i) => {
     const y = m.t + i * bh + bh * 0.18, bar = bh * 0.64;
     svg.appendChild(el('rect', {x: m.l, y: y, width: Math.max(xs(r.eff) - m.l, 1),
-      height: bar, fill: COLOR[r.wf], opacity: .88}));
+      height: bar, fill: COLOR[r.wf], opacity: .88,
+      stroke: isOther(r.wf) ? 'var(--ink)' : 'none', 'stroke-width': 1.2,
+      'stroke-dasharray': isOther(r.wf) ? '4 3' : 'none'}));
     svg.appendChild(txt(`${r.name} · ${r.page}`, {x: m.l - 9, y: y + bar / 2 + 3.5,
       class: 'tk', 'text-anchor': 'end', fill: 'var(--ink)'}));
     svg.appendChild(txt('$' + r.eff.toFixed(3), {x: xs(r.eff) + 7, y: y + bar / 2 + 3.5,
@@ -756,7 +792,8 @@ function buildFilters() {
     varBox.appendChild(chip(NAME[w].split(' ')[0], VIS.has(w), COLOR[w], () => {
       VIS.has(w) ? VIS.delete(w) : VIS.add(w);
       buildFilters(); redraw();
-    }, NAME[w] + (NOPROMPT.has(w) ? ' — ran without its system prompt' : '')));
+    }, NAME[w] + (NOPROMPT.has(w) ? ' — ran without its system prompt' : '') +
+       (isOther(w) ? ' — claude-sonnet-5; other cells are claude-sonnet-4-6' : '')));
   });
   PAGES.forEach(pg => {
     pgBox.appendChild(chip(`${pg} · ${PGKB[pg]}`, VISP.has(pg), null, () => {
@@ -767,6 +804,9 @@ function buildFilters() {
   const clean = ORDER.filter(w => !NOPROMPT.has(w));
   document.getElementById('fclean').setAttribute('aria-pressed',
     String(clean.every(w => VIS.has(w)) && ![...NOPROMPT].some(w => VIS.has(w))));
+  const same = ORDER.filter(w => !isOther(w));
+  document.getElementById('fsame').setAttribute('aria-pressed',
+    String(same.every(w => VIS.has(w)) && ![...OTHER].some(w => VIS.has(w))));
 }
 
 document.getElementById('fall').addEventListener('click', () => {
@@ -775,6 +815,11 @@ document.getElementById('fall').addEventListener('click', () => {
 });
 document.getElementById('fclean').addEventListener('click', () => {
   ORDER.forEach(w => NOPROMPT.has(w) ? VIS.delete(w) : VIS.add(w));
+  PAGES.forEach(p => VISP.add(p));
+  buildFilters(); redraw();
+});
+document.getElementById('fsame').addEventListener('click', () => {
+  ORDER.forEach(w => isOther(w) ? VIS.delete(w) : VIS.add(w));
   PAGES.forEach(p => VISP.add(p));
   buildFilters(); redraw();
 });
