@@ -33,7 +33,7 @@ for."*
 B7's input tokens barely track page size: 9,399 / 7,468 / 56,955 across 38 KB / 164 KB /
 535 KB. B3 makes the same point one layer down — deterministic HTML→Markdown *before* the
 model cuts medium-page input from 73,380 (B2) to 4,924, and it is the cheapest correct
-run in the entire benchmark.
+run on the small and medium pages (on Haiku, $0.014 for medium under rubric v2).
 
 **Line for the slide:** *"The cheapest token is the one you converted before the model saw
 it."*
@@ -90,10 +90,12 @@ benchmark produced. The benchmark harness is itself FlowDrop workflows.
 
 ## The three claims to lead with
 
-1. **The variant with the least agency never failed silently.** B3 — deterministic
-   conversion plus one LLM call — is the cheapest correct run on every page, and its only
-   failure (Haiku, large page, 4.3%) is visible truncation rather than a plausible wrong
-   answer. Every silent failure in the gallery came from a *more* agentic design.
+1. **The variant with the least agency almost never failed silently.** B3 — deterministic
+   conversion plus one LLM call — is correct in 15 of 16 graded runs and the cheapest correct
+   run on the small and medium pages. Its one failure (Haiku, large page) is a truncation to
+   8 % of the document that the pipeline still reported as `completed`; rubric v2 classes it
+   silent, because nothing but a length check would have caught it. Six of the seven silent
+   failures came from a *more* agentic design.
 2. **Every failure that mattered was silent**, and in three of four cases the metric
    reported success.
 3. **Architecture is a bigger lever than model choice**: 16× cost spread across variants

@@ -27,9 +27,10 @@ Put the B4/Sonnet 5 medium output on screen with no preamble:
 ```
 
 Ask the room what went wrong. Then reveal: the page is *"Drupal versus WordPress"*, and
-the agent redacted **all 46 mentions of Drupal** — the one thing it was told to keep.
-Then reveal the second half: **the metrics scored this run as a success.** Zero leaks,
-highest redaction count in the table.
+the agent put a mark on **"Drupal" 37 times** — the one thing it was told to keep. Not one
+mention survived. Then reveal the second half: **the v1 metrics scored this run as a success.**
+Zero leaks, highest redaction count in the table. Under rubric v2 it is the worst graded run
+in the dataset: subject preservation 0.26, precision 0.41.
 
 > *"This is what hallucination actually looks like in production. Not a made-up API. A
 > correct rule, applied confidently to the wrong entity, passing every check I had
@@ -48,8 +49,9 @@ model, not the framework.
 
 Then the honesty slide — put it early, not in the footnotes:
 - mostly n=1
-- retention is a byte proxy and cannot tell reproduction from invention
-- one whole arm of the benchmark ran with an erased prompt and I didn't notice for hours
+- the first rubric counted bytes and marks, and both were fooled by the same run; the report
+  was re-graded against gold documents (v2) and one of the four named failures was withdrawn
+- three early draws of one arm ran with an erased prompt and I didn't notice for hours
 
 ## 08:00 — The seven decisions (28 min, ~4 min each)
 
@@ -57,7 +59,7 @@ Then the honesty slide — put it early, not in the footnotes:
 |---|---|---|
 | **1. Output format / token economy** | B5 vs B7 tool shape — **the anchor chart** | 18.5× tokens, 6× cost, 0 quality cost |
 | **2. Reduce context** | B3 pre-conversion; B7 input flat vs page size | 73,380 → 4,924 input tokens |
-| **3. Injection & gates** | The three silent failures | 3 of 4 failures caught only by a content assertion |
+| **3. Injection & gates** | The seven silent failures; the heading blind spot | 7 of 116 graded runs said `completed` and were wrong; a two-second deterministic check against a gold document catches every one |
 | **4. Predictable IDs** | Call count | B7 = 2 calls on every page, both models |
 | **5. Atomic & reversible** | Memory cliff; Haiku's loud deaths | answer completed, then lost |
 | **6. Failure patterns in prompts** | The shadowed prompt | 338 tokens = 64 points |
