@@ -235,7 +235,7 @@ nodes:
     data:
       label: 'Text Output'
       config:
-        maxLength: 1000
+        maxLength: 1000000
         format: plain
         nodeType: default
         maxRetries: 0
@@ -355,8 +355,10 @@ edges:
 metadata:
   createdAt: '2026-08-27T08:03:34.948Z'
   updatedAt: '2026-09-03T22:56:37.449Z'
+  orchestrator_settings:
+    type: 'flowdrop_runtime:synchronous'
 created: 1788390754
-changed: 1788476197
+changed: 1788574198
 uid: 1
 input_ports:
   -

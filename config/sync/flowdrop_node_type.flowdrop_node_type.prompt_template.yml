@@ -47,4 +47,3 @@ unified_output_exposed: false
 tool_exposed: true
 confirmation: {  }
 reserved_port_exposure: {  }
-

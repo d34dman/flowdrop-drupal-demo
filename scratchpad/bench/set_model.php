@@ -22,6 +22,8 @@ $targets = [
   'bench_2_raw_html_llm', 'bench_3_markdown_llm', 'bench_4_ai_agent_tool',
   'bench_5_react_agent', 'bench_5a_react_agent_naive', 'bench_6_agent_autonomous',
   'react_agent_with_tools', 'react_agent_with_optimized_tools', 'bench_7_react_optimized',
+  'react_agent_engine', 'reflexion_agent_engine', 'react_agent_with_optimized_tools_v2',
+  'bench_8_react_with_tools_in_parent', 'bench_9_reflexion_with_tools_in_parent',
 ];
 
 $touched = 0;

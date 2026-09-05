@@ -20,7 +20,7 @@ nodes:
         agent_id: agent_bench_autonomous
         create_directly: true
         tool_usage_limits: {  }
-        llm_model: anthropic__claude-sonnet-4-6
+        llm_model: anthropic__claude-sonnet-5
         maxRetries: 0
         requiresConfirmation: ''
         task_description: 'Given a URL, fetch it, convert to Markdown and redact competitors.'
@@ -134,7 +134,7 @@ metadata:
   orchestrator_settings:
     type: 'flowdrop_runtime:synchronous'
 created: 1788110248
-changed: 1788171728
+changed: 1788572894
 uid: 0
 input_ports:
   -

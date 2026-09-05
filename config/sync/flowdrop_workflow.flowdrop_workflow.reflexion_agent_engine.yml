@@ -83,7 +83,7 @@ nodes:
       config:
         messages: {  }
         operation_type: chat
-        model: claude-opus-5
+        model: claude-sonnet-5
         temperature: 0
         maxTokens: 800000
         systemPrompt: ''
@@ -486,7 +486,7 @@ nodes:
       config:
         messages: {  }
         operation_type: chat
-        model: claude-opus-5
+        model: claude-sonnet-5
         temperature: 0
         maxTokens: 800000
         systemPrompt: "You are a strict reviewer. You see exactly two things: the user's request and a draft answer to it. Judge the draft against the request alone: does it fully and correctly answer what was asked? Your reply must begin with exactly one line: VERDICT: ACCEPT if it does, or VERDICT: REVISE if it does not. After a REVISE verdict, list concretely what is wrong or missing and what the next draft must change. Do not write the answer yourself."
@@ -732,7 +732,12 @@ nodes:
     data:
       label: 'Prompt Template'
       config:
-        template: "REVIEWER FEEDBACK on your previous draft (this is not a message from the user):\n\n{{ critique }}\n\nAddress every point above and reply with the COMPLETE revised answer to the user's original request. Do not reply to the reviewer, do not explain the changes, output only the revised answer."
+        template: |-
+          REVIEWER FEEDBACK on your previous draft (this is not a message from the user):
+
+          {{ critique }}
+
+          Address every point above and reply with the COMPLETE revised answer to the user's original request. Do not reply to the reviewer, do not explain the changes, output only the revised answer.
         dynamicInputs:
           -
             name: critique
@@ -1434,7 +1439,7 @@ metadata:
   createdAt: '2026-08-26T19:53:50.286Z'
   updatedAt: '2026-09-05T01:20:22.000Z'
 created: 1788567483
-changed: 1788567483
+changed: 1788572894
 uid: 1
 input_ports:
   -
@@ -1510,4 +1515,3 @@ output_schema:
       type: string
       x-data-type: string
 schema_version: 1.0.0
-

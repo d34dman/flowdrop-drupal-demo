@@ -80,8 +80,10 @@ foreach (file("$dir/runs.jsonl", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) 
     ];
     if (str_contains($nt, 'output')) {
       $d = json_decode((string) $job->get('output_data')->value, TRUE);
+      // A workflow may end in more than one output node (B8 has chat_output and
+      // a text_output capped at 1000 chars). Keep the longest, not the last.
       foreach (['message', 'text'] as $k) {
-        if (!empty($d[$k])) { $output = $d[$k]; }
+        if (!empty($d[$k]) && strlen($d[$k]) > strlen((string) $output)) { $output = $d[$k]; }
       }
     }
   }

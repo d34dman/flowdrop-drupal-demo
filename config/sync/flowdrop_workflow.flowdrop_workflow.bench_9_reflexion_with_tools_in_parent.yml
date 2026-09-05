@@ -317,8 +317,10 @@ edges:
 metadata:
   createdAt: '2026-08-27T08:03:34.948Z'
   updatedAt: '2026-09-05T01:08:09.034Z'
+  orchestrator_settings:
+    type: 'flowdrop_runtime:synchronous'
 created: 1788390754
-changed: 1788570489
+changed: 1788574198
 uid: 1
 input_ports:
   -
