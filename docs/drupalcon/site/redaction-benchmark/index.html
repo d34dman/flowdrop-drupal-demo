@@ -24,7 +24,7 @@ small{display:block;color:var(--ink-2);font-size:.85rem;margin-top:.25rem}
 </head>
 <body>
 <p class="crumb"><a href="../">All studies</a></p>
-<h1>Seven ways to <span class="bars">▌▌▌▌</span> a page</h1>
+<h1>Nine ways to <span class="bars">▌▌▌▌</span> a page</h1>
 <p>Everything published from the FlowDrop AI-pattern benchmark: one task, ten pipeline architectures, four models, 203 metered runs, 30 August to 5 September 2026. Re-graded under rubric v2 on 5 September. Research notes, the failure gallery and the raw CSV live in the <a href="https://github.com/d34dman/flowdrop-drupal-demo/tree/main/docs/drupalcon">repository</a>.</p>
 
 <h2>Slides</h2>
@@ -35,7 +35,9 @@ small{display:block;color:var(--ink-2);font-size:.85rem;margin-top:.25rem}
 <h2>Current pages · rubric v2</h2>
 <ul>
   <li><a href="artifacts/rubric-v2-scorecard.html">Rubric v2 Scorecard</a><small>Every run graded against a gold document: outcome-class matrix, six axes, cost per correct run, full table. · 2026-09-05</small></li>
-  <li><a href="artifacts/redactor-model-matrix-v2.html">Redactor Model Matrix v2</a><small>Variant × model × page: fidelity against cost, what was redacted on the medium page, fidelity as the page grows, cost per cell. · 2026-09-05</small></li>
+  <li><a href="artifacts/redactor-model-matrix-v2.html">Redactor Model Matrix v2</a><small>Variant × model × page: fidelity against cost, what was redacted on the medium page, fidelity as the page grows, cost per cell. Filter by model, page and variant. · 2026-09-06</small></li>
+  <li><a href="artifacts/redaction-benchmark-plots-v2.html">Redaction Benchmark Plots v2</a><small>One model at a time (Sonnet 4.6 by default): eight variants across three pages, five plots and the run table on the v2 axes. · 2026-09-06</small></li>
+  <li><a href="archive/v1/how-the-redaction-benchmark-works.html">How the Redaction Benchmark Works</a><small>Method explainer: the task, the corpus, all ten workflow graphs (B7–B9 added 6 September), how tokens and time are attributed. The metric sections describe v1. · 2026-09-06</small></li>
 </ul>
 
 <h2>Archive · rubric v1</h2>
@@ -44,9 +46,8 @@ small{display:block;color:var(--ink-2);font-size:.85rem;margin-top:.25rem}
   <li><a href="archive/v1/why-your-ai-agent-hallucinates.html">Why Your AI Agent Hallucinates</a><small>Talk-companion page: the failure modes and lessons behind the DrupalCon session abstract. Failure #4 was withdrawn under v2. · 2026-09-01</small></li>
   <li><a href="archive/v1/caching-the-agent-route.html">Caching the Agent Route</a><small>Token economy, and why prompt caching is unreachable for the agentic variants. Still current. · 2026-09-01</small></li>
   <li><a href="archive/v1/redaction-tradeoff-explorer.html">Redaction Tradeoff Explorer</a><small>Parallel-coordinates threshold explorer on the v1 metrics. · 2026-09-05</small></li>
-  <li><a href="archive/v1/redaction-benchmark-plots.html">Redaction Benchmark Plots</a><small>Benchmark overview across all variants with global filters, v1 metrics. · 2026-09-05</small></li>
+  <li><a href="archive/v1/redaction-benchmark-plots.html">Redaction Benchmark Plots</a><small>Benchmark overview across all variants with global filters, v1 metrics. Replaced by the v2 plots above. · 2026-09-05</small></li>
   <li><a href="archive/v1/url-shaped-tool-deep-dive.html">URL-Shaped Tool Deep Dive</a><small>B5 vs B7. The call-count and cost argument stands; the retention argument does not. · 2026-08-31</small></li>
-  <li><a href="archive/v1/how-the-redaction-benchmark-works.html">How the Redaction Benchmark Works</a><small>Method explainer: the task, the variants, the v1 metric caveats. · 2026-08-30</small></li>
   <li><a href="archive/v1/seven-ways-to-redact-a-page.html">Seven Ways to Redact a Page</a><small>The workflow architectures compared side by side; still plots the dropped B5a arm. · 2026-08-30</small></li>
   <li><a href="archive/v1/redactor-model-matrix.html">Redactor Model Matrix</a><small>Variant × model results grid on the v1 metrics. Replaced by the v2 matrix above. · 2026-09-05</small></li>
   <li><a href="archive/v1/react-redactor-deep-dive.html">ReAct Redactor Deep Dive</a><small>The B5 ReAct agent variant across four models, ranked by retention. · 2026-08-30</small></li>

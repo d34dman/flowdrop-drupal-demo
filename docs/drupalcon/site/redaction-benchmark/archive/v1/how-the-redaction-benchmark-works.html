@@ -142,14 +142,14 @@ footer li{margin-bottom:.45rem}
   <div class="wrap">
     <p class="kicker">FlowDrop Benchmark · Method</p>
     <h1>How the Redaction Benchmark Works</h1>
-    <p class="lede">Seven ways to do one job, wired seven different ways, measured the same way.
+    <p class="lede">Nine ways to do one job, wired ten different ways, measured the same way.
     <em>This is the setup — the graphs, the corpus, and how tokens and time were attributed to
     each run</em> so the numbers in the results can be trusted or argued with.</p>
     <dl class="task">
       <div><dt>The task</dt><dd>Fetch a URL, convert the page to Markdown, replace every
         competitor of Drupal CMS with a redaction block</dd></div>
       <div><dt>Redaction mark</dt><dd class="mono">▌▌▌▌</dd></div>
-      <div><dt>Model, every cell</dt><dd class="mono">claude-sonnet-4-6</dd></div>
+      <div><dt>Models</dt><dd class="mono">claude-sonnet-4-6 in the first pass; haiku-4-5, sonnet-5 and opus-5 in the matrix</dd></div>
       <div><dt>Orchestrator</dt><dd class="mono">flowdrop_runtime:synchronous</dd></div>
     </dl>
   </div>
@@ -191,7 +191,7 @@ footer li{margin-bottom:.45rem}
 <section>
   <div class="wrap">
     <p class="eyebrow">The variants</p>
-    <h2>Seven graphs, one job</h2>
+    <h2>Ten graphs, one job</h2>
     <div class="prose">
       <p>Each is a real FlowDrop workflow, built by cloning the originals and normalising three
       things so they are comparable: the hard-coded URL became a declared <code>url</code> input
@@ -262,7 +262,7 @@ flowchart LR
           <div class="plate"><pre class="mermaid">
 flowchart LR
   U(["url"]) --> H["http_request"]
-  H -->|body → additional_context| A["ai_agents_executor<br/>agent_w81pomww"]
+  H -->|body → additional_context| A["ai_agents_executor agent_w81pomww"]
   T["tool: html_to_markdown"] -.-> A
   A -->|response| O(["chat_output"])
 </pre><p class="plate-cap">3 jobs · 2 LLM calls · agent loop runs inside one node</p></div>
@@ -279,7 +279,7 @@ flowchart LR
           much of the result is the architecture and how much is the wording.</p>
           <div class="plate"><pre class="mermaid">
 flowchart LR
-  U(["url"]) -->|message| R["react_agent_with_tools<br/>sub-workflow"]
+  U(["url"]) -->|message| R["react_agent_with_tools sub-workflow"]
   R -->|reason| O(["chat_output"])
 </pre><p class="plate-cap">2 jobs at this level · 23 jobs once the loop is expanded</p></div>
           <div class="note warn" style="margin-top:1.3rem">
@@ -303,11 +303,82 @@ flowchart LR
           prompt</em> as Bench 5 — so any difference is the engine, not the instruction.</p>
           <div class="plate"><pre class="mermaid">
 flowchart LR
-  U(["url"]) -->|additional_context| A["ai_agents_executor<br/>agent_bench_autonomous"]
+  U(["url"]) -->|additional_context| A["ai_agents_executor agent_bench_autonomous"]
   T1["tool: http_fetch"] -.-> A
   T2["tool: html_to_markdown"] -.-> A
   A -->|response| O(["chat_output"])
 </pre><p class="plate-cap">2 jobs · 3 LLM calls · max_loops 25</p></div>
+        </div>
+      </article>
+
+      <article class="pipe">
+        <div class="pipe-hd"><h3>Bench 7 · ReAct agent, URL-shaped tool</h3>
+          <span class="chip agent">agent</span><span class="chip new">built for this</span>
+          <span class="role">Bench 5 with a tool that takes a URL instead of the page.</span></div>
+        <div class="pipe-bd">
+          <p>Built in the FlowDrop UI once Bench 5's failure mode was understood. The same
+          two-node top level and the same ReAct loop, but the agent's tool is
+          <code>url_to_markdown</code>: it passes a URL and receives Markdown, so the page never
+          travels through the model as a tool argument. The prompt was also tightened at the same
+          time, which is why Bench 8 exists. Two LLM calls on every page, at every size.</p>
+          <div class="plate"><pre class="mermaid">
+flowchart LR
+  U(["url"]) -->|message| R["react_agent_with_optimized_tools sub-workflow"]
+  T["tool: url_to_markdown"] -.-> R
+  R -->|reason| O(["chat_output"])
+</pre><p class="plate-cap">2 jobs at this level · 2 LLM calls · the page enters the context once, as Markdown</p></div>
+        </div>
+      </article>
+
+      <article class="pipe">
+        <div class="pipe-hd"><h3>Bench 8 · ReAct engine, tools wired in the parent</h3>
+          <span class="chip agent">agent</span><span class="chip new">built for this</span>
+          <span class="role">Bench 7's tool with Bench 5's prompt, on the new engine.</span></div>
+        <div class="pipe-bd">
+          <p>Added 5 September on FlowDrop's <code>react_agent_engine</code> sub-workflow. The
+          tools are no longer hidden inside the loop: <code>url_to_markdown</code>,
+          <code>http_request</code> and <code>html_to_markdown</code> are nodes in the parent
+          workflow, wired into the engine's tool port. The prompt is Bench 5's, unchanged, so the
+          difference between Bench 5 and Bench 8 is the tool shape alone. It lands where Bench 7
+          does: exactly two calls on every page.</p>
+          <div class="plate"><pre class="mermaid">
+flowchart LR
+  U(["url"]) -->|message| E["react_agent_engine sub-workflow"]
+  T1["url_to_markdown sub-workflow"] -->|tool| E
+  T2["http_request"] -->|tool| E
+  T3["html_to_markdown"] -->|tool| E
+  E -->|reason| O(["chat_output"])
+</pre><p class="plate-cap">5 jobs at this level · 2 LLM calls · tools declared as nodes, not inside the loop</p></div>
+        </div>
+      </article>
+
+      <article class="pipe">
+        <div class="pipe-hd"><h3>Bench 9 · Reflexion engine, critic loop</h3>
+          <span class="chip agent">agent</span><span class="chip new">built for this</span>
+          <span class="role">Bench 8 plus a critic that can send the answer back.</span></div>
+        <div class="pipe-bd">
+          <p>Same tools, same prompt as Bench 8, on the <code>reflexion_agent_engine</code>: a
+          critic reviews the final Markdown and can return it for revision up to three times. It
+          asks whether a second opinion buys anything a single pass does not. Call counts vary
+          with how often the critic objects, from three to nine per run, and every revision
+          re-sends the transcript, so the cost is several times Bench 8's for the same page.</p>
+          <div class="plate"><pre class="mermaid">
+flowchart LR
+  U(["url"]) -->|message| E["reflexion_agent_engine sub-workflow actor → critic, ≤ 3 revisions"]
+  T1["url_to_markdown sub-workflow"] -->|tool| E
+  T2["http_request"] -->|tool| E
+  T3["html_to_markdown"] -->|tool| E
+  E -->|reason| O(["chat_output"])
+</pre><p class="plate-cap">5 jobs at this level · 3–9 LLM calls · critic accepts or returns the draft</p></div>
+          <div class="note warn" style="margin-top:1.3rem">
+            <h4>Three cells were rerun on a fixed FlowDrop</h4>
+            <p>On the revision round the agent sometimes answered without calling a tool, and the
+            loop runtime failed the tool node's consumer instead of skipping it
+            (<a href="https://git.drupalcode.org/project/flowdrop/-/work_items/3592443">flowdrop#3592443</a>).
+            A plain ReAct engine never hits this because its loop exits on the first no-tool round;
+            any critic or retry pattern built on FlowDrop loops did. FlowDrop fixed it the same day
+            and the three failed cells were rerun on the fixed module.</p>
+          </div>
         </div>
       </article>
 
@@ -343,19 +414,19 @@ flowchart LR
     <div class="plate"><pre class="mermaid">
 flowchart TB
   TB["toolbox"] -. tools .-> RE
-  HR["http_request<br/><i>as tool</i>"] --> TB
-  HM["html_to_markdown<br/><i>as tool</i>"] --> TB
-  IN(["message"]) --> CB4["conversation_buffer<br/>conversation"]
+  HR["http_request <i>as tool</i>"] --> TB
+  HM["html_to_markdown <i>as tool</i>"] --> TB
+  IN(["message"]) --> CB4["conversation_buffer conversation"]
   SP(["system_prompt"]) -.-> RE
   CB4 --> MA["message_assemble"]
-  CB1["conversation_buffer<br/>scratchpad"] --> MA
-  MA -->|messages| RE["reason<br/>LLM call"]
+  CB1["conversation_buffer scratchpad"] --> MA
+  MA -->|messages| RE["reason LLM call"]
   RE -->|has_tool_calls| G1{"boolean_gateway"}
   G1 -->|False| OUT(["text_output / reason"])
   G1 -->|True| TI["tool_invoke"]
   RE -->|tool_calls| TI
   TI -->|executed_any| G2{"boolean_gateway"}
-  G2 -->|True| CB2["conversation_buffer<br/>tool results"]
+  G2 -->|True| CB2["conversation_buffer tool results"]
   TI -->|tool_messages| CB2
   CB2 -.->|loop_back| CB1
   RE -->|assistant_message| CB3["conversation_buffer"]
@@ -388,18 +459,18 @@ flowchart TB
     direction TB
     A1["generate run uuid"] --> A2["BenchRunContext::set"]
     A2 --> A3["launcher->launch(workflow, url)"]
-    A3 --> A4["append run_id, pipeline_id,<br/>context_uuid, wall_seconds"]
+    A3 --> A4["append run_id, pipeline_id, context_uuid, wall_seconds"]
   end
   subgraph E["during the run"]
     direction TB
-    B1["ai.pre_generate_response"] --> B2["subscriber appends<br/>tag aim_context:uuid"]
-    B2 --> B3["ai_metering writes<br/>context_id on the usage row"]
-    B4["each job stores<br/>execution_time_us"]
+    B1["ai.pre_generate_response"] --> B2["subscriber appends tag aim_context:uuid"]
+    B2 --> B3["ai_metering writes context_id on the usage row"]
+    B4["each job stores execution_time_us"]
   end
   subgraph C["collect.php — derives everything, later"]
     direction TB
-    C1["read runs.jsonl"] --> C2["load pipeline + jobs<br/>→ timing, payload, output"]
-    C1 --> C3["SELECT ... WHERE context_id = uuid<br/>→ tokens, cost"]
+    C1["read runs.jsonl"] --> C2["load pipeline + jobs → timing, payload, output"]
+    C1 --> C3["SELECT ... WHERE context_id = uuid → tokens, cost"]
     C2 --> C4["metrics.jsonl"]
     C3 --> C4
   end
@@ -499,33 +570,10 @@ drush php:script collect.php -- results        <span class="c"># re-runnable, fr
   </div>
 </footer>
 
-<script>
-window.addEventListener('DOMContentLoaded', function () {
-  // Diagram plates keep a constant light ground in both themes, so the mermaid
-  // palette is fixed rather than theme-reactive.
-  if (window.mermaid && window.mermaid.initialize) {
-    window.mermaid.initialize({
-      startOnLoad: true,
-      theme: 'base',
-      themeVariables: {
-        fontFamily: "'IBM Plex Mono', monospace",
-        fontSize: '13px',
-        primaryColor: '#E3EDF4',
-        primaryTextColor: '#111820',
-        primaryBorderColor: '#1B6FA8',
-        lineColor: '#5C6672',
-        secondaryColor: '#F5E8DD',
-        tertiaryColor: '#FFFFFF',
-        background: '#F2F4F7'
-      }
-    });
-  }
-});
-</script>
 
 <!--claude-mermaid-runtime-begin:3477-->
 <style>.mermaid-diagram{margin-block:4px}.mermaid-diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}</style>
-<script src="/_runtime/mermaid-11.16.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11.16.1/dist/mermaid.min.js"></script>
 <script>(function(){
 var CFG={"palettes":{"light":{"surface":"#f4efe4","text":"#42392e","line":"#8a7f6d","border":"#7a6c52","bg":"#fffdf8"},"dark":{"surface":"#262b34","text":"#f2f3f5","line":"#a8adb8","border":"#9aa4b8","bg":"#1f232b"}}};
 if(typeof mermaid==='undefined')return;

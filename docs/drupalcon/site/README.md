@@ -16,7 +16,7 @@ site/
 
 | Folder | Study |
 |---|---|
-| `redaction-benchmark/` | Seven ways to redact a page. 20-minute tech all-hands deck (4 Sep 2026); the current pages under `artifacts/` are generated from `docs/drupalcon/data/runs_v2.csv` by `data/build_site_v2.py` (scorecard) and `data/build_matrix_v2.py` (model matrix), so regenerate rather than edit; the nine v1 pages exported from claude.ai live under `archive/v1/`. |
+| `redaction-benchmark/` | Nine ways to redact a page. 20-minute tech all-hands deck (4 Sep 2026); the current pages under `artifacts/` are generated from `docs/drupalcon/data/runs_v2.csv` by `data/build_site_v2.py` (scorecard) and `data/build_matrix_v2.py` (model matrix), so regenerate rather than edit; the nine v1 pages exported from claude.ai live under `archive/v1/`. |
 
 All pages are self-contained apart from Google Fonts. Open any file directly in a
 browser, or serve the folder with `python3 -m http.server`.
