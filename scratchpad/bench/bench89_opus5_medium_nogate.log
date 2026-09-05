@@ -1,0 +1,35 @@
+=== cells=B8 (bench_8_react_with_tools_in_parent) model=claude-opus-5 pages=medium reps=1 tag=bench89-opus5-medium-nogate ===
+
+updated 0 workflows -> anthropic:claude-opus-5
+ [warning] ToolBox flowdrop_node_processor_toolbox.1 has no tools wired into it.
+ [warning] ToolBox flowdrop_node_processor_toolbox.1 has no tools wired into it.
+ [warning] Pipeline 608 has a loop-extent snapshot that could not be restored; loops in this run fall back to the per-node bound.
+ [warning] Cross-iteration data read on pipeline 607: job 5664 (node message_assemble.1, iteration 1) is satisfied by source node conversation_buffer.4 (job 5656, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Removed disallowed Markdown image with URL: https://assets.ibm.com/is/image/ibm/23714536?ts=1734524278982&dpr=off
+ [warning] Removed disallowed Markdown image with URL: https://assets.ibm.com/is/image/ibm/modernize_landing_page_1_1_1200x1200?ts=1773945565222&dpr=off
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/think/cloud
+ [warning] Removed disallowed Markdown link with URL: https://cloud.ibm.com/docs/solution-tutorials?topic=solution-tutorials-lamp-stack-on-vpc
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/forms/news-mkt-52954
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/think/videos/ai-academy
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/topics/lamp-stack
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/topics/containers
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/topics/kubernetes
+ [warning] Removed disallowed Markdown link with URL: https://www.linkedin.com/shareArticle?url=https://www.ibm.com/think/topics/drupal-wordpress&title=Drupal%20WordPress
+ [warning] Removed disallowed Markdown link with URL: https://www.facebook.com/share.php?u=https://www.ibm.com/think/topics/drupal-wordpress
+ [warning] Removed disallowed Markdown link with URL: https://x.com/intent/tweet?text=Drupal%20WordPress&url=https://www.ibm.com/think/topics/drupal-wordpress
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/forms/mkt-52620
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/account/reg/signup?formid=urx-52060
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/cloud-pak-for-business-automation/content-services
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/filenet-content-manager
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/enterprise-records
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/consulting/hybrid-by-design
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/cloud-pak-for-business-automation/content-services
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/content-manager
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/ecm-system-monitor
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/solutions/enterprise-content-management
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/account/reg/signup?formid=urx-45706
+  bench_8_react_with_tools_in_parent medium  r1   completed  wall=  57.84s pipeline=606
+appended to /var/www/html/scratchpad/bench/results/runs.jsonl
+  !! pipeline  missing for bench_8_react_with_tools_in_parent__medium__r1__1788626486
+collected 203 runs -> /var/www/html/scratchpad/bench/results/metrics.jsonl
+=== COMPLETE tag=bench89-opus5-medium-nogate ===
