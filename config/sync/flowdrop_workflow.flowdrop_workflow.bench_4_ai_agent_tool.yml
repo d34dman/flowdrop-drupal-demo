@@ -21,7 +21,7 @@ nodes:
         agent_id: agent_w81pomww
         create_directly: true
         tool_usage_limits: {  }
-        llm_model: anthropic__claude-sonnet-5
+        llm_model: anthropic__claude-opus-5
         maxRetries: 0
         requiresConfirmation: ''
         task_description: 'HTML to Markdown with redaktion'
@@ -213,7 +213,7 @@ metadata:
   orchestrator_settings:
     type: 'flowdrop_runtime:synchronous'
 created: 1788088649
-changed: 1788572894
+changed: 1788623257
 uid: 0
 input_ports:
   -

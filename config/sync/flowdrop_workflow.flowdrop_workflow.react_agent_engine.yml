@@ -79,7 +79,7 @@ nodes:
       config:
         messages: {  }
         operation_type: chat
-        model: claude-sonnet-5
+        model: claude-opus-5
         temperature: 0
         maxTokens: 800000
         systemPrompt: ''
@@ -727,7 +727,7 @@ metadata:
   createdAt: '2026-08-26T19:53:50.286Z'
   updatedAt: '2026-09-03T23:09:39.501Z'
 created: 1788390335
-changed: 1788572894
+changed: 1788623258
 uid: 1
 input_ports:
   -

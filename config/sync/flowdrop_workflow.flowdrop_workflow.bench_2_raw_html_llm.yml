@@ -75,7 +75,7 @@ nodes:
     data:
       label: Chat
       config:
-        model: claude-sonnet-5
+        model: claude-opus-5
         operation_type: chat
         temperature: 0
         maxTokens: 200000
@@ -199,7 +199,7 @@ metadata:
   orchestrator_settings:
     type: 'flowdrop_runtime:synchronous'
 created: 1788088649
-changed: 1788572894
+changed: 1788623257
 uid: 0
 input_ports:
   -

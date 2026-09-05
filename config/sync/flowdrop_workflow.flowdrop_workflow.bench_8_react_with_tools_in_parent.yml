@@ -93,7 +93,7 @@ nodes:
         executionMode: job
         nodeType: default
         maxRetries: 0
-        requiresConfirmation: ''
+        requiresConfirmation: waive
         ports:
           outputs:
             -
@@ -143,7 +143,7 @@ nodes:
         timeout: 30
         follow_redirects: true
         maxRetries: 0
-        requiresConfirmation: ''
+        requiresConfirmation: waive
         ports:
           outputs:
             -
@@ -199,7 +199,7 @@ nodes:
         italic_style: '*'
         strip_placeholder_links: false
         maxRetries: 0
-        requiresConfirmation: ''
+        requiresConfirmation: waive
         ports:
           outputs:
             -
@@ -354,11 +354,11 @@ edges:
     class: flowdrop--edge--data
 metadata:
   createdAt: '2026-08-27T08:03:34.948Z'
-  updatedAt: '2026-09-03T22:56:37.449Z'
+  updatedAt: '2026-09-05T16:40:46.109Z'
   orchestrator_settings:
     type: 'flowdrop_runtime:synchronous'
 created: 1788390754
-changed: 1788574198
+changed: 1788626560
 uid: 1
 input_ports:
   -
