@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>URL-Shaped Tool Deep Dive</title>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ink:#111820; --paper:#F5F6F8; --surf:#FFFFFF; --rule:#DDE1E6;
+  --muted:#5C6672; --faint:#8A94A0; --grid:#E7EAEE;
+  --accent:#B03A5B; --accent-soft:#F5E6EB;
+  --signal:#B0531D; --good:#2E7355; --bad:#AB3427;
+  --b5:#eb6834; --b7:#1baf7a; --alt:#2a78d6;
+  --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Menlo,monospace;
+  --sp:clamp(1rem,3vw,1.6rem);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#E4E9EE; --paper:#0D1218; --surf:#151D26; --rule:#26313D;
+    --muted:#8B97A5; --faint:#6B7885; --grid:#1E2833;
+    --accent:#E0798F; --accent-soft:#2B1820;
+    --signal:#D98A4A; --good:#5FBF92; --bad:#E0705F;
+    --b5:#d95926; --b7:#199e70; --alt:#3987e5;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E4E9EE; --paper:#0D1218; --surf:#151D26; --rule:#26313D;
+  --muted:#8B97A5; --faint:#6B7885; --grid:#1E2833;
+  --accent:#E0798F; --accent-soft:#2B1820;
+  --signal:#D98A4A; --good:#5FBF92; --bad:#E0705F;
+  --b5:#d95926; --b7:#199e70; --alt:#3987e5;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1140px;margin:0 auto;padding:0 var(--sp)}
+.prose{max-width:68ch}
+h1,h2,h3,.eyebrow,text{font-family:var(--display)}
+h1{font-size:clamp(2.3rem,5.6vw,3.9rem);line-height:1.03;font-weight:800;
+   letter-spacing:-.028em;margin:0;text-wrap:balance}
+h2{font-size:clamp(1.4rem,3vw,1.95rem);line-height:1.12;font-weight:700;
+   letter-spacing:-.02em;margin:0 0 .3em;text-wrap:balance}
+p{margin:0 0 1em}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.87em;background:var(--accent-soft);padding:.1em .34em}
+
+.eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);display:flex;align-items:center;gap:.6em;margin:0 0 .9em}
+.eyebrow::before{content:"▌▌";font-family:var(--mono);color:var(--accent);letter-spacing:-.1em}
+
+header{border-bottom:1px solid var(--rule);background:var(--surf);
+  padding:clamp(2.6rem,7vw,4.2rem) 0 clamp(1.6rem,4vw,2.4rem)}
+.kicker{font-family:var(--mono);font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 1.4rem}
+.lede{font-size:clamp(1.04rem,2vw,1.22rem);color:var(--muted);margin:1.3rem 0 0;max-width:64ch}
+.lede em{color:var(--ink);font-style:normal;font-weight:600}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);margin-top:2rem}
+.tile{background:var(--surf);padding:1.1rem 1.2rem}
+.tile .v{font-family:var(--display);font-size:1.7rem;font-weight:800;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums}
+.tile .v.good{color:var(--good)}
+.tile .k{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-top:.2rem}
+
+section{padding:clamp(2.4rem,5vw,3.8rem) 0;border-bottom:1px solid var(--rule)}
+.fig{border:1px solid var(--rule);background:var(--surf);margin-top:1.6rem}
+.fig-bd{padding:1rem .8rem .4rem;overflow-x:auto}
+.fig-cap{font-family:var(--mono);font-size:.72rem;color:var(--muted);
+  padding:.7rem 1.1rem;border-top:1px solid var(--rule)}
+svg{display:block;min-width:600px;width:100%;height:auto}
+.ax{stroke:var(--rule);stroke-width:1}
+.gl{stroke:var(--grid);stroke-width:1}
+.tk{font-family:var(--mono);font-size:10px;fill:var(--faint)}
+.axl{font-family:var(--display);font-size:10.5px;font-weight:600;fill:var(--muted);
+  letter-spacing:.09em;text-transform:uppercase}
+.pl{font-family:var(--mono);font-size:10px;fill:var(--ink)}
+.pt{font-family:var(--mono);font-size:9.5px;font-weight:500;
+  paint-order:stroke;stroke:var(--surf);stroke-width:2.5px;stroke-linejoin:round}
+.fct{font-family:var(--display);font-weight:600;fill:var(--muted)}
+.dot{stroke:var(--surf);stroke-width:1.5}
+.dot:hover{stroke:var(--ink);stroke-width:2}
+.refline{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 4;opacity:.7}
+.ghost{opacity:.42}
+
+/* schematic */
+.lane{fill:var(--surf);stroke:var(--rule);stroke-width:1}
+.box{stroke-width:1.4;fill:var(--surf)}
+.blabel{font-family:var(--display);font-size:11.5px;font-weight:600;fill:var(--ink)}
+.bsub{font-family:var(--mono);font-size:9px;fill:var(--muted)}
+.flow{fill:none;stroke-linecap:round}
+.flowlbl{font-family:var(--mono);font-size:9.5px}
+
+.legend{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;padding:.85rem 1.1rem;
+  border-top:1px solid var(--rule);font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.lg{display:flex;align-items:center;gap:.45em}
+.sw{width:11px;height:11px;border-radius:50%;flex:none}
+.sw.sq{border-radius:2px}
+
+.note{border:1px solid var(--rule);border-left:3px solid var(--accent);background:var(--surf);
+  padding:1.15rem 1.3rem;margin-top:1.5rem}
+.note.warn{border-left-color:var(--bad)}
+.note.good{border-left-color:var(--good)}
+.note h3{font-size:1rem;margin:0 0 .3em}
+.note p{font-size:.93rem;color:var(--muted);margin:.3rem 0 0;max-width:72ch}
+
+.tblwrap{overflow-x:auto;border:1px solid var(--rule);background:var(--surf);margin-top:1.6rem}
+table{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:.74rem;
+  font-variant-numeric:tabular-nums}
+th{font-family:var(--display);font-size:.66rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);text-align:right;padding:.55rem .7rem;
+  border-bottom:1px solid var(--rule);white-space:nowrap}
+th:first-child,th:nth-child(2),th:nth-child(3){text-align:left}
+td{padding:.42rem .7rem;border-bottom:1px solid var(--grid);text-align:right;white-space:nowrap}
+td:first-child,td:nth-child(2),td:nth-child(3){text-align:left}
+tr.grp td{border-top:2px solid var(--rule)}
+tr.void td{color:var(--faint)}
+td .mdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:.5em}
+td.bad{color:var(--bad);font-weight:600}
+td.win{color:var(--good);font-weight:600}
+
+footer{padding:2.4rem 0 4rem;color:var(--muted);font-size:.9rem}
+footer ul{padding-left:1.1rem;max-width:68ch}
+footer li{margin-bottom:.4rem}
+</style>
+
+<header>
+  <div class="wrap">
+    <p class="kicker">FlowDrop Benchmark · Bench 7 vs Bench 5 · Sonnet 5</p>
+    <h1>The URL-Shaped Tool</h1>
+    <p class="lede">Two ReAct agents, same model, same system prompt, same three pages.
+    The only difference is <em>the shape of the tool's argument</em>: B5's converter takes
+    the page's HTML, so the document has to travel through the model's own output channel.
+    B7's converter takes <em>a URL</em>. That one change moves the document out of the
+    token stream — and everything downstream of it moves too.</p>
+    <div class="tiles">
+      <div class="tile"><div class="v good">18×</div><div class="k">fewer input tokens ·
+        large page: 57k against 1,055k</div></div>
+      <div class="tile"><div class="v good">$0.41 vs $2.47</div><div class="k">same page,
+        same model — and B7 kept more of it</div></div>
+      <div class="tile"><div class="v">2 calls, always</div><div class="k">B7 on every page
+        size · B5 took 3, 2, then 4</div></div>
+      <div class="tile"><div class="v good">94.6 · 94.6 · 94.6</div><div class="k">three
+        B7 draws of one cell · B5 gave 51, 71, 95</div></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 01</p>
+    <h2>Where the document actually travels</h2>
+    <div class="prose">
+      <p>Both workflows are the same FlowDrop ReAct node with the same instructions. Both
+      end with clean redacted Markdown. The difference is one line in a tool schema.</p>
+      <p>B5's <code>html_to_markdown</code> tool takes the page content as an argument, so
+      the model must <em>emit the entire document</em> to call it, then read the result back
+      in. The page crosses the model boundary three times: in as context, out as a tool
+      argument, in again as a tool result. B7's <code>url_to_markdown</code> takes a
+      URL — about ten tokens. The fetch and the conversion happen server-side in Drupal, and
+      only the finished Markdown enters the conversation, once.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f0" viewBox="0 0 940 400" role="img"
+        aria-label="Schematic comparing how the document travels through B5 and B7"></svg></div>
+      <div class="fig-cap">Large-page figures on the arrows. Thick strokes are the document
+        moving as tokens; thin strokes are references. B5 pays for the page four times over
+        the run because the ReAct loop re-sends the transcript on each iteration; B7 pays
+        for it once.</div>
+    </div>
+    <div class="note">
+      <h3>Why the output channel is the expensive one</h3>
+      <p>A tool argument is generated text. It is billed at output rates — 5× input on
+      Sonnet 5 — it is capped by <code>max_tokens</code>, and it is <em>reconstructed</em>
+      rather than copied, so it can drift. Passing bulk content as a tool argument makes the
+      model a very costly transport layer for bytes it already has. A URL argument is O(1)
+      regardless of page size; the content path becomes plain server-side code.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 02</p>
+    <h2>The input-token collapse</h2>
+    <div class="prose">
+      <p>Input tokens per run, log scale. B5's line climbs steeply and then vertically — on
+      the large page the loop took four iterations, and re-sending the transcript each time
+      cost <em>1,055,106 input tokens</em>. B7's line is nearly flat: 9,399 on the small
+      page, 7,468 on the medium, 56,955 on the large. The large page still costs something —
+      the converted Markdown does enter the conversation — but it enters once, not
+      cumulatively.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f2" viewBox="0 0 940 400" role="img"
+        aria-label="Log scale line chart of input tokens by page size for B5 and B7"></svg></div>
+      <div class="legend" id="lg2"></div>
+      <div class="fig-cap">Point labels are the call count the ReAct loop used for that
+        cell. B7's medium-page input is lower than its small-page input because input here
+        is dominated by the prompt and the converted Markdown, not by the raw HTML — the
+        medium page is larger but converts to less prose. Hover for full numbers.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 03</p>
+    <h2>Cheaper and more faithful, on the same page</h2>
+    <div class="prose">
+      <p>The usual read of an optimisation is that you trade quality for cost. This one does
+      not. Bars are cost; markers are how much of the control document survived. On the
+      large page B7 costs <em>a sixth</em> of B5 and retains more (80% against 74%). On the
+      medium page the two are indistinguishable in fidelity — 93.2% and 93.4% — at a fifth
+      of the price. On the small page B5's draw collapsed to a 51% summary while B7 held
+      94.6%.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f3" viewBox="0 0 940 400" role="img"
+        aria-label="Paired cost bars with retention markers per page for B5 and B7"></svg></div>
+      <div class="legend" id="lg3"></div>
+      <div class="fig-cap">Cost on the left axis (log, so all three pages fit); retention as
+        a hollow marker on the right axis. Single draw per bar in this sweep — Figure 04
+        is what says how much a single draw can move.</div>
+    </div>
+    <div class="note warn">
+      <h3>What B7 does not fix: redaction accuracy</h3>
+      <p>On the medium page — 36 competitor mentions in the control — B7 placed 28 marks and
+      <strong>left 2 mentions readable</strong>; B5 placed 29 and left 1. On the large page
+      both placed 4 and leaked none. The tool shape governs how the document moves, not how
+      carefully the model reads it. Redaction quality is a prompting and evaluation problem,
+      and it is still open in both architectures.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 04</p>
+    <h2>Three draws of one cell</h2>
+    <div class="prose">
+      <p>The small page, Sonnet 5, run three times through each workflow. This is the
+      finding that matters most for anything going to production, and it is invisible in a
+      single-draw table.</p>
+      <p><strong>B7 returned 8,715, 8,715 and 8,716 characters</strong> — 94.6% retention
+      every time, costs within six hundredths of a cent, two calls each. <strong>B5 returned
+      3,721, 5,818 and 8,318</strong> — 51%, 71%, 95% — at $0.13, $0.19 and $0.27. Same
+      model, same prompt, same page. When the document has to survive a round trip through
+      generated text, how much of it survives is a draw.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f4" viewBox="0 0 940 330" role="img"
+        aria-label="Dot plot of three repeated draws per workflow on the small page"></svg></div>
+      <div class="legend" id="lg4"></div>
+      <div class="fig-cap">Small page (~38 KB), Sonnet 5, n=3 each. Left panel retention,
+        right panel cost. B7's three markers overlap almost exactly at both. Bars behind the
+        markers show the spread of each triple.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 05</p>
+    <h2>Does it hold when the model changes?</h2>
+    <div class="prose">
+      <p>B7 was re-run end to end on Sonnet 4.6 to check whether the behaviour belongs to
+      the architecture or to one model. It holds: <em>two calls on every page</em> for both
+      models, and near-identical fidelity on the two pages that carry real content — 93.3%
+      against 93.2% on the medium, 80.9% against 79.7% on the large. Sonnet 4.6 is slower
+      and diverges on the small page (69% against 95%), but the shape of the run is the
+      same. Compare that with B5 in the model matrix, where changing the model changed the
+      call count, the cost by an order of magnitude, and in one case whether anything came
+      back at all.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f5" viewBox="0 0 940 340" role="img"
+        aria-label="B7 retention and cost compared across Sonnet 5 and Sonnet 4.6"></svg></div>
+      <div class="legend" id="lg5"></div>
+      <div class="fig-cap">B7 only. Both models ran the identical workflow with the identical
+        system prompt. Wall clock is the one axis that does move: Sonnet 4.6 took 327s on the
+        large page against Sonnet 5's 225s.</div>
+    </div>
+    <div class="note warn">
+      <h3>Three early B7 runs are on this page but excluded from every figure</h3>
+      <p>The first three B7 draws returned 30% retention and looked like a failure of the
+      approach. They were not: they hit a FlowDrop bug — an <em>exposed but unconnected</em>
+      input port resolves to empty and silently shadows the node's configured system prompt,
+      so the agent ran with no instructions at all. (B5 was long believed to share this
+      fault; it does not. Its parent forwards the prompt through the sub-workflow input port,
+      which is why its token counts never showed the gap.) Their input token count gives it away: 9,061 against 9,399 once the prompt
+      reaches the model. They are listed in the table, marked, and excluded from Figures 01
+      to 05. Filed upstream as
+      <code>flowdrop#3592438</code>.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">The numbers</p>
+    <h2>Every run behind this page</h2>
+    <div class="tblwrap"><table id="tbl">
+      <thead><tr><th>Page</th><th>Variant</th><th>Model</th><th>Cost</th><th>Wall</th>
+        <th>Calls</th><th>Tokens in</th><th>Tokens out</th><th>Chars</th>
+        <th>Redacted</th><th>Leaks</th><th>Retention</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <div class="note">
+      <h3>The cost of producing this comparison</h3>
+      <p>Every run in the table is real API spend. The head-to-head Sonnet 5 sweep cost
+      <strong>$3.46</strong>, of which <strong>$2.91 was B5</strong> and <strong>$0.55 was
+      B7</strong> — the benchmark itself is a small demonstration of the finding.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="eyebrow">Reading these honestly</p>
+    <ul>
+      <li><strong>n=3 on the small page, n=1 elsewhere.</strong> The medium and large cells
+        are single draws. Figure 04 exists precisely because a single draw of B5 can land
+        anywhere between 51% and 95%; treat the medium and large B5 numbers as one sample
+        from a wide distribution, and the B7 numbers as one sample from a narrow one.</li>
+      <li><strong>The third draw in Figure 04 is the head-to-head run itself</strong> —
+        the small-page cells in Figures 02, 03 and 05 are draw 3 of each triple, not a
+        fourth independent run. Nothing is double-counted in the $3.46 total.</li>
+      <li><strong>Retention is a byte proxy</strong> — de-noised identically on both sides
+        (link targets and image alt blocks stripped, whitespace collapsed) and measured
+        against a Bench 1 control fetch of the same URL. It cannot tell a faithful
+        reproduction from fluent invented prose. The redaction and leak counts are what say
+        whether the task itself was done.</li>
+      <li><strong>Competitor mentions in each control:</strong> small 0, medium 36, large 5.
+        A small-page run cannot score redactions because there is nothing to redact — its
+        zeros are not misses.</li>
+      <li><strong>Costs are metered, not estimated</strong> — read from
+        <code>ai_metering_usage</code> per run via an <code>aim_context</code> tag, and
+        reconciled against the Anthropic billing export. No cache reads on any row: prompt
+        caching is unreachable through this provider (<code>ai_provider_anthropic</code>
+        speaks the OpenAI-compatible endpoint, which drops <code>cache_control</code>).</li>
+      <li><strong>Companion pages:</strong> the all-variant benchmark with global filters,
+        the interactive threshold explorer, and the B5-only model matrix.</li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+const D = {
+ refden: {small: 6648, medium: 12550, large: 50082},
+ target: {small: 0, medium: 36, large: 5},
+ runs: [
+  {set:'head', wf:'B5', page:'small',  model:'sonnet-5',  rep:1, calls:3, tin:47539,   tout:3944,  wall:39.9,  cost:0.1345, chars:3721,  kept:50.6, red:0,  leak:0},
+  {set:'head', wf:'B7', page:'small',  model:'sonnet-5',  rep:1, calls:2, tin:9399,    tout:6379,  wall:52.0,  cost:0.0826, chars:8716,  kept:94.6, red:0,  leak:0},
+  {set:'head', wf:'B5', page:'medium', model:'sonnet-5',  rep:1, calls:2, tin:91622,   tout:12442, wall:113.5, cost:0.3077, chars:11491, kept:93.4, red:29, leak:1},
+  {set:'head', wf:'B7', page:'medium', model:'sonnet-5',  rep:1, calls:2, tin:7468,    tout:4540,  wall:41.9,  cost:0.0603, chars:11479, kept:93.2, red:28, leak:2},
+  {set:'head', wf:'B5', page:'large',  model:'sonnet-5',  rep:1, calls:4, tin:1055106, tout:35629, wall:316.1, cost:2.4665, chars:37162, kept:74.3, red:4,  leak:0},
+  {set:'head', wf:'B7', page:'large',  model:'sonnet-5',  rep:1, calls:2, tin:56955,   tout:29528, wall:224.7, cost:0.4092, chars:39614, kept:79.7, red:4,  leak:0}
+ ],
+ reps: [
+  {wf:'B7', rep:1, calls:2, tin:9399, tout:6322,  wall:52.4,  cost:0.0820, chars:8715, kept:94.6},
+  {wf:'B7', rep:2, calls:2, tin:9399, tout:6362,  wall:51.2,  cost:0.0824, chars:8715, kept:94.6},
+  {wf:'B7', rep:3, calls:2, tin:9399, tout:6379,  wall:52.0,  cost:0.0826, chars:8716, kept:94.6},
+  {wf:'B5', rep:1, calls:3, tin:51630, tout:8926,  wall:72.6,  cost:0.1925, chars:5818, kept:70.5},
+  {wf:'B5', rep:2, calls:3, tin:59805, tout:15163, wall:118.7, cost:0.2712, chars:8318, kept:95.1},
+  {wf:'B5', rep:3, calls:3, tin:47539, tout:3944,  wall:39.9,  cost:0.1345, chars:3721, kept:50.6}
+ ],
+ alt: [
+  {set:'alt', wf:'B7', page:'small',  model:'sonnet-4.6', rep:1, calls:2, tin:7434,  tout:2916,  wall:57.0,  cost:0.0660, chars:4608,  kept:69.3, red:0,  leak:0},
+  {set:'alt', wf:'B7', page:'medium', model:'sonnet-4.6', rep:1, calls:2, tin:5910,  tout:3256,  wall:85.1,  cost:0.0666, chars:11482, kept:93.3, red:28, leak:2},
+  {set:'alt', wf:'B7', page:'large',  model:'sonnet-4.6', rep:1, calls:2, tin:40856, tout:15997, wall:327.0, cost:0.3625, chars:40167, kept:80.9, red:2,  leak:2}
+ ],
+ voided: [
+  {set:'void', wf:'B7', page:'small', model:'sonnet-5', rep:1, calls:2, tin:9061, tout:930, wall:13.7, cost:0.0274, chars:2022, kept:30.6, red:0, leak:0},
+  {set:'void', wf:'B7', page:'small', model:'sonnet-5', rep:2, calls:2, tin:9061, tout:828, wall:13.1, cost:0.0264, chars:1986, kept:30.0, red:0, leak:0},
+  {set:'void', wf:'B7', page:'small', model:'sonnet-5', rep:3, calls:2, tin:9086, tout:894, wall:11.9, cost:0.0271, chars:1852, kept:28.0, red:0, leak:0}
+ ]
+};
+
+const NS = 'http://www.w3.org/2000/svg';
+const PAGES = ['small', 'medium', 'large'];
+const PGKB = {small: '38 KB', medium: '164 KB', large: '535 KB'};
+const WFS = ['B5', 'B7'];
+const WC = {B5: 'var(--b5)', B7: 'var(--b7)'};
+const WNAME = {B5: 'B5 · html_to_markdown (content argument)',
+               B7: 'B7 · url_to_markdown (URL argument)'};
+
+const el = (n, a = {}) => {
+  const e = document.createElementNS(NS, n);
+  for (const k in a) e.setAttribute(k, a[k]);
+  return e;
+};
+const txt = (s, a = {}) => { const t = el('text', a); t.textContent = s; return t; };
+const fmt = v => v >= 1000 ? (v / 1000).toFixed(v >= 10000 ? 0 : 1) + 'k' : String(v);
+const titled = (node, s) => { const t = el('title'); t.textContent = s; node.appendChild(t); return node; };
+
+function tip(r) {
+  return `${r.wf} · ${r.model} · ${r.page} page (${PGKB[r.page]})\n` +
+    `${r.kept.toFixed(1)}% of control kept · ${r.chars.toLocaleString()} chars\n` +
+    `redactions ${r.red} · leaks ${r.leak} (control has ${D.target[r.page]} mentions)\n` +
+    `$${r.cost.toFixed(4)} · ${r.wall}s · ${r.calls} calls\n` +
+    `${r.tin.toLocaleString()} tokens in · ${r.tout.toLocaleString()} out`;
+}
+const WFKEY = w => `<span class="lg"><span class="sw" style="background:${WC[w]}"></span>${WNAME[w]}</span>`;
+function legend(id, extra) {
+  document.getElementById(id).innerHTML = WFS.map(WFKEY).join('') + (extra || '');
+}
+
+/* ---------- Fig 0: schematic ---------- */
+function fig0() {
+  const svg = document.getElementById('f0');
+  const lanes = [
+    {wf: 'B5', y: 26, title: 'B5 — the tool takes the page content',
+     boxes: [
+       {x: 30,  w: 140, l: 'ReAct model', s: 'sonnet-5'},
+       {x: 260, w: 170, l: 'emits the whole page', s: 'as a tool argument'},
+       {x: 520, w: 150, l: 'html_to_markdown', s: 'server-side'},
+       {x: 760, w: 150, l: 'Markdown back in', s: 'as a tool result'}
+     ],
+     arrows: [
+       {from: 0, to: 1, thick: true,  lbl: '≈ 35.6k output tokens'},
+       {from: 1, to: 2, thick: true,  lbl: 'reconstructed text'},
+       {from: 2, to: 3, thick: true,  lbl: 're-enters context'}
+     ],
+     foot: '4 iterations · 1,055,106 input tokens · $2.4665 · 74% kept'},
+    {wf: 'B7', y: 210, title: 'B7 — the tool takes a URL',
+     boxes: [
+       {x: 30,  w: 140, l: 'ReAct model', s: 'sonnet-5'},
+       {x: 260, w: 170, l: 'emits a URL', s: '≈ 10 tokens'},
+       {x: 520, w: 150, l: 'url_to_markdown', s: 'fetch + convert'},
+       {x: 760, w: 150, l: 'Markdown back in', s: 'as a tool result'}
+     ],
+     arrows: [
+       {from: 0, to: 1, thick: false, lbl: 'a reference, not the bytes'},
+       {from: 1, to: 2, thick: false, lbl: 'Drupal does the fetch'},
+       {from: 2, to: 3, thick: true,  lbl: 'enters context once'}
+     ],
+     foot: '2 iterations · 56,955 input tokens · $0.4092 · 80% kept'}
+  ];
+  lanes.forEach(L => {
+    const c = WC[L.wf], bh = 46, by = L.y + 46;
+    svg.appendChild(el('rect', {x: 14, y: L.y, width: 912, height: 156, class: 'lane', rx: 2}));
+    svg.appendChild(txt(L.title, {x: 30, y: L.y + 26, class: 'blabel',
+      'font-size': '13px', fill: c}));
+    L.boxes.forEach(b => {
+      svg.appendChild(el('rect', {x: b.x, y: by, width: b.w, height: bh, rx: 2,
+        class: 'box', stroke: c}));
+      svg.appendChild(txt(b.l, {x: b.x + b.w / 2, y: by + 20, class: 'blabel',
+        'text-anchor': 'middle'}));
+      svg.appendChild(txt(b.s, {x: b.x + b.w / 2, y: by + 35, class: 'bsub',
+        'text-anchor': 'middle'}));
+    });
+    L.arrows.forEach(a => {
+      const f = L.boxes[a.from], t = L.boxes[a.to];
+      const x1 = f.x + f.w + 4, x2 = t.x - 4, ym = by + bh / 2;
+      svg.appendChild(el('line', {x1: x1, y1: ym, x2: x2 - 7, y2: ym, class: 'flow',
+        stroke: c, 'stroke-width': a.thick ? 5 : 1.6, opacity: a.thick ? .9 : .65}));
+      svg.appendChild(el('polygon', {
+        points: `${x2},${ym} ${x2 - 8},${ym - 4.5} ${x2 - 8},${ym + 4.5}`, fill: c}));
+      svg.appendChild(txt(a.lbl, {x: (x1 + x2) / 2, y: ym - 12, class: 'flowlbl',
+        'text-anchor': 'middle', fill: a.thick ? c : 'var(--muted)'}));
+    });
+    svg.appendChild(txt(L.foot, {x: 30, y: L.y + 138, class: 'bsub', fill: c}));
+  });
+  svg.appendChild(txt('thick = the document moving as tokens',
+    {x: 926, y: 22, class: 'bsub', 'text-anchor': 'end'}));
+}
+
+/* ---------- Fig 2: input tokens, log ---------- */
+function fig2() {
+  const svg = document.getElementById('f2');
+  const m = {l: 70, r: 130, t: 20, b: 54}, w = 940 - m.l - m.r, h = 400 - m.t - m.b;
+  const lo = 3.6, hi = 6.1;
+  const xs = i => m.l + 40 + i * ((w - 80) / 2);
+  const ys = v => m.t + h - ((Math.log10(Math.max(v, 4000)) - lo) / (hi - lo)) * h;
+  [4, 5, 6].forEach(d => {
+    svg.appendChild(el('line', {x1: m.l, y1: ys(10 ** d), x2: m.l + w, y2: ys(10 ** d), class: 'gl'}));
+    svg.appendChild(txt(fmt(10 ** d), {x: m.l - 8, y: ys(10 ** d) + 3.5, class: 'tk',
+      'text-anchor': 'end'}));
+  });
+  PAGES.forEach((p, i) => svg.appendChild(txt(`${p} · ${PGKB[p]}`,
+    {x: xs(i), y: m.t + h + 18, class: 'tk', 'text-anchor': 'middle'})));
+  svg.appendChild(el('line', {x1: m.l, y1: m.t + h, x2: m.l + w, y2: m.t + h, class: 'ax'}));
+  svg.appendChild(el('line', {x1: m.l, y1: m.t, x2: m.l, y2: m.t + h, class: 'ax'}));
+  svg.appendChild(txt('Input page size (raw HTML)', {x: m.l + w / 2, y: m.t + h + 38,
+    class: 'axl', 'text-anchor': 'middle'}));
+  svg.appendChild(txt('Input tokens (log)', {x: 0, y: 0, class: 'axl',
+    'text-anchor': 'middle', transform: `translate(${m.l - 46},${m.t + h / 2}) rotate(-90)`}));
+  WFS.forEach(wf => {
+    const pts = PAGES.map((pg, i) => {
+      const r = D.runs.find(x => x.page === pg && x.wf === wf);
+      return {r, x: xs(i), y: ys(r.tin)};
+    });
+    svg.appendChild(el('polyline', {points: pts.map(p => `${p.x},${p.y}`).join(' '),
+      fill: 'none', stroke: WC[wf], 'stroke-width': 2.4, opacity: .9}));
+    pts.forEach(p => {
+      svg.appendChild(titled(el('circle', {cx: p.x, cy: p.y, r: 6, fill: WC[wf],
+        class: 'dot'}), tip(p.r)));
+      svg.appendChild(txt(fmt(p.r.tin), {x: p.x, y: p.y - 13, class: 'pt',
+        'text-anchor': 'middle', fill: WC[wf]}));
+      svg.appendChild(txt(p.r.calls + ' calls', {x: p.x, y: p.y + 20, class: 'pt',
+        'text-anchor': 'middle', fill: 'var(--muted)'}));
+    });
+    const last = pts[2];
+    svg.appendChild(txt(wf, {x: last.x + 22, y: last.y + 4, class: 'blabel', fill: WC[wf]}));
+  });
+  // ratio brackets
+  PAGES.forEach((pg, i) => {
+    const a = D.runs.find(x => x.page === pg && x.wf === 'B5');
+    const b = D.runs.find(x => x.page === pg && x.wf === 'B7');
+    svg.appendChild(txt(`${(a.tin / b.tin).toFixed(1)}×`,
+      {x: xs(i) + 46, y: (ys(a.tin) + ys(b.tin)) / 2 + 4, class: 'pl',
+       'text-anchor': 'middle', fill: 'var(--accent)'}));
+  });
+  legend('lg2', '<span class="lg" style="margin-left:auto">pink figure: B5 input ÷ B7 input</span>');
+}
+
+/* ---------- Fig 3: cost bars + retention markers ---------- */
+function fig3() {
+  const svg = document.getElementById('f3');
+  const top = 26, bot = 62, left = 66, right = 66, W = 940, H = 400;
+  const h = H - top - bot, w = W - left - right;
+  const lo = -1.4, hi = 0.55;
+  const ys = v => top + h - ((Math.log10(Math.max(v, 0.04)) - lo) / (hi - lo)) * h;
+  const yq = v => top + h - (v / 100) * h;
+  [0.05, 0.1, 0.25, 0.5, 1, 2.5].forEach(v => {
+    svg.appendChild(el('line', {x1: left, y1: ys(v), x2: left + w, y2: ys(v), class: 'gl'}));
+    svg.appendChild(txt('$' + v.toFixed(2), {x: left - 8, y: ys(v) + 3.5, class: 'tk',
+      'text-anchor': 'end'}));
+  });
+  [0, 50, 100].forEach(v => svg.appendChild(txt(v + '%', {x: left + w + 8, y: yq(v) + 3.5,
+    class: 'tk', 'text-anchor': 'start'})));
+  const gw = w / 3, bw = 58;
+  PAGES.forEach((pg, gi) => {
+    const gx = left + gi * gw;
+    if (gi) svg.appendChild(el('line', {x1: gx, y1: top, x2: gx, y2: top + h, class: 'gl'}));
+    svg.appendChild(txt(`${pg} · ${PGKB[pg]}`, {x: gx + gw / 2, y: top + h + 22,
+      class: 'fct', 'font-size': '11.5px', 'text-anchor': 'middle'}));
+    WFS.forEach((wf, wi) => {
+      const r = D.runs.find(x => x.page === pg && x.wf === wf);
+      const x = gx + gw / 2 + (wi ? 6 : -bw - 6);
+      svg.appendChild(titled(el('rect', {x: x, y: ys(r.cost), width: bw,
+        height: Math.max(top + h - ys(r.cost), 2), fill: WC[wf], opacity: .82}), tip(r)));
+      svg.appendChild(txt('$' + r.cost.toFixed(2), {x: x + bw / 2, y: ys(r.cost) - 6,
+        class: 'pl', 'text-anchor': 'middle'}));
+      const cy = yq(r.kept);
+      svg.appendChild(titled(el('circle', {cx: x + bw / 2, cy: cy, r: 6.5,
+        fill: 'var(--surf)', stroke: WC[wf], 'stroke-width': 2.4}), tip(r)));
+      svg.appendChild(txt(r.kept.toFixed(0) + '%', {x: x + bw / 2, y: cy - 12,
+        class: 'pt', 'text-anchor': 'middle', fill: WC[wf]}));
+    });
+    const a = D.runs.find(x => x.page === pg && x.wf === 'B5');
+    const b = D.runs.find(x => x.page === pg && x.wf === 'B7');
+    svg.appendChild(txt(`${(a.cost / b.cost).toFixed(1)}× cheaper`,
+      {x: gx + gw / 2, y: top + h + 40, class: 'pl', 'text-anchor': 'middle',
+       fill: 'var(--accent)'}));
+  });
+  svg.appendChild(el('line', {x1: left, y1: top + h, x2: left + w, y2: top + h, class: 'ax'}));
+  svg.appendChild(el('line', {x1: left, y1: top, x2: left, y2: top + h, class: 'ax'}));
+  svg.appendChild(el('line', {x1: left + w, y1: top, x2: left + w, y2: top + h, class: 'ax'}));
+  svg.appendChild(txt('Cost, log', {x: 0, y: 0, class: 'axl', 'text-anchor': 'middle',
+    transform: `translate(16,${top + h / 2}) rotate(-90)`}));
+  svg.appendChild(txt('Retention', {x: 0, y: 0, class: 'axl', 'text-anchor': 'middle',
+    transform: `translate(${W - 14},${top + h / 2}) rotate(90)`}));
+  legend('lg3', '<span class="lg"><span class="sw" style="background:var(--surf);' +
+    'border:2.4px solid var(--muted)"></span>retention, right axis</span>');
+}
+
+/* ---------- Fig 4: repeated draws ---------- */
+function fig4() {
+  const svg = document.getElementById('f4');
+  const top = 30, bot = 58, H = 330, h = H - top - bot;
+  const panels = [
+    {x: 66,  w: 360, label: 'Retention vs control', key: 'kept', max: 100,
+     tick: v => v + '%', fmt: v => v.toFixed(1) + '%'},
+    {x: 546, w: 340, label: 'Cost of the run', key: 'cost', max: 0.3,
+     tick: v => '$' + v.toFixed(2), fmt: v => '$' + v.toFixed(4)}
+  ];
+  panels.forEach(P => {
+    const ys = v => top + h - (v / P.max) * h;
+    const ticks = P.max === 100 ? [0, 25, 50, 75, 100] : [0, .1, .2, .3];
+    ticks.forEach(v => {
+      svg.appendChild(el('line', {x1: P.x, y1: ys(v), x2: P.x + P.w, y2: ys(v), class: 'gl'}));
+      svg.appendChild(txt(P.tick(v), {x: P.x - 8, y: ys(v) + 3.5, class: 'tk',
+        'text-anchor': 'end'}));
+    });
+    svg.appendChild(el('line', {x1: P.x, y1: top + h, x2: P.x + P.w, y2: top + h, class: 'ax'}));
+    svg.appendChild(el('line', {x1: P.x, y1: top, x2: P.x, y2: top + h, class: 'ax'}));
+    svg.appendChild(txt(P.label, {x: P.x + P.w / 2, y: top - 12, class: 'axl',
+      'text-anchor': 'middle'}));
+    WFS.forEach((wf, wi) => {
+      const set = D.reps.filter(r => r.wf === wf).map(r => r[P.key]);
+      const cx = P.x + P.w / 2 + (wi ? 88 : -88);
+      const hi = Math.max(...set), lo = Math.min(...set);
+      // spread band
+      svg.appendChild(el('rect', {x: cx - 26, y: ys(hi), width: 52,
+        height: Math.max(ys(lo) - ys(hi), 2), fill: WC[wf], opacity: .16, rx: 2}));
+      svg.appendChild(el('line', {x1: cx - 34, y1: ys(hi), x2: cx + 34, y2: ys(hi),
+        stroke: WC[wf], 'stroke-width': 1.4, opacity: .7}));
+      svg.appendChild(el('line', {x1: cx - 34, y1: ys(lo), x2: cx + 34, y2: ys(lo),
+        stroke: WC[wf], 'stroke-width': 1.4, opacity: .7}));
+      D.reps.filter(r => r.wf === wf).forEach((r, i) => {
+        const x = cx + (i - 1) * 15;
+        svg.appendChild(titled(el('circle', {cx: x, cy: ys(r[P.key]), r: 6.5,
+          fill: WC[wf], class: 'dot'}),
+          `${wf} draw ${r.rep} · small page · sonnet-5\n${r.kept.toFixed(1)}% kept · ` +
+          `${r.chars.toLocaleString()} chars\n$${r.cost.toFixed(4)} · ${r.wall}s · ` +
+          `${r.calls} calls · ${r.tin.toLocaleString()} tokens in`));
+      });
+      const span = P.max === 100 ? (hi - lo).toFixed(1) + ' pts'
+                                 : '$' + (hi - lo).toFixed(4);
+      svg.appendChild(txt(wf, {x: cx, y: top + h + 22, class: 'fct',
+        'font-size': '13px', 'text-anchor': 'middle', fill: WC[wf]}));
+      svg.appendChild(txt('spread ' + span, {x: cx, y: top + h + 38, class: 'pl',
+        'text-anchor': 'middle', fill: 'var(--muted)'}));
+    });
+  });
+  legend('lg4', '<span class="lg" style="margin-left:auto">small page · sonnet-5 · n=3 each · ' +
+    'shaded band spans the three draws</span>');
+}
+
+/* ---------- Fig 5: B7 across models ---------- */
+function fig5() {
+  const svg = document.getElementById('f5');
+  const top = 26, bot = 60, left = 66, right = 66, W = 940, H = 340;
+  const h = H - top - bot, w = W - left - right;
+  const yq = v => top + h - (v / 100) * h;
+  const MODS = [{k: 'sonnet-5', c: 'var(--b7)'}, {k: 'sonnet-4.6', c: 'var(--alt)'}];
+  [0, 25, 50, 75, 100].forEach(v => {
+    svg.appendChild(el('line', {x1: left, y1: yq(v), x2: left + w, y2: yq(v), class: 'gl'}));
+    svg.appendChild(txt(v + '%', {x: left - 8, y: yq(v) + 3.5, class: 'tk',
+      'text-anchor': 'end'}));
+  });
+  const gw = w / 3, bw = 54;
+  PAGES.forEach((pg, gi) => {
+    const gx = left + gi * gw;
+    if (gi) svg.appendChild(el('line', {x1: gx, y1: top, x2: gx, y2: top + h, class: 'gl'}));
+    svg.appendChild(txt(`${pg} · ${PGKB[pg]}`, {x: gx + gw / 2, y: top + h + 22,
+      class: 'fct', 'font-size': '11.5px', 'text-anchor': 'middle'}));
+    MODS.forEach((mo, mi) => {
+      const r = mi ? D.alt.find(x => x.page === pg)
+                   : D.runs.find(x => x.page === pg && x.wf === 'B7');
+      const x = gx + gw / 2 + (mi ? 6 : -bw - 6);
+      svg.appendChild(titled(el('rect', {x: x, y: yq(r.kept), width: bw,
+        height: Math.max(top + h - yq(r.kept), 2), fill: mo.c, opacity: .8}), tip(r)));
+      svg.appendChild(txt(r.kept.toFixed(0) + '%', {x: x + bw / 2, y: yq(r.kept) - 6,
+        class: 'pl', 'text-anchor': 'middle'}));
+      svg.appendChild(txt(`$${r.cost.toFixed(2)} · ${Math.round(r.wall)}s · ${r.calls} calls`,
+        {x: x + bw / 2, y: top + h + 40, class: 'pt', 'text-anchor': 'middle', fill: mo.c}));
+    });
+  });
+  svg.appendChild(el('line', {x1: left, y1: top + h, x2: left + w, y2: top + h, class: 'ax'}));
+  svg.appendChild(el('line', {x1: left, y1: top, x2: left, y2: top + h, class: 'ax'}));
+  svg.appendChild(txt('Retention vs control', {x: 0, y: 0, class: 'axl',
+    'text-anchor': 'middle', transform: `translate(16,${top + h / 2}) rotate(-90)`}));
+  document.getElementById('lg5').innerHTML = MODS.map(mo =>
+    `<span class="lg"><span class="sw" style="background:${mo.c}"></span>B7 · ${mo.k}</span>`
+  ).join('') + '<span class="lg" style="margin-left:auto">both: 2 calls on every page</span>';
+}
+
+/* ---------- table ---------- */
+function table() {
+  const tb = document.querySelector('#tbl tbody');
+  const row = (r, cls, note) => {
+    const tr = document.createElement('tr');
+    if (cls) tr.className = cls;
+    tr.innerHTML =
+      `<td>${r.page} · ${PGKB[r.page]}</td>` +
+      `<td><span class="mdot" style="background:${WC[r.wf]}"></span>${r.wf}${note || ''}</td>` +
+      `<td>${r.model}</td>` +
+      `<td>$${r.cost.toFixed(4)}</td><td>${r.wall.toFixed(1)}s</td><td>${r.calls}</td>` +
+      `<td>${r.tin.toLocaleString()}</td><td>${r.tout.toLocaleString()}</td>` +
+      `<td>${r.chars.toLocaleString()}</td>` +
+      `<td>${r.red}</td><td${r.leak ? ' class="bad"' : ''}>${r.leak}</td>` +
+      `<td>${r.kept.toFixed(1)}%</td>`;
+    tb.appendChild(tr);
+  };
+  const banner = t => {
+    const tr = document.createElement('tr');
+    tr.className = 'grp';
+    tr.innerHTML = `<td colspan="12" style="color:var(--muted);white-space:normal">${t}</td>`;
+    tb.appendChild(tr);
+  };
+  PAGES.forEach(pg => {
+    D.runs.filter(r => r.page === pg).forEach((r, j) => row(r, j ? '' : 'grp'));
+    row(D.alt.find(r => r.page === pg), '', ' · cross-model');
+  });
+  banner('Excluded from all figures — these ran before the system-prompt bug was fixed, ' +
+    'so the agent had no instructions at all (flowdrop#3592438):');
+  D.voided.forEach(r => row(r, 'void', ' · no prompt'));
+  banner('Figure 04 repeats — small page, sonnet-5, three draws of each workflow:');
+  ['B7', 'B5'].forEach(wf => D.reps.filter(r => r.wf === wf).forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML =
+      `<td>small · 38 KB</td>` +
+      `<td><span class="mdot" style="background:${WC[wf]}"></span>${wf} · draw ${r.rep}</td>` +
+      `<td>sonnet-5</td>` +
+      `<td>$${r.cost.toFixed(4)}</td><td>${r.wall.toFixed(1)}s</td><td>${r.calls}</td>` +
+      `<td>${r.tin.toLocaleString()}</td><td>${r.tout.toLocaleString()}</td>` +
+      `<td>${r.chars.toLocaleString()}</td><td>0</td><td>0</td>` +
+      `<td${wf === 'B7' ? ' class="win"' : ''}>${r.kept.toFixed(1)}%</td>`;
+    tb.appendChild(tr);
+  }));
+}
+
+fig0(); fig2(); fig3(); fig4(); fig5(); table();
+</script>
+</body>
+</html>

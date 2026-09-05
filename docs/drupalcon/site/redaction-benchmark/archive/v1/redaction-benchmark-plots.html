@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redaction Benchmark Plots</title>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div style="max-width:1000px;margin:18px auto 0;padding:0 24px"><div style="border:1px solid #B0531D;border-left:4px solid #B0531D;border-radius:8px;padding:10px 14px;font:.92rem/1.5 'Source Serif 4',Georgia,serif;background:rgba(176,83,29,.06)"><strong>Superseded, 5 September 2026.</strong> The metrics on this page (retention, glyph count, leaks) were replaced by rubric v2, which grades every run against a gold document and classifies it as correct, degraded, silent, format or loud failure. The numbers here are kept as the record of what was published first. Read the <a href="../../artifacts/rubric-v2-scorecard.html" style="color:#1B6FA8">Rubric v2 Scorecard</a> instead.</div></div>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ink:#111820; --paper:#F5F6F8; --surf:#FFFFFF; --rule:#DDE1E6;
+  --muted:#5C6672; --faint:#8A94A0; --grid:#E7EAEE;
+  --accent:#1B6FA8; --accent-soft:#E3EDF4;
+  --signal:#B0531D; --good:#2E7355; --bad:#AB3427;
+  --c1:#2E7355; --c2:#B0531D; --c3:#1B6FA8; --c4:#8A4F9E; --c5:#B03A5B; --c6:#0F7C86;
+  --c7:#8A6D1F; --c8:#3F6F2A; --c9:#6B4FBB;
+  --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Menlo,monospace;
+  --sp:clamp(1rem,3vw,1.6rem);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#E4E9EE; --paper:#0D1218; --surf:#151D26; --rule:#26313D;
+    --muted:#8B97A5; --faint:#6B7885; --grid:#1E2833;
+    --accent:#5AA8DC; --accent-soft:#152836;
+    --signal:#D98A4A; --good:#5FBF92; --bad:#E0705F;
+    --c1:#5FBF92; --c2:#D98A4A; --c3:#5AA8DC; --c4:#BE8FD1; --c5:#E0798F; --c6:#4FC2CC;
+    --c7:#D4B44A; --c8:#8FCC6A; --c9:#B39DEB;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E4E9EE; --paper:#0D1218; --surf:#151D26; --rule:#26313D;
+  --muted:#8B97A5; --faint:#6B7885; --grid:#1E2833;
+  --accent:#5AA8DC; --accent-soft:#152836;
+  --signal:#D98A4A; --good:#5FBF92; --bad:#E0705F;
+  --c1:#5FBF92; --c2:#D98A4A; --c3:#5AA8DC; --c4:#BE8FD1; --c5:#E0798F; --c6:#4FC2CC;
+    --c7:#D4B44A; --c8:#8FCC6A; --c9:#B39DEB;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1140px;margin:0 auto;padding:0 var(--sp)}
+.prose{max-width:68ch}
+h1,h2,h3,.eyebrow,.chip,button,text{font-family:var(--display)}
+h1{font-size:clamp(2.3rem,5.6vw,3.9rem);line-height:1.03;font-weight:800;
+   letter-spacing:-.028em;margin:0;text-wrap:balance}
+h2{font-size:clamp(1.4rem,3vw,1.95rem);line-height:1.12;font-weight:700;
+   letter-spacing:-.02em;margin:0 0 .3em;text-wrap:balance}
+p{margin:0 0 1em}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.87em;background:var(--accent-soft);padding:.1em .34em}
+
+.eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);display:flex;align-items:center;gap:.6em;margin:0 0 .9em}
+.eyebrow::before{content:"▌▌";font-family:var(--mono);color:var(--accent);letter-spacing:-.1em}
+
+header{border-bottom:1px solid var(--rule);background:var(--surf);
+  padding:clamp(2.6rem,7vw,4.2rem) 0 clamp(1.6rem,4vw,2.4rem)}
+.kicker{font-family:var(--mono);font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--signal);margin:0 0 1.4rem}
+.lede{font-size:clamp(1.04rem,2vw,1.22rem);color:var(--muted);margin:1.3rem 0 0;max-width:62ch}
+.lede em{color:var(--ink);font-style:normal;font-weight:600}
+
+section{padding:clamp(2.4rem,5vw,3.8rem) 0;border-bottom:1px solid var(--rule)}
+.fig{border:1px solid var(--rule);background:var(--surf);margin-top:1.6rem}
+.fig-bd{padding:1rem .8rem .4rem;overflow-x:auto}
+.fig-cap{font-family:var(--mono);font-size:.72rem;color:var(--muted);
+  padding:.7rem 1.1rem;border-top:1px solid var(--rule)}
+svg{display:block;min-width:560px;width:100%;height:auto}
+.ax{stroke:var(--rule);stroke-width:1}
+.gl{stroke:var(--grid);stroke-width:1}
+.tk{font-family:var(--mono);font-size:10px;fill:var(--faint)}
+.axl{font-family:var(--display);font-size:10.5px;font-weight:600;fill:var(--muted);
+  letter-spacing:.09em;text-transform:uppercase}
+.pl{font-family:var(--mono);font-size:10px;fill:var(--ink)}
+.pt{font-family:var(--mono);font-size:9.5px;font-weight:500;
+  paint-order:stroke;stroke:var(--surf);stroke-width:2.5px;stroke-linejoin:round}
+.trail{fill:none;stroke-width:1.4;opacity:.45}
+.fit{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:5 4;opacity:.8}
+.dot{stroke:var(--surf);stroke-width:1.5}
+.dot:hover{stroke:var(--ink);stroke-width:2}
+.ring{fill:none;stroke:var(--bad);stroke-width:1.6;stroke-dasharray:3 2.5}
+.dot.other{stroke:var(--ink);stroke-width:1.3}
+.trail.other{stroke-dasharray:5 4;opacity:.7}
+.ref100{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 4;opacity:.7}
+
+.legend{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;padding:.85rem 1.1rem;
+  border-top:1px solid var(--rule);font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.lg{display:flex;align-items:center;gap:.45em}
+.sw{width:11px;height:11px;border-radius:50%;flex:none}
+.sw.sq{border-radius:2px}
+
+.controls{display:flex;flex-wrap:wrap;gap:1.2rem;align-items:flex-end;margin:1.5rem 0 0}
+.ctl-label{font-family:var(--display);font-size:.66rem;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--faint);display:block;margin-bottom:.4rem}
+.seg{display:flex;border:1px solid var(--rule);background:var(--surf)}
+.seg button{font-size:.8rem;font-weight:600;padding:.45rem .9rem;background:none;border:0;
+  border-right:1px solid var(--rule);color:var(--muted);cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.seg button:focus-visible{outline:2px solid var(--signal);outline-offset:-2px}
+
+.note{border:1px solid var(--rule);border-left:3px solid var(--signal);background:var(--surf);
+  padding:1.15rem 1.3rem;margin-top:1.5rem}
+.note h3{font-size:1rem;margin:0 0 .3em}
+.note p{font-size:.93rem;color:var(--muted);margin:.3rem 0 0;max-width:72ch}
+.filterbar{position:sticky;top:0;z-index:30;background:var(--surf);
+  border-bottom:1px solid var(--rule);padding:.65rem 0;
+  box-shadow:0 1px 0 var(--rule),0 6px 14px -12px rgba(0,0,0,.35)}
+.filterbar .wrap{display:flex;flex-wrap:wrap;gap:.45rem .8rem;align-items:center}
+.chipgrp{display:flex;flex-wrap:wrap;gap:.35rem}
+.chip{display:inline-flex;align-items:center;gap:.42em;font-family:var(--mono);
+  font-size:.72rem;padding:.28rem .62rem;border:1px solid var(--rule);border-radius:99px;
+  background:transparent;color:var(--muted);cursor:pointer;line-height:1.5}
+.chip[aria-pressed="true"]{color:var(--ink);border-color:currentColor;background:var(--accent-soft)}
+.chip[aria-pressed="false"]{opacity:.55}
+.chip .dotsw{width:9px;height:9px;border-radius:50%;flex:none}
+.chip[aria-pressed="false"] .dotsw{opacity:.3}
+.chip:hover{border-color:var(--accent)}
+.chip:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+.flabel{font-family:var(--display);font-size:.62rem;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--faint)}
+.fcount{font-family:var(--mono);font-size:.68rem;color:var(--faint);margin-left:auto}
+.empty{font-family:var(--mono);font-size:.8rem;color:var(--bad);padding:1.2rem}
+footer{padding:2.4rem 0 4rem;color:var(--muted);font-size:.9rem}
+footer ul{padding-left:1.1rem;max-width:68ch}
+footer li{margin-bottom:.4rem}
+</style>
+
+<header>
+  <div class="wrap">
+    <p class="kicker">FlowDrop Benchmark · Plots</p>
+    <h1>Redaction Benchmark Plots</h1>
+    <p class="lede">The same 27 runs, plotted five ways. <em>Each chart is here because it shows
+    something a table hides</em> — a tradeoff curve, a scaling slope, or a correlation that only
+    becomes obvious once the points are on axes. <em>Small, medium and large are input page
+    sizes</em> — ~38 KB, ~164 KB and ~535 KB of raw HTML — not models: every model call in every
+    cell uses the same <code>claude-sonnet-4-6</code>. Each line is one variant across the three
+    pages; the marker shape tells you which page a point is.</p>
+    <p class="lede"><em>The bar below filters every chart at once.</em> Switch variants and page
+    sizes off to isolate a comparison — the axes rescale to what is left, so two variants alone
+    are read at full resolution rather than squeezed against the most expensive run on the
+    board.</p>
+  </div>
+</header>
+
+<div class="filterbar">
+  <div class="wrap">
+    <span class="flabel">Variant</span>
+    <div class="chipgrp" id="fvar"></div>
+    <span class="flabel">Page</span>
+    <div class="chipgrp" id="fpage"></div>
+    <div class="chipgrp">
+      <button class="chip" id="fall" aria-pressed="false">reset</button>
+    </div>
+    <span class="fcount" id="fcount"></span>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="note">
+      <h3>Correction, 5 September: B5 did receive its system prompt</h3>
+      <p>Until today this page said B5 ran without its instructions, blaming the FlowDrop
+      port bug (<a href="https://git.drupalcode.org/project/flowdrop/-/work_items/3592438">flowdrop#3592438</a>)
+      that did erase the prompt on three early B7 draws. B5 was not affected: its parent
+      workflow forwards the prompt through the sub-workflow's <code>system_prompt</code>
+      input port, so the exposed port on the reasoning node carried the full prompt rather
+      than shadowing it. Every B5 sub-pipeline's stored initial data holds the prompt, and
+      the first-call input token count is identical before and after the port fix.
+      B5's fidelity numbers are valid and compete on equal terms here.</p>
+      <p><strong>B7 differs from B5 in one thing only: the tool.</strong> Same ReAct engine,
+      same prompt, and instead of passing page content <em>into</em> a converter
+      as an argument, it passes a URL and receives Markdown. On the large page that is 18×
+      fewer input tokens and roughly a sixth of the cost, at higher fidelity.</p>
+    </div>
+    <div class="note">
+      <h3>B8 and B9, added 5 September</h3>
+      <p>Same model as every other cell, one draw per page. <strong>B8</strong> is B5's shape with
+      the URL tool given to the parent agent — the fix B7 made, applied without changing the
+      prompt. It lands where B7 does: exactly two calls on every page, at the same cost.
+      <strong>B9</strong> wraps that agent in a critic that can send the answer back up to three
+      times. On this model the critic changed little: on the medium page it accepted the first
+      draft (three calls, the same redactions and leaks as B8), and on the large page three
+      revisions cut leaks from two to one at three times B8's cost and fourteen minutes of wall
+      clock. On the small page the critic sent the draft back three times and the agent ended
+      on the same 4,608-character document B7 and B8 produced: nine calls and five times B8's
+      cost for an identical result at 69%. On Sonnet 5 the same design reached zero
+      leaks on every page; here it did not.</p>
+      <p><strong>The B9 small-page point is a rerun.</strong> The first attempt failed inside
+      FlowDrop's loop runtime, not in the model: on the revision round the agent answered
+      without calling a tool, and the consumer of the tool node was failed rather than skipped
+      (<a href="https://git.drupalcode.org/project/flowdrop/-/work_items/3592443">flowdrop#3592443</a>).
+      FlowDrop fixed it the same day and the cell was rerun on the fixed module; the plotted
+      point is that rerun.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 01</p>
+    <h2>What you pay against what you keep</h2>
+    <div class="prose">
+      <p>The central tradeoff. Horizontal is cost, vertical is how much of the control's prose
+      survives. Up and to the left is better. The control itself sits at $0 and 100% by
+      definition — it is the ruler, not a competitor.</p>
+      <p>Both sides are normalised before comparison: link targets and image alt blocks are
+      stripped, and runs of whitespace collapsed. Raw character count is not a fidelity metric,
+      and the footnote below shows why it flattered and punished the wrong runs. Output that is
+      not Markdown scores zero regardless of length — one run qualifies, ringed in red on the
+      floor of the chart.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f1" viewBox="0 0 900 460" role="img"
+        aria-label="Scatter plot of cost against content retained"></svg></div>
+      <div class="legend" id="lg1"></div>
+      <div class="fig-cap">Each line is one variant, joining its three runs small → medium →
+        large and labelled at the large end. Marker shape carries the page: circle small, square
+        medium, triangle large. A red ring marks output that is not Markdown, scored zero.
+        Hover any point for both its de-noised and its raw share.</div>
+    </div>
+    <div class="note warn">
+      <h3>B2 on the small page did not do the task</h3>
+      <p>It returned 27,884 characters — more than the control — by handing back its own input.
+      The output holds 665 HTML tags, 24 per thousand characters, ending in
+      <code>&lt;/body&gt;&lt;/html&gt;</code>. Asked to convert and redact in one step, the model
+      echoed the page instead. It is scored <strong>zero</strong>: no document was produced, and
+      length is not credit. Every other cell returned clean Markdown.</p>
+      <p>Worth dwelling on. Ranked by length alone this was the best run on the chart, sitting at
+      172% before the check existed. A metric that rewards a model for returning its input is not
+      measuring fidelity, and no amount of repetition would have caught it — only reading the
+      output did.</p>
+    </div>
+    <div class="note">
+      <h3>Fidelity falls as the page grows</h3>
+      <p>Setting that failure aside, the best result keeps 102% of the small page, 87% of the
+      medium page and 84% of the large page. The remaining losses are not redaction — they are
+      summarising, skipped tables and dropped list items, and they get worse the more there is
+      to reproduce. B4 clears 100% on the small page because it adds framing prose of its own,
+      which this metric cannot tell from content.</p>
+    </div>
+    <div class="note">
+      <h3>Footnote on method: why the figures are normalised</h3>
+      <p>These charts originally plotted raw character count, and the numbers were wrong in both
+      directions. A Markdown link spends most of its characters on a URL the reader never sees,
+      so the control's own output is padded with markup: <strong>59% of the small page, 13% of
+      the medium page and 51% of the large page</strong> is link targets and image alt text. A
+      model that reproduces the prose without repeating every URL was scored as having lost half
+      the document.</p>
+      <p>Before comparison, both the control and each run now have <code>](…)</code> link targets
+      and <code>![…]</code> alt blocks removed, runs of spaces and tabs collapsed to one, and
+      blank-line runs collapsed to one. Nothing else is touched, and the same transform is
+      applied to both sides — the ruler is normalised exactly like the thing it measures. B3 on
+      the large page moves from 46% to 84% under this correction; B5 and B6 from 37% to 75%.</p>
+      <p>The metric is still a proxy. It counts characters, so it cannot distinguish a dropped
+      paragraph from a missed redaction, and it cannot tell added prose from preserved prose. It
+      is a ceiling on fidelity, not a measure of it — the redaction and leak counts, tracked
+      separately, are what say whether the task was done.</p>
+      <p>What the transport is <em>not</em> doing is losing bytes. Every job's input and output
+      length was traced through the finished pipelines: the model's answer arrives at the output
+      node byte-for-byte, and every run ends where the control document ends, so none of the
+      shortfall is truncation. Every shortfall here happened inside the model.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 02</p>
+    <h2>Latency tracks what comes out, not what goes in</h2>
+    <div class="prose">
+      <p>Two plots of the same runs. Against input tokens the points scatter with no shape;
+      against output tokens they fall on a line. This is why the cheapest variant is often the
+      slowest — clean input produces a longer, more faithful answer, and you wait for every token
+      of it.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f2" viewBox="0 0 900 430" role="img"
+        aria-label="Two scatter plots comparing latency against input and output tokens"></svg></div>
+      <div class="legend" id="lg2"></div>
+      <div class="fig-cap">Same 24 model runs in both panels; only the horizontal axis changes.
+        Each line is one variant walked small → medium → large. The red ring is the run whose
+        output was not Markdown — its tokens and latency are real, its output is not a document.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 03</p>
+    <h2>How input cost scales with the page</h2>
+    <div class="prose">
+      <p>One line per variant across the three page sizes, on a log scale because the spread is
+      two orders of magnitude. The flat line at the bottom is Bench 3 — the only approach that
+      converts before the model sees anything. Everything above it is paying for markup.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f3" viewBox="0 0 900 400" role="img"
+        aria-label="Log scale line chart of input tokens by page size"></svg></div>
+      <div class="legend" id="lg3"></div>
+      <div class="fig-cap">Input tokens, log scale. Page sizes are ~38 KB, ~164 KB, ~535 KB of
+        raw HTML. Same trajectories as Figure 01, with page size on the horizontal axis instead.
+        The ringed point cost these tokens without producing Markdown.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 04</p>
+    <h2>Cost per thousand characters of prose kept</h2>
+    <div class="prose">
+      <p>Cost and fidelity folded into one number, so the ranking is not distorted by a cheap run
+      that returned very little. Lower is better. Characters are counted de-noised, per the
+      footnote to Figure 01 — a run is not rewarded here for echoing back link URLs.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f4" viewBox="0 0 900 380" role="img"
+        aria-label="Bar chart of cost per thousand characters retained"></svg></div>
+      <div class="fig-cap">Bench 1 is omitted: at $0 it divides to zero and would flatten the
+        scale. The word after each bar's variant name is the input page size (small ~38 KB,
+        medium ~164 KB, large ~535 KB), not a model. Runs whose output was not Markdown are
+        named on the axis — they cost real money but produced nothing to divide by.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 05</p>
+    <h2>Orchestration overhead against bytes persisted</h2>
+    <div class="prose">
+      <p>The only chart here with real repetition behind it: 61 runs of workflows that call no
+      model, so the probe was free. Overhead is wall clock minus summed node time. It does not
+      track node count — it tracks how much FlowDrop had to serialise and store.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f5" viewBox="0 0 900 400" role="img"
+        aria-label="Scatter plot of orchestration overhead against payload bytes with a fitted line"></svg></div>
+      <div class="legend" id="lg5"></div>
+      <div class="fig-cap">Fit is least squares on the 3-node control only, where node count is
+        held constant and only payload varies.</div>
+    </div>
+    <div class="note">
+      <h3>0.220 seconds per megabyte</h3>
+      <p>Plus 0.024s to start a run at all and 0.007s per additional node. Across every completed
+      run that called a model, orchestration accounted for 0.2–1.6% of wall clock.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="eyebrow">Reading these honestly</p>
+    <ul>
+      <li><strong>One repetition per model cell.</strong> Figures 01–04 have n=1 per point.
+        Model latency varies run to run, so treat positions as indicative and slopes as the
+        finding. Figure 05 is the exception, at n=61.</li>
+      <li><strong>Length is a proxy, not a fidelity score.</strong> A dropped paragraph and a
+        missed redaction both reduce it, and returning the input inflates it — as B2 small does.
+        Outputs are checked for markup contamination, but nothing here scores whether the prose
+        is actually correct. That needs an eval pass, which has not been run.</li>
+      <li><strong>The Bench 5 large point requires a patch</strong> raising FlowDrop's memory
+        ceiling from 1 MB to 10 MB. Unpatched, that run fails and delivers nothing.</li>
+      <li><strong>All cells use <code>claude-sonnet-4-6</code></strong> and the synchronous
+        orchestrator. No queue latency is included anywhere.</li>
+      <li><strong>Filtering rescales the axes.</strong> That is deliberate — it is what makes a
+        two-variant comparison legible — but it means absolute positions are not comparable
+        between two different filter states. Compare shapes and orderings across filters, and
+        read values from the tooltips.</li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+const D = {"runs":[{"wf":"bench_1_reference","name":"B1 Deterministic","page":"small","wall":0.2,"tin":0,"tout":0,"cost":0,"chars":16240,"red":0,"leak":0,"calls":0,"tags":0,"tagdens":0.0,"rawhtml":false,"den":6648},{"wf":"bench_2_raw_html_llm","name":"B2 Raw HTML","page":"small","wall":252.7,"tin":13671,"tout":13616,"cost":0.2453,"chars":27886,"red":0,"leak":0,"calls":1,"tags":665,"tagdens":23.85,"rawhtml":true,"den":27096},{"wf":"bench_3_markdown_llm","name":"B3 Markdown first","page":"small","wall":82.1,"tin":4916,"tout":4707,"cost":0.0854,"chars":8581,"red":0,"leak":0,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":6276},{"wf":"bench_4_ai_agent_tool","name":"B4 Agent (fed)","page":"small","wall":224.3,"tin":40096,"tout":13219,"cost":0.3186,"chars":8253,"red":0,"leak":6,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false,"den":6805},{"wf":"bench_5_react_agent","name":"B5 FlowDrop ReAct","page":"small","wall":106.7,"tin":38400,"tout":5735,"cost":0.2012,"chars":5658,"red":0,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":4694},{"wf":"bench_1_reference","name":"B1 Deterministic","page":"medium","wall":1.3,"tin":0,"tout":0,"cost":0,"chars":14497,"red":0,"leak":38,"calls":0,"tags":9,"tagdens":0.62,"rawhtml":false,"den":12550},{"wf":"bench_2_raw_html_llm","name":"B2 Raw HTML","page":"medium","wall":53.7,"tin":59150,"tout":2060,"cost":0.2084,"chars":8638,"red":28,"leak":1,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":8638},{"wf":"bench_3_markdown_llm","name":"B3 Markdown first","page":"medium","wall":51.4,"tin":3502,"tout":2086,"cost":0.0418,"chars":8678,"red":30,"leak":0,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":8678},{"wf":"bench_4_ai_agent_tool","name":"B4 Agent (fed)","page":"medium","wall":110.4,"tin":124193,"tout":5189,"cost":0.4504,"chars":10138,"red":29,"leak":0,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false,"den":10138},{"wf":"bench_5_react_agent","name":"B5 FlowDrop ReAct","page":"medium","wall":154.8,"tin":141783,"tout":6523,"cost":0.5232,"chars":10946,"red":28,"leak":2,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":10945},{"wf":"bench_1_reference","name":"B1 Deterministic","page":"large","wall":0.8,"tin":0,"tout":0,"cost":0,"chars":101790,"red":0,"leak":2,"calls":0,"tags":14,"tagdens":0.14,"rawhtml":false,"den":50082},{"wf":"bench_2_raw_html_llm","name":"B2 Raw HTML","page":"large","wall":165.1,"tin":211994,"tout":7244,"cost":0.7446,"chars":21807,"red":4,"leak":1,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":21807},{"wf":"bench_3_markdown_llm","name":"B3 Markdown first","page":"large","wall":398.0,"tin":34822,"tout":22585,"cost":0.4432,"chars":46948,"red":2,"leak":0,"calls":1,"tags":0,"tagdens":0.0,"rawhtml":false,"den":41931},{"wf":"bench_4_ai_agent_tool","name":"B4 Agent (fed)","page":"large","wall":163.6,"tin":432407,"tout":7517,"cost":1.41,"chars":13051,"red":0,"leak":9,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false,"den":13051},{"wf":"bench_6_agent_autonomous","name":"B6 Agent (auto)","page":"small","wall":95.2,"tin":34564,"tout":5370,"cost":0.1842,"chars":5620,"red":0,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":4683},{"wf":"bench_6_agent_autonomous","name":"B6 Agent (auto)","page":"medium","wall":127.5,"tin":125833,"tout":5512,"cost":0.4602,"chars":10869,"red":28,"leak":1,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":10868},{"wf":"bench_6_agent_autonomous","name":"B6 Agent (auto)","page":"large","wall":555.0,"tin":452913,"tout":27431,"cost":1.7702,"chars":37340,"red":2,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":37336},{"wf":"bench_5_react_agent","name":"B5 FlowDrop ReAct","page":"large","wall":553.2,"tin":503345,"tout":25694,"cost":1.8954,"chars":37512,"red":2,"leak":0,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false,"den":37511},{"wf":"bench_7_react_optimized","name":"B7 ReAct (url tool)","page":"small","wall":57.0,"tin":7434,"tout":2916,"cost":0.066,"chars":4608,"den":4607,"red":0,"leak":0,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false},{"wf":"bench_7_react_optimized","name":"B7 ReAct (url tool)","page":"medium","wall":85.1,"tin":5910,"tout":3256,"cost":0.0666,"chars":11482,"den":11714,"red":28,"leak":2,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false},{"wf":"bench_7_react_optimized","name":"B7 ReAct (url tool)","page":"large","wall":327.0,"tin":40856,"tout":15997,"cost":0.3625,"chars":40167,"den":40515,"red":2,"leak":2,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false},{"wf":"bench_8_react_with_tools_in_parent","name":"B8 ReAct (parent tool)","page":"small","wall":53.5,"tin":7444,"tout":2916,"cost":0.0661,"chars":4608,"den":4607,"red":0,"leak":0,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false},{"wf":"bench_8_react_with_tools_in_parent","name":"B8 ReAct (parent tool)","page":"medium","wall":87.0,"tin":5928,"tout":3551,"cost":0.071,"chars":11674,"den":12186,"red":56,"leak":3,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false},{"wf":"bench_9_reflexion_with_tools_in_parent","name":"B9 Reflexion (critic)","page":"small","wall":169.7,"tin":78856,"tout":7271,"cost":0.3456,"chars":4608,"den":4607,"red":0,"leak":0,"calls":9,"tags":0,"tagdens":0.0,"rawhtml":false},{"wf":"bench_9_reflexion_with_tools_in_parent","name":"B9 Reflexion (critic)","page":"medium","wall":79.9,"tin":9027,"tout":3524,"cost":0.0799,"chars":11354,"den":11854,"red":56,"leak":3,"calls":3,"tags":0,"tagdens":0.0,"rawhtml":false},{"wf":"bench_8_react_with_tools_in_parent","name":"B8 ReAct (parent tool)","page":"large","wall":327.0,"tin":40866,"tout":16450,"cost":0.3693,"chars":41203,"den":41148,"red":4,"leak":2,"calls":2,"tags":0,"tagdens":0.0,"rawhtml":false},{"wf":"bench_9_reflexion_with_tools_in_parent","name":"B9 Reflexion (critic)","page":"large","wall":863.7,"tin":199271,"tout":40508,"cost":1.2054,"chars":42957,"den":40039,"red":6,"leak":1,"calls":7,"tags":0,"tagdens":0.0,"rawhtml":false}],"overhead":[{"wf":"bench_0_floor","page":"small","overhead":1.061,"payload":66,"jobs":1},{"wf":"bench_0_floor","page":"small","overhead":0.1739,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.1191,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0304,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1105,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0144,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.351,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0359,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0808,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0265,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1273,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0185,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.2636,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0152,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0649,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0159,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1163,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0223,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.6048,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0478,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.1083,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0233,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1211,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0174,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.5741,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0241,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0766,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0187,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1284,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.022,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.4251,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0245,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0585,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0213,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.0796,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0249,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.3554,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0278,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0944,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.028,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.091,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0153,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.4197,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0142,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0947,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0297,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1448,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0253,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.5177,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0251,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.0737,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0215,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.0877,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0179,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.5288,"payload":1998365,"jobs":3},{"wf":"bench_0_floor","page":"small","overhead":0.0479,"payload":66,"jobs":1},{"wf":"bench_1_reference","page":"small","overhead":0.1253,"payload":166350,"jobs":3},{"wf":"bench_0_floor","page":"medium","overhead":0.0284,"payload":89,"jobs":1},{"wf":"bench_1_reference","page":"medium","overhead":0.1131,"payload":455361,"jobs":3},{"wf":"bench_0_floor","page":"large","overhead":0.0201,"payload":75,"jobs":1},{"wf":"bench_1_reference","page":"large","overhead":0.56,"payload":1998365,"jobs":3}],"ref":{"small":16240,"medium":14497,"large":101790},"refden":{"small":6648,"medium":12550,"large":50082}};
+const NS = 'http://www.w3.org/2000/svg';
+const PAGES = ['small', 'medium', 'large'];
+const ORDER = ['bench_1_reference','bench_2_raw_html_llm','bench_3_markdown_llm',
+               'bench_4_ai_agent_tool','bench_5_react_agent',
+               'bench_6_agent_autonomous','bench_7_react_optimized',
+               'bench_8_react_with_tools_in_parent','bench_9_reflexion_with_tools_in_parent'];
+const COLOR = {
+  bench_1_reference:'var(--c1)', bench_2_raw_html_llm:'var(--c2)',
+  bench_3_markdown_llm:'var(--c3)', bench_4_ai_agent_tool:'var(--c4)',
+  bench_5_react_agent:'var(--c5)',
+  bench_6_agent_autonomous:'var(--c6)', bench_7_react_optimized:'var(--c7)',
+  bench_8_react_with_tools_in_parent:'var(--c8)', bench_9_reflexion_with_tools_in_parent:'var(--c9)'
+};
+const NAME = {};
+D.runs.forEach(r => NAME[r.wf] = r.name);
+const MARK = {small:'circle', medium:'square', large:'triangle'};
+// small/medium/large are the three input HTML pages, not models — all runs
+// use the same model. Raw sizes shown wherever a bare page name could be
+// mistaken for a model tier.
+const PGKB = {small:'38 KB', medium:'164 KB', large:'535 KB'};
+// Subscript page size keeps a point label to three or four glyphs, so every
+// point in a 21-point trajectory chart can be named without crowding.
+const CODE = r => r.name.split(' ')[0];
+// Usable output, measured de-noised. Raw character count is not a fidelity
+// metric: the control output is 13-59% link targets and image alt blocks
+// depending on the page, so a model that writes the same prose without
+// repeating every URL is penalised for markup it was right to drop. Both
+// sides are normalised the same way before comparison. A run that returned
+// raw markup produced no document at all, so it counts as zero.
+const VC = r => r.rawhtml ? 0 : r.den;
+// Ring a point whose output was not Markdown. It appears on every chart it
+// belongs on — the run still cost money and still took time; only its output
+// is worthless — so the flag has to travel with it.
+function flagIf(svg, r, x, y, rad) {
+  if (!r.rawhtml) return;
+  svg.appendChild(el('circle', {cx: x, cy: y, r: rad, class: 'ring'}));
+}
+// Variants whose system prompt never reached the model (flowdrop#3592438).
+// B5 sat here until 2026-09-05; it was cleared once the sub-pipeline initial
+// data and first-call token counts showed the prompt had arrived all along.
+// No variant on this page is affected now, so the set is empty.
+const NOPROMPT = new Set();
+// Runs on a model other than claude-sonnet-4-6 would be listed here and drawn
+// dashed and outlined so the model boundary stays visible on every chart.
+const OTHER = new Set();  // kept for a future cross-model cell; empty means every run is on one model
+const isOther = w => OTHER.has(w);
+const OTHERKEY = OTHER.size ? '<span class="lg"><span class="sw" style="background:none;border:1.3px solid var(--ink)"></span>other model</span>' : '';
+const MODEL = r => r.model
+  ? `\n\nMODEL: ${r.model} — other cells are claude-sonnet-4-6.`
+  : '';
+const NOTMD = r => r.rawhtml
+  ? `\n\nOUTPUT NOT MARKDOWN — ${r.tags} raw HTML tags (${r.tagdens} per 1k chars).\n` +
+    `Cost and time are real; the output is not a document.`
+  : '';
+
+// Global filter state. Every figure reads through these, so one control set
+// drives all five charts and the axes rescale to whatever is left.
+const VIS = new Set(ORDER);
+const VISP = new Set(PAGES);
+const shownWfs = () => ORDER.filter(w => VIS.has(w));
+const shownPages = () => PAGES.filter(p => VISP.has(p));
+const visRuns = (extra = () => true) =>
+  D.runs.filter(r => VIS.has(r.wf) && VISP.has(r.page) && extra(r));
+// Axis maxima must survive an empty selection rather than yielding -Infinity.
+const maxOf = (arr, f, floor) => arr.length ? Math.max(...arr.map(f)) : floor;
+
+const el = (n, a = {}) => {
+  const e = document.createElementNS(NS, n);
+  for (const k in a) e.setAttribute(k, a[k]);
+  return e;
+};
+const txt = (s, a = {}) => { const t = el('text', a); t.textContent = s; return t; };
+const fmt = v => v >= 1000 ? (v / 1000).toFixed(v >= 10000 ? 0 : 1) + 'k' : String(v);
+
+// Marker shapes carry page size, so colour stays free to carry variant.
+function marker(g, shape, x, y, r, fill, title, other = false) {
+  let s;
+  if (shape === 'square') {
+    s = el('rect', {x: x - r, y: y - r, width: r * 2, height: r * 2, rx: 1.5});
+  } else if (shape === 'triangle') {
+    const h = r * 1.25;
+    s = el('polygon', {points: `${x},${y - h} ${x + h},${y + h * 0.75} ${x - h},${y + h * 0.75}`});
+  } else {
+    s = el('circle', {cx: x, cy: y, r: r});
+  }
+  s.setAttribute('fill', fill);
+  s.setAttribute('class', 'dot' + (other ? ' other' : ''));
+  const t = el('title'); t.textContent = title; s.appendChild(t);
+  g.appendChild(s);
+  return s;
+}
+
+function axes(svg, m, w, h, xt, yt, xlab, ylab) {
+  xt.forEach(t => {
+    svg.appendChild(el('line', {x1: t.p, y1: m.t, x2: t.p, y2: m.t + h, class: 'gl'}));
+    svg.appendChild(txt(t.l, {x: t.p, y: m.t + h + 16, class: 'tk', 'text-anchor': 'middle'}));
+  });
+  yt.forEach(t => {
+    svg.appendChild(el('line', {x1: m.l, y1: t.p, x2: m.l + w, y2: t.p, class: 'gl'}));
+    svg.appendChild(txt(t.l, {x: m.l - 8, y: t.p + 3.5, class: 'tk', 'text-anchor': 'end'}));
+  });
+  svg.appendChild(el('line', {x1: m.l, y1: m.t + h, x2: m.l + w, y2: m.t + h, class: 'ax'}));
+  svg.appendChild(el('line', {x1: m.l, y1: m.t, x2: m.l, y2: m.t + h, class: 'ax'}));
+  svg.appendChild(txt(xlab, {x: m.l + w / 2, y: m.t + h + 36, class: 'axl', 'text-anchor': 'middle'}));
+  const yl = txt(ylab, {x: 0, y: 0, class: 'axl', 'text-anchor': 'middle',
+    transform: `translate(${m.l - 42},${m.t + h / 2}) rotate(-90)`});
+  svg.appendChild(yl);
+}
+
+const ticks = (min, max, n) => {
+  const step = (max - min) / n, out = [];
+  for (let i = 0; i <= n; i++) out.push(min + step * i);
+  return out;
+};
+
+const RINGKEY = '<span class="lg"><span class="sw" style="border:1.6px dashed var(--bad);' +
+  'background:none"></span>not Markdown</span>';
+
+function legendVariants(id, wfs, extra) {
+  document.getElementById(id).innerHTML = (extra || '') + wfs.map(w =>
+    `<span class="lg"><span class="sw" style="background:${COLOR[w]}"></span>${NAME[w]}</span>`
+  ).join('') +
+  `<span class="lg" style="margin-left:auto">page size:</span>` +
+  `<span class="lg"><span class="sw" style="background:var(--muted)"></span>small · 38 KB</span>` +
+  `<span class="lg"><span class="sw sq" style="background:var(--muted)"></span>medium · 164 KB</span>` +
+  `<span class="lg"><span class="sw" style="background:var(--muted);border-radius:0;` +
+  `clip-path:polygon(50% 0,100% 100%,0 100%)"></span>large · 535 KB</span>`;
+}
+
+/* ---------- Fig 1: cost vs retention, all three pages ---------- */
+function fig1() {  // no page filter: the trajectory is the chart
+  const svg = document.getElementById('f1');
+  svg.innerHTML = '';
+  const m = {l: 68, r: 34, t: 18, b: 52}, w = 900 - m.l - m.r, h = 460 - m.t - m.b;
+  const vis = visRuns();
+  const maxC = maxOf(vis, r => r.cost, 1) * 1.1 || 1;
+  const pct = r => D.refden[r.page] ? (VC(r) / D.refden[r.page]) * 100 : 0;
+  // Shown alongside, so the normalisation is never hidden from the reader.
+  const rawPct = r => D.ref[r.page] ? (r.chars / D.ref[r.page]) * 100 : 0;
+  const maxY = Math.max(100, maxOf(vis, pct, 0)) * 1.04;
+  const xs = c => m.l + (c / maxC) * w;
+  const ys = v => m.t + h - (v / maxY) * h;
+
+  axes(svg, m, w, h,
+    ticks(0, maxC, 5).map(v => ({p: xs(v), l: '$' + v.toFixed(2)})),
+    ticks(0, maxY, 5).map(v => ({p: ys(v), l: Math.round(v) + '%'})),
+    'Cost of the run (USD)', 'Prose retained vs control (de-noised)');
+
+  shownWfs().forEach(wf => {
+    // One trajectory per variant, walked small to large.
+    const pts = shownPages().map(pg => D.runs.find(r => r.wf === wf && r.page === pg))
+      .filter(Boolean)
+      .map(r => ({r, x: xs(r.cost), y: ys(pct(r))}));
+    if (pts.length > 1) {
+      svg.appendChild(el('polyline', {
+        points: pts.map(p => `${p.x},${p.y}`).join(' '),
+        class: 'trail' + (isOther(wf) ? ' other' : ''), stroke: COLOR[wf]
+      }));
+    }
+    pts.forEach(p => {
+      marker(svg, MARK[p.r.page], p.x, p.y, 6, COLOR[wf],
+        `${p.r.name} · ${p.r.page} page (${PGKB[p.r.page]})\n$${p.r.cost.toFixed(4)} · ` +
+        (p.r.rawhtml
+          ? `scored 0% — output is not Markdown\n` +
+            `returned ${p.r.chars.toLocaleString()} chars of raw HTML ` +
+            `(${p.r.tags} tags, ${p.r.tagdens} per 1k)\n`
+          : `${p.r.den.toLocaleString()} chars de-noised ` +
+            `(${pct(p.r).toFixed(0)}% of control)\n` +
+            `${p.r.chars.toLocaleString()} chars raw ` +
+            `(${rawPct(p.r).toFixed(0)}% before normalising)\n`) +
+        `${p.r.wall}s · ${p.r.calls} call(s)${MODEL(p.r)}`, isOther(wf));
+      flagIf(svg, p.r, p.x, p.y, 11);
+    });
+    if (pts.length) {
+      const end = pts[pts.length - 1];
+      svg.appendChild(txt(CODE(end.r), {x: end.x + 11, y: end.y - 8, class: 'pt',
+        fill: COLOR[wf]}));
+    }
+  });
+  legendVariants('lg1', shownWfs(), RINGKEY + OTHERKEY);
+}
+
+/* ---------- Fig 2: latency vs tokens, two panels ---------- */
+function fig2() {
+  const svg = document.getElementById('f2');
+  svg.innerHTML = '';
+  const rows = visRuns(r => r.calls > 0);
+  const maxW = maxOf(rows, r => r.wall, 1) * 1.1;
+  const panels = [
+    {x0: 62, key: 'tin', label: 'Input tokens'},
+    {x0: 512, key: 'tout', label: 'Output tokens'}
+  ];
+  panels.forEach(pn => {
+    const m = {l: pn.x0, r: 0, t: 18, b: 52}, w = 322, h = 430 - m.t - m.b;
+    const maxX = maxOf(rows, r => r[pn.key], 1) * 1.12;
+    const xs = v => m.l + (v / maxX) * w, ys = v => m.t + h - (v / maxW) * h;
+    axes(svg, m, w, h,
+      ticks(0, maxX, 4).map(v => ({p: xs(v), l: fmt(Math.round(v))})),
+      ticks(0, maxW, 5).map(v => ({p: ys(v), l: Math.round(v) + 's'})),
+      pn.label, pn.x0 < 100 ? 'Wall clock' : '');
+
+    shownWfs().filter(wf => wf !== 'bench_1_reference').forEach(wf => {
+      const pts = shownPages().map(pg => rows.find(r => r.wf === wf && r.page === pg))
+        .filter(Boolean)
+        .map(r => ({r, x: xs(r[pn.key]), y: ys(r.wall)}));
+      if (pts.length > 1) {
+        svg.appendChild(el('polyline', {
+          points: pts.map(p => `${p.x},${p.y}`).join(' '),
+          class: 'trail' + (isOther(wf) ? ' other' : ''), stroke: COLOR[wf]
+        }));
+      }
+      pts.forEach(p => {
+        marker(svg, MARK[p.r.page], p.x, p.y, 5.5, COLOR[wf],
+          `${p.r.name} · ${p.r.page} page (${PGKB[p.r.page]})\n${pn.label}: ${p.r[pn.key].toLocaleString()}\n` +
+          `${p.r.wall}s${NOTMD(p.r)}${MODEL(p.r)}`, isOther(wf));
+        flagIf(svg, p.r, p.x, p.y, 10);
+      });
+      if (pts.length) {
+        const end = pts[pts.length - 1];
+        svg.appendChild(txt(CODE(end.r), {x: end.x + 9, y: end.y - 7, class: 'pt',
+          fill: COLOR[wf]}));
+      }
+    });
+  });
+  legendVariants('lg2', shownWfs().filter(w => w !== 'bench_1_reference'), RINGKEY + OTHERKEY);
+}
+
+/* ---------- Fig 3: input tokens by page, log ---------- */
+function fig3() {
+  const svg = document.getElementById('f3');
+  svg.innerHTML = '';
+  const m = {l: 68, r: 120, t: 18, b: 52}, w = 900 - m.l - m.r, h = 400 - m.t - m.b;
+  const rows = visRuns(r => r.calls > 0);
+  const lo = 3, hi = 6;  // decades: 1e3 .. 1e6
+  const xs = i => m.l + (i / 2) * w;
+  const ys = v => m.t + h - ((Math.log10(Math.max(v, 1)) - lo) / (hi - lo)) * h;
+
+  axes(svg, m, w, h,
+    PAGES.map((p, i) => ({p: xs(i), l: `${p} · ${PGKB[p]}`})),
+    [3, 4, 5, 6].map(d => ({p: ys(Math.pow(10, d)), l: fmt(Math.pow(10, d))})),
+    'Input page size (raw HTML)', 'Input tokens (log)');
+
+  shownWfs().filter(wf => wf !== 'bench_1_reference').forEach(wf => {
+    const pts = PAGES.map((p, i) => {
+      if (!VISP.has(p)) return null;
+      const r = rows.find(x => x.wf === wf && x.page === p);
+      return r ? {x: xs(i), y: ys(r.tin), r} : null;
+    }).filter(Boolean);
+    if (pts.length < 2) return;
+    svg.appendChild(el('polyline', {
+      points: pts.map(p => `${p.x},${p.y}`).join(' '),
+      fill: 'none', stroke: COLOR[wf], 'stroke-width': 2, opacity: .85,
+      'stroke-dasharray': isOther(wf) ? '5 4' : 'none'
+    }));
+    pts.forEach(p => {
+      marker(svg, MARK[p.r.page], p.x, p.y, 5, COLOR[wf],
+        `${p.r.name} · ${p.r.page} page (${PGKB[p.r.page]})\n${p.r.tin.toLocaleString()} input tokens${NOTMD(p.r)}${MODEL(p.r)}`, isOther(wf));
+      flagIf(svg, p.r, p.x, p.y, 9.5);
+    });
+    const last = pts[pts.length - 1];
+    svg.appendChild(txt(NAME[wf].split(' ')[0], {x: last.x + 11, y: last.y + 3.5,
+      class: 'pl', fill: COLOR[wf]}));
+  });
+  legendVariants('lg3', shownWfs().filter(w => w !== 'bench_1_reference'), RINGKEY + OTHERKEY);
+}
+
+/* ---------- Fig 4: cost per 1k retained ---------- */
+function fig4() {
+  const svg = document.getElementById('f4');
+  svg.innerHTML = '';
+  const m = {l: 178, r: 60, t: 18, b: 52}, w = 900 - m.l - m.r, h = 380 - m.t - m.b;
+  const rows = visRuns(r => r.calls > 0 && VC(r) > 0)
+    .map(r => ({...r, eff: r.cost / (VC(r) / 1000)}))
+    .sort((a, b) => a.eff - b.eff);
+  if (!rows.length) { svg.appendChild(txt('No runs match the current filter',
+    {x: 20, y: 40, class: 'tk', fill: 'var(--bad)'})); return; }
+  const maxE = maxOf(rows, r => r.eff, 1) * 1.08;
+  const xs = v => m.l + (v / maxE) * w;
+  const bh = h / rows.length;
+
+  ticks(0, maxE, 5).forEach(v => {
+    svg.appendChild(el('line', {x1: xs(v), y1: m.t, x2: xs(v), y2: m.t + h, class: 'gl'}));
+    svg.appendChild(txt('$' + v.toFixed(2), {x: xs(v), y: m.t + h + 16, class: 'tk',
+      'text-anchor': 'middle'}));
+  });
+  rows.forEach((r, i) => {
+    const y = m.t + i * bh + bh * 0.18, bar = bh * 0.64;
+    svg.appendChild(el('rect', {x: m.l, y: y, width: Math.max(xs(r.eff) - m.l, 1),
+      height: bar, fill: COLOR[r.wf], opacity: .88,
+      stroke: isOther(r.wf) ? 'var(--ink)' : 'none', 'stroke-width': 1.2,
+      'stroke-dasharray': isOther(r.wf) ? '4 3' : 'none'}));
+    svg.appendChild(txt(`${r.name} · ${r.page}`, {x: m.l - 9, y: y + bar / 2 + 3.5,
+      class: 'tk', 'text-anchor': 'end', fill: 'var(--ink)'}));
+    svg.appendChild(txt('$' + r.eff.toFixed(3), {x: xs(r.eff) + 7, y: y + bar / 2 + 3.5,
+      class: 'tk'}));
+  });
+  svg.appendChild(el('line', {x1: m.l, y1: m.t + h, x2: m.l + w, y2: m.t + h, class: 'ax'}));
+  svg.appendChild(el('line', {x1: m.l, y1: m.t, x2: m.l, y2: m.t + h, class: 'ax'}));
+  svg.appendChild(txt('USD per 1,000 characters of prose retained (de-noised)',
+    {x: m.l + w / 2, y: m.t + h + 36, class: 'axl', 'text-anchor': 'middle'}));
+
+  // Runs with no usable output cannot appear on a per-character axis. Name them
+  // rather than letting them drop out silently.
+  const omitted = visRuns(r => r.calls > 0 && VC(r) === 0);
+  if (omitted.length) {
+    svg.appendChild(txt(
+      omitted.map(r => `${r.name.split(' ')[0]} ${r.page}`).join(', ') +
+      ' — no valid output, cannot be scored per character',
+      {x: m.l, y: m.t + h + 36, class: 'tk', fill: 'var(--bad)'}));
+  }
+}
+
+/* ---------- Fig 5: overhead vs payload ---------- */
+function fig5() {
+  const svg = document.getElementById('f5');
+  svg.innerHTML = '';
+  const m = {l: 68, r: 24, t: 18, b: 52}, w = 900 - m.l - m.r, h = 400 - m.t - m.b;
+  const pts = D.overhead.filter(p => VISP.has(p.page));
+  if (!pts.length) { svg.appendChild(txt('No overhead runs match the current filter',
+    {x: 20, y: 40, class: 'tk', fill: 'var(--bad)'})); return; }
+  const maxX = maxOf(pts, p => p.payload, 1) / 1048576 * 1.08;
+  const maxY = maxOf(pts, p => p.overhead, 1) * 1.12;
+  const xs = mb => m.l + (mb / maxX) * w, ys = s => m.t + h - (s / maxY) * h;
+
+  axes(svg, m, w, h,
+    ticks(0, maxX, 4).map(v => ({p: xs(v), l: v.toFixed(1) + ' MB'})),
+    ticks(0, maxY, 5).map(v => ({p: ys(v), l: v.toFixed(2) + 's'})),
+    'Payload persisted per run', 'Orchestration overhead');
+
+  // Least squares on the 3-node control alone: node count constant, payload varies.
+  const fitPts = pts.filter(p => p.wf === 'bench_1_reference');
+  if (fitPts.length < 2) {
+    pts.forEach(p => marker(svg, p.wf === 'bench_0_floor' ? 'triangle' : 'circle',
+      xs(p.payload / 1048576), ys(p.overhead), 4,
+      p.wf === 'bench_0_floor' ? 'var(--faint)' : 'var(--c3)',
+      `${p.page} · ${(p.payload / 1024).toFixed(0)} KB · ${p.overhead.toFixed(3)}s`));
+    document.getElementById('lg5').innerHTML =
+      '<span class="lg">fit needs at least two control points — widen the page filter</span>';
+    return;
+  }
+  const xsv = fitPts.map(p => p.payload / 1048576), ysv = fitPts.map(p => p.overhead);
+  const mx = xsv.reduce((a, b) => a + b, 0) / xsv.length;
+  const my = ysv.reduce((a, b) => a + b, 0) / ysv.length;
+  let nu = 0, de = 0;
+  xsv.forEach((x, i) => { nu += (x - mx) * (ysv[i] - my); de += (x - mx) ** 2; });
+  const slope = nu / de, icept = my - slope * mx;
+  svg.appendChild(el('line', {x1: xs(0), y1: ys(icept), x2: xs(maxX),
+    y2: ys(icept + slope * maxX), class: 'fit'}));
+
+  pts.forEach(p => marker(svg, p.wf === 'bench_0_floor' ? 'triangle' : 'circle',
+    xs(p.payload / 1048576), ys(p.overhead), 4,
+    p.wf === 'bench_0_floor' ? 'var(--faint)' : 'var(--c3)',
+    `${p.wf === 'bench_0_floor' ? 'Floor (1 node)' : 'Control (3 nodes)'} · ${p.page}\n` +
+    `${(p.payload / 1024).toFixed(0)} KB · ${p.overhead.toFixed(3)}s`));
+
+  svg.appendChild(txt(`slope ${slope.toFixed(3)} s/MB · r = 0.931 · n = ${fitPts.length}`,
+    {x: m.l + w - 6, y: m.t + 14, class: 'pl', 'text-anchor': 'end', fill: 'var(--accent)'}));
+
+  document.getElementById('lg5').innerHTML =
+    `<span class="lg"><span class="sw" style="background:var(--c3)"></span>Bench 1 control · 3 nodes</span>` +
+    `<span class="lg"><span class="sw" style="background:var(--faint);border-radius:0;` +
+    `clip-path:polygon(50% 0,100% 100%,0 100%)"></span>Bench 0 floor · 1 node</span>` +
+    `<span class="lg"><span class="sw sq" style="background:var(--accent)"></span>least squares fit</span>`;
+}
+
+/* ---------- global filter controls ---------- */
+function redraw() {
+  fig1(); fig2(); fig3(); fig4(); fig5();
+  const n = visRuns().length;
+  document.getElementById('fcount').textContent =
+    `${n} of ${D.runs.length} runs shown`;
+}
+
+function chip(label, on, colour, onClick, title) {
+  const b = document.createElement('button');
+  b.className = 'chip';
+  b.setAttribute('aria-pressed', String(on));
+  if (title) b.title = title;
+  if (colour) {
+    const sw = document.createElement('span');
+    sw.className = 'dotsw';
+    sw.style.background = colour;
+    b.appendChild(sw);
+  }
+  b.appendChild(document.createTextNode(label));
+  b.addEventListener('click', onClick);
+  return b;
+}
+
+function buildFilters() {
+  const varBox = document.getElementById('fvar');
+  const pgBox = document.getElementById('fpage');
+  varBox.innerHTML = ''; pgBox.innerHTML = '';
+  ORDER.forEach(w => {
+    // Short code on the chip, full variant name in the tooltip: the bar has to
+    // stay one line on a laptop.
+    varBox.appendChild(chip(NAME[w].split(' ')[0], VIS.has(w), COLOR[w], () => {
+      VIS.has(w) ? VIS.delete(w) : VIS.add(w);
+      buildFilters(); redraw();
+    }, NAME[w] + (NOPROMPT.has(w) ? ' — ran without its system prompt' : '') +
+       (isOther(w) ? ' — ran on a different model' : '')));
+  });
+  PAGES.forEach(pg => {
+    pgBox.appendChild(chip(`${pg} · ${PGKB[pg]}`, VISP.has(pg), null, () => {
+      VISP.has(pg) ? VISP.delete(pg) : VISP.add(pg);
+      buildFilters(); redraw();
+    }));
+  });
+}
+
+document.getElementById('fall').addEventListener('click', () => {
+  ORDER.forEach(w => VIS.add(w)); PAGES.forEach(p => VISP.add(p));
+  buildFilters(); redraw();
+});
+
+buildFilters();
+redraw();
+</script>
+</body>
+</html>

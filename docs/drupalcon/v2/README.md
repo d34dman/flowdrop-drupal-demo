@@ -34,8 +34,10 @@ tables with `python3 docs/drupalcon/data/tables_v2.py`, a single run's reasoning
 
 ## Status
 
-Phase A (rescore) and the fold are done. This folder is Phase C, first draft. The site has a
-generated [Rubric v2 Scorecard](../site/redaction-benchmark/artifacts/rubric-v2-scorecard.html)
-page (`data/build_site_v2.py`) and the three v1 data pages carry a superseded banner. Not done:
+Phase A (rescore) and the fold are done. This folder is Phase C, first draft. The site has two
+generated pages, the [Rubric v2 Scorecard](../site/redaction-benchmark/artifacts/rubric-v2-scorecard.html)
+(`data/build_site_v2.py`) and the [Redactor Model Matrix v2](../site/redaction-benchmark/artifacts/redactor-model-matrix-v2.html)
+(`data/build_matrix_v2.py`); the nine v1 pages moved to `site/redaction-benchmark/archive/v1/`
+with redirects at their old URLs. Not done:
 the by-eye read of the gold bodies against the live pages; the talk outline and decks still cite
 v1 numbers; most cells are one draw.

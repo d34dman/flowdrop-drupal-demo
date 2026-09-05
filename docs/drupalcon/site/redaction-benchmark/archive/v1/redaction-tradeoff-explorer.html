@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redaction Tradeoff Explorer</title>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div style="max-width:1000px;margin:18px auto 0;padding:0 24px"><div style="border:1px solid #B0531D;border-left:4px solid #B0531D;border-radius:8px;padding:10px 14px;font:.92rem/1.5 'Source Serif 4',Georgia,serif;background:rgba(176,83,29,.06)"><strong>Superseded, 5 September 2026.</strong> The metrics on this page (retention, glyph count, leaks) were replaced by rubric v2, which grades every run against a gold document and classifies it as correct, degraded, silent, format or loud failure. The numbers here are kept as the record of what was published first. Read the <a href="../../artifacts/rubric-v2-scorecard.html" style="color:#1B6FA8">Rubric v2 Scorecard</a> instead.</div></div>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  --ink:#111820; --paper:#F5F6F8; --surf:#FFFFFF; --rule:#D8DCE2; --muted:#5A6470;
+  --accent:#1B6FA8; --signal:#B0531D; --good:#2E6F4E; --bad:#B3261E; --faint:#9AA3AE;
+  --c1:#6B7480; --c2:#B0531D; --c3:#1B6FA8; --c4:#7A4E9E; --c5:#2E6F4E; --c6:#0E7C86;
+  --c7:#8A6D1F; --c8:#3F6F2A; --c9:#6B4FBB;
+  --pass-bg:rgba(27,111,168,.05); --fail:rgba(17,24,32,.16);
+  --sans:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ink:#E8EBEF; --paper:#0F1318; --surf:#171C23; --rule:#2C333C; --muted:#98A2AE;
+  --accent:#5AA9DC; --signal:#E08A47; --good:#5FBF8C; --bad:#F2705F; --faint:#6D7783;
+  --c1:#8A939F; --c2:#E08A47; --c3:#5AA9DC; --c4:#B18BD4; --c5:#5FBF8C; --c6:#3FBECB;
+  --c7:#D4B44A; --c8:#8FCC6A; --c9:#B39DEB;
+  --pass-bg:rgba(90,169,220,.07); --fail:rgba(232,235,239,.14);
+}}
+:root[data-theme="dark"]{
+  --ink:#E8EBEF; --paper:#0F1318; --surf:#171C23; --rule:#2C333C; --muted:#98A2AE;
+  --accent:#5AA9DC; --signal:#E08A47; --good:#5FBF8C; --bad:#F2705F; --faint:#6D7783;
+  --c1:#8A939F; --c2:#E08A47; --c3:#5AA9DC; --c4:#B18BD4; --c5:#5FBF8C; --c6:#3FBECB;
+  --c7:#D4B44A; --c8:#8FCC6A; --c9:#B39DEB;
+  --pass-bg:rgba(90,169,220,.07); --fail:rgba(232,235,239,.14);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+  line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+header{padding:56px 0 8px;border-bottom:1px solid var(--rule);margin-bottom:32px}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--signal);margin:0 0 .6em}
+h1{font-family:var(--sans);font-weight:700;font-size:clamp(2rem,4.4vw,3rem);line-height:1.06;
+  margin:0 0 .35em;text-wrap:balance;letter-spacing:-.02em}
+.stand{font-size:1.08rem;color:var(--muted);max-width:64ch;margin:0 0 2rem}
+h2{font-family:var(--sans);font-weight:700;font-size:1.35rem;margin:0 0 .5em;letter-spacing:-.01em}
+p{max-width:68ch}
+section{padding:34px 0;border-bottom:1px solid var(--rule)}
+section:last-of-type{border-bottom:0}
+
+.bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
+  background:var(--surf);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin-bottom:6px}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.seg button{font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;padding:7px 15px;border:0;
+  background:transparent;color:var(--muted);cursor:pointer;border-right:1px solid var(--rule)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.lbl{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ghostbtn{font-family:var(--mono);font-size:.74rem;padding:7px 13px;border:1px solid var(--rule);
+  border-radius:8px;background:transparent;color:var(--ink);cursor:pointer}
+.ghostbtn:hover{border-color:var(--accent);color:var(--accent)}
+
+.figbox{background:var(--surf);border:1px solid var(--rule);border-radius:10px;padding:8px 0 18px;
+  margin:14px 0;overflow-x:auto}
+svg{display:block;width:100%;height:auto;min-width:660px}
+.sliderrow{position:relative;height:74px;min-width:660px;margin-top:2px}
+.sl{position:absolute;transform:translateX(-50%);width:23%;text-align:center}
+.sl .cap{font-family:var(--mono);font-size:.7rem;color:var(--muted);letter-spacing:.04em;
+  display:block;margin-bottom:3px}
+.sl .val{font-family:var(--mono);font-size:.95rem;font-weight:500;color:var(--ink);
+  display:block;margin-bottom:5px;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer}
+input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.verdict{background:var(--surf);border:1px solid var(--rule);border-left:3px solid var(--accent);
+  border-radius:8px;padding:14px 16px;margin:16px 0}
+.verdict .big{font-family:var(--sans);font-weight:700;font-size:1.5rem;letter-spacing:-.01em}
+.verdict .big em{font-style:normal;color:var(--accent)}
+.verdict p{margin:.35rem 0 0;font-size:.95rem;color:var(--muted)}
+
+table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.83rem;
+  font-variant-numeric:tabular-nums;margin-top:6px}
+th{text-align:right;font-weight:500;color:var(--muted);font-size:.7rem;letter-spacing:.08em;
+  text-transform:uppercase;padding:7px 9px;border-bottom:1px solid var(--rule)}
+th:first-child,td:first-child{text-align:left}
+td{padding:8px 9px;border-bottom:1px solid var(--rule);text-align:right}
+tr.out td{color:var(--faint)}
+tr.out td:first-child{text-decoration:line-through}
+.sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:8px;vertical-align:baseline}
+.tag{font-family:var(--mono);font-size:.66rem;padding:1px 6px;border-radius:99px;margin-left:7px;
+  border:1px solid currentColor}
+.pass{color:var(--good)} .failx{color:var(--bad)}
+.note{border:1px solid var(--rule);border-left:3px solid var(--signal);background:var(--surf);
+  border-radius:8px;padding:15px 17px;margin:18px 0}
+.note h3{font-family:var(--sans);font-size:1rem;margin:0 0 .3em}
+.note p{font-size:.93rem;color:var(--muted);margin:.4rem 0 0}
+code{font-family:var(--mono);font-size:.86em;background:var(--pass-bg);padding:.1em .35em;border-radius:3px}
+.ax{stroke:var(--rule);stroke-width:1.5}
+.tk{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+.axl{font-family:var(--sans);font-size:12px;font-weight:700;fill:var(--ink)}
+.axsub{font-family:var(--mono);font-size:9px;fill:var(--muted);letter-spacing:.06em}
+.line{fill:none;stroke-width:2.4;stroke-linejoin:round;transition:opacity .12s}
+.line.out{stroke:var(--fail)!important;stroke-width:1.2}
+.dot{transition:opacity .12s}
+.dot.out{fill:var(--fail)!important}
+.band{fill:var(--bad);opacity:.075}
+.thr{stroke:var(--bad);stroke-width:1.6;stroke-dasharray:5 3}
+.ptlbl{font-family:var(--mono);font-size:10px;font-weight:500}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="wrap">
+  <p class="eyebrow">▌▌▌▌ &nbsp;FlowDrop redaction benchmark &nbsp;·&nbsp; interactive</p>
+  <h1>Set your constraints.<br>See what survives.</h1>
+  <p class="stand">There is no best workflow — there is only the set that clears your budget, your
+  latency ceiling, your fidelity bar and your tolerance for a leaked competitor name. Move the four
+  thresholds and watch the field collapse. The last option standing is rarely the one you expected.</p>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="bar">
+      <div style="display:flex;gap:12px;align-items:center">
+        <span class="lbl">Page</span>
+        <div class="seg" id="pages"></div>
+      </div>
+      <div style="display:flex;gap:9px;align-items:center">
+        <button class="ghostbtn" id="reset">Open all thresholds</button>
+        <button class="ghostbtn" id="strict">No leaks, ≥65% prose</button>
+      </div>
+    </div>
+
+    <div class="figbox">
+      <svg id="pc" viewBox="0 0 900 400" role="img"
+        aria-label="Parallel coordinates plot of cost, time, fidelity and leaks for each workflow"></svg>
+      <div class="sliderrow" id="sliders"></div>
+    </div>
+
+    <div class="verdict">
+      <div class="big" id="count"></div>
+      <p id="detail"></p>
+    </div>
+
+    <table>
+      <thead><tr>
+        <th>Approach</th><th>Cost</th><th>Time</th><th>Prose kept</th>
+        <th>Redactions</th><th>Leaks</th><th></th>
+      </tr></thead>
+      <tbody id="tb"></tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>How to read it</h2>
+    <div class="note">
+      <h3>Every axis points the same way: up is better</h3>
+      <p>Cost, time and leaks are inverted so that a good result is always high. A line that stays
+      near the top across all four axes is an option with no bad news anywhere. The shaded red band
+      at the foot of each axis is the region your threshold has ruled out — any line entering it is
+      greyed for the rest of the chart.</p>
+    </div>
+    <div class="note">
+      <h3>The control is on the chart, and it fails</h3>
+      <p>B1 is the deterministic pipeline: fetch, convert, done. It is free, it finishes in about a
+      second, and it scores 100% on fidelity by definition — it <em>is</em> the ruler. On three of
+      four axes it is unbeatable. On the medium page it leaks <strong>38</strong> competitor
+      mentions, because it never redacts anything. Pull the leak threshold down to zero and the
+      cheapest, fastest, most faithful option on the board disappears first. That is the whole
+      argument for spending money on a model.</p>
+    </div>
+    <div class="note">
+      <h3>Correction, 5 September: B5 did receive its system prompt</h3>
+      <p>This page previously said B5's instructions never reached the model, via the
+      FlowDrop port bug
+      (<a href="https://git.drupalcode.org/project/flowdrop/-/work_items/3592438">flowdrop#3592438</a>)
+      that did hit three early B7 draws. B5 was not affected: its parent workflow forwards
+      the prompt through the sub-workflow's <code>system_prompt</code> input port, and the
+      first-call token counts are identical before and after the port fix. B5's fidelity
+      is a fair reading of the design.</p>
+      <p><strong>B7 is the same architecture with one change:</strong> its converter takes a
+      URL rather than a document, so page content never has to pass back out through the
+      model to reach the tool.</p>
+    </div>
+    <div class="note">
+      <h3>B8 and B9, added 5 September</h3>
+      <p><strong>B8</strong> is B5's prompt with B7's tool: the parent agent is handed a
+      URL-to-Markdown converter. It lands where B7 does on every axis — two calls, the same
+      cost, the same time. <strong>B9</strong> wraps that agent in a critic that can send the
+      answer back up to three revisions. On the medium page the critic accepted the first
+      draft, so B9 is B8 plus one call. On the large page three revisions cut leaks from two
+      to one at three times the cost and fourteen minutes of wall clock — pull the time
+      threshold below that and it is the first agent to go. On the small page three revisions
+      cost nine calls and five times B8's money and ended on the same 69% document B8 produced:
+      the critic changed nothing.</p>
+      <p><strong>The B9 small-page run is a rerun.</strong> The first attempt failed inside
+      FlowDrop's loop runtime on the revision round, not in the model
+      (<a href="https://git.drupalcode.org/project/flowdrop/-/work_items/3592443">flowdrop#3592443</a>);
+      FlowDrop fixed it the same day and the cell was rerun on the fixed module.</p>
+    </div>
+    <div class="note">
+      <h3>On the small page, the free option is genuinely correct</h3>
+      <p>Switch to the small page with the correctness preset and B1 survives as the cheapest
+      qualifying option. That is not a flaw in the filter — that page contains nothing to redact,
+      so a pipeline that redacts nothing gets the right answer for free. The mirror-image failure,
+      redacting on a page with nothing to redact, is invisible here: a threshold chart can only
+      rule things out on the axes it has, and over-redaction needs its own measure, which this
+      benchmark does not yet have.</p>
+    </div>
+    <div class="note">
+      <h3>Fidelity is de-noised, and it is still only a proxy</h3>
+      <p>Prose kept compares against the control with link targets, image alt blocks and repeated
+      whitespace stripped from both sides — raw character count would credit a model for echoing
+      back URLs. A character metric cannot tell a dropped paragraph from a missed redaction, which
+      is exactly why leaks are a separate axis rather than folded into a single score. B2 on the
+      small page returned raw HTML instead of Markdown and is scored <strong>0%</strong>; its cost
+      and time are real.</p>
+    </div>
+  </div>
+</section>
+<script>
+const D = {"runs":[{"wf":"bench_1_reference","name":"B1 Deterministic","page":"small","wall":0.2,"cost":0,"den":6648,"chars":16240,"red":0,"leak":0,"calls":0,"rawhtml":false,"tin":0,"tout":0},{"wf":"bench_1_reference","name":"B1 Deterministic","page":"medium","wall":1.3,"cost":0,"den":12550,"chars":14497,"red":0,"leak":38,"calls":0,"rawhtml":false,"tin":0,"tout":0},{"wf":"bench_1_reference","name":"B1 Deterministic","page":"large","wall":0.8,"cost":0,"den":50082,"chars":101790,"red":0,"leak":2,"calls":0,"rawhtml":false,"tin":0,"tout":0},{"wf":"bench_2_raw_html_llm","name":"B2 Raw HTML","page":"small","wall":252.7,"cost":0.2453,"den":27096,"chars":27886,"red":0,"leak":0,"calls":1,"rawhtml":true,"tin":13671,"tout":13616},{"wf":"bench_3_markdown_llm","name":"B3 Markdown first","page":"small","wall":82.1,"cost":0.0854,"den":6276,"chars":8581,"red":0,"leak":0,"calls":1,"rawhtml":false,"tin":4916,"tout":4707},{"wf":"bench_4_ai_agent_tool","name":"B4 Agent (fed)","page":"small","wall":224.3,"cost":0.3186,"den":6805,"chars":8253,"red":0,"leak":6,"calls":2,"rawhtml":false,"tin":40096,"tout":13219},{"wf":"bench_5_react_agent","name":"B5 FlowDrop ReAct","page":"small","wall":106.7,"cost":0.2012,"den":4694,"chars":5658,"red":0,"leak":0,"calls":3,"rawhtml":false,"tin":38400,"tout":5735},{"wf":"bench_2_raw_html_llm","name":"B2 Raw HTML","page":"medium","wall":53.7,"cost":0.2084,"den":8638,"chars":8638,"red":28,"leak":1,"calls":1,"rawhtml":false,"tin":59150,"tout":2060},{"wf":"bench_3_markdown_llm","name":"B3 Markdown first","page":"medium","wall":51.4,"cost":0.0418,"den":8678,"chars":8678,"red":30,"leak":0,"calls":1,"rawhtml":false,"tin":3502,"tout":2086},{"wf":"bench_4_ai_agent_tool","name":"B4 Agent (fed)","page":"medium","wall":110.4,"cost":0.4504,"den":10138,"chars":10138,"red":29,"leak":0,"calls":2,"rawhtml":false,"tin":124193,"tout":5189},{"wf":"bench_5_react_agent","name":"B5 FlowDrop ReAct","page":"medium","wall":154.8,"cost":0.5232,"den":10945,"chars":10946,"red":28,"leak":2,"calls":3,"rawhtml":false,"tin":141783,"tout":6523},{"wf":"bench_2_raw_html_llm","name":"B2 Raw HTML","page":"large","wall":165.1,"cost":0.7446,"den":21807,"chars":21807,"red":4,"leak":1,"calls":1,"rawhtml":false,"tin":211994,"tout":7244},{"wf":"bench_3_markdown_llm","name":"B3 Markdown first","page":"large","wall":398,"cost":0.4432,"den":41931,"chars":46948,"red":2,"leak":0,"calls":1,"rawhtml":false,"tin":34822,"tout":22585},{"wf":"bench_4_ai_agent_tool","name":"B4 Agent (fed)","page":"large","wall":163.6,"cost":1.41,"den":13051,"chars":13051,"red":0,"leak":9,"calls":2,"rawhtml":false,"tin":432407,"tout":7517},{"wf":"bench_6_agent_autonomous","name":"B6 Agent (auto)","page":"small","wall":95.2,"cost":0.1842,"den":4683,"chars":5620,"red":0,"leak":0,"calls":3,"rawhtml":false,"tin":34564,"tout":5370},{"wf":"bench_6_agent_autonomous","name":"B6 Agent (auto)","page":"medium","wall":127.5,"cost":0.4602,"den":10868,"chars":10869,"red":28,"leak":1,"calls":3,"rawhtml":false,"tin":125833,"tout":5512},{"wf":"bench_6_agent_autonomous","name":"B6 Agent (auto)","page":"large","wall":555,"cost":1.7702,"den":37336,"chars":37340,"red":2,"leak":0,"calls":3,"rawhtml":false,"tin":452913,"tout":27431},{"wf":"bench_5_react_agent","name":"B5 FlowDrop ReAct","page":"large","wall":553.2,"cost":1.8954,"den":37511,"chars":37512,"red":2,"leak":0,"calls":3,"rawhtml":false,"tin":503345,"tout":25694},{"wf":"bench_7_react_optimized","name":"B7 ReAct (url tool)","page":"small","wall":57.0,"cost":0.066,"den":4607,"chars":4608,"red":0,"leak":0,"calls":2,"rawhtml":false,"tin":7434,"tout":2916},{"wf":"bench_7_react_optimized","name":"B7 ReAct (url tool)","page":"medium","wall":85.1,"cost":0.0666,"den":11714,"chars":11482,"red":28,"leak":2,"calls":2,"rawhtml":false,"tin":5910,"tout":3256},{"wf":"bench_7_react_optimized","name":"B7 ReAct (url tool)","page":"large","wall":327.0,"cost":0.3625,"den":40515,"chars":40167,"red":2,"leak":2,"calls":2,"rawhtml":false,"tin":40856,"tout":15997},{"wf":"bench_8_react_with_tools_in_parent","name":"B8 ReAct (parent tool)","page":"small","wall":53.5,"cost":0.0661,"den":4607,"chars":4608,"red":0,"leak":0,"calls":2,"rawhtml":false,"tin":7444,"tout":2916},{"wf":"bench_8_react_with_tools_in_parent","name":"B8 ReAct (parent tool)","page":"medium","wall":87.0,"cost":0.071,"den":12186,"chars":11674,"red":56,"leak":3,"calls":2,"rawhtml":false,"tin":5928,"tout":3551},{"wf":"bench_9_reflexion_with_tools_in_parent","name":"B9 Reflexion (critic)","page":"small","wall":169.7,"cost":0.3456,"den":4607,"chars":4608,"red":0,"leak":0,"calls":9,"rawhtml":false,"tin":78856,"tout":7271},{"wf":"bench_9_reflexion_with_tools_in_parent","name":"B9 Reflexion (critic)","page":"medium","wall":79.9,"cost":0.0799,"den":11854,"chars":11354,"red":56,"leak":3,"calls":3,"rawhtml":false,"tin":9027,"tout":3524},{"wf":"bench_8_react_with_tools_in_parent","name":"B8 ReAct (parent tool)","page":"large","wall":327.0,"cost":0.3693,"den":41148,"chars":41203,"red":4,"leak":2,"calls":2,"rawhtml":false,"tin":40866,"tout":16450},{"wf":"bench_9_reflexion_with_tools_in_parent","name":"B9 Reflexion (critic)","page":"large","wall":863.7,"cost":1.2054,"den":40039,"chars":42957,"red":6,"leak":1,"calls":7,"rawhtml":false,"tin":199271,"tout":40508}],"refden":{"small":6648,"medium":12550,"large":50082},"ref":{"small":16240,"medium":14497,"large":101790}};
+
+const NS = 'http://www.w3.org/2000/svg';
+const PAGES = ['small', 'medium', 'large'];
+const PAGELBL = {small: 'Small · 16k', medium: 'Medium · 14k', large: 'Large · 102k'};
+const COLOR = {
+  bench_1_reference:'--c1', bench_2_raw_html_llm:'--c2', bench_3_markdown_llm:'--c3',
+  bench_4_ai_agent_tool:'--c4', bench_5_react_agent:'--c5',
+  bench_6_agent_autonomous:'--c6',
+  bench_7_react_optimized:'--c7',
+  bench_8_react_with_tools_in_parent:'--c8', bench_9_reflexion_with_tools_in_parent:'--c9'
+};
+const col = wf => `var(${COLOR[wf]})`;
+// Quality is de-noised prose retained. Output that was not Markdown produced no
+// document at all, so it scores zero rather than its (larger) character count.
+// Variants whose system prompt never reached the model (flowdrop#3592438).
+// B5 was listed here until 2026-09-05, in error: its parent forwarded the
+// prompt through the sub-workflow input port. Nothing on this page is affected.
+const NOPROMPT = new Set();
+const QUAL = r => (r.rawhtml ? 0 : r.den) / D.refden[r.page] * 100;
+
+// Four axes, each oriented so that up is better. Inverting cost, time and leaks
+// means a single rule reads the whole chart: high is good, and the ruled-out
+// band is always at the foot of the axis.
+const AXES = [
+  {key:'cost',  label:'Cost',        sub:'USD, lower better',    dir:'low',
+   val:r => r.cost,  fmt:v => '$' + v.toFixed(v < 1 ? 3 : 2), step:.001},
+  {key:'wall',  label:'Total time',  sub:'seconds, lower better', dir:'low',
+   val:r => r.wall,  fmt:v => v < 10 ? v.toFixed(1) + 's' : Math.round(v) + 's', step:1},
+  {key:'qual',  label:'Prose kept',  sub:'% of control, higher better', dir:'high',
+   val:QUAL,         fmt:v => Math.round(v) + '%', step:1},
+  {key:'leak',  label:'Leaks',       sub:'unredacted, lower better', dir:'low',
+   val:r => r.leak,  fmt:v => String(Math.round(v)), step:1},
+];
+
+const el = (n, a = {}) => { const e = document.createElementNS(NS, n);
+  for (const k in a) e.setAttribute(k, a[k]); return e; };
+const txt = (s, a = {}) => { const t = el('text', a); t.textContent = s; return t; };
+
+let page = 'medium';
+let thr = {};                       // axis key -> current threshold value
+const M = {l: 110, r: 110, t: 34, b: 44}, W = 900, H = 400;
+const w = W - M.l - M.r, h = H - M.t - M.b;
+const axX = i => M.l + i * (w / (AXES.length - 1));
+
+const rowsFor = p => D.runs.filter(r => r.page === p)
+  .sort((a, b) => a.name.localeCompare(b.name));
+
+// Axis domains are recomputed per page: a large-page budget is a different
+// conversation from a small-page one, and a shared scale would flatten both.
+function domains() {
+  const rs = rowsFor(page), d = {};
+  AXES.forEach(a => {
+    const vs = rs.map(a.val);
+    const hi = Math.max(...vs), lo = Math.min(0, ...vs);
+    d[a.key] = a.key === 'qual' ? [0, Math.max(105, hi * 1.02)]
+                                : [lo, hi <= 0 ? 1 : hi * 1.06];
+  });
+  return d;
+}
+let DOM = {};
+
+// Position on the axis, always with "better" at the top.
+const posOf = (a, v) => {
+  const [lo, hi] = DOM[a.key], t = (v - lo) / (hi - lo || 1);
+  return M.t + h - (a.dir === 'high' ? t : 1 - t) * h;
+};
+const passes = r => AXES.every(a => a.dir === 'low' ? a.val(r) <= thr[a.key] + 1e-9
+                                                    : a.val(r) >= thr[a.key] - 1e-9);
+
+function openAll() {
+  AXES.forEach(a => thr[a.key] = a.dir === 'low' ? DOM[a.key][1] : DOM[a.key][0]);
+}
+// The preset states a correctness bar, not a budget: a single leaked competitor
+// is a failed task at any price, and below roughly two thirds of the prose the
+// output stops being the document. Cost and time are left wide open on purpose
+// — those are the reader's constraints to impose, not ours.
+function strictPreset() {
+  thr.leak = 0;
+  thr.qual = 65;
+}
+
+function buildSliders() {
+  const box = document.getElementById('sliders');
+  box.innerHTML = '';
+  AXES.forEach((a, i) => {
+    const [lo, hi] = DOM[a.key];
+    const d = document.createElement('div');
+    d.className = 'sl';
+    d.style.left = (axX(i) / W * 100) + '%';
+    d.innerHTML = `<span class="cap">${a.dir === 'low' ? 'at most' : 'at least'}</span>
+      <span class="val" id="v-${a.key}"></span>`;
+    const inp = document.createElement('input');
+    Object.assign(inp, {type: 'range', min: lo, max: hi, step: a.step,
+      value: thr[a.key]});
+    inp.setAttribute('aria-label', `${a.dir === 'low' ? 'Maximum' : 'Minimum'} ${a.label}`);
+    inp.addEventListener('input', () => { thr[a.key] = +inp.value; render(); });
+    d.appendChild(inp);
+    box.appendChild(d);
+    a._input = inp;
+  });
+}
+const syncSliders = () => AXES.forEach(a => { if (a._input) a._input.value = thr[a.key]; });
+
+function render() {
+  const svg = document.getElementById('pc');
+  svg.innerHTML = '';
+  const rs = rowsFor(page);
+
+  AXES.forEach((a, i) => {
+    const x = axX(i);
+    // Ruled-out band: always the foot of the axis, because up is always better.
+    const y = posOf(a, thr[a.key]);
+    svg.appendChild(el('rect', {x: x - 26, y: y, width: 52,
+      height: Math.max(M.t + h - y, 0), class: 'band'}));
+    svg.appendChild(el('line', {x1: x - 30, y1: y, x2: x + 30, y2: y, class: 'thr'}));
+    svg.appendChild(el('line', {x1: x, y1: M.t, x2: x, y2: M.t + h, class: 'ax'}));
+    svg.appendChild(txt(a.label, {x: x, y: M.t - 17, class: 'axl', 'text-anchor': 'middle'}));
+    svg.appendChild(txt(a.sub, {x: x, y: M.t - 5, class: 'axsub', 'text-anchor': 'middle'}));
+    const [lo, hi] = DOM[a.key];
+    [0, .5, 1].forEach(f => {
+      const v = lo + (hi - lo) * f;
+      svg.appendChild(txt(a.fmt(v), {x: x - 36, y: posOf(a, v) + 3.5, class: 'tk',
+        'text-anchor': 'end'}));
+    });
+    svg.appendChild(txt(a.fmt(thr[a.key]), {x: x + 34, y: y + 3.5, class: 'tk',
+      fill: 'var(--bad)'}));
+  });
+
+  const ok = rs.filter(passes);
+  // Failing lines first, so survivors are never overdrawn by them.
+  [...rs].sort((a, b) => (passes(a) ? 1 : 0) - (passes(b) ? 1 : 0)).forEach(r => {
+    const good = passes(r);
+    const pts = AXES.map((a, i) => [axX(i), posOf(a, a.val(r))]);
+    const line = el('polyline', {points: pts.map(p => p.join(',')).join(' '),
+      class: 'line' + (good ? '' : ' out'), stroke: col(r.wf),
+      opacity: good ? .95 : 1});
+    if (r.calls === 0) line.setAttribute('stroke-dasharray', '7 4');
+    const tip = el('title');
+    tip.textContent = `${r.name} · ${r.page}\n$${r.cost.toFixed(4)} · ${r.wall}s · ` +
+      `${Math.round(QUAL(r))}% prose · ${r.red} redactions · ${r.leak} leaks\n` +
+      (good ? 'MEETS every threshold'
+            : 'ruled out by: ' + AXES.filter(a => a.dir === 'low'
+                ? a.val(r) > thr[a.key] : a.val(r) < thr[a.key])
+                .map(a => a.label.toLowerCase()).join(', '));
+    line.appendChild(tip);
+    svg.appendChild(line);
+    pts.forEach(([x, y]) => svg.appendChild(el('circle', {cx: x, cy: y, r: good ? 4 : 2.5,
+      class: 'dot' + (good ? '' : ' out'), fill: col(r.wf)})));
+    if (good) svg.appendChild(txt(r.name.split(' ')[0],
+      {x: pts[0][0] - 42, y: pts[0][1] + 3.5, class: 'ptlbl', fill: col(r.wf),
+       'text-anchor': 'end'}));
+  });
+
+  // ---- verdict ----
+  const cheapest = ok.slice().sort((a, b) => a.cost - b.cost)[0];
+  const c = document.getElementById('count');
+  c.innerHTML = ok.length
+    ? `<em>${ok.length}</em> of ${rs.length} approaches qualify`
+    : `<em>Nothing</em> qualifies`;
+  document.getElementById('detail').textContent = ok.length
+    ? `${ok.map(r => r.name).join(', ')}. ` +
+      `Cheapest that clears every bar: ${cheapest.name} at $${cheapest.cost.toFixed(3)} ` +
+      `and ${cheapest.wall}s.`
+    : 'No approach on this page clears all four thresholds at once. Loosen one — ' +
+      'the axis whose dashed line sits highest above the lines is the binding constraint.';
+
+  // ---- table ----
+  const tb = document.getElementById('tb');
+  tb.innerHTML = '';
+  rs.slice().sort((a, b) => (passes(b) - passes(a)) || a.cost - b.cost).forEach(r => {
+    const good = passes(r);
+    const tr = document.createElement('tr');
+    if (!good) tr.className = 'out';
+    const fail = AXES.filter(a => a.dir === 'low' ? a.val(r) > thr[a.key]
+                                                  : a.val(r) < thr[a.key]);
+    tr.innerHTML =
+      `<td><span class="sw" style="background:${col(r.wf)}"></span>${r.name}` +
+        (r.calls === 0 ? '<span class="tag">control</span>' : '') +
+        (r.rawhtml ? '<span class="tag failx">not Markdown</span>' : '') + `</td>` +
+      `<td>${r.cost === 0 ? '—' : '$' + r.cost.toFixed(3)}</td>` +
+      `<td>${r.wall}s</td><td>${Math.round(QUAL(r))}%</td>` +
+      `<td>${r.red}</td><td>${r.leak}</td>` +
+      `<td>${good ? '<span class="tag pass">clears</span>'
+                  : '<span class="tag failx">' + fail.map(a => a.label.toLowerCase())
+                      .join(' · ') + '</span>'}</td>`;
+    tb.appendChild(tr);
+  });
+
+  AXES.forEach(a => document.getElementById('v-' + a.key).textContent = a.fmt(thr[a.key]));
+}
+
+function setPage(p, preset = strictPreset) {
+  page = p;
+  DOM = domains();
+  openAll();
+  preset();
+  // A preset must never sit outside the axis it lives on.
+  AXES.forEach(a => thr[a.key] = Math.min(DOM[a.key][1], Math.max(DOM[a.key][0], thr[a.key])));
+  buildSliders();
+  document.querySelectorAll('#pages button').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.p === p)));
+  render();
+}
+
+const seg = document.getElementById('pages');
+PAGES.forEach(p => {
+  const b = document.createElement('button');
+  b.dataset.p = p; b.textContent = PAGELBL[p];
+  b.addEventListener('click', () => setPage(p));
+  seg.appendChild(b);
+});
+document.getElementById('reset').addEventListener('click',
+  () => { openAll(); syncSliders(); render(); });
+document.getElementById('strict').addEventListener('click',
+  () => { openAll(); strictPreset();
+    AXES.forEach(a => thr[a.key] = Math.min(DOM[a.key][1], Math.max(DOM[a.key][0], thr[a.key])));
+    syncSliders(); render(); });
+
+setPage('medium');
+</script>
+</body>
+</html>

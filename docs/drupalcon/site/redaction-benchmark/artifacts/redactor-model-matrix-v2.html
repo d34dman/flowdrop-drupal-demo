@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rubric v2 Scorecard</title>
+<title>Redactor Model Matrix v2</title>
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+
 <style>
 :root{
   --ink:#111820; --paper:#F5F6F8; --surf:#FFFFFF; --rule:#D8DCE2; --muted:#5A6470; --faint:#9AA3AE; --grid:#E9ECF0;
@@ -100,256 +101,237 @@ code{font-family:var(--mono);font-size:.86em;background:rgba(27,111,168,.08);pad
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
+<style>
+.pt{font-family:var(--mono);font-size:9.5px;fill:var(--ink);paint-order:stroke;stroke:var(--surf);stroke-width:2.5px;stroke-linejoin:round}
+.fct{font-family:var(--sans);font-size:12px;font-weight:700;fill:var(--ink)}
+.fcts{font-family:var(--mono);font-size:9px;fill:var(--muted)}
+.ring{fill:none;stroke:var(--silent);stroke-width:1.6;stroke-dasharray:3 2.5}
+.trail{fill:none;stroke-width:1.4;opacity:.5}
+.mk{stroke:var(--surf);stroke-width:1.5}
+.mk:hover{stroke:var(--ink);stroke-width:2}
+.tb th:nth-child(-n+3),.tb td:nth-child(-n+3){text-align:left}
+.tb th:nth-child(4),.tb td:nth-child(4){text-align:left}
+</style>
 
 <header class="wrap">
   <p class="eyebrow">▌▌▌▌ &nbsp;FlowDrop redaction benchmark &nbsp;·&nbsp; rubric v2</p>
-  <h1>Every run, graded against<br>a document decided in advance.</h1>
-  <p class="stand">The v1 pages counted bytes kept and marks placed. Both were fooled by the same run.
-  This page grades the same 116 runs against hand-cleaned gold documents on five axes and sorts each
-  into one of five outcomes. Nothing here was rerun; the raw data is identical to v1 and the conclusions
-  are re-derived. Method and tables:
-  <a href="https://github.com/d34dman/flowdrop-drupal-demo/tree/main/docs/drupalcon/v2">docs/drupalcon/v2</a>.</p>
+  <h1>Redactor Model Matrix,<br>graded against the gold.</h1>
+  <p class="stand">Eight workflow variants, four models, three pages: 116 graded runs. The v1 matrix ranked cells
+  by bytes kept and marks placed; this one grades each run against a hand-cleaned gold document and shows fidelity,
+  what was actually redacted, and cost, with the outcome class on every mark. Colour is the model throughout; marker
+  shape is the page. One draw per cell unless the table says otherwise. The v1 page is
+  <a href="../archive/v1/redactor-model-matrix.html">archived</a>.</p>
 </header>
 
 <section><div class="wrap">
-  <div class="tiles" id="tiles"></div>
-  <p style="font-size:.93rem;color:var(--muted)">Silent means the pipeline reported <code>completed</code>, the output is
-  Markdown about the right document, and at least one axis is below 0.75. Format is HTML handed back. Loud is nothing
-  delivered. Degraded passed every gate and missed a threshold, usually two or three of thirty WordPress mentions.</p>
-</div></section>
-
-<section><div class="wrap">
-  <h2>Figure 1 · Outcome per cell</h2>
-  <p>One chip per draw. Variant by page down the side, model across. A cell with several chips was run several
-  times; a dot means the cell was never run. Read down the Opus column and across the B3 row first.</p>
+  <h2>Figure 1 · Fidelity against cost, one panel per variant</h2>
+  <p>Up and to the left is better: the whole gold body reproduced, for little money. Each colour is a model walked
+  small → medium → large; a dashed red ring marks a run that was not <em>correct</em>, whatever its fidelity, so a
+  ringed point at the top is a run that copied the document faithfully and still got the redaction wrong.</p>
   <div class="figbox">
-    <table class="mx" id="mx"></table>
+    <svg id="f1" role="img" aria-label="Eight scatter panels of fidelity against cost, one per variant, coloured by model"></svg>
     <div class="legend" id="lg1"></div>
-    <div class="figcap">Shadowed-prompt B7 draws, the dropped B5a arm and 4 runs that paused on a FlowDrop confirmation
-    gate or a pending job are excluded (no answer exists to grade). Hover a chip for the run's axes.</div>
+    <div class="figcap">Shared log cost axis across panels. Fidelity is the share of gold sentences found in the output at
+    ≥ 0.90 similarity, redaction-tolerant. Runs that delivered nothing sit at fidelity 0 on the left edge. Hover for numbers.</div>
   </div>
-  <div class="note"><h3>Where the seven silent failures are</h3>
-    <p id="silentnote"></p></div>
+  <div class="note"><h3>What the ring adds</h3>
+    <p id="n1"></p></div>
 </div></section>
 
 <section><div class="wrap">
-  <h2>Figure 2 · Six axes, one line per run</h2>
-  <p>Cost and the five graded axes, oriented so that up is always better. Correct runs are the blue band along the
-  top; anything that leaves the band is labelled. Fabrication is the hallucination axis: the share of output
-  sentences found neither in the gold body nor anywhere on the page.</p>
-  <div class="bar">
-    <div style="display:flex;gap:12px;align-items:center"><span class="lbl">Page</span><div class="seg" id="pages"></div></div>
-    <div id="models"></div>
-    <div style="display:flex;gap:12px;align-items:center"><span class="lbl">Show</span><div class="seg" id="show"></div></div>
-  </div>
+  <h2>Figure 2 · What was redacted on the medium page</h2>
+  <p>The medium page has 30 WordPress mentions in its body and 38 of Drupal. For every variant and model the bar
+  is split into the marks that landed on a target (blue), the target mentions left readable (red), and, when it
+  happened, marks that landed on a protected name such as Drupal (yellow, drawn to the right of the bar). A correct
+  cell is a solid blue bar and nothing else.</p>
   <div class="figbox">
-    <svg id="pc" viewBox="0 0 960 400" role="img" aria-label="Parallel coordinates of cost, recall, precision, subject, fidelity and fabrication for each graded run"></svg>
+    <svg id="f2" role="img" aria-label="Stacked bars per variant and model: correct marks, leaks, and marks on protected names, medium page"></svg>
     <div class="legend" id="lg2"></div>
-    <div class="figcap">Format and loud failures have no graded axes and are not drawn; they are in the table below. The small
-    page has no competitor to redact, so recall, precision and subject are 1.0 by definition unless a run invented
-    text; the large page's one competitor-ish name (Backdrop, a Drupal fork) is neutral. Hover a line for the run.</div>
+    <div class="figcap">Medium page only. Marks are counted as runs of ▌, so a nine-bar glyph is one mark (v1 counted two).
+    Marks in the retained IBM chrome are excluded. Backdrop, a Drupal fork, does not appear on this page.</div>
   </div>
 </div></section>
 
 <section><div class="wrap">
-  <h2>Figure 3 · Cost per correct run</h2>
-  <p>Cell spend divided by correct draws, all pages pooled, per variant and model. Spend includes the cell's
-  failed and paused draws, because that money was spent getting the correct one. A hollow marker at the right
-  edge is a cell that spent money and produced nothing correct.</p>
+  <h2>Figure 3 · Fidelity as the page grows</h2>
+  <p>The same fidelity numbers with page size on the horizontal axis. A flat line at 1.0 is a variant that
+  reproduces the document at any size on that model. Where v1 showed Sonnet 5 "sagging" on B5, v2 shows a flat
+  line: the sag was Drupal.org menu chrome, not content.</p>
   <div class="figbox">
-    <svg id="cpc" viewBox="0 0 960 420" role="img" aria-label="Dot plot of cost per correct run, one row per variant, one dot per model, log scale"></svg>
+    <svg id="f3" role="img" aria-label="Eight line panels of fidelity by page size, one per variant, coloured by model"></svg>
     <div class="legend" id="lg3"></div>
-    <div class="figcap">Log scale. The label beside each dot is correct draws over launches. Model colour follows the
-    other pages on this site.</div>
+    <div class="figcap">Horizontal axis: raw HTML size of the small, medium and large pages. Ringed points are runs that were not correct. A missing point is a cell that was never run.</div>
   </div>
 </div></section>
 
 <section><div class="wrap">
-  <h2>Every graded run</h2>
+  <h2>Figure 4 · What every cell cost</h2>
+  <p>One row per variant and page, one dot per model, on a log axis. The letter in the dot is the outcome class, so
+  the expensive failures and the cheap successes can be read off directly.</p>
+  <div class="figbox">
+    <svg id="f4" role="img" aria-label="Dot plot of cost per cell on a log scale, one row per variant and page, letters for class"></svg>
+    <div class="legend" id="lg4"></div>
+    <div class="figcap">Log scale. Repeated draws of a cell are drawn as separate dots. Paused runs are not shown.</div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Every cell, every metric</h2>
   <div class="figbox" style="padding:0 0 4px">
     <table class="tb" id="tbl"><thead><tr>
-      <th>Class</th><th>Variant</th><th>Page</th><th>Model</th><th>Recall</th><th>Precision</th><th>Subject</th>
-      <th>Fidelity</th><th>Fabric.</th><th>Marks</th><th>Leaks</th><th>Calls</th><th>Cost</th></tr></thead>
+      <th>Variant</th><th>Page</th><th>Model</th><th>Class</th><th>Cost</th><th>Wall</th><th>Calls</th><th>Tokens in</th><th>Tokens out</th>
+      <th>Marks</th><th>Leaks</th><th>Drupal kept</th><th>Recall</th><th>Precision</th><th>Subject</th><th>Fidelity</th><th>Fabric.</th></tr></thead>
       <tbody></tbody></table>
   </div>
-  <p style="font-size:.85rem;color:var(--muted)">Values below 0.75 are marked. Sorted by variant, page, model; several rows for one cell are repeated draws.</p>
-</div></section>
-
-<section><div class="wrap">
-  <h2>How to read it</h2>
-  <div class="note"><h3>Why the v1 numbers were replaced</h3>
-    <p>Retention divided by the whole page penalised a model for dropping IBM's cookie banner and could not see invented
-    prose. Counting <code>▌▌▌▌</code> ranked the run that redacted "Drupal" 37 times first. Zero leaks on a page with
-    no competitors was trivially true. v2 grades against a gold body per page, with every competitor mention and every
-    protected name listed in advance, so recall, precision and subject preservation are all measurable, and fabrication
-    exists at all.</p></div>
-  <div class="note"><h3>What changed in the conclusions</h3>
-    <p>v1's failure #4, three B5 draws at 51 / 71 / 95 % retention, is withdrawn: all three have fidelity 1.0 and differ
-    only in how much Drupal.org menu they kept. The cheapest correct run on the small and medium pages is B3 on Haiku,
-    not Sonnet 5. Two failures v1 could not see: an agent writing its own reasoning, six competitor names included,
-    into a page that had none (B4 Sonnet 4.6, small), and every URL-tool variant leaving the title heading
-    <code># Drupal versus WordPress</code> readable while redacting the body (B7, B8, B9, six draws on three models).</p></div>
-  <div class="note"><h3>Caveats</h3>
-    <p>Most cells are one draw; the matrix shows draws, not rates. Sentence matching is fuzzy, so a heavily paraphrased
-    sentence counts as missing or invented. Thresholds: recall, precision, subject and fidelity ≥ 0.95, fabrication
-    ≤ 0.05 for correct; every axis ≥ 0.75 for degraded. The scorer is deterministic and runs in two seconds; no LLM
-    judge is involved. Total metered spend across all 203 runs in the ledger: $61.39.</p></div>
 </div></section>
 
 <script>
 const D = {"runs":[{"id":"bench_2_raw_html_llm__small__r1__1788094492","v":"B2","page":"small","model":"Sonnet 4.6","cls":"format","cost":0.245253,"calls":1,"wall":0.0,"tin":13671,"tout":13616,"chars":27884,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.658,"fabrication":0.682,"structure":0.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":173,"tag":""},{"id":"bench_3_markdown_llm__small__r1__1788094745","v":"B3","page":"small","model":"Sonnet 4.6","cls":"correct","cost":0.085353,"calls":1,"wall":0.0,"tin":4916,"tout":4707,"chars":8581,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":45,"tag":""},{"id":"bench_4_ai_agent_tool__small__r1__1788094828","v":"B4","page":"small","model":"Sonnet 4.6","cls":"silent","cost":0.318573,"calls":2,"wall":0.0,"tin":40096,"tout":13219,"chars":8251,"recall":0.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.087,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":6,"drupal":47,"tag":""},{"id":"bench_5_react_agent__small__r1__1788095052","v":"B5","page":"small","model":"Sonnet 4.6","cls":"correct","cost":0.201225,"calls":3,"wall":0.0,"tin":38400,"tout":5735,"chars":5658,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":36,"tag":""},{"id":"bench_2_raw_html_llm__medium__r1__1788095209","v":"B2","page":"medium","model":"Sonnet 4.6","cls":"correct","cost":0.20835,"calls":1,"wall":0.0,"tin":59150,"tout":2060,"chars":8413,"recall":0.966,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":28,"gc":28,"gp":0,"go":0,"leaks":1,"drupal":37,"tag":""},{"id":"bench_3_markdown_llm__medium__r1__1788095263","v":"B3","page":"medium","model":"Sonnet 4.6","cls":"correct","cost":0.041796,"calls":1,"wall":0.0,"tin":3502,"tout":2086,"chars":8437,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":30,"gc":30,"gp":0,"go":0,"leaks":0,"drupal":38,"tag":""},{"id":"bench_4_ai_agent_tool__medium__r1__1788095315","v":"B4","page":"medium","model":"Sonnet 4.6","cls":"correct","cost":0.450414,"calls":2,"wall":0.0,"tin":124193,"tout":5189,"chars":9905,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.013,"structure":1.0,"glyphs":29,"gc":29,"gp":0,"go":0,"leaks":0,"drupal":37,"tag":""},{"id":"bench_5_react_agent__medium__r1__1788095426","v":"B5","page":"medium","model":"Sonnet 4.6","cls":"degraded","cost":0.523194,"calls":3,"wall":0.0,"tin":141783,"tout":6523,"chars":10721,"recall":0.933,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.012,"structure":1.0,"glyphs":28,"gc":28,"gp":0,"go":0,"leaks":2,"drupal":38,"tag":""},{"id":"bench_2_raw_html_llm__large__r1__1788099671","v":"B2","page":"large","model":"Sonnet 4.6","cls":"silent","cost":0.744642,"calls":1,"wall":165.1,"tin":211994,"tout":7244,"chars":21764,"recall":0.0,"precision":0.0,"subject":1.0,"fidelity":0.971,"fabrication":0.01,"structure":1.0,"glyphs":4,"gc":0,"gp":0,"go":4,"leaks":1,"drupal":167,"tag":"fill-large"},{"id":"bench_3_markdown_llm__large__r1__1788099836","v":"B3","page":"large","model":"Sonnet 4.6","cls":"correct","cost":0.443241,"calls":1,"wall":397.99,"tin":34822,"tout":22585,"chars":46897,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.013,"structure":1.0,"glyphs":2,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":334,"tag":"fill-large"},{"id":"bench_4_ai_agent_tool__large__r1__1788100234","v":"B4","page":"large","model":"Sonnet 4.6","cls":"silent","cost":1.409976,"calls":2,"wall":163.56,"tin":432407,"tout":7517,"chars":13043,"recall":0.0,"precision":1.0,"subject":1.0,"fidelity":0.541,"fabrication":0.04,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":13,"drupal":108,"tag":"fill-large"},{"id":"bench_5_react_agent__large__r1__1788100397","v":"B5","page":"large","model":"Sonnet 4.6","cls":"loud","cost":1.90572,"calls":3,"wall":593.39,"tin":503925,"tout":26263,"chars":0,"recall":null,"precision":null,"subject":null,"fidelity":null,"fabrication":null,"structure":null,"glyphs":null,"gc":null,"gp":null,"go":null,"leaks":null,"drupal":null,"tag":"fill-large"},{"id":"bench_6_agent_autonomous__small__r1__1788110255","v":"B6","page":"small","model":"Sonnet 4.6","cls":"correct","cost":0.184242,"calls":3,"wall":95.22,"tin":34564,"tout":5370,"chars":5620,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":36,"tag":"bench6-smoke"},{"id":"bench_6_agent_autonomous__medium__r1__1788110386","v":"B6","page":"medium","model":"Sonnet 4.6","cls":"correct","cost":0.460179,"calls":3,"wall":127.55,"tin":125833,"tout":5512,"chars":10644,"recall":0.966,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":28,"gc":28,"gp":0,"go":0,"leaks":1,"drupal":37,"tag":"bench6-fill"},{"id":"bench_6_agent_autonomous__large__r1__1788110513","v":"B6","page":"large","model":"Sonnet 4.6","cls":"correct","cost":1.770204,"calls":3,"wall":555.02,"tin":452913,"tout":27431,"chars":37306,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.971,"fabrication":0.008,"structure":1.0,"glyphs":2,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":330,"tag":"bench6-fill"},{"id":"bench_5_react_agent__large__r1__1788112643","v":"B5","page":"large","model":"Sonnet 4.6","cls":"correct","cost":1.895445,"calls":3,"wall":553.24,"tin":503345,"tout":25694,"chars":37478,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.977,"fabrication":0.006,"structure":1.0,"glyphs":2,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":328,"tag":"post-patch-10mb"},{"id":"bench_3_markdown_llm__small__r1__1788116518","v":"B3","page":"small","model":"Haiku 4.5","cls":"correct","cost":0.024565,"calls":1,"wall":46.86,"tin":4915,"tout":3930,"chars":8009,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":41,"tag":"smoke-haiku"},{"id":"bench_6_agent_autonomous__small__r1__1788116565","v":"B6","page":"small","model":"Haiku 4.5","cls":"correct","cost":0.118074,"calls":3,"wall":166.07,"tin":41984,"tout":15218,"chars":5588,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":35,"tag":"smoke-haiku"},{"id":"bench_2_raw_html_llm__small__r1__1788116759","v":"B2","page":"small","model":"Haiku 4.5","cls":"format","cost":0.081935,"calls":1,"wall":127.84,"tin":13675,"tout":13652,"chars":27872,"recall":1.0,"precision":0.0,"subject":1.0,"fidelity":0.658,"fabrication":0.682,"structure":0.0,"glyphs":6,"gc":0,"gp":0,"go":6,"leaks":0,"drupal":167,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_3_markdown_llm__small__r1__1788116887","v":"B3","page":"small","model":"Haiku 4.5","cls":"correct","cost":0.024565,"calls":1,"wall":45.16,"tin":4915,"tout":3930,"chars":8009,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":41,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_4_ai_agent_tool__small__r1__1788116932","v":"B4","page":"small","model":"Haiku 4.5","cls":"correct","cost":0.100625,"calls":2,"wall":122.0,"tin":39135,"tout":12298,"chars":8353,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":43,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_5_react_agent__small__r1__1788117054","v":"B5","page":"small","model":"Haiku 4.5","cls":"correct","cost":0.091443,"calls":3,"wall":106.59,"tin":41793,"tout":9930,"chars":6574,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":39,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_6_agent_autonomous__small__r1__1788117179","v":"B6","page":"small","model":"Haiku 4.5","cls":"correct","cost":0.118074,"calls":3,"wall":165.8,"tin":41984,"tout":15218,"chars":5578,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":35,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_2_raw_html_llm__medium__r1__1788117344","v":"B2","page":"medium","model":"Haiku 4.5","cls":"correct","cost":0.068971,"calls":1,"wall":30.86,"tin":59261,"tout":1942,"chars":8224,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.985,"fabrication":0.0,"structure":1.0,"glyphs":28,"gc":28,"gp":0,"go":0,"leaks":0,"drupal":36,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_3_markdown_llm__medium__r1__1788117375","v":"B3","page":"medium","model":"Haiku 4.5","cls":"correct","cost":0.013951,"calls":1,"wall":28.76,"tin":3501,"tout":2090,"chars":8438,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":29,"gc":29,"gp":0,"go":0,"leaks":0,"drupal":37,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_4_ai_agent_tool__medium__r1__1788117404","v":"B4","page":"medium","model":"Haiku 4.5","cls":"correct","cost":0.146824,"calls":2,"wall":59.24,"tin":124149,"tout":4535,"chars":9062,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":29,"gc":29,"gp":0,"go":0,"leaks":0,"drupal":37,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_5_react_agent__medium__r1__1788117463","v":"B5","page":"medium","model":"Haiku 4.5","cls":"silent","cost":0.160982,"calls":3,"wall":61.1,"tin":139877,"tout":4221,"chars":8552,"recall":0.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":29,"drupal":37,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_6_agent_autonomous__medium__r1__1788117580","v":"B6","page":"medium","model":"Haiku 4.5","cls":"degraded","cost":0.149482,"calls":3,"wall":63.96,"tin":125622,"tout":4772,"chars":8446,"recall":0.9,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":27,"gc":27,"gp":0,"go":0,"leaks":3,"drupal":38,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_2_raw_html_llm__large__r1__1788117644","v":"B2","page":"large","model":"Haiku 4.5","cls":"loud","cost":0.0,"calls":0,"wall":1.97,"tin":0,"tout":0,"chars":0,"recall":null,"precision":null,"subject":null,"fidelity":null,"fabrication":null,"structure":null,"glyphs":null,"gc":null,"gp":null,"go":null,"leaks":null,"drupal":null,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_3_markdown_llm__large__r1__1788117646","v":"B3","page":"large","model":"Haiku 4.5","cls":"silent","cost":0.040001,"calls":1,"wall":11.24,"tin":34821,"tout":1036,"chars":2440,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.076,"fabrication":0.0,"structure":0.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":17,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_4_ai_agent_tool__large__r1__1788117657","v":"B4","page":"large","model":"Haiku 4.5","cls":"loud","cost":0.0,"calls":0,"wall":1.96,"tin":0,"tout":0,"chars":20,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.0,"fabrication":1.0,"structure":0.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":0,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_5_react_agent__large__r1__1788117659","v":"B5","page":"large","model":"Haiku 4.5","cls":"loud","cost":0.001253,"calls":1,"wall":5.77,"tin":818,"tout":87,"chars":0,"recall":null,"precision":null,"subject":null,"fidelity":null,"fabrication":null,"structure":null,"glyphs":null,"gc":null,"gp":null,"go":null,"leaks":null,"drupal":null,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_6_agent_autonomous__large__r1__1788117670","v":"B6","page":"large","model":"Haiku 4.5","cls":"loud","cost":0.001343,"calls":1,"wall":3.14,"tin":883,"tout":92,"chars":20,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.0,"fabrication":1.0,"structure":0.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":0,"tag":"matrix-claude-haiku-4-5-20251001"},{"id":"bench_2_raw_html_llm__small__r1__1788117676","v":"B2","page":"small","model":"Sonnet 5","cls":"format","cost":0.200864,"calls":1,"wall":138.73,"tin":16622,"tout":16762,"chars":27896,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.658,"fabrication":0.682,"structure":0.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":173,"tag":"matrix-claude-sonnet-5"},{"id":"bench_3_markdown_llm__small__r1__1788117814","v":"B3","page":"small","model":"Sonnet 5","cls":"correct","cost":0.075772,"calls":1,"wall":46.77,"tin":6391,"tout":6299,"chars":8583,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"matrix-claude-sonnet-5"},{"id":"bench_4_ai_agent_tool__small__r1__1788117861","v":"B4","page":"small","model":"Sonnet 5","cls":"correct","cost":0.150018,"calls":2,"wall":50.15,"tin":40549,"tout":6892,"chars":4897,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":32,"tag":"matrix-claude-sonnet-5"},{"id":"bench_5_react_agent__small__r1__1788117911","v":"B5","page":"small","model":"Sonnet 5","cls":"correct","cost":0.05995,"calls":2,"wall":15.37,"tin":22580,"tout":1479,"chars":3600,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":26,"tag":"matrix-claude-sonnet-5"},{"id":"bench_6_agent_autonomous__small__r1__1788117962","v":"B6","page":"small","model":"Sonnet 5","cls":"correct","cost":0.094082,"calls":2,"wall":47.61,"tin":18331,"tout":5742,"chars":7606,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.016,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"matrix-claude-sonnet-5"},{"id":"bench_2_raw_html_llm__medium__r1__1788118009","v":"B2","page":"medium","model":"Sonnet 5","cls":"format","cost":0.93559,"calls":1,"wall":576.8,"tin":73380,"tout":78883,"chars":82302,"recall":0.75,"precision":0.45,"subject":1.0,"fidelity":0.956,"fabrication":0.84,"structure":0.0,"glyphs":40,"gc":9,"gp":0,"go":11,"leaks":3,"drupal":48,"tag":"matrix-claude-sonnet-5"},{"id":"bench_3_markdown_llm__medium__r1__1788118586","v":"B3","page":"medium","model":"Sonnet 5","cls":"correct","cost":0.059298,"calls":1,"wall":41.15,"tin":4924,"tout":4945,"chars":12052,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":33,"gc":31,"gp":0,"go":0,"leaks":0,"drupal":39,"tag":"matrix-claude-sonnet-5"},{"id":"bench_4_ai_agent_tool__medium__r1__1788118627","v":"B4","page":"medium","model":"Sonnet 5","cls":"silent","cost":0.373464,"calls":2,"wall":54.96,"tin":153802,"tout":6586,"chars":8985,"recall":1.0,"precision":0.414,"subject":0.26,"fidelity":1.0,"fabrication":0.014,"structure":0.8,"glyphs":70,"gc":29,"gp":37,"go":4,"leaks":0,"drupal":0,"tag":"matrix-claude-sonnet-5"},{"id":"bench_5_react_agent__medium__r1__1788118682","v":"B5","page":"medium","model":"Sonnet 5","cls":"correct","cost":0.247036,"calls":2,"wall":59.21,"tin":91658,"tout":6372,"chars":11590,"recall":0.967,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.011,"structure":1.0,"glyphs":29,"gc":29,"gp":0,"go":0,"leaks":1,"drupal":38,"tag":"matrix-claude-sonnet-5"},{"id":"bench_6_agent_autonomous__medium__r1__1788118776","v":"B6","page":"medium","model":"Sonnet 5","cls":"correct","cost":0.245412,"calls":2,"wall":74.26,"tin":75251,"tout":9491,"chars":11992,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.022,"structure":1.0,"glyphs":30,"gc":30,"gp":0,"go":0,"leaks":0,"drupal":38,"tag":"matrix-claude-sonnet-5"},{"id":"bench_2_raw_html_llm__large__r1__1788118850","v":"B2","page":"large","model":"Sonnet 5","cls":"correct","cost":0.658356,"calls":1,"wall":114.54,"tin":266158,"tout":12604,"chars":23337,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.971,"fabrication":0.042,"structure":1.0,"glyphs":4,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":173,"tag":"matrix-claude-sonnet-5"},{"id":"bench_3_markdown_llm__large__r1__1788118965","v":"B3","page":"large","model":"Sonnet 5","cls":"correct","cost":0.56705,"calls":1,"wall":339.77,"tin":46970,"tout":47311,"chars":64025,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":4,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":335,"tag":"matrix-claude-sonnet-5"},{"id":"bench_4_ai_agent_tool__large__r1__1788119305","v":"B4","page":"large","model":"Sonnet 5","cls":"correct","cost":1.328222,"calls":2,"wall":182.88,"tin":552606,"tout":22301,"chars":21911,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.965,"fabrication":0.0,"structure":1.0,"glyphs":1,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":166,"tag":"matrix-claude-sonnet-5"},{"id":"bench_5_react_agent__large__r1__1788119487","v":"B5","page":"large","model":"Sonnet 5","cls":"correct","cost":1.545168,"calls":3,"wall":157.42,"tin":691024,"tout":16312,"chars":21981,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.971,"fabrication":0.01,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":166,"tag":"matrix-claude-sonnet-5"},{"id":"bench_6_agent_autonomous__large__r1__1788119755","v":"B6","page":"large","model":"Sonnet 5","cls":"correct","cost":0.951126,"calls":2,"wall":331.66,"tin":267893,"tout":41534,"chars":40761,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.977,"fabrication":0.012,"structure":1.0,"glyphs":4,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":335,"tag":"matrix-claude-sonnet-5"},{"id":"bench_2_raw_html_llm__small__r1__1788120089","v":"B2","page":"small","model":"Opus 5","cls":"format","cost":0.506635,"calls":1,"wall":170.26,"tin":16622,"tout":16941,"chars":27884,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.658,"fabrication":0.682,"structure":0.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":173,"tag":"matrix-claude-opus-5"},{"id":"bench_3_markdown_llm__small__r1__1788120260","v":"B3","page":"small","model":"Opus 5","cls":"correct","cost":0.19673,"calls":1,"wall":63.41,"tin":6391,"tout":6591,"chars":8980,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":45,"tag":"matrix-claude-opus-5"},{"id":"bench_4_ai_agent_tool__small__r1__1788120323","v":"B4","page":"small","model":"Opus 5","cls":"correct","cost":0.44292,"calls":2,"wall":84.21,"tin":41389,"tout":9439,"chars":7779,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.016,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"matrix-claude-opus-5"},{"id":"bench_5_react_agent__small__r1__1788120407","v":"B5","page":"small","model":"Opus 5","cls":"correct","cost":0.23575,"calls":2,"wall":49.47,"tin":22455,"tout":4939,"chars":7783,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.031,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"matrix-claude-opus-5"},{"id":"bench_6_agent_autonomous__small__r1__1788120479","v":"B6","page":"small","model":"Opus 5","cls":"correct","cost":0.21341,"calls":2,"wall":43.95,"tin":18207,"tout":4895,"chars":7564,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.031,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"matrix-claude-opus-5"},{"id":"bench_2_raw_html_llm__medium__r1__1788120523","v":"B2","page":"medium","model":"Opus 5","cls":"degraded","cost":0.434275,"calls":1,"wall":30.67,"tin":73380,"tout":2695,"chars":8424,"recall":0.931,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":27,"gc":27,"gp":0,"go":0,"leaks":2,"drupal":37,"tag":"matrix-claude-opus-5"},{"id":"bench_3_markdown_llm__medium__r1__1788120554","v":"B3","page":"medium","model":"Opus 5","cls":"correct","cost":0.14297,"calls":1,"wall":47.22,"tin":4924,"tout":4734,"chars":11543,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":31,"gc":31,"gp":0,"go":0,"leaks":0,"drupal":39,"tag":"matrix-claude-opus-5"},{"id":"bench_4_ai_agent_tool__medium__r1__1788120601","v":"B4","page":"medium","model":"Opus 5","cls":"correct","cost":0.98402,"calls":2,"wall":84.57,"tin":155234,"tout":8314,"chars":11437,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.011,"structure":1.0,"glyphs":30,"gc":30,"gp":0,"go":0,"leaks":0,"drupal":38,"tag":"matrix-claude-opus-5"},{"id":"bench_5_react_agent__medium__r1__1788120686","v":"B5","page":"medium","model":"Opus 5","cls":"correct","cost":0.60287,"calls":2,"wall":64.41,"tin":91494,"tout":5816,"chars":11939,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.011,"structure":1.0,"glyphs":30,"gc":30,"gp":0,"go":0,"leaks":0,"drupal":38,"tag":"matrix-claude-opus-5"},{"id":"bench_6_agent_autonomous__medium__r1__1788120791","v":"B6","page":"medium","model":"Opus 5","cls":"correct","cost":0.48942,"calls":2,"wall":46.91,"tin":75099,"tout":4557,"chars":11537,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":30,"gc":30,"gp":0,"go":0,"leaks":0,"drupal":38,"tag":"matrix-claude-opus-5"},{"id":"bench_2_raw_html_llm__large__r1__1788120838","v":"B2","page":"large","model":"Opus 5","cls":"correct","cost":1.53714,"calls":1,"wall":85.19,"tin":266158,"tout":8254,"chars":23646,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.971,"fabrication":0.034,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":172,"tag":"matrix-claude-opus-5"},{"id":"bench_3_markdown_llm__large__r1__1788120924","v":"B3","page":"large","model":"Opus 5","cls":"correct","cost":1.42555,"calls":1,"wall":421.7,"tin":46970,"tout":47628,"chars":64025,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":4,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":335,"tag":"matrix-claude-opus-5"},{"id":"bench_4_ai_agent_tool__large__r1__1788121345","v":"B4","page":"large","model":"Opus 5","cls":"correct","cost":1.58885,"calls":1,"wall":97.18,"tin":266590,"tout":10236,"chars":21472,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.977,"fabrication":0.006,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":155,"tag":"matrix-claude-opus-5"},{"id":"bench_5_react_agent__large__r1__1788121442","v":"B5","page":"large","model":"Opus 5","cls":"correct","cost":2.427035,"calls":2,"wall":272.88,"tin":337512,"tout":29579,"chars":42051,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.983,"fabrication":0.03,"structure":1.0,"glyphs":4,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":339,"tag":"matrix-claude-opus-5"},{"id":"bench_6_agent_autonomous__large__r1__1788121803","v":"B6","page":"large","model":"Opus 5","cls":"correct","cost":2.08134,"calls":2,"wall":263.42,"tin":267768,"tout":29700,"chars":42365,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.983,"fabrication":0.021,"structure":1.0,"glyphs":4,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":340,"tag":"matrix-claude-opus-5"},{"id":"bench_3_markdown_llm__medium__r1__1788122309","v":"B3","page":"medium","model":"Sonnet 5","cls":"correct","cost":0.054248,"calls":1,"wall":37.26,"tin":4924,"tout":4440,"chars":11781,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":30,"gc":30,"gp":0,"go":0,"leaks":0,"drupal":38,"tag":"determinism-probe"},{"id":"bench_3_markdown_llm__medium__r2__1788122346","v":"B3","page":"medium","model":"Sonnet 5","cls":"correct","cost":0.061468,"calls":1,"wall":41.81,"tin":4924,"tout":5162,"chars":12644,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":33,"gc":30,"gp":0,"go":0,"leaks":0,"drupal":39,"tag":"determinism-probe"},{"id":"bench_3_markdown_llm__large__r1__1788122467","v":"B3","page":"large","model":"Sonnet 5","cls":"correct","cost":0.56829,"calls":1,"wall":341.74,"tin":46970,"tout":47435,"chars":64022,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":3,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":335,"tag":"collision-probe"},{"id":"bench_5_react_agent__small__r1__1788128672","v":"B5","page":"small","model":"Sonnet 5","cls":"correct","cost":0.061752,"calls":2,"wall":19.68,"tin":22581,"tout":1659,"chars":3718,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":0.875,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":26,"tag":"verify-sonnet-5"},{"id":"bench_5_react_agent__medium__r1__1788128692","v":"B5","page":"medium","model":"Sonnet 5","cls":"correct","cost":0.255454,"calls":2,"wall":63.53,"tin":91602,"tout":7225,"chars":11481,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":29,"gc":29,"gp":0,"go":0,"leaks":0,"drupal":37,"tag":"verify-sonnet-5"},{"id":"bench_5_react_agent__large__r1__1788128755","v":"B5","page":"large","model":"Sonnet 5","cls":"correct","cost":1.699004,"calls":3,"wall":269.06,"tin":691167,"tout":31667,"chars":36542,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.977,"fabrication":0.006,"structure":1.0,"glyphs":4,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":328,"tag":"verify-sonnet-5"},{"id":"bench_5_react_agent__small__r1__1788167797","v":"B5","page":"small","model":"Sonnet 5","cls":"correct","cost":0.317246,"calls":3,"wall":157.29,"tin":59978,"tout":19729,"chars":6409,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.016,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"prompt-fix-probe"},{"id":"bench_5_react_agent__small__r1__1788169455","v":"B5","page":"small","model":"Sonnet 5","cls":"correct","cost":0.16165,"calls":3,"wall":53.88,"tin":48845,"tout":6396,"chars":5555,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":35,"tag":"marker-b5"},{"id":"bench_5_react_agent__small__r1__1788169567","v":"B5","page":"small","model":"Sonnet 5","cls":"correct","cost":0.062374,"calls":2,"wall":19.95,"tin":22577,"tout":1722,"chars":3794,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":27,"tag":"promptlog"},{"id":"bench_5_react_agent__small__r1__1788169780","v":"B5","page":"small","model":"Sonnet 5","cls":"loud","cost":0.001298,"calls":1,"wall":3.52,"tin":619,"tout":6,"chars":6,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.0,"fabrication":1.0,"structure":0.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":0,"tag":"banana2"},{"id":"bench_5_react_agent__small__r1__1788169627","v":"B5","page":"small","model":"Sonnet 5","cls":"correct","cost":0.27333,"calls":3,"wall":224.4,"tin":57555,"tout":15822,"chars":8517,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.031,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":45,"tag":"banana"},{"id":"bench_7_react_optimized__small__r1__1788169828","v":"B7","page":"small","model":"Sonnet 5","cls":"correct","cost":0.082018,"calls":2,"wall":52.37,"tin":9399,"tout":6322,"chars":8715,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"prompt-really-fixed"},{"id":"bench_5_react_agent__small__r1__1788169881","v":"B5","page":"small","model":"Sonnet 5","cls":"correct","cost":0.19252,"calls":3,"wall":72.63,"tin":51630,"tout":8926,"chars":5818,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":36,"tag":"prompt-really-fixed"},{"id":"bench_7_react_optimized__small__r2__1788169953","v":"B7","page":"small","model":"Sonnet 5","cls":"correct","cost":0.082418,"calls":2,"wall":51.21,"tin":9399,"tout":6362,"chars":8715,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"prompt-really-fixed"},{"id":"bench_5_react_agent__small__r2__1788170005","v":"B5","page":"small","model":"Sonnet 5","cls":"correct","cost":0.27124,"calls":3,"wall":118.74,"tin":59805,"tout":15163,"chars":8318,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.016,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":45,"tag":"prompt-really-fixed"},{"id":"bench_5_react_agent__small__r1__1788170858","v":"B5","page":"small","model":"Sonnet 5","cls":"correct","cost":0.134518,"calls":3,"wall":39.89,"tin":47539,"tout":3944,"chars":3721,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":26,"tag":"final-sonnet5"},{"id":"bench_7_react_optimized__small__r1__1788170898","v":"B7","page":"small","model":"Sonnet 5","cls":"correct","cost":0.082588,"calls":2,"wall":51.97,"tin":9399,"tout":6379,"chars":8716,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.016,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"final-sonnet5"},{"id":"bench_5_react_agent__medium__r1__1788170950","v":"B5","page":"medium","model":"Sonnet 5","cls":"correct","cost":0.307664,"calls":2,"wall":113.52,"tin":91622,"tout":12442,"chars":11491,"recall":0.967,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":29,"gc":29,"gp":0,"go":0,"leaks":1,"drupal":38,"tag":"final-sonnet5"},{"id":"bench_7_react_optimized__medium__r1__1788171063","v":"B7","page":"medium","model":"Sonnet 5","cls":"degraded","cost":0.060336,"calls":2,"wall":41.91,"tin":7468,"tout":4540,"chars":11479,"recall":0.933,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":28,"gc":28,"gp":0,"go":0,"leaks":2,"drupal":38,"tag":"final-sonnet5"},{"id":"bench_5_react_agent__large__r1__1788171105","v":"B5","page":"large","model":"Sonnet 5","cls":"correct","cost":2.466502,"calls":4,"wall":316.15,"tin":1055106,"tout":35629,"chars":37162,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.971,"fabrication":0.008,"structure":1.0,"glyphs":4,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":332,"tag":"final-sonnet5"},{"id":"bench_7_react_optimized__large__r1__1788171421","v":"B7","page":"large","model":"Sonnet 5","cls":"correct","cost":0.40919,"calls":2,"wall":224.69,"tin":56955,"tout":29528,"chars":39614,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.016,"structure":1.0,"glyphs":4,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":328,"tag":"final-sonnet5"},{"id":"bench_7_react_optimized__small__r1__1788171729","v":"B7","page":"small","model":"Sonnet 4.6","cls":"correct","cost":0.066042,"calls":2,"wall":57.01,"tin":7434,"tout":2916,"chars":4608,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":36,"tag":"b7-sonnet46"},{"id":"bench_7_react_optimized__medium__r1__1788171786","v":"B7","page":"medium","model":"Sonnet 4.6","cls":"degraded","cost":0.06657,"calls":2,"wall":85.06,"tin":5910,"tout":3256,"chars":11482,"recall":0.933,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":28,"gc":28,"gp":0,"go":0,"leaks":2,"drupal":38,"tag":"b7-sonnet46"},{"id":"bench_7_react_optimized__large__r1__1788171871","v":"B7","page":"large","model":"Sonnet 4.6","cls":"correct","cost":0.362523,"calls":2,"wall":327.02,"tin":40856,"tout":15997,"chars":40167,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.983,"fabrication":0.016,"structure":1.0,"glyphs":2,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":336,"tag":"b7-sonnet46"},{"id":"bench_8_react_with_tools_in_parent__large__r1__1788572020","v":"B8","page":"large","model":"Haiku 4.5","cls":"correct","cost":0.152432,"calls":2,"wall":236.19,"tin":40897,"tout":22307,"chars":43152,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.006,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":333,"tag":"bench89-claude-haiku-4-5-20251001"},{"id":"bench_8_react_with_tools_in_parent__large__r1__1788573268","v":"B8","page":"large","model":"Sonnet 5","cls":"correct","cost":0.335066,"calls":2,"wall":165.93,"tin":56968,"tout":22113,"chars":40650,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.013,"structure":1.0,"glyphs":4,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":330,"tag":"bench89-claude-sonnet-5"},{"id":"bench_8_react_with_tools_in_parent__large__r1__1788606833","v":"B8","page":"large","model":"Sonnet 4.6","cls":"correct","cost":0.369348,"calls":2,"wall":326.97,"tin":40866,"tout":16450,"chars":41203,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.983,"fabrication":0.008,"structure":1.0,"glyphs":2,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":337,"tag":"bench89-claude-sonnet-4-6"},{"id":"bench_8_react_with_tools_in_parent__medium__r1__1788571895","v":"B8","page":"medium","model":"Haiku 4.5","cls":"silent","cost":0.021069,"calls":2,"wall":44.42,"tin":5954,"tout":3023,"chars":11106,"recall":0.667,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":20,"gc":20,"gp":0,"go":0,"leaks":10,"drupal":38,"tag":"bench89-claude-haiku-4-5-20251001"},{"id":"bench_8_react_with_tools_in_parent__medium__r1__1788573068","v":"B8","page":"medium","model":"Sonnet 5","cls":"degraded","cost":0.063418,"calls":2,"wall":42.41,"tin":7489,"tout":4844,"chars":11607,"recall":0.933,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":28,"gc":28,"gp":0,"go":0,"leaks":2,"drupal":38,"tag":"bench89-claude-sonnet-5"},{"id":"bench_8_react_with_tools_in_parent__medium__r1__1788606666","v":"B8","page":"medium","model":"Sonnet 4.6","cls":"degraded","cost":0.071049,"calls":2,"wall":87.02,"tin":5928,"tout":3551,"chars":11674,"recall":0.903,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":28,"gc":28,"gp":0,"go":0,"leaks":3,"drupal":39,"tag":"bench89-claude-sonnet-4-6"},{"id":"bench_8_react_with_tools_in_parent__small__r1__1788571775","v":"B8","page":"small","model":"Haiku 4.5","cls":"correct","cost":0.031191,"calls":2,"wall":57.49,"tin":7456,"tout":4747,"chars":8554,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"bench89-claude-haiku-4-5-20251001"},{"id":"bench_8_react_with_tools_in_parent__small__r1__1788572895","v":"B8","page":"small","model":"Sonnet 5","cls":"correct","cost":0.081564,"calls":2,"wall":50.86,"tin":9412,"tout":6274,"chars":8614,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.016,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"bench89-claude-sonnet-5"},{"id":"bench_8_react_with_tools_in_parent__small__r1__1788606552","v":"B8","page":"small","model":"Sonnet 4.6","cls":"correct","cost":0.066072,"calls":2,"wall":53.5,"tin":7444,"tout":2916,"chars":4608,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":36,"tag":"bench89-claude-sonnet-4-6"},{"id":"bench_9_reflexion_with_tools_in_parent__large__r1__1788572256","v":"B9","page":"large","model":"Haiku 4.5","cls":"correct","cost":0.496865,"calls":7,"wall":637.01,"tin":212845,"tout":56804,"chars":37707,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.977,"fabrication":0.004,"structure":1.0,"glyphs":4,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":326,"tag":"bench89-claude-haiku-4-5-20251001"},{"id":"bench_9_reflexion_with_tools_in_parent__large__r1__1788573434","v":"B9","page":"large","model":"Sonnet 5","cls":"correct","cost":1.282254,"calls":7,"wall":641.85,"tin":265477,"tout":75130,"chars":37951,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.977,"fabrication":0.008,"structure":1.0,"glyphs":4,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":332,"tag":"bench89-claude-sonnet-5"},{"id":"bench_9_reflexion_with_tools_in_parent__large__r1__1788607160","v":"B9","page":"large","model":"Sonnet 4.6","cls":"correct","cost":1.205433,"calls":7,"wall":863.72,"tin":199271,"tout":40508,"chars":42957,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.983,"fabrication":0.008,"structure":1.0,"glyphs":3,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":335,"tag":"bench89-claude-sonnet-4-6"},{"id":"bench_9_reflexion_with_tools_in_parent__medium__r1__1788571939","v":"B9","page":"medium","model":"Haiku 4.5","cls":"loud","cost":0.058786,"calls":6,"wall":80.76,"tin":29511,"tout":5855,"chars":0,"recall":null,"precision":null,"subject":null,"fidelity":null,"fabrication":null,"structure":null,"glyphs":null,"gc":null,"gp":null,"go":null,"leaks":null,"drupal":null,"tag":"bench89-claude-haiku-4-5-20251001"},{"id":"bench_9_reflexion_with_tools_in_parent__medium__r1__1788573110","v":"B9","page":"medium","model":"Sonnet 5","cls":"correct","cost":0.267566,"calls":7,"wall":157.21,"tin":47703,"tout":17216,"chars":11937,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":35,"gc":30,"gp":0,"go":0,"leaks":0,"drupal":38,"tag":"bench89-claude-sonnet-5"},{"id":"bench_9_reflexion_with_tools_in_parent__medium__r1__1788606753","v":"B9","page":"medium","model":"Sonnet 4.6","cls":"degraded","cost":0.079941,"calls":3,"wall":79.85,"tin":9027,"tout":3524,"chars":11354,"recall":0.903,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":28,"gc":28,"gp":0,"go":0,"leaks":3,"drupal":39,"tag":"bench89-claude-sonnet-4-6"},{"id":"bench_9_reflexion_with_tools_in_parent__small__r1__1788571833","v":"B9","page":"small","model":"Haiku 4.5","cls":"loud","cost":0.04435,"calls":4,"wall":61.97,"tin":19275,"tout":5015,"chars":0,"recall":null,"precision":null,"subject":null,"fidelity":null,"fabrication":null,"structure":null,"glyphs":null,"gc":null,"gp":null,"go":null,"leaks":null,"drupal":null,"tag":"bench89-claude-haiku-4-5-20251001"},{"id":"bench_9_reflexion_with_tools_in_parent__small__r1__1788572945","v":"B9","page":"small","model":"Sonnet 5","cls":"correct","cost":0.192494,"calls":5,"wall":122.56,"tin":28742,"tout":13501,"chars":8660,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"bench89-claude-sonnet-5"},{"id":"bench_9_reflexion_with_tools_in_parent__small__r1__1788606605","v":"B9","page":"small","model":"Sonnet 4.6","cls":"loud","cost":0.095421,"calls":4,"wall":60.88,"tin":16797,"tout":3002,"chars":0,"recall":null,"precision":null,"subject":null,"fidelity":null,"fabrication":null,"structure":null,"glyphs":null,"gc":null,"gp":null,"go":null,"leaks":null,"drupal":null,"tag":"bench89-claude-sonnet-4-6"},{"id":"bench_9_reflexion_with_tools_in_parent__small__r1__1788611993","v":"B9","page":"small","model":"Sonnet 4.6","cls":"correct","cost":0.345633,"calls":9,"wall":169.7147,"tin":78856,"tout":7271,"chars":4608,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":36,"tag":"b9fix-claude-sonnet-4-6"},{"id":"bench_9_reflexion_with_tools_in_parent__medium__r1__1788612447","v":"B9","page":"medium","model":"Haiku 4.5","cls":"correct","cost":0.262026,"calls":9,"wall":221.1132,"tin":195056,"tout":13394,"chars":11151,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":29,"gc":29,"gp":0,"go":0,"leaks":0,"drupal":37,"tag":"b9fix-claude-haiku-4-5-20251001"},{"id":"bench_9_reflexion_with_tools_in_parent__small__r1__1788613357","v":"B9","page":"small","model":"Haiku 4.5","cls":"correct","cost":0.230297,"calls":9,"wall":281.4663,"tin":125817,"tout":20896,"chars":8500,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.031,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":45,"tag":"b9fix2-claude-haiku-4-5-20251001"},{"id":"bench_5_react_agent__small__r1__1788621924","v":"B5","page":"small","model":"Sonnet 5","cls":"correct","cost":0.060894,"calls":2,"wall":20.2038,"tin":22577,"tout":1574,"chars":3600,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":26,"tag":"b5rerun-claude-sonnet-5"},{"id":"bench_5_react_agent__large__r1__1788622695","v":"B5","page":"large","model":"Sonnet 5","cls":"correct","cost":2.24458,"calls":4,"wall":186.9651,"tin":1029165,"tout":18625,"chars":22283,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":0.965,"fabrication":0.0,"structure":1.0,"glyphs":1,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":164,"tag":"b5rerun-large-claude-sonnet-5"},{"id":"bench_8_react_with_tools_in_parent__large__r1__1788623258","v":"B8","page":"large","model":"Opus 5","cls":"correct","cost":1.266465,"calls":2,"wall":343.0763,"tin":56843,"tout":39290,"chars":56594,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.007,"structure":1.0,"glyphs":3,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":335,"tag":"bench89-opus5-large"},{"id":"bench_9_reflexion_with_tools_in_parent__large__r1__1788623601","v":"B9","page":"large","model":"Opus 5","cls":"correct","cost":1.46291,"calls":3,"wall":379.7062,"tin":82107,"tout":42095,"chars":56641,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.007,"structure":1.0,"glyphs":3,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":335,"tag":"bench89-opus5-large"},{"id":"bench_8_react_with_tools_in_parent__small__r1__1788625045","v":"B8","page":"small","model":"Opus 5","cls":"correct","cost":0.20269,"calls":2,"wall":61.2189,"tin":9288,"tout":6250,"chars":8731,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"bench89-opus5-sm"},{"id":"bench_9_reflexion_with_tools_in_parent__small__r1__1788625106","v":"B9","page":"small","model":"Opus 5","cls":"correct","cost":0.249045,"calls":3,"wall":77.2094,"tin":12859,"tout":7390,"chars":8675,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.016,"structure":1.0,"glyphs":0,"gc":0,"gp":0,"go":0,"leaks":0,"drupal":44,"tag":"bench89-opus5-sm"},{"id":"bench_9_reflexion_with_tools_in_parent__medium__r1__1788625189","v":"B9","page":"medium","model":"Opus 5","cls":"correct","cost":1.332035,"calls":5,"wall":142.027,"tin":208037,"tout":11674,"chars":11721,"recall":1.0,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":31,"gc":31,"gp":0,"go":0,"leaks":0,"drupal":39,"tag":"bench89-opus5-sm"},{"id":"bench_8_react_with_tools_in_parent__medium__r1__1788626572","v":"B8","page":"medium","model":"Opus 5","cls":"degraded","cost":0.610715,"calls":2,"wall":57.8361,"tin":97768,"tout":4875,"chars":11698,"recall":0.903,"precision":1.0,"subject":1.0,"fidelity":1.0,"fabrication":0.0,"structure":1.0,"glyphs":28,"gc":28,"gp":0,"go":0,"leaks":3,"drupal":39,"tag":"bench89-opus5-medium-nogate"}],"paused":[{"v":"B9","page":"small","model":"Haiku 4.5","cost":0.242727,"tag":"b9fix-claude-haiku-4-5-20251001"},{"v":"B8","page":"medium","model":"Opus 5","cost":0.007855,"tag":"bench89-opus5-sm"},{"v":"B8","page":"medium","model":"Opus 5","cost":0.007855,"tag":"bench89-opus5-medium-retry"},{"v":"B8","page":"medium","model":"Opus 5","cost":0.00788,"tag":"bench89-opus5-medium-retry2"}],"models":["Haiku 4.5","Sonnet 4.6","Sonnet 5","Opus 5"],"variants":["B2","B3","B4","B5","B6","B7","B8","B9"],"vname":{"B2":"Raw HTML \u2192 LLM","B3":"Markdown \u2192 LLM","B4":"ai_agents + tool","B5":"ReAct, content tool","B6":"Autonomous agent","B7":"ReAct, URL tool","B8":"ReAct, URL tool in parent","B9":"Reflexion critic"},"pagekb":{"small":38,"medium":164,"large":535},"totals":{"format":5,"correct":86,"silent":7,"degraded":9,"loud":9},"n":116,"spend":54.11};
 const NS = 'http://www.w3.org/2000/svg';
 const PAGES = ['small', 'medium', 'large'];
-const CLS = ['correct', 'degraded', 'silent', 'format', 'loud'];
 const LET = {correct: 'C', degraded: 'D', silent: 'S', format: 'F', loud: 'L'};
-const CCOL = {correct: 'var(--ok)', degraded: 'var(--ok)', silent: 'var(--silent)', format: 'var(--format)', loud: 'var(--loud)'};
 const MCOL = {'Haiku 4.5': 'var(--m1)', 'Sonnet 4.6': 'var(--m2)', 'Sonnet 5': 'var(--m3)', 'Opus 5': 'var(--m4)'};
 const el = (n, a = {}) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
 const txt = (s, a = {}) => { const t = el('text', a); t.textContent = s; return t; };
-const f3 = v => v == null ? '—' : v.toFixed(3);
-const money = v => '$' + (v === 0 ? '0' : v < 1 ? v.toFixed(2) : v.toFixed(2));
-const tip = r => `${r.v} · ${r.page} · ${r.model} · ${r.cls}\nrecall ${f3(r.recall)} · precision ${f3(r.precision)} · subject ${f3(r.subject)}\nfidelity ${f3(r.fidelity)} · fabrication ${f3(r.fabrication)}\n${r.glyphs ?? 0} marks · ${r.leaks ?? 0} leaks · ${r.calls} calls · ${money(r.cost)}`;
-
-// ---- tiles
-const tiles = document.getElementById('tiles');
-[['n', 'graded runs', null], ...CLS.map(c => [c, c, c])].forEach(([k, l, c]) => {
-  const d = document.createElement('div'); d.className = 'tile';
-  const n = k === 'n' ? D.n : (D.totals[k] || 0);
-  d.innerHTML = `<div class="n">${c ? `<span class="chip ${c}">${LET[c]}</span>` : ''}${n}</div><div class="l">${l}</div>`;
-  tiles.appendChild(d);
-});
-
-// ---- figure 1: matrix
-const mx = document.getElementById('mx');
-let h = '<thead><tr><th>Variant</th><th></th><th>Page</th>' + D.models.map(m => `<th>${m}</th>`).join('') + '</tr></thead><tbody>';
-D.variants.forEach(v => PAGES.forEach((p, i) => {
-  h += `<tr${i === 0 ? ' class="grp"' : ''}><td class="v">${i === 0 ? v : ''}</td><td class="vn">${i === 0 ? D.vname[v] : ''}</td><td class="pg">${p}</td>`;
-  D.models.forEach(m => {
-    const rs = D.runs.filter(r => r.v === v && r.page === p && r.model === m);
-    h += '<td>' + (rs.length ? rs.map(r => `<span class="chip ${r.cls}" title="${tip(r).replace(/"/g, '&quot;')}">${LET[r.cls]}</span>`).join('') : '<span class="chip none">·</span>') + '</td>';
-  });
-  h += '</tr>';
-}));
-mx.innerHTML = h + '</tbody>';
-document.getElementById('lg1').innerHTML = CLS.map(c => `<span class="it"><span class="chip ${c}">${LET[c]}</span>${c}</span>`).join('') + '<span class="it"><span class="chip none">·</span>not run</span>';
-const sil = D.runs.filter(r => r.cls === 'silent');
-document.getElementById('silentnote').textContent = sil.map(r => `${r.v} ${r.model} ${r.page}`).join(' · ') +
-  '. Six are in variants that let the model decide what to do with the page; the seventh is B3 on Haiku truncating the large page at fidelity 0.08.';
-
-// ---- figure 2: parallel coordinates
-const AXES = [
-  {key: 'cost', label: 'Cost', sub: 'USD, lower better', dir: 'low', fmt: v => money(v)},
-  {key: 'recall', label: 'Recall', sub: 'targets redacted', dir: 'high', fmt: v => v.toFixed(2)},
-  {key: 'precision', label: 'Precision', sub: 'marks on targets', dir: 'high', fmt: v => v.toFixed(2)},
-  {key: 'subject', label: 'Subject', sub: 'protected names kept', dir: 'high', fmt: v => v.toFixed(2)},
-  {key: 'fidelity', label: 'Fidelity', sub: 'gold sentences found', dir: 'high', fmt: v => v.toFixed(2)},
-  {key: 'fabrication', label: 'Fabrication', sub: 'invented, lower better', dir: 'low', fmt: v => v.toFixed(2)},
-];
-let page = 'medium', show = 'all';
-const modelOn = Object.fromEntries(D.models.map(m => [m, true]));
-const M = {l: 80, r: 150, t: 40, b: 30}, W = 960, H = 400, w = W - M.l - M.r, hh = H - M.t - M.b;
-const axX = i => M.l + i * (w / (AXES.length - 1));
-function render2() {
-  const svg = document.getElementById('pc'); svg.innerHTML = '';
-  const rs = D.runs.filter(r => r.page === page && modelOn[r.model] && r.recall != null &&
-    (show === 'all' || (show === 'correct' ? r.cls === 'correct' : r.cls !== 'correct')));
-  const costHi = Math.max(0.01, ...D.runs.filter(r => r.page === page && r.recall != null).map(r => r.cost)) * 1.05;
-  const dom = a => a.key === 'cost' ? [0, costHi] : [0, 1];
-  const pos = (a, v) => { const [lo, hi] = dom(a), t = (v - lo) / (hi - lo); return M.t + hh - (a.dir === 'high' ? t : 1 - t) * hh; };
-  AXES.forEach((a, i) => {
-    const x = axX(i);
-    svg.appendChild(el('line', {x1: x, y1: M.t, x2: x, y2: M.t + hh, class: 'ax'}));
-    svg.appendChild(txt(a.label, {x, y: M.t - 20, class: 'axl', 'text-anchor': 'middle'}));
-    svg.appendChild(txt(a.sub, {x, y: M.t - 8, class: 'axsub', 'text-anchor': 'middle'}));
-    const [lo, hi] = dom(a);
-    [0, .25, .5, .75, 1].forEach(f => { const v = lo + (hi - lo) * f, y = pos(a, v);
-      svg.appendChild(el('line', {x1: x - 4, y1: y, x2: x + 4, y2: y, class: 'ax'}));
-      svg.appendChild(txt(a.fmt(v), {x: x - 8, y: y + 3.5, class: 'tk', 'text-anchor': 'end'})); });
-    if (a.key !== 'cost') { const y = pos(a, a.dir === 'high' ? .75 : .25);
-      svg.appendChild(el('line', {x1: x - 14, y1: y, x2: x + 14, y2: y, class: 'ax', 'stroke-dasharray': '3 3'})); }
-  });
-  const order = [...rs].sort((a, b) => (a.cls === 'correct' ? 0 : 1) - (b.cls === 'correct' ? 0 : 1));
-  const used = [];
-  order.forEach(r => {
-    const pts = AXES.map((a, i) => [axX(i), pos(a, r[a.key])]);
-    const ln = el('polyline', {points: pts.map(p => p.join(',')).join(' '), class: 'line' + (show === 'all' && r.cls === 'correct' ? ' dim' : ''),
-      stroke: CCOL[r.cls], 'stroke-dasharray': r.cls === 'degraded' ? '6 4' : 'none'});
-    if (r.cls === 'correct' && show === 'all') ln.setAttribute('opacity', '.35');
-    const t = el('title'); t.textContent = tip(r); ln.appendChild(t); svg.appendChild(ln);
-    if (r.cls !== 'correct' || show === 'correct') {
-      let y = pts[pts.length - 1][1];
-      while (used.some(u => Math.abs(u - y) < 12)) y += 12;
-      used.push(y);
-      svg.appendChild(txt(`${r.v} ${r.model}`, {x: axX(AXES.length - 1) + 10, y: y + 3.5, class: 'ptlbl', fill: r.cls === 'degraded' ? 'var(--ok)' : CCOL[r.cls]}));
-    }
-  });
-  if (!rs.length) svg.appendChild(txt('No graded runs match this filter.', {x: W / 2, y: H / 2, class: 'axl', 'text-anchor': 'middle'}));
-  document.querySelectorAll('#pages button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.p === page)));
-  document.querySelectorAll('#show button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.s === show)));
+const money = v => '$' + (v < 1 ? v.toFixed(3) : v.toFixed(2));
+const f3 = v => v == null ? '—' : v.toFixed(2);
+const tip = r => `${r.v} · ${r.page} · ${r.model} · ${r.cls}\nfidelity ${f3(r.fidelity)} · recall ${f3(r.recall)} · precision ${f3(r.precision)} · subject ${f3(r.subject)} · fabrication ${f3(r.fabrication)}\n${r.glyphs ?? 0} marks · ${r.leaks ?? 0} leaks · ${r.calls} calls · ${money(r.cost)} · ${Math.round(r.wall)}s`;
+const LO = 0.001, HI = 3;
+const logx = (v, x0, w) => x0 + (Math.log10(Math.max(v, LO)) - Math.log10(LO)) / (Math.log10(HI) - Math.log10(LO)) * w;
+function mark(svg, shape, x, y, r, fill, extra = {}) {
+  let m;
+  if (shape === 'circle') m = el('circle', {cx: x, cy: y, r});
+  else if (shape === 'square') m = el('rect', {x: x - r, y: y - r, width: 2 * r, height: 2 * r});
+  else m = el('polygon', {points: `${x},${y - r * 1.2} ${x - r * 1.1},${y + r * .8} ${x + r * 1.1},${y + r * .8}`});
+  m.setAttribute('fill', fill); m.setAttribute('class', 'mk'); for (const k in extra) m.setAttribute(k, extra[k]);
+  svg.appendChild(m); return m;
 }
-const pg = document.getElementById('pages');
-PAGES.forEach(p => { const b = document.createElement('button'); b.dataset.p = p; b.textContent = p; b.onclick = () => { page = p; render2(); }; pg.appendChild(b); });
-const sh = document.getElementById('show');
-[['all', 'all'], ['correct', 'correct only'], ['fail', 'not correct']].forEach(([s, l]) => { const b = document.createElement('button'); b.dataset.s = s; b.textContent = l; b.onclick = () => { show = s; render2(); }; sh.appendChild(b); });
-const mo = document.getElementById('models');
-D.models.forEach(m => { const l = document.createElement('label'); l.className = 'chk';
-  l.innerHTML = `<input type="checkbox" checked><span class="sw" style="background:${MCOL[m]}"></span>${m}`;
-  l.querySelector('input').onchange = e => { modelOn[m] = e.target.checked; render2(); }; mo.appendChild(l); });
-document.getElementById('lg2').innerHTML = [['correct', 'correct'], ['degraded', 'degraded (dashed)'], ['silent', 'silent failure']]
-  .map(([c, l]) => `<span class="it"><span class="sw" style="background:${CCOL[c]};border-radius:2px;width:14px;height:3px"></span>${l}</span>`).join('') +
-  '<span class="it">dashed tick on an axis = the 0.75 degraded floor</span>';
-render2();
+const SHAPE = {small: 'circle', medium: 'square', large: 'triangle'};
+const modelLegend = () => D.models.map(m => `<span class="it"><span class="sw" style="background:${MCOL[m]}"></span>${m}</span>`).join('');
+const pageLegend = '<span class="it" style="margin-left:auto">page:</span><span class="it">● small</span><span class="it">■ medium</span><span class="it">▲ large</span>';
+const ringLegend = '<span class="it"><span class="sw" style="border:1.6px dashed var(--silent);background:none"></span>not correct</span>';
 
-// ---- figure 3: cost per correct run
-(function () {
-  const svg = document.getElementById('cpc');
-  const L = 200, R = 120, T = 36, RH = 56, W3 = 960;
-  const rowsV = D.variants;
-  const cells = [];
-  rowsV.forEach(v => D.models.forEach(m => {
-    const rs = D.runs.filter(r => r.v === v && r.model === m), ps = D.paused.filter(r => r.v === v && r.model === m);
-    if (!rs.length) return;
-    const spend = rs.reduce((s, r) => s + r.cost, 0) + ps.reduce((s, r) => s + r.cost, 0);
-    const ok = rs.filter(r => r.cls === 'correct').length;
-    cells.push({v, m, spend, ok, n: rs.length + ps.length, cpc: ok ? spend / ok : null});
-  }));
-  const vals = cells.filter(c => c.cpc).map(c => c.cpc), lo = 0.01, hi = Math.max(...vals) * 1.3;
-  const x = v => L + (Math.log10(v) - Math.log10(lo)) / (Math.log10(hi) - Math.log10(lo)) * (W3 - L - R);
-  const Hh = T + rowsV.length * RH + 20;
-  svg.setAttribute('viewBox', `0 0 ${W3} ${Hh}`);
-  [0.01, 0.03, 0.1, 0.3, 1, 3].filter(v => v <= hi).forEach(v => {
-    svg.appendChild(el('line', {x1: x(v), y1: T - 6, x2: x(v), y2: Hh - 20, class: 'gl'}));
-    svg.appendChild(txt(money(v), {x: x(v), y: T - 12, class: 'tk', 'text-anchor': 'middle'}));
+// ---- panels helper: 8 variants in 2 rows of 4
+function panels(svg, H, draw) {
+  const W = 980, cols = 4, rows = Math.ceil(D.variants.length / cols), left0 = 44, gapX = 18, top = 30, gapY = 46, pw = (W - left0 - 10 - gapX * (cols - 1)) / cols, ph = H;
+  svg.setAttribute('viewBox', `0 0 ${W} ${top + rows * ph + (rows - 1) * gapY + 40}`);
+  D.variants.forEach((v, i) => {
+    const c = i % cols, r = Math.floor(i / cols), x0 = left0 + c * (pw + gapX), y0 = top + r * (ph + gapY);
+    svg.appendChild(txt(v, {x: x0, y: y0 - 14, class: 'fct'}));
+    svg.appendChild(txt(D.vname[v], {x: x0 + 26, y: y0 - 14, class: 'fcts'}));
+    draw(v, x0, y0, pw, ph, c === 0);
   });
-  svg.appendChild(txt('∞', {x: W3 - R + 40, y: T - 12, class: 'tk', 'text-anchor': 'middle'}));
-  rowsV.forEach((v, i) => {
-    const y = T + i * RH + RH / 2;
-    svg.appendChild(el('line', {x1: L, y1: y, x2: W3 - R + 60, y2: y, class: 'gl'}));
-    svg.appendChild(txt(v, {x: 14, y: y - 3, class: 'rowl'}));
-    svg.appendChild(txt(D.vname[v], {x: 14, y: y + 11, class: 'rows'}));
-    const cs = cells.filter(c => c.v === v);
-    cs.forEach((c, k) => {
-      const cx = c.cpc ? x(c.cpc) : W3 - R + 40, jitter = (k - (cs.length - 1) / 2) * 11;
-      const d = el('circle', {cx, cy: y + jitter, r: 6, class: 'dot', fill: c.cpc ? MCOL[c.m] : 'none', stroke: c.cpc ? 'var(--surf)' : MCOL[c.m]});
-      if (!c.cpc) d.setAttribute('stroke-width', '2');
-      const t = el('title'); t.textContent = `${c.v} · ${c.m}\n${c.ok} correct of ${c.n} launches · spend ${money(c.spend)}` + (c.cpc ? `\n${money(c.cpc)} per correct run` : '\nno correct run');
-      d.appendChild(t); svg.appendChild(d);
-      svg.appendChild(txt(`${c.ok}/${c.n}`, {x: cx + 10, y: y + jitter + 3.5, class: 'tk'}));
+}
+
+// ---- figure 1
+(function () {
+  const svg = document.getElementById('f1'); const PH = 170;
+  panels(svg, PH, (v, x0, y0, pw, ph, first) => {
+    const y = f => y0 + ph - f * ph;
+    [0, .25, .5, .75, 1].forEach(f => { svg.appendChild(el('line', {x1: x0, y1: y(f), x2: x0 + pw, y2: y(f), class: 'gl'}));
+      if (first) svg.appendChild(txt(f.toFixed(2), {x: x0 - 6, y: y(f) + 3.5, class: 'tk', 'text-anchor': 'end'})); });
+    [0.001, 0.01, 0.1, 1].forEach(c => { const x = logx(c, x0, pw); svg.appendChild(el('line', {x1: x, y1: y0, x2: x, y2: y0 + ph, class: 'gl'}));
+      svg.appendChild(txt(money(c).replace('.000', ''), {x, y: y0 + ph + 13, class: 'tk', 'text-anchor': 'middle'})); });
+    svg.appendChild(el('rect', {x: x0, y: y0, width: pw, height: ph, fill: 'none', class: 'ax'}));
+    D.models.forEach(m => {
+      const rs = PAGES.map(p => D.runs.filter(r => r.v === v && r.model === m && r.page === p)).flat();
+      const pts = rs.map(r => [logx(r.cost, x0, pw), y(r.fidelity ?? 0), r]);
+      const byPage = PAGES.map(p => pts.find(q => q[2].page === p)).filter(Boolean);
+      if (byPage.length > 1) svg.appendChild(el('polyline', {points: byPage.map(q => q.slice(0, 2).join(',')).join(' '), class: 'trail', stroke: MCOL[m]}));
+      pts.forEach(([x, yy, r]) => {
+        const mk = mark(svg, SHAPE[r.page], x, yy, 5, MCOL[m]); const t = el('title'); t.textContent = tip(r); mk.appendChild(t);
+        if (r.cls !== 'correct') svg.appendChild(el('circle', {cx: x, cy: yy, r: 9, class: 'ring'}));
+      });
     });
   });
-  document.getElementById('lg3').innerHTML = D.models.map(m => `<span class="it"><span class="sw" style="background:${MCOL[m]}"></span>${m}</span>`).join('') +
-    '<span class="it"><span class="sw" style="border:2px solid var(--muted);background:none"></span>no correct run</span>';
+  document.getElementById('lg1').innerHTML = modelLegend() + ringLegend + pageLegend;
+  const ringedHigh = D.runs.filter(r => r.cls !== 'correct' && (r.fidelity ?? 0) >= 0.95);
+  document.getElementById('n1').textContent = `${ringedHigh.length} of the ${D.runs.filter(r => r.cls !== 'correct').length} runs that were not correct have fidelity 0.95 or better: they reproduced the document and failed on redaction, over-redaction or invented text. Under v1 those runs ranked with the successes. The three worst by class are B4 Sonnet 5 medium (subject 0.26, redacted Drupal), B5 Haiku medium (recall 0, redacted nothing) and B4 Sonnet 4.6 small (six competitor names written into a page that had none).`;
+})();
+
+// ---- figure 2: medium page redaction
+(function () {
+  const svg = document.getElementById('f2');
+  const rows = [];
+  D.variants.forEach(v => D.models.forEach(m => { const rs = D.runs.filter(r => r.v === v && r.model === m && r.page === 'medium' && r.recall != null); rs.forEach(r => rows.push(r)); }));
+  const W = 980, L = 200, T = 30, RH = 16, GAP = 12; let y = T;
+  const groups = D.variants.map(v => rows.filter(r => r.v === v));
+  const H = T + rows.length * RH + groups.length * GAP + 30;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const MAX = 75, x = n => L + n / MAX * 560;
+  [0, 10, 20, 30, 40, 50, 60, 70].forEach(n => { svg.appendChild(el('line', {x1: x(n), y1: T - 6, x2: x(n), y2: H - 24, class: 'gl'})); svg.appendChild(txt(String(n), {x: x(n), y: T - 12, class: 'tk', 'text-anchor': 'middle'})); });
+  svg.appendChild(el('line', {x1: x(30), y1: T - 6, x2: x(30), y2: H - 24, class: 'ax', 'stroke-dasharray': '4 3'}));
+  svg.appendChild(txt('30 targets', {x: x(30) + 4, y: H - 10, class: 'tk'}));
+  groups.forEach((g, gi) => {
+    if (!g.length) return;
+    svg.appendChild(txt(g[0].v, {x: 14, y: y + 12, class: 'fct'})); svg.appendChild(txt(D.vname[g[0].v], {x: 14, y: y + 26, class: 'fcts'}));
+    g.forEach(r => {
+      const gc = r.gc ?? 0, lk = r.leaks ?? 0, gp = r.gp ?? 0, go = r.go ?? 0;
+      svg.appendChild(txt(r.model, {x: L - 8, y: y + 11, class: 'tk', 'text-anchor': 'end'}));
+      const b1 = el('rect', {x: x(0), y: y + 2, width: Math.max(x(gc) - x(0), 0), height: RH - 4, fill: MCOL[r.model], rx: 2});
+      const t = el('title'); t.textContent = tip(r) + `\n${gc} marks on targets · ${lk} left readable · ${gp} on protected names · ${go} on invented text`; b1.appendChild(t); svg.appendChild(b1);
+      if (lk) svg.appendChild(el('rect', {x: x(gc) + 2, y: y + 2, width: Math.max(x(lk) - x(0) - 2, 1), height: RH - 4, fill: 'var(--silent)', rx: 2}));
+      if (gp + go) { svg.appendChild(el('rect', {x: x(Math.max(gc + lk, 0)) + 6, y: y + 2, width: Math.max(x(gp + go) - x(0), 1), height: RH - 4, fill: 'var(--format)', rx: 2}));
+        svg.appendChild(txt(`${gp + go} on protected / invented`, {x: x(gc + lk + gp + go) + 12, y: y + 11, class: 'tk'})); }
+      else if (lk) svg.appendChild(txt(`${lk} readable`, {x: x(gc + lk) + 8, y: y + 11, class: 'tk'}));
+      svg.appendChild(txt(LET[r.cls], {x: W - 20, y: y + 11, class: 'pt', 'text-anchor': 'middle', fill: r.cls === 'correct' ? 'var(--ok)' : 'var(--silent)'}));
+      y += RH;
+    });
+    y += GAP;
+  });
+  document.getElementById('lg2').innerHTML = '<span class="it"><span class="sw" style="background:var(--muted);border-radius:2px"></span>marks on targets (model colour)</span><span class="it"><span class="sw" style="background:var(--silent);border-radius:2px"></span>target mentions left readable</span><span class="it"><span class="sw" style="background:var(--format);border-radius:2px"></span>marks on protected names or invented text</span><span class="it">letter = class</span>';
+})();
+
+// ---- figure 3: fidelity by page size
+(function () {
+  const svg = document.getElementById('f3'); const PH = 150;
+  const kb = D.pagekb, xs = {small: 0, medium: .5, large: 1};
+  panels(svg, PH, (v, x0, y0, pw, ph, first) => {
+    const y = f => y0 + ph - f * ph, x = p => x0 + 14 + xs[p] * (pw - 28);
+    [0, .5, 1].forEach(f => { svg.appendChild(el('line', {x1: x0, y1: y(f), x2: x0 + pw, y2: y(f), class: 'gl'})); if (first) svg.appendChild(txt(f.toFixed(1), {x: x0 - 6, y: y(f) + 3.5, class: 'tk', 'text-anchor': 'end'})); });
+    PAGES.forEach(p => svg.appendChild(txt(`${kb[p]} KB`, {x: x(p), y: y0 + ph + 13, class: 'tk', 'text-anchor': 'middle'})));
+    svg.appendChild(el('rect', {x: x0, y: y0, width: pw, height: ph, fill: 'none', class: 'ax'}));
+    D.models.forEach(m => {
+      const pts = PAGES.map(p => { const rs = D.runs.filter(r => r.v === v && r.model === m && r.page === p); return rs.length ? [x(p), rs] : null; }).filter(Boolean);
+      const line = pts.map(([px, rs]) => [px, y(Math.max(...rs.map(r => r.fidelity ?? 0)))]);
+      if (line.length > 1) svg.appendChild(el('polyline', {points: line.map(q => q.join(',')).join(' '), class: 'trail', stroke: MCOL[m]}));
+      pts.forEach(([px, rs]) => rs.forEach(r => { const yy = y(r.fidelity ?? 0); const mk = mark(svg, SHAPE[r.page], px, yy, 4.5, MCOL[m]); const t = el('title'); t.textContent = tip(r); mk.appendChild(t);
+        if (r.cls !== 'correct') svg.appendChild(el('circle', {cx: px, cy: yy, r: 8.5, class: 'ring'})); }));
+    });
+  });
+  document.getElementById('lg3').innerHTML = modelLegend() + ringLegend;
+})();
+
+// ---- figure 4: cost per cell
+(function () {
+  const svg = document.getElementById('f4');
+  const W = 980, L = 190, T = 30, RH = 26; const rows = []; D.variants.forEach(v => PAGES.forEach(p => rows.push([v, p])));
+  const H = T + rows.length * RH + 30; svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const xw = W - L - 30;
+  [0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3].forEach(c => { const x = logx(c, L, xw); svg.appendChild(el('line', {x1: x, y1: T - 6, x2: x, y2: H - 24, class: 'gl'})); svg.appendChild(txt(money(c).replace(/0+$/, '').replace(/\.$/, ''), {x, y: T - 12, class: 'tk', 'text-anchor': 'middle'})); });
+  rows.forEach(([v, p], i) => {
+    const y = T + i * RH + RH / 2;
+    svg.appendChild(el('line', {x1: L, y1: y, x2: W - 30, y2: y, class: p === 'small' ? 'ax' : 'gl'}));
+    if (p === 'small') svg.appendChild(txt(v, {x: 14, y: y + 4, class: 'fct'}));
+    if (p === 'medium') svg.appendChild(txt(D.vname[v], {x: 14, y: y + 4, class: 'fcts'}));
+    svg.appendChild(txt(p, {x: L - 8, y: y + 3.5, class: 'tk', 'text-anchor': 'end'}));
+    D.runs.filter(r => r.v === v && r.page === p).forEach(r => {
+      const x = logx(r.cost, L, xw);
+      const d = el('circle', {cx: x, cy: y, r: 8, fill: MCOL[r.model], class: 'mk'}); const t = el('title'); t.textContent = tip(r); d.appendChild(t); svg.appendChild(d);
+      svg.appendChild(txt(LET[r.cls], {x, y: y + 3.5, 'text-anchor': 'middle', style: 'font-family:var(--mono);font-size:9px;font-weight:500;fill:#fff;pointer-events:none'}));
+    });
+  });
+  document.getElementById('lg4').innerHTML = modelLegend() + '<span class="it">C correct · D degraded · S silent · F format · L loud</span>';
 })();
 
 // ---- table
-const tb = document.querySelector('#tbl tbody');
-const ord = {small: 0, medium: 1, large: 2};
+const tb = document.querySelector('#tbl tbody'); const ord = {small: 0, medium: 1, large: 2};
 [...D.runs].sort((a, b) => a.v.localeCompare(b.v) || ord[a.page] - ord[b.page] || D.models.indexOf(a.model) - D.models.indexOf(b.model)).forEach(r => {
   const tr = document.createElement('tr');
-  const cell = (v, inv) => v == null ? '<td>—</td>' : `<td class="${(inv ? v > 0.25 : v < 0.75) ? 'low' : ''}">${v.toFixed(3)}</td>`;
-  tr.innerHTML = `<td><span class="chip ${r.cls}">${LET[r.cls]}</span> ${r.cls}</td><td>${r.v}</td><td>${r.page}</td><td>${r.model}</td>` +
-    cell(r.recall) + cell(r.precision) + cell(r.subject) + cell(r.fidelity) + cell(r.fabrication, true) +
-    `<td>${r.glyphs ?? '—'}</td><td>${r.leaks ?? '—'}</td><td>${r.calls}</td><td>${money(r.cost)}</td>`;
+  const c = (v, inv) => v == null ? '<td>—</td>' : `<td class="${(inv ? v > 0.25 : v < 0.75) ? 'low' : ''}">${v.toFixed(3)}</td>`;
+  tr.innerHTML = `<td>${r.v}</td><td>${r.page}</td><td><span class="sw" style="background:${MCOL[r.model]};margin-right:6px"></span>${r.model}</td><td><span class="chip ${r.cls}">${LET[r.cls]}</span></td>` +
+    `<td>${money(r.cost)}</td><td>${r.wall ? Math.round(r.wall) + 's' : '—'}</td><td>${r.calls}</td><td>${r.tin.toLocaleString()}</td><td>${r.tout.toLocaleString()}</td>` +
+    `<td>${r.glyphs ?? '—'}</td><td>${r.leaks ?? '—'}</td><td>${r.drupal ?? '—'}</td>` + c(r.recall) + c(r.precision) + c(r.subject) + c(r.fidelity) + c(r.fabrication, true);
   tb.appendChild(tr);
 });
 </script>

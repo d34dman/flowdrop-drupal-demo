@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How the Redaction Benchmark Works</title>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ink:#111820; --paper:#F5F6F8; --surf:#FFFFFF; --rule:#DDE1E6;
+  --muted:#5C6672; --faint:#8A94A0;
+  --accent:#1B6FA8; --accent-soft:#E3EDF4;
+  --signal:#B0531D; --signal-soft:#F5E8DD;
+  --good:#2E7355; --bad:#AB3427;
+  --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --body:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+  --measure:68ch;
+  --sp:clamp(1rem,3vw,1.6rem);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#E4E9EE; --paper:#0D1218; --surf:#151D26; --rule:#26313D;
+    --muted:#8B97A5; --faint:#6B7885;
+    --accent:#5AA8DC; --accent-soft:#152836;
+    --signal:#D98A4A; --signal-soft:#2C2116;
+    --good:#5FBF92; --bad:#E0705F;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E4E9EE; --paper:#0D1218; --surf:#151D26; --rule:#26313D;
+  --muted:#8B97A5; --faint:#6B7885;
+  --accent:#5AA8DC; --accent-soft:#152836;
+  --signal:#D98A4A; --signal-soft:#2C2116;
+  --good:#5FBF92; --bad:#E0705F;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 var(--sp)}
+.prose{max-width:var(--measure)}
+
+h1,h2,h3,h4,.eyebrow,.chip,.step-n{font-family:var(--display)}
+h1{font-size:clamp(2.3rem,5.6vw,3.9rem);line-height:1.03;font-weight:800;
+   letter-spacing:-.028em;margin:0;text-wrap:balance}
+h2{font-size:clamp(1.45rem,3.1vw,2rem);line-height:1.12;font-weight:700;
+   letter-spacing:-.02em;margin:0 0 .35em;text-wrap:balance}
+h3{font-size:1.12rem;font-weight:600;letter-spacing:-.012em;margin:0 0 .4em}
+h4{font-size:.95rem;font-weight:600;margin:0 0 .3em}
+p{margin:0 0 1em}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.87em;background:var(--accent-soft);
+  padding:.1em .34em;color:var(--ink)}
+
+.eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);display:flex;align-items:center;gap:.6em;margin:0 0 .9em}
+.eyebrow::before{content:"▌▌";font-family:var(--mono);color:var(--accent);letter-spacing:-.1em}
+
+header{border-bottom:1px solid var(--rule);background:var(--surf);
+  padding:clamp(2.6rem,7vw,4.4rem) 0 clamp(1.8rem,4vw,2.6rem)}
+.kicker{font-family:var(--mono);font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--signal);margin:0 0 1.4rem}
+.lede{font-size:clamp(1.04rem,2vw,1.22rem);color:var(--muted);margin:1.3rem 0 0;max-width:62ch}
+.lede em{color:var(--ink);font-style:normal;font-weight:600}
+
+section{padding:clamp(2.6rem,5.5vw,4.2rem) 0;border-bottom:1px solid var(--rule)}
+
+/* --- the task strip --- */
+.task{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));margin-top:1.8rem}
+.task > div{background:var(--surf);padding:1.1rem 1.2rem}
+.task dt{font-family:var(--display);font-size:.66rem;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--faint);margin:0 0 .35rem}
+.task dd{margin:0;font-size:.95rem}
+.task dd.mono{font-family:var(--mono);font-size:.88rem}
+
+/* --- diagram plates: deliberately a constant light ground in both themes,
+       so a diagram reads as a printed plate rather than re-tinting per theme --- */
+.plate{background:#F2F4F7;border:1px solid var(--rule);padding:1.1rem .8rem .5rem;
+  overflow-x:auto;margin:0}
+.plate .mermaid{display:flex;justify-content:center;min-width:min-content}
+.plate-cap{font-family:var(--mono);font-size:.71rem;color:var(--muted);
+  padding:.55rem .3rem 0;border-top:1px solid var(--rule);margin-top:.9rem}
+
+/* --- pipeline cards --- */
+.pipes{display:grid;gap:1.6rem;margin-top:1.9rem}
+.pipe{border:1px solid var(--rule);background:var(--surf)}
+.pipe-hd{display:flex;flex-wrap:wrap;align-items:baseline;gap:.7rem;
+  padding:1rem 1.2rem;border-bottom:1px solid var(--rule)}
+.pipe-hd h3{margin:0}
+.pipe-hd .role{font-size:.9rem;color:var(--muted)}
+.pipe-bd{padding:1.2rem}
+.pipe-bd > p{font-size:.94rem;color:var(--muted);margin:0 0 1rem;max-width:74ch}
+.chip{font-size:.62rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  padding:.16em .5em;border:1px solid currentColor;color:var(--muted);white-space:nowrap}
+.chip.ctl{color:var(--good)} .chip.agent{color:var(--signal)} .chip.new{color:var(--accent)}
+
+/* --- steps --- */
+.steps{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:1.8rem}
+.step{background:var(--surf);padding:1.15rem 1.3rem;display:grid;
+  grid-template-columns:2.1rem 1fr;gap:1rem;align-items:start}
+.step-n{font-family:var(--mono);font-size:.85rem;font-weight:600;color:var(--accent);
+  border:1px solid var(--rule);width:2.1rem;height:2.1rem;
+  display:flex;align-items:center;justify-content:center}
+.step p{font-size:.93rem;color:var(--muted);margin:.35rem 0 0;max-width:72ch}
+
+pre.code{font-family:var(--mono);font-size:.76rem;line-height:1.6;background:var(--surf);
+  border:1px solid var(--rule);padding:.9rem 1.05rem;overflow-x:auto;margin:1rem 0 0;color:var(--ink)}
+pre.code .c{color:var(--faint)}
+pre.code .k{color:var(--accent)}
+
+.note{border:1px solid var(--rule);border-left:3px solid var(--signal);
+  background:var(--surf);padding:1.2rem 1.35rem;margin-top:1.6rem}
+.note h4{color:var(--ink)}
+.note p{font-size:.93rem;color:var(--muted);margin:.4rem 0 0;max-width:72ch}
+.note.warn{border-left-color:var(--bad)}
+
+table{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:.82rem;
+  min-width:520px}
+.scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--surf);margin-top:1.6rem}
+th,td{padding:.62rem .8rem;text-align:left;border-bottom:1px solid var(--rule);
+  font-variant-numeric:tabular-nums}
+th{font-family:var(--display);font-size:.65rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);border-bottom:1px solid var(--ink)}
+td.n{text-align:right}
+tbody tr:last-child td{border-bottom:0}
+
+footer{padding:clamp(2.2rem,5vw,3.2rem) 0 4rem;color:var(--muted);font-size:.9rem}
+footer h3{color:var(--ink)}
+footer ul{padding-left:1.1rem;max-width:var(--measure)}
+footer li{margin-bottom:.45rem}
+</style>
+
+<header>
+  <div class="wrap">
+    <p class="kicker">FlowDrop Benchmark · Method</p>
+    <h1>How the Redaction Benchmark Works</h1>
+    <p class="lede">Seven ways to do one job, wired seven different ways, measured the same way.
+    <em>This is the setup — the graphs, the corpus, and how tokens and time were attributed to
+    each run</em> so the numbers in the results can be trusted or argued with.</p>
+    <dl class="task">
+      <div><dt>The task</dt><dd>Fetch a URL, convert the page to Markdown, replace every
+        competitor of Drupal CMS with a redaction block</dd></div>
+      <div><dt>Redaction mark</dt><dd class="mono">▌▌▌▌</dd></div>
+      <div><dt>Model, every cell</dt><dd class="mono">claude-sonnet-4-6</dd></div>
+      <div><dt>Orchestrator</dt><dd class="mono">flowdrop_runtime:synchronous</dd></div>
+    </dl>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">The corpus</p>
+    <h2>Three pages, chosen for size</h2>
+    <div class="prose">
+      <p>The span is the whole point. Variants that hand raw HTML to the model pay for the
+      <em style="font-style:normal;font-weight:600">page</em>, not for the content in it, so the
+      cost curves only separate when the page grows. The competitor counts are ground truth,
+      taken from the deterministic control's output — they are what a perfect run would redact.</p>
+    </div>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Key</th><th>URL</th><th class="n">Raw HTML</th>
+          <th class="n">Markdown</th><th class="n">Competitor mentions</th></tr></thead>
+        <tbody>
+          <tr><td>small</td><td>drupal.org/about</td><td class="n">~38 KB</td>
+            <td class="n">16,240</td><td class="n">0</td></tr>
+          <tr><td>medium</td><td>ibm.com/think/topics/drupal-wordpress</td><td class="n">~164 KB</td>
+            <td class="n">14,497</td><td class="n">38</td></tr>
+          <tr><td>large</td><td>en.wikipedia.org/wiki/Drupal</td><td class="n">~535 KB</td>
+            <td class="n">101,790</td><td class="n">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <h4>The small page has no competitors in it</h4>
+      <p>Zero redactions on the small page is correct behaviour, not a miss. It is worth saying
+      out loud, because a redaction count read without this table looks like six variants failing
+      at once.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">The variants</p>
+    <h2>Seven graphs, one job</h2>
+    <div class="prose">
+      <p>Each is a real FlowDrop workflow, built by cloning the originals and normalising three
+      things so they are comparable: the hard-coded URL became a declared <code>url</code> input
+      port, every one runs on the synchronous orchestrator, and — where a prompt exists — the
+      wording is identical.</p>
+    </div>
+
+    <div class="pipes">
+
+      <article class="pipe">
+        <div class="pipe-hd"><h3>Bench 1 · Deterministic reference</h3>
+          <span class="chip ctl">control</span>
+          <span class="role">No model. Ground truth and the retention denominator.</span></div>
+        <div class="pipe-bd">
+          <p>Two nodes do the whole job. It has no redaction step at all, which is exactly why it
+          is the control: its output is what a perfect conversion looks like, and its competitor
+          mentions are what everything else is scored against. Byte-identical every run, $0.</p>
+          <div class="plate"><pre class="mermaid">
+flowchart LR
+  U(["url"]) --> H["http_request"]
+  H -->|body| M["html_to_markdown"]
+  M -->|markdown| O(["chat_output"])
+</pre><p class="plate-cap">3 jobs · no LLM call · 0.2–0.8s end to end</p></div>
+        </div>
+      </article>
+
+      <article class="pipe">
+        <div class="pipe-hd"><h3>Bench 2 · Raw HTML to the model</h3>
+          <span class="role">One call, no preprocessing. Convert and redact in one go.</span></div>
+        <div class="pipe-bd">
+          <p>The page body goes straight into the prompt. The model does conversion and redaction
+          together, which is the version most people write first.</p>
+          <div class="plate"><pre class="mermaid">
+flowchart LR
+  U(["url"]) --> H["http_request"]
+  H -->|body| L["flowdrop_ai_provider_chat"]
+  L -->|response| O(["chat_output"])
+</pre><p class="plate-cap">3 jobs · 1 LLM call · raw HTML enters the context window</p></div>
+        </div>
+      </article>
+
+      <article class="pipe">
+        <div class="pipe-hd"><h3>Bench 3 · Convert first, then redact</h3>
+          <span class="role">One deterministic node ahead of the model.</span></div>
+        <div class="pipe-bd">
+          <p>Identical to Bench 2 with one node inserted. That node costs nothing and runs in
+          milliseconds, and it is the single biggest cost lever in the whole benchmark.</p>
+          <div class="plate"><pre class="mermaid">
+flowchart LR
+  U(["url"]) --> H["http_request"]
+  H -->|body| M["html_to_markdown"]
+  M -->|markdown| L["flowdrop_ai_provider_chat"]
+  L -->|response| O(["chat_output"])
+</pre><p class="plate-cap">4 jobs · 1 LLM call · model sees Markdown, not markup</p></div>
+        </div>
+      </article>
+
+      <article class="pipe">
+        <div class="pipe-hd"><h3>Bench 4 · Drupal AI Agent, fed</h3>
+          <span class="chip agent">agent</span>
+          <span class="role">An agent handed a page it did not fetch.</span></div>
+        <div class="pipe-bd">
+          <p>A FlowDrop node retrieves the page and passes it to a Drupal AI Agent as additional
+          context. The agent holds one tool, <code>html_to_markdown</code>. Note what this
+          measures: an agent that is <em style="font-style:normal;font-weight:600">given</em> its
+          input, which is not the same task as going and getting it. Bench 6 exists to close
+          that gap.</p>
+          <div class="plate"><pre class="mermaid">
+flowchart LR
+  U(["url"]) --> H["http_request"]
+  H -->|body → additional_context| A["ai_agents_executor<br/>agent_w81pomww"]
+  T["tool: html_to_markdown"] -.-> A
+  A -->|response| O(["chat_output"])
+</pre><p class="plate-cap">3 jobs · 2 LLM calls · agent loop runs inside one node</p></div>
+        </div>
+      </article>
+
+      <article class="pipe">
+        <div class="pipe-hd"><h3>Bench 5 · FlowDrop ReAct agent</h3>
+          <span class="chip agent">agent</span>
+          <span class="role">Given only a URL. Fetches, converts and redacts itself.</span></div>
+        <div class="pipe-bd">
+          <p>Two nodes at the top level; the work happens in a sub-workflow that is a full ReAct
+          loop. Bench 5a is the same graph with the original, looser prompt — a control for how
+          much of the result is the architecture and how much is the wording.</p>
+          <div class="plate"><pre class="mermaid">
+flowchart LR
+  U(["url"]) -->|message| R["react_agent_with_tools<br/>sub-workflow"]
+  R -->|reason| O(["chat_output"])
+</pre><p class="plate-cap">2 jobs at this level · 23 jobs once the loop is expanded</p></div>
+          <div class="note warn" style="margin-top:1.3rem">
+            <h4>Wired to <code>reason</code>, not <code>message</code></h4>
+            <p>The sub-workflow's documented <code>message</code> output port truncates the answer
+            to about 1,003 characters — an exact prefix of the real text. The full answer is only
+            on the <code>reason</code> port. Every Bench 5 run here uses <code>reason</code>;
+            without that change the variant looks like it summarises, which it does not.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="pipe">
+        <div class="pipe-hd"><h3>Bench 6 · Drupal AI Agent, autonomous</h3>
+          <span class="chip agent">agent</span><span class="chip new">built for this</span>
+          <span class="role">The true peer of Bench 5.</span></div>
+        <div class="pipe-bd">
+          <p>No HTTP node. The workflow passes only a URL, and the agent retrieves the page with
+          a custom <code>http_fetch</code> tool written for this benchmark. Same model, same
+          autonomy, and deliberately the <em style="font-style:normal;font-weight:600">same system
+          prompt</em> as Bench 5 — so any difference is the engine, not the instruction.</p>
+          <div class="plate"><pre class="mermaid">
+flowchart LR
+  U(["url"]) -->|additional_context| A["ai_agents_executor<br/>agent_bench_autonomous"]
+  T1["tool: http_fetch"] -.-> A
+  T2["tool: html_to_markdown"] -.-> A
+  A -->|response| O(["chat_output"])
+</pre><p class="plate-cap">2 jobs · 3 LLM calls · max_loops 25</p></div>
+        </div>
+      </article>
+
+      <article class="pipe">
+        <div class="pipe-hd"><h3>Bench 0 · Orchestration floor</h3>
+          <span class="chip ctl">control</span>
+          <span class="role">Does nothing, on purpose.</span></div>
+        <div class="pipe-bd">
+          <p>One output node wired straight to the workflow input, no edges. Its entire runtime is
+          FlowDrop overhead — validation, pipeline creation, job generation, one dispatch,
+          persistence. It is the baseline the overhead measurements subtract.</p>
+          <div class="plate"><pre class="mermaid">
+flowchart LR
+  U(["url"]) -->|message| O(["chat_output"])
+</pre><p class="plate-cap">1 job · no LLM call · median 0.024s</p></div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Inside the loop</p>
+    <h2>What the ReAct sub-workflow actually is</h2>
+    <div class="prose">
+      <p>Bench 5 shows as two nodes. This is what those two nodes contain — thirteen node
+      definitions that expand to 23 jobs on a large page, because the loop runs three times.
+      The gateway on <code>has_tool_calls</code> is the exit: false routes to the output, true
+      routes to another tool call and back around.</p>
+    </div>
+    <div class="plate"><pre class="mermaid">
+flowchart TB
+  TB["toolbox"] -. tools .-> RE
+  HR["http_request<br/><i>as tool</i>"] --> TB
+  HM["html_to_markdown<br/><i>as tool</i>"] --> TB
+  IN(["message"]) --> CB4["conversation_buffer<br/>conversation"]
+  SP(["system_prompt"]) -.-> RE
+  CB4 --> MA["message_assemble"]
+  CB1["conversation_buffer<br/>scratchpad"] --> MA
+  MA -->|messages| RE["reason<br/>LLM call"]
+  RE -->|has_tool_calls| G1{"boolean_gateway"}
+  G1 -->|False| OUT(["text_output / reason"])
+  G1 -->|True| TI["tool_invoke"]
+  RE -->|tool_calls| TI
+  TI -->|executed_any| G2{"boolean_gateway"}
+  G2 -->|True| CB2["conversation_buffer<br/>tool results"]
+  TI -->|tool_messages| CB2
+  CB2 -.->|loop_back| CB1
+  RE -->|assistant_message| CB3["conversation_buffer"]
+</pre><p class="plate-cap">13 node definitions · 23 jobs on the large page · 3 reasoning turns</p></div>
+    <div class="note warn">
+      <h4>This is where the 1 MB ceiling lives</h4>
+      <p>The conversation buffers write to <code>pipeline</code> memory scope, and
+      <code>MemoryManager::MAX_VALUE_BYTES</code> capped that at 1 MB with no setting behind it.
+      On the large page the transcript crossed it by 1.5% and killed the run — on the exit path,
+      after the answer was already complete. Patched to read from configuration and raised to
+      10 MB for the fair comparison; filed upstream as
+      <a href="https://git.drupalcode.org/project/flowdrop/-/work_items/3592436">#3592436</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Measurement</p>
+    <h2>Attributing tokens and time to a run</h2>
+    <div class="prose">
+      <p>The first version of this harness correlated model calls to runs by watching row ids
+      before and after each launch. That works right up until two runs overlap — which happened,
+      and produced single-call workflows recording four model calls and roughly $10 of unusable
+      data. The rebuild removed observation entirely.</p>
+    </div>
+    <div class="plate"><pre class="mermaid">
+flowchart TB
+  subgraph L["launch.php — writes only a thin ledger"]
+    direction TB
+    A1["generate run uuid"] --> A2["BenchRunContext::set"]
+    A2 --> A3["launcher->launch(workflow, url)"]
+    A3 --> A4["append run_id, pipeline_id,<br/>context_uuid, wall_seconds"]
+  end
+  subgraph E["during the run"]
+    direction TB
+    B1["ai.pre_generate_response"] --> B2["subscriber appends<br/>tag aim_context:uuid"]
+    B2 --> B3["ai_metering writes<br/>context_id on the usage row"]
+    B4["each job stores<br/>execution_time_us"]
+  end
+  subgraph C["collect.php — derives everything, later"]
+    direction TB
+    C1["read runs.jsonl"] --> C2["load pipeline + jobs<br/>→ timing, payload, output"]
+    C1 --> C3["SELECT ... WHERE context_id = uuid<br/>→ tokens, cost"]
+    C2 --> C4["metrics.jsonl"]
+    C3 --> C4
+  end
+  A3 --> B1
+  A4 --> C1
+</pre><p class="plate-cap">Attribution is by exact tag match, so runs may overlap safely</p></div>
+
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div>
+        <h4>Exact cost attribution, not a time window</h4>
+        <p>A small custom module tags every model call with
+        <code>aim_context:&lt;uuid&gt;</code> on the <code>ai.pre_generate_response</code> event.
+        <code>ai_metering</code> scans tag <em style="font-style:normal;font-weight:600">values</em>
+        and writes the uuid to <code>context_id</code>. Cost and tokens are then a
+        <code>WHERE context_id = ?</code>, immune to concurrency.</p></div></div>
+      <div class="step"><div class="step-n">2</div><div>
+        <h4>Microsecond timing, not second stamps</h4>
+        <p>Each job stores <code>execution_time_us</code> in its metadata. The
+        <code>started</code>/<code>completed</code> fields are second-resolution, which is useless
+        for a graph that finishes in 0.2s. Summing per-node microseconds also splits model time
+        from graph time exactly.</p></div></div>
+      <div class="step"><div class="step-n">3</div><div>
+        <h4>Wall clock is the one measured number</h4>
+        <p>Orchestrator overhead is wall clock minus summed node time, and it is sub-second, so it
+        cannot come from stored stamps. One <code>microtime()</code> pair around
+        <code>launch()</code> is recorded in the ledger. Everything else is derived.</p></div></div>
+      <div class="step"><div class="step-n">4</div><div>
+        <h4>Metrics are derived from stored state, after the fact</h4>
+        <p>Nothing is watched live. Given a pipeline id and a context uuid, any run can be
+        re-collected for free, days later, in any order — including runs that were launched in
+        parallel.</p></div></div>
+    </div>
+
+    <pre class="code"><span class="c"># the whole loop, reduced to two commands</span>
+drush php:script launch.php  -- results bench_3_markdown_llm small,medium,large 1 <span class="k">my-tag</span>
+drush php:script collect.php -- results        <span class="c"># re-runnable, free, no side effects</span></pre>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">What had to be built</p>
+    <h2>Changes made to run this at all</h2>
+    <div class="scroll">
+      <table style="min-width:640px">
+        <thead><tr><th>Change</th><th>Where</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Context tag subscriber</td><td><code>fd_bench</code> module</td>
+            <td>Exact token attribution per run</td></tr>
+          <tr><td><code>http_fetch</code> tool</td><td><code>fd_bench</code> module</td>
+            <td>Lets a Drupal AI Agent retrieve a page itself — Bench 6</td></tr>
+          <tr><td>Model pricing rows</td><td><code>ai_metering.settings</code></td>
+            <td>Unpriced models silently record $0.00</td></tr>
+          <tr><td>Memory ceiling patch</td><td><code>drupal/flowdrop</code> via Composer</td>
+            <td>Makes the 1 MB cap configurable; raised to 10 MB</td></tr>
+          <tr><td>Output port rewire</td><td>Bench 5 / 5a</td>
+            <td><code>message</code> truncates; <code>reason</code> carries the full answer</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <h4>Unpriced models read as free</h4>
+      <p>The cost estimator defaults an unknown model's rates to zero rather than failing. A model
+      missing from <code>ai_metering.settings</code> produces a complete, plausible benchmark in
+      which every run costs exactly $0.00. Check the pricing table before trusting any cost column
+      — including this one.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="eyebrow">Reproducing it</p>
+    <h3>What you would need</h3>
+    <ul>
+      <li>A DDEV Drupal site with <code>flowdrop</code>, <code>ai</code>, <code>ai_agents</code>
+        and <code>ai_metering</code>, plus the local <code>fd_bench</code> module.</li>
+      <li><code>composer patches-relock &amp;&amp; composer reinstall drupal/flowdrop</code> —
+        composer-patches v2 resolves from <code>patches.lock.json</code>, so a plain
+        <code>composer install</code> silently leaves the memory patch unapplied.</li>
+      <li>Run as an authenticated user. <code>drush php:script</code> executes as anonymous, whose
+        AI quota is a small shared ceiling that a benchmark exhausts mid-matrix.</li>
+      <li>Launch detached (<code>setsid nohup</code>) for long matrices, and let the ledger — not
+        a terminal — be the record of what ran.</li>
+    </ul>
+    <h3>Known limits of this setup</h3>
+    <ul>
+      <li>One repetition per LLM cell. Model latency varies run to run; the overhead figures are
+        the exception at n=10 per cell.</li>
+      <li>Redaction counts and content retention are entangled — a missing redaction and a dropped
+        paragraph look alike until a proper eval separates them.</li>
+      <li>Queue latency is excluded. Every run is synchronous; production async scheduling is not
+        measured here.</li>
+      <li>Nested workflows understate their own overhead, since a child pipeline's cost hides
+        inside the parent node's execution time.</li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  // Diagram plates keep a constant light ground in both themes, so the mermaid
+  // palette is fixed rather than theme-reactive.
+  if (window.mermaid && window.mermaid.initialize) {
+    window.mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        fontFamily: "'IBM Plex Mono', monospace",
+        fontSize: '13px',
+        primaryColor: '#E3EDF4',
+        primaryTextColor: '#111820',
+        primaryBorderColor: '#1B6FA8',
+        lineColor: '#5C6672',
+        secondaryColor: '#F5E8DD',
+        tertiaryColor: '#FFFFFF',
+        background: '#F2F4F7'
+      }
+    });
+  }
+});
+</script>
+
+<!--claude-mermaid-runtime-begin:3477-->
+<style>.mermaid-diagram{margin-block:4px}.mermaid-diagram svg{display:block;margin:0 auto;max-width:100%;height:auto}</style>
+<script src="/_runtime/mermaid-11.16.1.min.js"></script>
+<script>(function(){
+var CFG={"palettes":{"light":{"surface":"#f4efe4","text":"#42392e","line":"#8a7f6d","border":"#7a6c52","bg":"#fffdf8"},"dark":{"surface":"#262b34","text":"#f2f3f5","line":"#a8adb8","border":"#9aa4b8","bg":"#1f232b"}}};
+if(typeof mermaid==='undefined')return;
+var pres=Array.prototype.slice.call(document.querySelectorAll('pre.mermaid')).filter(function(p){if(p.hasAttribute('data-claude-mermaid-claimed'))return false;p.setAttribute('data-claude-mermaid-claimed','1');return true;});
+if(!pres.length)return;
+var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+var root=document.documentElement;
+var items=pres.map(function(pre){
+var mount=document.createElement('div');mount.className='mermaid-diagram';
+return {pre:pre,mount:mount,src:pre.textContent||''};
+});
+var seq=0;
+var renderGen=0;
+var lastKey='';
+function pageBg(fallback){
+var els=[document.body,document.documentElement];
+for(var i=0;i<els.length;i++){
+var c=els[i]&&getComputedStyle(els[i]).backgroundColor;
+if(c&&c!=='transparent'&&c!=='rgba(0, 0, 0, 0)')return c;
+}
+return fallback;
+}
+function render(){
+var theme=root.getAttribute('data-theme');
+var dark=theme==='dark'||(!!(mq&&mq.matches)&&theme!=='light');
+var pal=dark?CFG.palettes.dark:CFG.palettes.light;
+var bg=pageBg(pal.bg);
+var key=(dark?'d':'l')+'|'+bg;
+if(key===lastKey)return;
+lastKey=key;
+var gen=++renderGen;
+var font=getComputedStyle(document.body).fontFamily||'sans-serif';
+var nat={useMaxWidth:false};
+mermaid.initialize({
+startOnLoad:false,securityLevel:'strict',theme:'base',
+flowchart:nat,sequence:nat,er:nat,state:nat,class:nat,pie:nat,
+gantt:nat,journey:nat,timeline:nat,gitGraph:nat,mindmap:nat,xyChart:nat,
+quadrantChart:nat,sankey:nat,c4:nat,requirement:nat,block:nat,
+packet:nat,kanban:nat,architecture:nat,radar:nat,
+themeVariables:{background:bg,mainBkg:pal.surface,primaryColor:pal.surface,
+primaryTextColor:pal.text,lineColor:pal.line,primaryBorderColor:pal.border,
+nodeBorder:pal.border,clusterBorder:pal.border,edgeLabelBackground:bg,
+clusterBkg:'rgba(127,127,127,0.07)',titleColor:pal.text,
+darkMode:dark,rowOdd:bg,rowEven:'rgba(127,127,127,0.07)',
+attributeBackgroundColorOdd:bg,attributeBackgroundColorEven:'rgba(127,127,127,0.07)',
+fontSize:'16px',fontFamily:font},
+themeCSS:'.node rect, .node circle, .node polygon, .node path, .cluster rect { stroke-width: 2px; }'
+});
+items.forEach(function(it){
+var id='claude-mermaid-'+seq++;
+mermaid.render(id,it.src).then(function(r){
+if(gen!==renderGen)return;
+var prev=it.pre.previousElementSibling;
+if(prev&&prev.className==='mermaid-diagram'&&prev!==it.mount)return;
+it.mount.innerHTML=r.svg;
+if(!it.mount.parentNode)it.pre.parentNode.insertBefore(it.mount,it.pre);
+it.pre.style.display='none';
+},function(){
+var scratch=document.getElementById(id);
+if(scratch)scratch.parentNode.removeChild(scratch);
+scratch=document.getElementById('d'+id);
+if(scratch)scratch.parentNode.removeChild(scratch);
+if(gen!==renderGen)return;
+if(it.mount.parentNode)it.mount.parentNode.removeChild(it.mount);
+it.pre.style.display='';
+});
+});
+}
+render();
+if(mq&&mq.addEventListener)mq.addEventListener('change',render);
+if(typeof MutationObserver!=='undefined')new MutationObserver(render).observe(root,{attributes:true,attributeFilter:['data-theme']});
+})();</script>
+<!--claude-mermaid-runtime-end-->
+</body>
+</html>

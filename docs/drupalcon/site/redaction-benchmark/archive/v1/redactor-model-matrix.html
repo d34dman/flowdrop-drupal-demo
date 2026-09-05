@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redactor Model Matrix</title>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div style="max-width:1000px;margin:18px auto 0;padding:0 24px"><div style="border:1px solid #B0531D;border-left:4px solid #B0531D;border-radius:8px;padding:10px 14px;font:.92rem/1.5 'Source Serif 4',Georgia,serif;background:rgba(176,83,29,.06)"><strong>Superseded, 5 September 2026.</strong> The metrics on this page (retention, glyph count, leaks) were replaced by rubric v2, which grades every run against a gold document and classifies it as correct, degraded, silent, format or loud failure. The numbers here are kept as the record of what was published first. Read the <a href="../../artifacts/rubric-v2-scorecard.html" style="color:#1B6FA8">Rubric v2 Scorecard</a> instead.</div></div>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ink:#111820; --paper:#F5F6F8; --surf:#FFFFFF; --rule:#DDE1E6;
+  --muted:#5C6672; --faint:#8A94A0; --grid:#E7EAEE;
+  --accent:#1B6FA8; --accent-soft:#E3EDF4;
+  --signal:#B0531D; --good:#2E7355; --bad:#AB3427;
+  --m1:#eb6834; --m2:#2a78d6; --m3:#1baf7a; --m4:#eda100;
+  --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Menlo,monospace;
+  --sp:clamp(1rem,3vw,1.6rem);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#E4E9EE; --paper:#0D1218; --surf:#151D26; --rule:#26313D;
+    --muted:#8B97A5; --faint:#6B7885; --grid:#1E2833;
+    --accent:#5AA8DC; --accent-soft:#152836;
+    --signal:#D98A4A; --good:#5FBF92; --bad:#E0705F;
+    --m1:#d95926; --m2:#3987e5; --m3:#199e70; --m4:#c98500;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E4E9EE; --paper:#0D1218; --surf:#151D26; --rule:#26313D;
+  --muted:#8B97A5; --faint:#6B7885; --grid:#1E2833;
+  --accent:#5AA8DC; --accent-soft:#152836;
+  --signal:#D98A4A; --good:#5FBF92; --bad:#E0705F;
+  --m1:#d95926; --m2:#3987e5; --m3:#199e70; --m4:#c98500;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1140px;margin:0 auto;padding:0 var(--sp)}
+.prose{max-width:68ch}
+h1,h2,h3,.eyebrow,.chip,text{font-family:var(--display)}
+h1{font-size:clamp(2.3rem,5.6vw,3.9rem);line-height:1.03;font-weight:800;
+   letter-spacing:-.028em;margin:0;text-wrap:balance}
+h2{font-size:clamp(1.4rem,3vw,1.95rem);line-height:1.12;font-weight:700;
+   letter-spacing:-.02em;margin:0 0 .3em;text-wrap:balance}
+p{margin:0 0 1em}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.87em;background:var(--accent-soft);padding:.1em .34em}
+
+.eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);display:flex;align-items:center;gap:.6em;margin:0 0 .9em}
+.eyebrow::before{content:"▌▌";font-family:var(--mono);color:var(--accent);letter-spacing:-.1em}
+
+header{border-bottom:1px solid var(--rule);background:var(--surf);
+  padding:clamp(2.6rem,7vw,4.2rem) 0 clamp(1.6rem,4vw,2.4rem)}
+.kicker{font-family:var(--mono);font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--signal);margin:0 0 1.4rem}
+.lede{font-size:clamp(1.04rem,2vw,1.22rem);color:var(--muted);margin:1.3rem 0 0;max-width:62ch}
+.lede em{color:var(--ink);font-style:normal;font-weight:600}
+
+section{padding:clamp(2.4rem,5vw,3.8rem) 0;border-bottom:1px solid var(--rule)}
+.fig{border:1px solid var(--rule);background:var(--surf);margin-top:1.6rem}
+.fig-bd{padding:1rem .8rem .4rem;overflow-x:auto}
+.fig-cap{font-family:var(--mono);font-size:.72rem;color:var(--muted);
+  padding:.7rem 1.1rem;border-top:1px solid var(--rule)}
+svg{display:block;min-width:640px;width:100%;height:auto}
+.ax{stroke:var(--rule);stroke-width:1}
+.gl{stroke:var(--grid);stroke-width:1}
+.tk{font-family:var(--mono);font-size:10px;fill:var(--faint)}
+.axl{font-family:var(--display);font-size:10.5px;font-weight:600;fill:var(--muted);
+  letter-spacing:.09em;text-transform:uppercase}
+.fct{font-family:var(--display);font-size:12px;font-weight:700;fill:var(--ink)}
+.pl{font-family:var(--mono);font-size:10px;fill:var(--ink)}
+.pt{font-family:var(--mono);font-size:9.5px;font-weight:500;
+  paint-order:stroke;stroke:var(--surf);stroke-width:2.5px;stroke-linejoin:round}
+.trail{fill:none;stroke-width:1.4;opacity:.45}
+.dot{stroke:var(--surf);stroke-width:1.5}
+.dot:hover{stroke:var(--ink);stroke-width:2}
+.ring{fill:none;stroke:var(--bad);stroke-width:1.6;stroke-dasharray:3 2.5}
+.refline{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 4;opacity:.7}
+
+.legend{display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;padding:.85rem 1.1rem;
+  border-top:1px solid var(--rule);font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.lg{display:flex;align-items:center;gap:.45em}
+.sw{width:11px;height:11px;border-radius:50%;flex:none}
+.sw.sq{border-radius:2px}
+
+.note{border:1px solid var(--rule);border-left:3px solid var(--signal);background:var(--surf);
+  padding:1.15rem 1.3rem;margin-top:1.5rem}
+.note.warn{border-left-color:var(--bad)}
+.note h3{font-size:1rem;margin:0 0 .3em}
+.note p{font-size:.93rem;color:var(--muted);margin:.3rem 0 0;max-width:72ch}
+
+.tblwrap{overflow-x:auto;border:1px solid var(--rule);background:var(--surf);margin-top:1.6rem}
+table{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:.74rem;
+  font-variant-numeric:tabular-nums}
+th{font-family:var(--display);font-size:.66rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);text-align:right;padding:.55rem .7rem;
+  border-bottom:1px solid var(--rule);white-space:nowrap}
+th:first-child,th:nth-child(2),th:nth-child(3){text-align:left}
+td{padding:.42rem .7rem;border-bottom:1px solid var(--grid);text-align:right;white-space:nowrap}
+td:first-child,td:nth-child(2),td:nth-child(3){text-align:left}
+tr.grp td{border-top:2px solid var(--rule)}
+td .mdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:.5em;
+  vertical-align:baseline}
+td.bad{color:var(--bad);font-weight:600}
+
+footer{padding:2.4rem 0 4rem;color:var(--muted);font-size:.9rem}
+footer ul{padding-left:1.1rem;max-width:68ch}
+footer li{margin-bottom:.4rem}
+</style>
+
+<header>
+  <div class="wrap">
+    <p class="kicker">FlowDrop Benchmark · Models</p>
+    <h1>Redactor Model Matrix</h1>
+    <p class="lede">The three variants worth keeping — <em>B3 Markdown-first, B5 FlowDrop ReAct,
+    B6 autonomous agent</em> — rerun on four models: Haiku 4.5, Sonnet 4.6, Sonnet 5 and
+    Opus 5. <em>B8 and B9</em>, added 5 September, join on all four models. Colour now carries the <em>model</em>; marker shape still carries the input page
+    size (small ~38 KB, medium ~164 KB, large ~535 KB of raw HTML — pages, not models).
+    One repetition per cell: read slopes and collapses, not decimals.</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 01</p>
+    <h2>Cost against retention, one panel per variant</h2>
+    <div class="prose">
+      <p>Each panel is one workflow; each colour is a model walked small → medium → large.
+      Up and to the left is better. The pattern that jumps out: <em>the choice of model moves a
+      point further than the choice of workflow</em>. Opus 5 sits at the top of every panel,
+      Sonnet 5 lands close behind at a quarter to a half of the cost, and Haiku's trajectory
+      dies before it reaches the large page.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f1" viewBox="0 0 980 420" role="img"
+        aria-label="Three scatter panels of cost against retention, one per variant, coloured by model"></svg></div>
+      <div class="legend" id="lg1"></div>
+      <div class="fig-cap">Shared log cost axis across panels so a dollar is a dollar
+        everywhere; runs under $0.01 sit on the left edge.
+        Retention is de-noised bytes as a share of the control conversion (link targets and
+        image alt text stripped from both sides). A red ring marks a cell that delivered no
+        usable document. Hover any point for its full numbers.</div>
+    </div>
+    <div class="note warn">
+      <h3>Haiku does not survive the large page</h3>
+      <p>Three different failure shapes on the same input. B5's ReAct node <strong>failed
+      outright</strong> — the pipeline died after 5.8s and delivered nothing. B6 "completed"
+      in 3.1s by returning exactly 20 bytes: <code>Task is not solvable</code>. B3 started
+      converting, emitted 2.4 KB of navigation chrome, and stopped — 4% of the document.
+      The same three workflows, on the same page, complete on every other model.</p>
+    </div>
+    <div class="note">
+      <h3>B8 and B9: four models, three cells rerun after a runtime fix</h3>
+      <p><strong>B8</strong> gives B5's agent a URL-to-Markdown tool — B7's fix without B7's
+      prompt change. It is two calls on every model and every page; on Sonnet 4.6 it is B7
+      to within a cent. Opus 5 (run 5 September) tops both panels where it completed: 97% on
+      the small page and 90% on the large, against 76–83% for the other three models on the
+      large page. Its large-page B9 critic accepted the first draft, so B9 took three calls
+      instead of everyone else's seven and cost only 15% more than B8. Both Opus large
+      documents left one mention readable: "Backdrop CMS" in the See-also list, which
+      Sonnet 5 had redacted. <strong>B8 on Opus needed the confirmation gate waived to
+      produce the medium page (§).</strong> On its first turn Opus asks for two tools at
+      once — the URL-to-Markdown tool and a raw HTTP fetch of the same URL. The HTTP-request
+      node declares side effects, so FlowDrop's confirmation gate paused the run and filed an
+      "Approve?" interrupt for an operator; the benchmark runs unattended, so three attempts
+      sat paused after six seconds and $0.008 each, with identical tool calls and token
+      counts. The gate was working as designed on a redundant call no other model made. With
+      the gate waived on the workflow the cell completed at 99% retention, 56 redactions and
+      3 leaks — but the redundant fetch is not free: the raw HTML came back as a second tool
+      result, and the cell's 97,768 input tokens and $0.61 are thirteen and ten times Sonnet 5's
+      on the same page. B9 on the same page, whose
+      critic loop ran the tool call singly, completed at 100% retention with 62 redactions and
+      zero leaks. Haiku on the medium page redacted 40 mentions and still left 10
+      readable — the only B8 cell with leaks in double digits. <strong>B9</strong> adds a
+      critic that can send the answer back up to three times. On Sonnet 5 it is the only
+      variant in the matrix with zero leaks on every page; on Sonnet 4.6 the critic accepted
+      the medium draft unchanged and its large-page revisions bought one fewer leak for three
+      times the cost.</p>
+      <p>Three B9 cells — Haiku small and medium, and Sonnet 4.6 small — are reruns. On the
+      first sweep all three died the same way: the agent revised without calling a tool, and
+      FlowDrop's loop runtime failed the consumer of the tool node instead of skipping it
+      (<a href="https://git.drupalcode.org/project/flowdrop/-/work_items/3592443">flowdrop#3592443</a>).
+      FlowDrop fixed it the same day and the cells were rerun on the fixed module. With the
+      loop running to the end, Haiku's B9 has zero leaks on all three pages, at nine calls
+      and four to five minutes each; Sonnet 4.6's three revisions on the small page ended on the same 69%
+      document its B8 run produced.</p>
+    </div>
+    <div class="note warn">
+      <h3>Haiku also fails quietly, which is worse</h3>
+      <p>On the medium page, B5 on Haiku returned a clean, complete-looking document —
+      69% retention, nothing visibly wrong — with <strong>zero redactions and all 29
+      competitor mentions intact</strong>. It did the conversion and skipped the actual task.
+      A length metric alone would have scored this run as healthy; only the leak count
+      catches it.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 02</p>
+    <h2>Did it actually redact? The medium page says</h2>
+    <div class="prose">
+      <p>The medium page is the only one with a real redaction workload: the control
+      conversion contains <em>38 competitor mentions</em>. For each variant and model, the
+      coloured bar is redaction marks placed, the red bar beside it is mentions that
+      survived. A good cell is a tall coloured bar and no red. The counts don't need to hit
+      38 — models legitimately consolidate repeated mentions — but red is always a miss. A bar
+      <em>above</em> the dashed line means more marks than the control has competitor mentions:
+      B8 and B9 also redact variant spellings and link text. Their Drupal mentions survive
+      (38–43 of the control's 46), so this is not the B4 over-redaction failure.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f2" viewBox="0 0 980 400" role="img"
+        aria-label="Grouped bar chart of redactions and leaks per variant and model on the medium page"></svg></div>
+      <div class="legend" id="lg2"></div>
+      <div class="fig-cap">Medium page only. Dashed line: 38 competitor mentions in the
+        unredacted control. Leak terms counted case-insensitively across the seven competitor
+        names the workflows are asked to remove.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 03</p>
+    <h2>Retention as the page grows</h2>
+    <div class="prose">
+      <p>The same retention numbers, with page size on the horizontal axis so the scaling
+      shape is visible. Opus 5 is nearly flat — 84–98% everywhere it runs. Sonnet 5 is flat
+      on B3 and B6 but sags on B5, where its ReAct loop tends to summarise — 52% on the
+      small page in the original, a verification rerun, and a third run on 5 September;
+      the large page's 44% reproduced in one of two reruns (73%, then 45%). Sonnet 4.6 sits in the 70–90% band. Haiku falls off
+      a cliff between medium and large.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f3" viewBox="0 0 980 380" role="img"
+        aria-label="Three line panels of retention by page size, one per variant, coloured by model"></svg></div>
+      <div class="legend" id="lg3"></div>
+      <div class="fig-cap">De-noised retention vs control, per panel. Ringed points delivered
+        no usable document (plotted at their true, near-zero share).</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Figure 04</p>
+    <h2>What every cell cost</h2>
+    <div class="prose">
+      <p>All 60 cells on one log axis, one row per variant × page, one dot per model. Two
+      orders of magnitude separate the cheapest useful run (B3 on Haiku, medium page,
+      $0.014) from the most expensive (B5 on Opus, large page, $2.43). The gap between
+      Sonnet 5 and Sonnet 4.6 on the agent rows is not a pricing artefact alone — Sonnet 5
+      also used fewer loop iterations and fewer input tokens on most cells.</p>
+    </div>
+    <div class="fig">
+      <div class="fig-bd"><svg id="f4" viewBox="0 0 980 530" role="img"
+        aria-label="Dot plot of cost per cell on a log scale, one row per variant and page"></svg></div>
+      <div class="legend" id="lg4"></div>
+      <div class="fig-cap">Log scale. Ringed dots are cells that delivered no usable
+        document — their cost is real, their output is not. The failed Haiku B5 large run
+        is included at the $0.001 it burned before dying.</div>
+    </div>
+    <div class="note">
+      <h3>Sonnet 5 is the price-performance line</h3>
+      <p>Averaged over the cells all four models completed, Sonnet 5 delivered retention equal
+      to or better than Sonnet 4.6 at roughly half the cost and well under half the wall
+      clock — except on B5, where it summarises. A verification rerun of all three Sonnet 5
+      B5 cells split that finding in two: the small page reproduced exactly (52% both
+      draws, and a third draw on 5 September returned the byte-identical document at
+      $0.061), but the large page's 44% split: a verification rerun came back at 73% with 4
+      redactions, in line with Sonnet 4.6, and a third draw on 5 September came back at 45%
+      for $2.24 (‡ in the table). One draw in three keeps the document; two summarise. The B5 deep-dive page carries both observations.
+      Opus 5 buys the top of every retention panel at 2–4× Sonnet 5's price. Haiku is only
+      defensible on B3-medium-sized work, where it is 3–10× cheaper than everything else
+      and does the task correctly.</p>
+    </div>
+    <div class="note">
+      <h3>One anomaly, flagged rather than hidden</h3>
+      <p>The B3 large outputs from Sonnet 5 and Opus 5 are <strong>byte-identical</strong>
+      (same 64,548 bytes, same MD5), despite different wall clocks (340s vs 422s) and
+      different metered output tokens. The workflow config was verified to point at each
+      model before each pass. Two models producing an identical 64 KB transcription is not
+      credible as coincidence; a response cache somewhere in the chain is the likely
+      explanation. Treat those two cells as one observation, not two.</p>
+      <p>The 5 September rerun of B5 small on Sonnet 5 (‡ in the table) adds
+      a second sighting: eighteen days after the matrix pass, with a fresh pipeline and a
+      different context uuid, the agent returned the <strong>same 3,600 bytes, same MD5</strong>
+      as the 20 August cell, on metered tokens that differ by 3 in and 95 out. That is the
+      same shape as the B3 anomaly and points at the same place in the chain.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">The numbers</p>
+    <h2>Every cell, every metric</h2>
+    <div class="tblwrap"><table id="tbl">
+      <thead><tr><th>Variant</th><th>Page</th><th>Model</th><th>Cost</th><th>Wall</th>
+        <th>Calls</th><th>Tokens in</th><th>Tokens out</th><th>Redacted</th><th>Leaks</th>
+        <th>Retention</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="eyebrow">Reading these honestly</p>
+    <ul>
+      <li><strong>One repetition per cell.</strong> n=1 everywhere. Positions are indicative;
+        the findings are the slopes, the collapses, and the leak counts — not second decimals.</li>
+      <li><strong>Retention is a proxy.</strong> Both sides are de-noised the same way
+        (link targets and image alt blocks stripped, whitespace collapsed) before byte counts
+        are compared. It cannot tell added prose from preserved prose. The metrics here were
+        recomputed with one pipeline across all four models, so they differ from the sibling
+        plots artifact by under 1%.</li>
+      <li><strong>Small, medium and large are input page sizes</strong> (~38 KB, ~164 KB,
+        ~535 KB of raw HTML) — never model tiers. The models are the colours.</li>
+      <li><strong>The Sonnet 4.6 rows for B3, B5 and B6 are the original benchmark runs</strong>;
+        their other three models come from the later matrix pass (tags <code>matrix-*</code> in
+        <code>metrics.jsonl</code>). B8 and B9 come from the 5 September sweeps
+        (tags <code>bench89-*</code>; the three B9 cells rerun after the FlowDrop fix carry
+        <code>b9fix-*</code>), which did not include Opus 5; the Opus 5 cells for B8 and B9 were run later the
+        same day (tags <code>bench89-opus5-*</code>). The B8 Opus medium cell plotted is the gate-waived run (tag
+        <code>bench89-opus5-medium-nogate</code>); its three paused predecessors are in the ledger. Sonnet 4.6's B5 large cell requires the 10 MB
+        pipeline-memory patch.</li>
+      <li><strong>Leak terms:</strong> WordPress, Joomla, Wix, Squarespace, Contentful,
+        Sitecore, TYPO3, counted case-insensitively.</li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+const D = {"runs":[{"wf":"bench_3_markdown_llm","page":"small","model":"haiku-4.5","wall":45.2,"tin":4915,"tout":3930,"cost":0.0246,"calls":1,"status":"completed","chars":8009,"den":5609,"red":0,"leak":0},{"wf":"bench_5_react_agent","page":"small","model":"haiku-4.5","wall":106.6,"tin":41793,"tout":9930,"cost":0.0914,"calls":3,"status":"completed","chars":6574,"den":5033,"red":0,"leak":0},{"wf":"bench_6_agent_autonomous","page":"small","model":"haiku-4.5","wall":165.8,"tin":41984,"tout":15218,"cost":0.1181,"calls":3,"status":"completed","chars":5578,"den":4615,"red":0,"leak":0},{"wf":"bench_3_markdown_llm","page":"medium","model":"haiku-4.5","wall":28.8,"tin":3501,"tout":2090,"cost":0.014,"calls":1,"status":"completed","chars":8671,"den":8653,"red":29,"leak":0},{"wf":"bench_5_react_agent","page":"medium","model":"haiku-4.5","wall":61.1,"tin":139877,"tout":4221,"cost":0.161,"calls":3,"status":"completed","chars":8552,"den":8552,"red":0,"leak":29},{"wf":"bench_6_agent_autonomous","page":"medium","model":"haiku-4.5","wall":64.0,"tin":125622,"tout":4772,"cost":0.1495,"calls":3,"status":"completed","chars":8663,"den":8663,"red":27,"leak":3},{"wf":"bench_3_markdown_llm","page":"large","model":"haiku-4.5","wall":11.2,"tin":34821,"tout":1036,"cost":0.04,"calls":1,"status":"completed","chars":2445,"den":2136,"red":0,"leak":0,"stub":"truncated after 2.4 KB of nav chrome"},{"wf":"bench_5_react_agent","page":"large","model":"haiku-4.5","wall":5.8,"tin":818,"tout":87,"cost":0.0013,"calls":1,"status":"failed","chars":0,"den":0,"red":0,"leak":0,"stub":"ReAct node failed; pipeline delivered nothing"},{"wf":"bench_6_agent_autonomous","page":"large","model":"haiku-4.5","wall":3.1,"tin":883,"tout":92,"cost":0.0013,"calls":1,"status":"completed","chars":20,"den":20,"red":0,"leak":0,"stub":"returned the 20 bytes: Task is not solvable"},{"wf":"bench_3_markdown_llm","page":"small","model":"sonnet-5","wall":46.8,"tin":6391,"tout":6299,"cost":0.0758,"calls":1,"status":"completed","chars":8583,"den":6246,"red":0,"leak":0},{"wf":"bench_5_react_agent","page":"small","model":"sonnet-5","wall":15.4,"tin":22580,"tout":1479,"cost":0.06,"calls":2,"status":"completed","chars":3600,"den":3366,"red":0,"leak":0},{"wf":"bench_6_agent_autonomous","page":"small","model":"sonnet-5","wall":47.6,"tin":18331,"tout":5742,"cost":0.0941,"calls":2,"status":"completed","chars":7608,"den":6224,"red":0,"leak":0},{"wf":"bench_3_markdown_llm","page":"medium","model":"sonnet-5","wall":41.1,"tin":4924,"tout":4945,"cost":0.0593,"calls":1,"status":"completed","chars":12325,"den":12292,"red":33,"leak":0},{"wf":"bench_5_react_agent","page":"medium","model":"sonnet-5","wall":59.2,"tin":91658,"tout":6372,"cost":0.247,"calls":2,"status":"completed","chars":11825,"den":11824,"red":29,"leak":1},{"wf":"bench_6_agent_autonomous","page":"medium","model":"sonnet-5","wall":74.3,"tin":75251,"tout":9491,"cost":0.2454,"calls":2,"status":"completed","chars":12243,"den":12243,"red":30,"leak":0},{"wf":"bench_3_markdown_llm","page":"large","model":"sonnet-5","wall":339.8,"tin":46970,"tout":47311,"cost":0.5671,"calls":1,"status":"completed","chars":64548,"den":48165,"red":4,"leak":0,"dup":true},{"wf":"bench_5_react_agent","page":"large","model":"sonnet-5","wall":157.4,"tin":691024,"tout":16312,"cost":1.5452,"calls":3,"status":"completed","chars":21990,"den":21990,"red":0,"leak":0},{"wf":"bench_6_agent_autonomous","page":"large","model":"sonnet-5","wall":331.7,"tin":267893,"tout":41534,"cost":0.9511,"calls":2,"status":"completed","chars":40852,"den":40820,"red":4,"leak":0},{"wf":"bench_3_markdown_llm","page":"small","model":"opus-5","wall":63.4,"tin":6391,"tout":6591,"cost":0.1967,"calls":1,"status":"completed","chars":8984,"den":6317,"red":0,"leak":0},{"wf":"bench_5_react_agent","page":"small","model":"opus-5","wall":49.5,"tin":22455,"tout":4939,"cost":0.2357,"calls":2,"status":"completed","chars":7783,"den":6330,"red":0,"leak":0},{"wf":"bench_6_agent_autonomous","page":"small","model":"opus-5","wall":43.9,"tin":18207,"tout":4895,"cost":0.2134,"calls":2,"status":"completed","chars":7564,"den":6299,"red":0,"leak":0},{"wf":"bench_3_markdown_llm","page":"medium","model":"opus-5","wall":47.2,"tin":4924,"tout":4734,"cost":0.143,"calls":1,"status":"completed","chars":11810,"den":11806,"red":31,"leak":0},{"wf":"bench_5_react_agent","page":"medium","model":"opus-5","wall":64.4,"tin":91494,"tout":5816,"cost":0.6029,"calls":2,"status":"completed","chars":12180,"den":12178,"red":30,"leak":0},{"wf":"bench_6_agent_autonomous","page":"medium","model":"opus-5","wall":46.9,"tin":75099,"tout":4557,"cost":0.4894,"calls":2,"status":"completed","chars":11778,"den":11778,"red":30,"leak":0},{"wf":"bench_3_markdown_llm","page":"large","model":"opus-5","wall":421.7,"tin":46970,"tout":47628,"cost":1.4256,"calls":1,"status":"completed","chars":64548,"den":48165,"red":4,"leak":0,"dup":true},{"wf":"bench_5_react_agent","page":"large","model":"opus-5","wall":272.9,"tin":337512,"tout":29579,"cost":2.427,"calls":2,"status":"completed","chars":42207,"den":42132,"red":4,"leak":0},{"wf":"bench_6_agent_autonomous","page":"large","model":"opus-5","wall":263.4,"tin":267768,"tout":29700,"cost":2.0813,"calls":2,"status":"completed","chars":42732,"den":42688,"red":4,"leak":0},{"wf":"bench_3_markdown_llm","page":"small","model":"sonnet-4.6","wall":82.1,"tin":4916,"tout":4707,"cost":0.0854,"calls":1,"status":"completed","chars":8581,"den":6276,"red":0,"leak":0},{"wf":"bench_3_markdown_llm","page":"medium","model":"sonnet-4.6","wall":51.4,"tin":3502,"tout":2086,"cost":0.0418,"calls":1,"status":"completed","chars":8678,"den":8678,"red":30,"leak":0},{"wf":"bench_3_markdown_llm","page":"large","model":"sonnet-4.6","wall":398.0,"tin":34822,"tout":22585,"cost":0.4432,"calls":1,"status":"completed","chars":46948,"den":41928,"red":2,"leak":0},{"wf":"bench_5_react_agent","page":"small","model":"sonnet-4.6","wall":106.7,"tin":38400,"tout":5735,"cost":0.2012,"calls":3,"status":"completed","chars":5658,"den":4694,"red":0,"leak":0},{"wf":"bench_5_react_agent","page":"medium","model":"sonnet-4.6","wall":154.8,"tin":141783,"tout":6523,"cost":0.5232,"calls":3,"status":"completed","chars":10946,"den":10945,"red":28,"leak":2},{"wf":"bench_5_react_agent","page":"large","model":"sonnet-4.6","wall":553.2,"tin":503345,"tout":25694,"cost":1.8954,"calls":3,"status":"completed","chars":37512,"den":37511,"red":2,"leak":0},{"wf":"bench_6_agent_autonomous","page":"small","model":"sonnet-4.6","wall":95.2,"tin":34564,"tout":5370,"cost":0.1842,"calls":3,"status":"completed","chars":5620,"den":4683,"red":0,"leak":0},{"wf":"bench_6_agent_autonomous","page":"medium","model":"sonnet-4.6","wall":127.5,"tin":125833,"tout":5512,"cost":0.4602,"calls":3,"status":"completed","chars":10869,"den":10868,"red":28,"leak":1},{"wf":"bench_6_agent_autonomous","page":"large","model":"sonnet-4.6","wall":555.0,"tin":452913,"tout":27431,"cost":1.7702,"calls":3,"status":"completed","chars":37340,"den":37336,"red":2,"leak":0},{"wf":"bench_8_react_with_tools_in_parent","page":"small","model":"haiku-4.5","wall":57.5,"tin":7456,"tout":4747,"cost":0.0312,"calls":2,"status":"completed","chars":8554,"den":6257,"red":0,"leak":0},{"wf":"bench_9_reflexion_with_tools_in_parent","page":"small","model":"haiku-4.5","wall":281.5,"tin":125817,"tout":20896,"cost":0.2303,"calls":9,"status":"completed","chars":8500,"den":6308,"red":0,"leak":0},{"wf":"bench_8_react_with_tools_in_parent","page":"medium","model":"haiku-4.5","wall":44.4,"tin":5954,"tout":3023,"cost":0.0211,"calls":2,"status":"completed","chars":11106,"den":11467,"red":40,"leak":10},{"wf":"bench_9_reflexion_with_tools_in_parent","page":"medium","model":"haiku-4.5","wall":221.1,"tin":195056,"tout":13394,"cost":0.262,"calls":9,"status":"completed","chars":11151,"den":11674,"red":58,"leak":0},{"wf":"bench_8_react_with_tools_in_parent","page":"large","model":"haiku-4.5","wall":236.2,"tin":40897,"tout":22307,"cost":0.1524,"calls":2,"status":"completed","chars":43152,"den":40286,"red":0,"leak":2},{"wf":"bench_9_reflexion_with_tools_in_parent","page":"large","model":"haiku-4.5","wall":637.0,"tin":212845,"tout":56804,"cost":0.4969,"calls":7,"status":"completed","chars":37707,"den":37793,"red":8,"leak":0},{"wf":"bench_8_react_with_tools_in_parent","page":"small","model":"sonnet-5","wall":50.9,"tin":9412,"tout":6274,"cost":0.0816,"calls":2,"status":"completed","chars":8614,"den":6252,"red":0,"leak":0},{"wf":"bench_9_reflexion_with_tools_in_parent","page":"small","model":"sonnet-5","wall":122.6,"tin":28742,"tout":13501,"cost":0.1925,"calls":5,"status":"completed","chars":8660,"den":6277,"red":0,"leak":0},{"wf":"bench_8_react_with_tools_in_parent","page":"medium","model":"sonnet-5","wall":42.4,"tin":7489,"tout":4844,"cost":0.0634,"calls":2,"status":"completed","chars":11607,"den":12108,"red":56,"leak":2},{"wf":"bench_9_reflexion_with_tools_in_parent","page":"medium","model":"sonnet-5","wall":157.2,"tin":47703,"tout":17216,"cost":0.2676,"calls":7,"status":"completed","chars":11937,"den":12154,"red":70,"leak":0},{"wf":"bench_8_react_with_tools_in_parent","page":"large","model":"sonnet-5","wall":165.9,"tin":56968,"tout":22113,"cost":0.3351,"calls":2,"status":"completed","chars":40650,"den":40996,"red":8,"leak":0},{"wf":"bench_9_reflexion_with_tools_in_parent","page":"large","model":"sonnet-5","wall":641.8,"tin":265477,"tout":75130,"cost":1.2823,"calls":7,"status":"completed","chars":37951,"den":38315,"red":8,"leak":0},{"wf":"bench_8_react_with_tools_in_parent","page":"small","model":"sonnet-4.6","wall":53.5,"tin":7444,"tout":2916,"cost":0.0661,"calls":2,"status":"completed","chars":4608,"den":4607,"red":0,"leak":0},{"wf":"bench_9_reflexion_with_tools_in_parent","page":"small","model":"sonnet-4.6","wall":169.7,"tin":78856,"tout":7271,"cost":0.3456,"calls":9,"status":"completed","chars":4608,"den":4607,"red":0,"leak":0},{"wf":"bench_8_react_with_tools_in_parent","page":"medium","model":"sonnet-4.6","wall":87.0,"tin":5928,"tout":3551,"cost":0.071,"calls":2,"status":"completed","chars":11674,"den":12186,"red":56,"leak":3},{"wf":"bench_9_reflexion_with_tools_in_parent","page":"medium","model":"sonnet-4.6","wall":79.9,"tin":9027,"tout":3524,"cost":0.0799,"calls":3,"status":"completed","chars":11354,"den":11854,"red":56,"leak":3},{"wf":"bench_8_react_with_tools_in_parent","page":"large","model":"sonnet-4.6","wall":327.0,"tin":40866,"tout":16450,"cost":0.3693,"calls":2,"status":"completed","chars":41203,"den":41148,"red":4,"leak":0},{"wf":"bench_9_reflexion_with_tools_in_parent","page":"large","model":"sonnet-4.6","wall":863.7,"tin":199271,"tout":40508,"cost":1.2054,"calls":7,"status":"completed","chars":42957,"den":40039,"red":6,"leak":0},{"wf":"bench_8_react_with_tools_in_parent","page":"large","model":"opus-5","wall":343.1,"tin":56843,"tout":39290,"cost":1.2665,"calls":2,"status":"completed","chars":56594,"den":44921,"red":6,"leak":1},{"wf":"bench_9_reflexion_with_tools_in_parent","page":"large","model":"opus-5","wall":379.7,"tin":82107,"tout":42095,"cost":1.4629,"calls":3,"status":"completed","chars":56641,"den":44963,"red":6,"leak":1},{"wf":"bench_8_react_with_tools_in_parent","page":"small","model":"opus-5","wall":61.2,"tin":9288,"tout":6250,"cost":0.2027,"calls":2,"status":"completed","chars":8731,"den":6272,"red":0,"leak":0},{"wf":"bench_9_reflexion_with_tools_in_parent","page":"small","model":"opus-5","wall":77.2,"tin":12859,"tout":7390,"cost":0.249,"calls":3,"status":"completed","chars":8675,"den":6266,"red":0,"leak":0},{"wf":"bench_8_react_with_tools_in_parent","page":"medium","model":"opus-5","wall":57.8,"tin":97768,"tout":4875,"cost":0.6107,"calls":2,"status":"completed","chars":11698,"den":12199,"red":56,"leak":3,"nogate":true},{"wf":"bench_9_reflexion_with_tools_in_parent","page":"medium","model":"opus-5","wall":142.0,"tin":208037,"tout":11674,"cost":1.332,"calls":5,"status":"completed","chars":11721,"den":12304,"red":62,"leak":0}],"reruns":[{"wf":"bench_5_react_agent","page":"large","model":"sonnet-5","wall":187.0,"tin":1029165,"tout":18625,"cost":2.2446,"calls":4,"status":"completed","chars":22283,"den":22269,"red":1,"leak":0,"tag":"b5rerun-large-claude-sonnet-5","date":"5 Sep","note":"fresh document; 45% retention repeats the original cell's 44%, not the 73% verification rerun"},{"wf":"bench_5_react_agent","page":"small","model":"sonnet-5","wall":19.9,"tin":22577,"tout":1574,"cost":0.0609,"calls":2,"status":"completed","chars":3600,"den":3366,"red":0,"leak":0,"tag":"b5rerun-claude-sonnet-5","date":"5 Sep","note":"output byte-identical to the 20 Aug matrix cell (same MD5)"}],"refden":{"small":6492,"medium":12308,"large":49871}};
+
+const NS = 'http://www.w3.org/2000/svg';
+const PAGES = ['small', 'medium', 'large'];
+const PGKB = {small: '38 KB', medium: '164 KB', large: '535 KB'};
+const WFS = ['bench_3_markdown_llm', 'bench_5_react_agent', 'bench_6_agent_autonomous',
+             'bench_8_react_with_tools_in_parent', 'bench_9_reflexion_with_tools_in_parent'];
+const WFNAME = {bench_3_markdown_llm: 'B3 Markdown first',
+  bench_5_react_agent: 'B5 FlowDrop ReAct', bench_6_agent_autonomous: 'B6 Agent (auto)',
+  bench_8_react_with_tools_in_parent: 'B8 ReAct (parent tool)',
+  bench_9_reflexion_with_tools_in_parent: 'B9 Reflexion (critic)'};
+const NF = WFS.length;  // facet count; panel width derives from it
+const MODELS = ['haiku-4.5', 'sonnet-4.6', 'sonnet-5', 'opus-5'];
+const MC = {'haiku-4.5': 'var(--m1)', 'sonnet-4.6': 'var(--m2)',
+            'sonnet-5': 'var(--m3)', 'opus-5': 'var(--m4)'};
+const MARK = {small: 'circle', medium: 'square', large: 'triangle'};
+// Retention: de-noised bytes over the control conversion's de-noised bytes.
+const pct = r => D.refden[r.page] ? (r.den / D.refden[r.page]) * 100 : 0;
+// A cell counts as delivering nothing when it failed or produced only a stub.
+const dead = r => r.status !== 'completed' || r.den < 500;
+
+const el = (n, a = {}) => {
+  const e = document.createElementNS(NS, n);
+  for (const k in a) e.setAttribute(k, a[k]);
+  return e;
+};
+const txt = (s, a = {}) => { const t = el('text', a); t.textContent = s; return t; };
+const fmt = v => v >= 1000 ? (v / 1000).toFixed(v >= 10000 ? 0 : 1) + 'k' : String(v);
+
+function marker(g, shape, x, y, r, fill, title) {
+  let s;
+  if (shape === 'square') {
+    s = el('rect', {x: x - r, y: y - r, width: r * 2, height: r * 2, rx: 1.5});
+  } else if (shape === 'triangle') {
+    const h = r * 1.25;
+    s = el('polygon', {points: `${x},${y - h} ${x + h},${y + h * 0.75} ${x - h},${y + h * 0.75}`});
+  } else {
+    s = el('circle', {cx: x, cy: y, r: r});
+  }
+  s.setAttribute('fill', fill);
+  s.setAttribute('class', 'dot');
+  const t = el('title'); t.textContent = title; s.appendChild(t);
+  g.appendChild(s);
+  return s;
+}
+function ringIf(svg, cond, x, y, rad) {
+  if (cond) svg.appendChild(el('circle', {cx: x, cy: y, r: rad, class: 'ring'}));
+}
+function tip(r) {
+  return `${WFNAME[r.wf]} · ${r.model}\n${r.page} page (${PGKB[r.page]})\n` +
+    (dead(r)
+      ? `NO USABLE OUTPUT — ${r.stub || r.status}\n`
+      : `${r.den.toLocaleString()} bytes de-noised (${pct(r).toFixed(0)}% of control)\n` +
+        `redactions ${r.red} · leaks ${r.leak}\n`) +
+    `$${r.cost.toFixed(4)} · ${r.wall}s · ${r.calls} call(s)\n` +
+    `${r.tin.toLocaleString()} tokens in · ${r.tout.toLocaleString()} out` +
+    (r.dup ? '\nbyte-identical to the other flagged B3 large cell — see anomaly note' : '') +
+    (r.tag ? `\nRERUN ${r.date} (${r.tag}) — ${r.note}` : '') +
+    (r.nogate ? '\nrun with the HTTP-request confirmation gate waived — see the B8/B9 note' : '');
+}
+const MODELKEY = m => `<span class="lg"><span class="sw" style="background:${MC[m]}"></span>${m}</span>`;
+const PAGEKEY = `<span class="lg" style="margin-left:auto">page size:</span>` +
+  `<span class="lg"><span class="sw" style="background:var(--muted)"></span>small · 38 KB</span>` +
+  `<span class="lg"><span class="sw sq" style="background:var(--muted)"></span>medium · 164 KB</span>` +
+  `<span class="lg"><span class="sw" style="background:var(--muted);border-radius:0;` +
+  `clip-path:polygon(50% 0,100% 100%,0 100%)"></span>large · 535 KB</span>`;
+const RINGKEY = '<span class="lg"><span class="sw" style="border:1.6px dashed var(--bad);' +
+  'background:none"></span>no usable output</span>';
+function legend(id, extra) {
+  document.getElementById(id).innerHTML =
+    MODELS.map(MODELKEY).join('') + (extra || '') + PAGEKEY;
+}
+
+/* ---------- Fig 1: cost vs retention, faceted by variant ---------- */
+function fig1() {
+  const svg = document.getElementById('f1');
+  const H = 420, top = 34, bot = 52, left0 = 56, gapX = 22, pw = (980 - left0 - 12 - gapX * (NF - 1)) / NF;
+  const h = H - top - bot;
+  // Log cost axis: the completed cells span $0.014-$2.43, so a linear axis
+  // knots the cheap half of the matrix against the panel edge.
+  const lo = Math.log10(0.01), hi = Math.log10(3);
+  const maxY = Math.max(100, ...D.runs.map(pct)) * 1.06;
+  WFS.forEach((wf, fi) => {
+    const mL = left0 + fi * (pw + gapX);
+    const xs = c => mL + ((Math.log10(Math.max(c, 0.01)) - lo) / (hi - lo)) * pw;
+    const ys = v => top + h - (v / maxY) * h;
+    svg.appendChild(txt(WFNAME[wf], {x: mL, y: top - 14, class: 'fct', 'font-size': '11px'}));
+    [0.01, 0.1, 1].forEach(v => {
+      svg.appendChild(el('line', {x1: xs(v), y1: top, x2: xs(v), y2: top + h, class: 'gl'}));
+      svg.appendChild(txt('$' + (v < 1 ? v.toFixed(2) : v), {x: xs(v), y: top + h + 16,
+        class: 'tk', 'text-anchor': 'middle'}));
+    });
+    [0, 25, 50, 75, 100].forEach(v => {
+      svg.appendChild(el('line', {x1: mL, y1: ys(v), x2: mL + pw, y2: ys(v), class: 'gl'}));
+      if (fi === 0) svg.appendChild(txt(v + '%', {x: mL - 8, y: ys(v) + 3.5, class: 'tk',
+        'text-anchor': 'end'}));
+    });
+    svg.appendChild(el('line', {x1: mL, y1: top + h, x2: mL + pw, y2: top + h, class: 'ax'}));
+    svg.appendChild(el('line', {x1: mL, y1: top, x2: mL, y2: top + h, class: 'ax'}));
+    MODELS.forEach(m => {
+      const pts = PAGES.map(pg => D.runs.find(r => r.wf === wf && r.page === pg && r.model === m))
+        .filter(Boolean).map(r => ({r, x: xs(r.cost), y: ys(pct(r))}));
+      if (pts.length > 1) svg.appendChild(el('polyline', {
+        points: pts.map(p => `${p.x},${p.y}`).join(' '), class: 'trail', stroke: MC[m]}));
+      pts.forEach(p => {
+        marker(svg, MARK[p.r.page], p.x, p.y, 5.5, MC[m], tip(p.r));
+        ringIf(svg, dead(p.r), p.x, p.y, 10);
+      });
+    });
+  });
+  svg.appendChild(txt('Cost of the run (USD, log scale)', {x: left0 + (pw * NF + gapX * (NF - 1)) / 2,
+    y: H - 14, class: 'axl', 'text-anchor': 'middle'}));
+  svg.appendChild(txt('Retention', {x: 0, y: 0, class: 'axl', 'text-anchor': 'middle',
+    transform: `translate(14,${top + h / 2}) rotate(-90)`}));
+  legend('lg1', RINGKEY);
+}
+
+/* ---------- Fig 2: redactions vs leaks, medium page ---------- */
+function fig2() {
+  const svg = document.getElementById('f2');
+  const H = 400, top = 30, bot = 76, left = 56, right = 20, W = 980;
+  const h = H - top - bot, w = W - left - right;
+  // The axis grows with the tallest bar: B8 and B9 place more marks than the
+  // control has mentions, and a fixed 40 would clip them.
+  const med = D.runs.filter(r => r.page === 'medium');
+  const maxV = Math.max(40, Math.ceil(Math.max(...med.map(r => Math.max(r.red, r.leak))) / 10) * 10 + 5);
+  const ys = v => top + h - (v / maxV) * h;
+  const step = maxV > 60 ? 20 : 10;
+  Array.from({length: Math.floor(maxV / step) + 1}, (_, i) => i * step).forEach(v => {
+    svg.appendChild(el('line', {x1: left, y1: ys(v), x2: left + w, y2: ys(v), class: 'gl'}));
+    svg.appendChild(txt(String(v), {x: left - 8, y: ys(v) + 3.5, class: 'tk',
+      'text-anchor': 'end'}));
+  });
+  svg.appendChild(el('line', {x1: left, y1: ys(38), x2: left + w, y2: ys(38), class: 'refline'}));
+  svg.appendChild(txt('38 mentions in the control', {x: left + 6, y: ys(38) - 5,
+    class: 'pl', 'text-anchor': 'start', fill: 'var(--muted)'}));
+  const groupW = w / NF;
+  WFS.forEach((wf, gi) => {
+    const gx = left + gi * groupW;
+    svg.appendChild(txt(WFNAME[wf], {x: gx + groupW / 2, y: top + h + 40, class: 'fct',
+      'text-anchor': 'middle', 'font-size': '11px'}));
+    MODELS.forEach((m, mi) => {
+      const r = D.runs.find(x => x.wf === wf && x.page === 'medium' && x.model === m);
+      if (!r) return;
+      const cellW = groupW / 4, bw = Math.min(13, cellW / 2 - 2);
+      const cx = gx + cellW * mi + cellW / 2;
+      const bar = (x, v, fill, dash) => {
+        const b = el('rect', {x: x, y: ys(v), width: bw, height: Math.max(top + h - ys(v), v > 0 ? 2 : 0),
+          fill: fill});
+        if (dash) { b.setAttribute('opacity', '.85'); }
+        const t = el('title'); t.textContent = tip(r); b.appendChild(t);
+        svg.appendChild(b);
+      };
+      bar(cx - bw - 1, r.red, MC[m]);
+      bar(cx + 1, r.leak, 'var(--bad)', true);
+      if (r.leak > 0) svg.appendChild(txt(String(r.leak), {x: cx + 1 + bw / 2, y: ys(r.leak) - 5,
+        class: 'pl', 'text-anchor': 'middle', fill: 'var(--bad)'}));
+      svg.appendChild(txt(m.replace('haiku-4.5', 'H4.5').replace('sonnet-4.6', 'S4.6')
+        .replace('sonnet-5', 'S5').replace('opus-5', 'O5'),
+        {x: cx, y: top + h + 16, class: 'tk', 'text-anchor': 'middle'}));
+    });
+    if (gi) svg.appendChild(el('line', {x1: gx, y1: top, x2: gx, y2: top + h, class: 'gl'}));
+  });
+  svg.appendChild(el('line', {x1: left, y1: top + h, x2: left + w, y2: top + h, class: 'ax'}));
+  svg.appendChild(el('line', {x1: left, y1: top, x2: left, y2: top + h, class: 'ax'}));
+  svg.appendChild(txt('Count on the medium page', {x: 0, y: 0, class: 'axl',
+    'text-anchor': 'middle', transform: `translate(14,${top + h / 2}) rotate(-90)`}));
+  document.getElementById('lg2').innerHTML = MODELS.map(MODELKEY).join('') +
+    `<span class="lg"><span class="sw sq" style="background:var(--bad)"></span>leaks (mentions left in)</span>`;
+}
+
+/* ---------- Fig 3: retention by page, faceted ---------- */
+function fig3() {
+  const svg = document.getElementById('f3');
+  const H = 380, top = 34, bot = 52, left0 = 56, gapX = 22, pw = (980 - left0 - 12 - gapX * (NF - 1)) / NF;
+  const h = H - top - bot;
+  const maxY = 106;
+  WFS.forEach((wf, fi) => {
+    const mL = left0 + fi * (pw + gapX);
+    const xs = i => mL + 22 + i * ((pw - 44) / 2);
+    const ys = v => top + h - (v / maxY) * h;
+    svg.appendChild(txt(WFNAME[wf], {x: mL, y: top - 14, class: 'fct', 'font-size': '11px'}));
+    [0, 25, 50, 75, 100].forEach(v => {
+      svg.appendChild(el('line', {x1: mL, y1: ys(v), x2: mL + pw, y2: ys(v), class: 'gl'}));
+      if (fi === 0) svg.appendChild(txt(v + '%', {x: mL - 8, y: ys(v) + 3.5, class: 'tk',
+        'text-anchor': 'end'}));
+    });
+    PAGES.forEach((p, i) => svg.appendChild(txt(p, {x: xs(i), y: top + h + 16, class: 'tk',
+      'text-anchor': 'middle'})));
+    svg.appendChild(el('line', {x1: mL, y1: top + h, x2: mL + pw, y2: top + h, class: 'ax'}));
+    svg.appendChild(el('line', {x1: mL, y1: top, x2: mL, y2: top + h, class: 'ax'}));
+    MODELS.forEach(m => {
+      const pts = PAGES.map((pg, i) => {
+        const r = D.runs.find(x => x.wf === wf && x.page === pg && x.model === m);
+        return r ? {r, x: xs(i), y: ys(Math.min(pct(r), maxY))} : null;
+      }).filter(Boolean);
+      if (pts.length > 1) svg.appendChild(el('polyline', {
+        points: pts.map(p => `${p.x},${p.y}`).join(' '),
+        fill: 'none', stroke: MC[m], 'stroke-width': 2, opacity: .85}));
+      pts.forEach(p => {
+        marker(svg, MARK[p.r.page], p.x, p.y, 5, MC[m], tip(p.r));
+        ringIf(svg, dead(p.r), p.x, p.y, 9.5);
+      });
+    });
+  });
+  svg.appendChild(txt('Input page size', {x: left0 + (pw * NF + gapX * (NF - 1)) / 2, y: H - 14,
+    class: 'axl', 'text-anchor': 'middle'}));
+  svg.appendChild(txt('Retention', {x: 0, y: 0, class: 'axl', 'text-anchor': 'middle',
+    transform: `translate(14,${top + h / 2}) rotate(-90)`}));
+  legend('lg3', RINGKEY);
+}
+
+/* ---------- Fig 4: cost dot plot, log scale ---------- */
+function fig4() {
+  const svg = document.getElementById('f4');
+  const H = 24 + 56 + WFS.length * PAGES.length * 30, top = 24, bot = 56, left = 208, right = 30, W = 980;
+  const h = H - top - bot, w = W - left - right;
+  const lo = Math.log10(0.001), hi = Math.log10(3);
+  const xs = c => left + ((Math.log10(Math.max(c, 0.001)) - lo) / (hi - lo)) * w;
+  [0.001, 0.01, 0.1, 1].forEach(v => {
+    svg.appendChild(el('line', {x1: xs(v), y1: top, x2: xs(v), y2: top + h, class: 'gl'}));
+    svg.appendChild(txt('$' + (v < 0.01 ? v.toFixed(3) : v < 1 ? v.toFixed(2) : v), {x: xs(v),
+      y: top + h + 16, class: 'tk', 'text-anchor': 'middle'}));
+  });
+  const rows = [];
+  WFS.forEach(wf => PAGES.forEach(pg => rows.push({wf, pg})));
+  const rh = h / rows.length;
+  rows.forEach((row, i) => {
+    const y = top + i * rh + rh / 2;
+    if (row.pg === 'small') {
+      svg.appendChild(txt(WFNAME[row.wf], {x: 8, y: y + 4, class: 'fct',
+        'font-size': '11px'}));
+      if (i) svg.appendChild(el('line', {x1: 8, y1: top + i * rh, x2: left + w,
+        y2: top + i * rh, class: 'gl'}));
+    }
+    svg.appendChild(txt(row.pg, {x: left - 10, y: y + 3.5, class: 'tk', 'text-anchor': 'end'}));
+    svg.appendChild(el('line', {x1: left, y1: y, x2: left + w, y2: y,
+      class: 'gl', opacity: .5}));
+    MODELS.forEach(m => {
+      const r = D.runs.find(x => x.wf === row.wf && x.page === row.pg && x.model === m);
+      if (!r) return;
+      marker(svg, MARK[row.pg], xs(r.cost), y, 5.5, MC[m], tip(r));
+      ringIf(svg, dead(r), xs(r.cost), y, 10);
+    });
+  });
+  svg.appendChild(el('line', {x1: left, y1: top + h, x2: left + w, y2: top + h, class: 'ax'}));
+  svg.appendChild(el('line', {x1: left, y1: top, x2: left, y2: top + h, class: 'ax'}));
+  svg.appendChild(txt('Cost of the run (USD, log scale)', {x: left + w / 2, y: H - 14,
+    class: 'axl', 'text-anchor': 'middle'}));
+  legend('lg4', RINGKEY);
+}
+
+/* ---------- table ---------- */
+function table() {
+  const tb = document.querySelector('#tbl tbody');
+  WFS.forEach(wf => {
+    let first = true;
+    PAGES.forEach(pg => MODELS.forEach(m => {
+      const r = D.runs.find(x => x.wf === wf && x.page === pg && x.model === m);
+      if (!r) return;
+      const tr = document.createElement('tr');
+      if (first) { tr.className = 'grp'; }
+      const isDead = dead(r);
+      tr.innerHTML =
+        `<td>${first ? WFNAME[wf] : ''}</td><td>${pg} · ${PGKB[pg]}</td>` +
+        `<td><span class="mdot" style="background:${MC[m]}"></span>${m}</td>` +
+        `<td>$${r.cost.toFixed(4)}</td><td>${r.wall.toFixed(1)}s</td><td>${r.calls}</td>` +
+        `<td>${r.tin.toLocaleString()}</td><td>${r.tout.toLocaleString()}</td>` +
+        `<td>${r.red}</td><td${r.leak ? ' class="bad"' : ''}>${r.leak}</td>` +
+        (isDead ? `<td class="bad">${r.status === 'completed' ? 'no output' : r.status}</td>`
+                : `<td>${pct(r).toFixed(0)}%${r.dup ? ' †' : ''}${r.nogate ? ' §' : ''}</td>`);
+      first = false;
+      tb.appendChild(tr);
+      (D.reruns || []).filter(x => x.wf === wf && x.page === pg && x.model === m).forEach(x => {
+        const t2 = document.createElement('tr');
+        t2.style.color = 'var(--muted)';
+        t2.innerHTML =
+          `<td></td><td style="padding-left:1.6rem">↳ rerun ${x.date}</td>` +
+          `<td><span class="mdot" style="background:var(--surf);box-shadow:inset 0 0 0 2px ${MC[m]}"></span>${m}</td>` +
+          `<td>$${x.cost.toFixed(4)}</td><td>${x.wall.toFixed(1)}s</td><td>${x.calls}</td>` +
+          `<td>${x.tin.toLocaleString()}</td><td>${x.tout.toLocaleString()}</td>` +
+          `<td>${x.red}</td><td${x.leak ? ' class="bad"' : ''}>${x.leak}</td>` +
+          `<td>${pct(x).toFixed(0)}% ‡</td>`;
+        tb.appendChild(t2);
+      });
+    }));
+  });
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td colspan="11" style="text-align:left;color:var(--faint)">† byte-identical
+    outputs — see the anomaly note above; treat as one observation.<br>‡ rerun of the cell
+    above it, 5 September (tags <code>b5rerun-*</code>). The small-page rerun's output is
+    byte-identical to the original cell's — the same document measured twice; the
+    large-page rerun is a fresh document that repeats the original's summarising.<br>§ ran with
+    the HTTP-request tool's confirmation gate waived on the workflow; the other three models ran
+    with the gate in place and never triggered it.</td>`;
+  tb.appendChild(tr);
+}
+
+fig1(); fig2(); fig3(); fig4(); table();
+</script>
+</body>
+</html>
