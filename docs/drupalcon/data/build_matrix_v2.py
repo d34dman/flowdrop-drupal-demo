@@ -33,6 +33,15 @@ __CSS__
 .mk:hover{stroke:var(--ink);stroke-width:2}
 .tb th:nth-child(-n+3),.tb td:nth-child(-n+3){text-align:left}
 .tb th:nth-child(4),.tb td:nth-child(4){text-align:left}
+.filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 22px;background:var(--surf);border:1px solid var(--rule);border-radius:10px;padding:12px 16px;margin:0 0 6px}
+.filters .grp{display:flex;flex-direction:column;gap:8px;min-width:0}
+.filters .grp .row{display:flex;flex-wrap:wrap;gap:4px 0}
+.filters .chk{margin-right:12px}
+.filters .lbl{display:flex;justify-content:space-between;align-items:baseline}
+.filters .lbl button{font-family:var(--mono);font-size:.68rem;letter-spacing:0;text-transform:none;background:none;border:0;color:var(--accent);cursor:pointer;padding:0}
+.filters .lbl button:hover{text-decoration:underline}
+.fsum{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin:0 0 8px}
+@media (max-width:640px){.filters{grid-template-columns:1fr}}
 </style>
 
 <header class="wrap">
@@ -43,6 +52,12 @@ __CSS__
   what was actually redacted, and cost, with the outcome class on every mark. Colour is the model throughout; marker
   shape is the page. One draw per cell unless the table says otherwise. The v1 page is
   <a href="../archive/v1/redactor-model-matrix.html">archived</a>.</p>
+  <div class="filters" id="filters" aria-label="Filter the figures and the table">
+    <div class="grp" id="fg-models"></div>
+    <div class="grp" id="fg-pages"></div>
+    <div class="grp" id="fg-variants"></div>
+  </div>
+  <p class="fsum" id="fsum"></p>
 </header>
 
 <section><div class="wrap">
@@ -54,7 +69,8 @@ __CSS__
     <svg id="f1" role="img" aria-label="Eight scatter panels of fidelity against cost, one per variant, coloured by model"></svg>
     <div class="legend" id="lg1"></div>
     <div class="figcap">Shared log cost axis across panels. Fidelity is the share of gold sentences found in the output at
-    ≥ 0.90 similarity, redaction-tolerant. Runs that delivered nothing sit at fidelity 0 on the left edge. Hover for numbers.</div>
+    ≥ 0.90 similarity, redaction-tolerant. The vertical axis is stretched above the dashed 0.90 line, where most runs sit;
+    below it the scale is compressed. Runs that delivered nothing sit at fidelity 0 on the left edge. Hover for numbers.</div>
   </div>
   <div class="note"><h3>What the ring adds</h3>
     <p id="n1"></p></div>
@@ -82,7 +98,7 @@ __CSS__
   <div class="figbox">
     <svg id="f3" role="img" aria-label="Eight line panels of fidelity by page size, one per variant, coloured by model"></svg>
     <div class="legend" id="lg3"></div>
-    <div class="figcap">Horizontal axis: raw HTML size of the small, medium and large pages. Ringed points are runs that were not correct. A missing point is a cell that was never run.</div>
+    <div class="figcap">Horizontal axis: raw HTML size of the small, medium and large pages. Vertical axis stretched above the dashed 0.90 line, as in Figure 1. Ringed points are runs that were not correct. A missing point is a cell that was never run.</div>
   </div>
 </div></section>
 
@@ -109,11 +125,17 @@ __CSS__
 
 <script>
 const D = __DATA__;
+// ---- filters: model, page, variant. Every figure and the table redraw from RUNS().
+const F = {models: new Set(D.models), pages: new Set(['small', 'medium', 'large']), variants: new Set(D.variants)};
+const MS = () => D.models.filter(m => F.models.has(m));
+const PS = () => ['small', 'medium', 'large'].filter(p => F.pages.has(p));
+const VS = () => D.variants.filter(v => F.variants.has(v));
+const RUNS = () => D.runs.filter(r => F.models.has(r.model) && F.pages.has(r.page) && F.variants.has(r.v));
 const NS = 'http://www.w3.org/2000/svg';
 const PAGES = ['small', 'medium', 'large'];
 const LET = {correct: 'C', degraded: 'D', silent: 'S', format: 'F', loud: 'L'};
 const MCOL = {'Haiku 4.5': 'var(--m1)', 'Sonnet 4.6': 'var(--m2)', 'Sonnet 5': 'var(--m3)', 'Opus 5': 'var(--m4)'};
-const el = (n, a = {}) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); return e; };
+const el = (n, a = {}) => { const e = document.createElementNS(NS, n); for (const k in a) if (a[k] != null) e.setAttribute(k, a[k]); return e; };
 const txt = (s, a = {}) => { const t = el('text', a); t.textContent = s; return t; };
 const money = v => '$' + (v < 1 ? v.toFixed(3) : v.toFixed(2));
 const f3 = v => v == null ? '—' : v.toFixed(2);
@@ -129,15 +151,28 @@ function mark(svg, shape, x, y, r, fill, extra = {}) {
   svg.appendChild(m); return m;
 }
 const SHAPE = {small: 'circle', medium: 'square', large: 'triangle'};
+// Fidelity axis: 0–0.9 takes the bottom 30% of the panel, 0.9–1.0 the top 70%. Most runs sit above 0.99.
+const FB = 0.9, FSPLIT = 0.3;
+const fy = f => f <= FB ? (f / FB) * FSPLIT : FSPLIT + ((f - FB) / (1 - FB)) * (1 - FSPLIT);
+const FTICKS = [0, 0.5, 0.9, 0.95, 1];
+function fidelityGrid(svg, x0, y0, pw, ph, first) {
+  const y = f => y0 + ph - fy(f) * ph;
+  FTICKS.forEach(f => { svg.appendChild(el('line', {x1: x0, y1: y(f), x2: x0 + pw, y2: y(f), class: f === FB ? 'ax' : 'gl', 'stroke-dasharray': f === FB ? '3 3' : null}));
+    if (first) svg.appendChild(txt(f.toFixed(2), {x: x0 - 6, y: y(f) + 3.5, class: 'tk', 'text-anchor': 'end'})); });
+  return y;
+}
 const modelLegend = () => D.models.map(m => `<span class="it"><span class="sw" style="background:${MCOL[m]}"></span>${m}</span>`).join('');
 const pageLegend = '<span class="it" style="margin-left:auto">page:</span><span class="it">● small</span><span class="it">■ medium</span><span class="it">▲ large</span>';
 const ringLegend = '<span class="it"><span class="sw" style="border:1.6px dashed var(--silent);background:none"></span>not correct</span>';
 
 // ---- panels helper: 8 variants in 2 rows of 4
 function panels(svg, H, draw) {
-  const W = 980, cols = 4, rows = Math.ceil(D.variants.length / cols), left0 = 44, gapX = 18, top = 30, gapY = 46, pw = (W - left0 - 10 - gapX * (cols - 1)) / cols, ph = H;
+  svg.innerHTML = '';
+  const vs = VS();
+  const W = 980, cols = Math.max(1, Math.min(4, vs.length)), rows = Math.max(1, Math.ceil(vs.length / cols)), left0 = 44, gapX = 18, top = 30, gapY = 46, pw = (W - left0 - 10 - gapX * (cols - 1)) / cols, ph = H;
   svg.setAttribute('viewBox', `0 0 ${W} ${top + rows * ph + (rows - 1) * gapY + 40}`);
-  D.variants.forEach((v, i) => {
+  if (!vs.length) { svg.appendChild(txt('No variant selected.', {x: W / 2, y: top + ph / 2, class: 'fcts', 'text-anchor': 'middle'})); return; }
+  vs.forEach((v, i) => {
     const c = i % cols, r = Math.floor(i / cols), x0 = left0 + c * (pw + gapX), y0 = top + r * (ph + gapY);
     svg.appendChild(txt(v, {x: x0, y: y0 - 14, class: 'fct'}));
     svg.appendChild(txt(D.vname[v], {x: x0 + 26, y: y0 - 14, class: 'fcts'}));
@@ -146,17 +181,15 @@ function panels(svg, H, draw) {
 }
 
 // ---- figure 1
-(function () {
-  const svg = document.getElementById('f1'); const PH = 170;
+function fig1() {
+  const svg = document.getElementById('f1'); const PH = 240; const runs = RUNS();
   panels(svg, PH, (v, x0, y0, pw, ph, first) => {
-    const y = f => y0 + ph - f * ph;
-    [0, .25, .5, .75, 1].forEach(f => { svg.appendChild(el('line', {x1: x0, y1: y(f), x2: x0 + pw, y2: y(f), class: 'gl'}));
-      if (first) svg.appendChild(txt(f.toFixed(2), {x: x0 - 6, y: y(f) + 3.5, class: 'tk', 'text-anchor': 'end'})); });
+    const y = fidelityGrid(svg, x0, y0, pw, ph, first);
     [0.001, 0.01, 0.1, 1].forEach(c => { const x = logx(c, x0, pw); svg.appendChild(el('line', {x1: x, y1: y0, x2: x, y2: y0 + ph, class: 'gl'}));
       svg.appendChild(txt(money(c).replace('.000', ''), {x, y: y0 + ph + 13, class: 'tk', 'text-anchor': 'middle'})); });
     svg.appendChild(el('rect', {x: x0, y: y0, width: pw, height: ph, fill: 'none', class: 'ax'}));
-    D.models.forEach(m => {
-      const rs = PAGES.map(p => D.runs.filter(r => r.v === v && r.model === m && r.page === p)).flat();
+    MS().forEach(m => {
+      const rs = PAGES.map(p => runs.filter(r => r.v === v && r.model === m && r.page === p)).flat();
       const pts = rs.map(r => [logx(r.cost, x0, pw), y(r.fidelity ?? 0), r]);
       const byPage = PAGES.map(p => pts.find(q => q[2].page === p)).filter(Boolean);
       if (byPage.length > 1) svg.appendChild(el('polyline', {points: byPage.map(q => q.slice(0, 2).join(',')).join(' '), class: 'trail', stroke: MCOL[m]}));
@@ -167,17 +200,19 @@ function panels(svg, H, draw) {
     });
   });
   document.getElementById('lg1').innerHTML = modelLegend() + ringLegend + pageLegend;
+}
+(function () {
   const ringedHigh = D.runs.filter(r => r.cls !== 'correct' && (r.fidelity ?? 0) >= 0.95);
   document.getElementById('n1').textContent = `${ringedHigh.length} of the ${D.runs.filter(r => r.cls !== 'correct').length} runs that were not correct have fidelity 0.95 or better: they reproduced the document and failed on redaction, over-redaction or invented text. Under v1 those runs ranked with the successes. The three worst by class are B4 Sonnet 5 medium (subject 0.26, redacted Drupal), B5 Haiku medium (recall 0, redacted nothing) and B4 Sonnet 4.6 small (six competitor names written into a page that had none).`;
 })();
 
 // ---- figure 2: medium page redaction
-(function () {
-  const svg = document.getElementById('f2');
+function fig2() {
+  const svg = document.getElementById('f2'); svg.innerHTML = '';
   const rows = [];
-  D.variants.forEach(v => D.models.forEach(m => { const rs = D.runs.filter(r => r.v === v && r.model === m && r.page === 'medium' && r.recall != null); rs.forEach(r => rows.push(r)); }));
+  VS().forEach(v => MS().forEach(m => { const rs = D.runs.filter(r => r.v === v && r.model === m && r.page === 'medium' && r.recall != null); rs.forEach(r => rows.push(r)); }));
   const W = 980, L = 200, T = 30, RH = 16, GAP = 12; let y = T;
-  const groups = D.variants.map(v => rows.filter(r => r.v === v));
+  const groups = VS().map(v => rows.filter(r => r.v === v));
   const H = T + rows.length * RH + groups.length * GAP + 30;
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   const MAX = 75, x = n => L + n / MAX * 560;
@@ -202,19 +237,19 @@ function panels(svg, H, draw) {
     y += GAP;
   });
   document.getElementById('lg2').innerHTML = '<span class="it"><span class="sw" style="background:var(--muted);border-radius:2px"></span>marks on targets (model colour)</span><span class="it"><span class="sw" style="background:var(--silent);border-radius:2px"></span>target mentions left readable</span><span class="it"><span class="sw" style="background:var(--format);border-radius:2px"></span>marks on protected names or invented text</span><span class="it">letter = class</span>';
-})();
+}
 
 // ---- figure 3: fidelity by page size
-(function () {
-  const svg = document.getElementById('f3'); const PH = 150;
+function fig3() {
+  const svg = document.getElementById('f3'); const PH = 220; const runs = RUNS();
   const kb = D.pagekb, xs = {small: 0, medium: .5, large: 1};
   panels(svg, PH, (v, x0, y0, pw, ph, first) => {
-    const y = f => y0 + ph - f * ph, x = p => x0 + 14 + xs[p] * (pw - 28);
-    [0, .5, 1].forEach(f => { svg.appendChild(el('line', {x1: x0, y1: y(f), x2: x0 + pw, y2: y(f), class: 'gl'})); if (first) svg.appendChild(txt(f.toFixed(1), {x: x0 - 6, y: y(f) + 3.5, class: 'tk', 'text-anchor': 'end'})); });
+    const x = p => x0 + 14 + xs[p] * (pw - 28);
+    const y = fidelityGrid(svg, x0, y0, pw, ph, first);
     PAGES.forEach(p => svg.appendChild(txt(`${kb[p]} KB`, {x: x(p), y: y0 + ph + 13, class: 'tk', 'text-anchor': 'middle'})));
     svg.appendChild(el('rect', {x: x0, y: y0, width: pw, height: ph, fill: 'none', class: 'ax'}));
-    D.models.forEach(m => {
-      const pts = PAGES.map(p => { const rs = D.runs.filter(r => r.v === v && r.model === m && r.page === p); return rs.length ? [x(p), rs] : null; }).filter(Boolean);
+    MS().forEach(m => {
+      const pts = PAGES.map(p => { const rs = runs.filter(r => r.v === v && r.model === m && r.page === p); return rs.length ? [x(p), rs] : null; }).filter(Boolean);
       const line = pts.map(([px, rs]) => [px, y(Math.max(...rs.map(r => r.fidelity ?? 0)))]);
       if (line.length > 1) svg.appendChild(el('polyline', {points: line.map(q => q.join(',')).join(' '), class: 'trail', stroke: MCOL[m]}));
       pts.forEach(([px, rs]) => rs.forEach(r => { const yy = y(r.fidelity ?? 0); const mk = mark(svg, SHAPE[r.page], px, yy, 4.5, MCOL[m]); const t = el('title'); t.textContent = tip(r); mk.appendChild(t);
@@ -222,33 +257,34 @@ function panels(svg, H, draw) {
     });
   });
   document.getElementById('lg3').innerHTML = modelLegend() + ringLegend;
-})();
+}
 
 // ---- figure 4: cost per cell
-(function () {
-  const svg = document.getElementById('f4');
-  const W = 980, L = 190, T = 30, RH = 26; const rows = []; D.variants.forEach(v => PAGES.forEach(p => rows.push([v, p])));
+function fig4() {
+  const svg = document.getElementById('f4'); svg.innerHTML = ''; const runs = RUNS(), ps = PS();
+  const W = 980, L = 190, T = 30, RH = 26; const rows = []; VS().forEach(v => ps.forEach(p => rows.push([v, p])));
   const H = T + rows.length * RH + 30; svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
   const xw = W - L - 30;
   [0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3].forEach(c => { const x = logx(c, L, xw); svg.appendChild(el('line', {x1: x, y1: T - 6, x2: x, y2: H - 24, class: 'gl'})); svg.appendChild(txt(money(c).replace(/0+$/, '').replace(/\.$/, ''), {x, y: T - 12, class: 'tk', 'text-anchor': 'middle'})); });
   rows.forEach(([v, p], i) => {
     const y = T + i * RH + RH / 2;
-    svg.appendChild(el('line', {x1: L, y1: y, x2: W - 30, y2: y, class: p === 'small' ? 'ax' : 'gl'}));
-    if (p === 'small') svg.appendChild(txt(v, {x: 14, y: y + 4, class: 'fct'}));
-    if (p === 'medium') svg.appendChild(txt(D.vname[v], {x: 14, y: y + 4, class: 'fcts'}));
+    svg.appendChild(el('line', {x1: L, y1: y, x2: W - 30, y2: y, class: p === ps[0] ? 'ax' : 'gl'}));
+    if (p === ps[0]) svg.appendChild(txt(v, {x: 14, y: y + 4, class: 'fct'}));
+    if (p === ps[Math.min(1, ps.length - 1)]) svg.appendChild(txt(D.vname[v], {x: 14, y: y + (ps.length > 1 ? 4 : 16), class: 'fcts'}));
     svg.appendChild(txt(p, {x: L - 8, y: y + 3.5, class: 'tk', 'text-anchor': 'end'}));
-    D.runs.filter(r => r.v === v && r.page === p).forEach(r => {
+    runs.filter(r => r.v === v && r.page === p).forEach(r => {
       const x = logx(r.cost, L, xw);
       const d = el('circle', {cx: x, cy: y, r: 8, fill: MCOL[r.model], class: 'mk'}); const t = el('title'); t.textContent = tip(r); d.appendChild(t); svg.appendChild(d);
       svg.appendChild(txt(LET[r.cls], {x, y: y + 3.5, 'text-anchor': 'middle', style: 'font-family:var(--mono);font-size:9px;font-weight:500;fill:#fff;pointer-events:none'}));
     });
   });
   document.getElementById('lg4').innerHTML = modelLegend() + '<span class="it">C correct · D degraded · S silent · F format · L loud</span>';
-})();
+}
 
 // ---- table
-const tb = document.querySelector('#tbl tbody'); const ord = {small: 0, medium: 1, large: 2};
-[...D.runs].sort((a, b) => a.v.localeCompare(b.v) || ord[a.page] - ord[b.page] || D.models.indexOf(a.model) - D.models.indexOf(b.model)).forEach(r => {
+function table() {
+const tb = document.querySelector('#tbl tbody'); tb.innerHTML = ''; const ord = {small: 0, medium: 1, large: 2};
+[...RUNS()].sort((a, b) => a.v.localeCompare(b.v) || ord[a.page] - ord[b.page] || D.models.indexOf(a.model) - D.models.indexOf(b.model)).forEach(r => {
   const tr = document.createElement('tr');
   const c = (v, inv) => v == null ? '<td>—</td>' : `<td class="${(inv ? v > 0.25 : v < 0.75) ? 'low' : ''}">${v.toFixed(3)}</td>`;
   tr.innerHTML = `<td>${r.v}</td><td>${r.page}</td><td><span class="sw" style="background:${MCOL[r.model]};margin-right:6px"></span>${r.model}</td><td><span class="chip ${r.cls}">${LET[r.cls]}</span></td>` +
@@ -256,6 +292,26 @@ const tb = document.querySelector('#tbl tbody'); const ord = {small: 0, medium: 
     `<td>${r.glyphs ?? '—'}</td><td>${r.leaks ?? '—'}</td><td>${r.drupal ?? '—'}</td>` + c(r.recall) + c(r.precision) + c(r.subject) + c(r.fidelity) + c(r.fabrication, true);
   tb.appendChild(tr);
 });
+}
+
+// ---- filter UI
+function filterGroup(id, label, items, set, render) {
+  const g = document.getElementById(id);
+  g.innerHTML = `<span class="lbl">${label}<button type="button" data-all>all</button></span><div class="row">` +
+    items.map(k => `<label class="chk"><input type="checkbox" data-k="${k}"${set.has(k) ? ' checked' : ''}>${render ? render(k) : k}</label>`).join('') + '</div>';
+  g.querySelectorAll('input').forEach(i => i.addEventListener('change', () => { i.checked ? set.add(i.dataset.k) : set.delete(i.dataset.k); draw(); }));
+  g.querySelector('[data-all]').addEventListener('click', () => { const all = items.every(k => set.has(k)); items.forEach(k => all ? set.delete(k) : set.add(k)); g.querySelectorAll('input').forEach(i => i.checked = !all); draw(); });
+}
+function draw() {
+  fig1(); fig2(); fig3(); fig4(); table();
+  const n = RUNS().length;
+  document.getElementById('fsum').textContent = `${n} of ${D.n} runs shown · ${MS().length}/${D.models.length} models · ${PS().length}/3 pages · ${VS().length}/${D.variants.length} variants. Figure 2 is the medium page regardless of the page filter.`;
+  document.querySelectorAll('.filters [data-all]').forEach(b => { const g = b.closest('.grp'); const inputs = [...g.querySelectorAll('input')]; b.textContent = inputs.every(i => i.checked) ? 'none' : 'all'; });
+}
+filterGroup('fg-models', 'Model', D.models, F.models, m => `<span class="sw" style="background:${MCOL[m]}"></span>${m}`);
+filterGroup('fg-pages', 'Page', ['small', 'medium', 'large'], F.pages, p => `${p} <span style="color:var(--muted)">${D.pagekb[p]} KB</span>`);
+filterGroup('fg-variants', 'Variant', D.variants, F.variants, v => `${v} <span style="color:var(--muted)">${D.vname[v]}</span>`);
+draw();
 </script>
 </body>
 </html>
