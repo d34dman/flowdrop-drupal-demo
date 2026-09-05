@@ -1,0 +1,559 @@
+=================== claude-sonnet-4-6 (small) ===================
+
+updated 0 workflows -> anthropic:claude-sonnet-4-6
+ [warning] ToolBox flowdrop_node_processor_toolbox.1 has no tools wired into it.
+ [warning] ToolBox flowdrop_node_processor_toolbox.1 has no tools wired into it.
+ [warning] Pipeline 566 has a loop-extent snapshot that could not be restored; loops in this run fall back to the per-node bound.
+ [warning] Cross-iteration data read on pipeline 565: job 5025 (node message_assemble.1, iteration 1) is satisfied by source node conversation_buffer.4 (job 5007, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/overview/technical
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/overview
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/11
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/drupal-7
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/industries
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/history
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/media-kit/logos
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/media-kit/social-media
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/values-and-principles
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/core
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/features/accessibility
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/licensing
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/faq
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/media-kit
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/blog
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/in-the-news
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/dcoc
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/support
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/sustainability
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/blog/drupal-11-4-0
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/blog/drupal-cms-leadership-changes-2
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/blog/not-just-a-starting-point-a-head-start-drupals-new-site-templates-are-built-for-your-world
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/blog/drupal-at-25-built-to-last-ready-for-whats-next
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/blog/drupals-ai-roadmap-for-2026
+ [warning] Removed disallowed Markdown link with URL: http://www.gnu.org/copyleft/gpl.html
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/licensing
+ [warning] Removed disallowed Markdown link with URL: https://twitter.com/intent/tweet?text=Drupal%E2%80%99s%20the%20content%20management%20system%20behind%20many%20of%20the%20digital%20experiences%20you%20love.%20And%20it%20will%20always%20be%20free.%20https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://twitter.com/intent/tweet?text=Drupal%E2%80%99s%20the%20content%20management%20system%20behind%20many%20of%20the%20digital%20experiences%20you%20love.%20And%20it%20will%20always%20be%20free.%20https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/11
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/10
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/case-studies
+ [warning] Removed disallowed Markdown link with URL: https://digital.gov/resources/content-management-systems-used-by-government-agencies/
+ [warning] Removed disallowed Markdown link with URL: https://www.london.gov.uk/
+ [warning] Removed disallowed Markdown link with URL: http://www.gouvernement.fr/
+ [warning] Removed disallowed Markdown link with URL: http://www.bbc.com/
+ [warning] Removed disallowed Markdown link with URL: http://www.nbc.com/
+ [warning] Removed disallowed Markdown link with URL: http://www.mtv.co.uk/
+ [warning] Removed disallowed Markdown link with URL: http://www.amnesty.org/
+ [warning] Removed disallowed Markdown link with URL: http://www.ox.ac.uk/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/case-studies
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/organizations
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/start
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/start
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/installation+profiles
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/download
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/modules
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/themes
+ [warning] Removed disallowed Markdown link with URL: http://localize.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/marketplace
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/marketplace
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/hosting
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/training-services
+ [warning] Removed disallowed Markdown link with URL: https://jobs.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.tag1.com/?utm_source=DA&utm_medium=referral&utm_campaign=drupal-org-footer
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/news
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/planet
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/media-kit/social-media
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/subscribe
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/security
+ [warning] Removed disallowed Markdown link with URL: https://jobs.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/drupal-services
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/training
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/hosting
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community/contributor-guide
+ [warning] Removed disallowed Markdown link with URL: https://groups.drupal.org/groups
+ [warning] Removed disallowed Markdown link with URL: https://events.drupal.org
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/dcoc
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/documentation
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs/user_guide/en/index.html
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/documentation/develop
+ [warning] Removed disallowed Markdown link with URL: https://api.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/download
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/drupal
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/project_module
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/project_theme
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/project_distribution
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/features/accessibility
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/association
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/drupalorg
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/terms
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/privacy
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/trademark
+ [warning] Removed disallowed Markdown link with URL: https://dri.es
+ [warning] Multiple sources target port 'loop_back' on node 'conversation_buffer.1'; keeping value from latest executor 'conversation_buffer.7', ignoring 'conversation_buffer.2'.
+ [warning] Cross-iteration data read on pipeline 565: job 5039 (node message_assemble.1, iteration 2) is satisfied by source node conversation_buffer.4 (job 5007, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Pipeline 567 has a loop-extent snapshot that could not be restored; loops in this run fall back to the per-node bound.
+ [warning] Multiple sources target port 'loop_back' on node 'conversation_buffer.1'; keeping value from latest executor 'conversation_buffer.2', ignoring 'conversation_buffer.7'.
+ [warning] Cross-iteration data read on pipeline 565: job 5051 (node message_assemble.1, iteration 3) is satisfied by source node conversation_buffer.4 (job 5007, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/overview/technical
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/blog/drupal-11-4-0
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/blog/drupal-cms-leadership-changes-2
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/blog/not-just-a-starting-point-a-head-start-drupals-new-site-templates-are-built-for-your-world
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/blog/drupal-at-25-built-to-last-ready-for-whats-next
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/blog/drupals-ai-roadmap-for-2026
+ [warning] Removed disallowed Markdown link with URL: http://www.gnu.org/copyleft/gpl.html
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/licensing
+ [warning] Removed disallowed Markdown link with URL: https://twitter.com/intent/tweet?text=Drupal%E2%80%99s%20the%20content%20management%20system%20behind%20many%20of%20the%20digital%20experiences%20you%20love.%20And%20it%20will%20always%20be%20free.%20https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://twitter.com/intent/tweet?text=Drupal%E2%80%99s%20the%20content%20management%20system%20behind%20many%20of%20the%20digital%20experiences%20you%20love.%20And%20it%20will%20always%20be%20free.%20https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/11
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/10
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/case-studies
+ [warning] Removed disallowed Markdown link with URL: https://digital.gov/resources/content-management-systems-used-by-government-agencies/
+ [warning] Removed disallowed Markdown link with URL: https://www.london.gov.uk/
+ [warning] Removed disallowed Markdown link with URL: http://www.gouvernement.fr/
+ [warning] Removed disallowed Markdown link with URL: http://www.bbc.com/
+ [warning] Removed disallowed Markdown link with URL: http://www.nbc.com/
+ [warning] Removed disallowed Markdown link with URL: http://www.mtv.co.uk/
+ [warning] Removed disallowed Markdown link with URL: http://www.amnesty.org/
+ [warning] Removed disallowed Markdown link with URL: http://www.ox.ac.uk/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/case-studies
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/organizations
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/start
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/start
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/installation+profiles
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/download
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/modules
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/themes
+ [warning] Removed disallowed Markdown link with URL: http://localize.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/marketplace
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/marketplace
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/hosting
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/training-services
+ [warning] Removed disallowed Markdown link with URL: https://jobs.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.tag1.com/?utm_source=DA&utm_medium=referral&utm_campaign=drupal-org-footer
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/news
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/planet
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/media-kit/social-media
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/subscribe
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/security
+ [warning] Removed disallowed Markdown link with URL: https://jobs.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/drupal-services
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/training
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/hosting
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community/contributor-guide
+ [warning] Removed disallowed Markdown link with URL: https://groups.drupal.org/groups
+ [warning] Removed disallowed Markdown link with URL: https://events.drupal.org
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/dcoc
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/documentation
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs/user_guide/en/index.html
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/documentation/develop
+ [warning] Removed disallowed Markdown link with URL: https://api.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/download
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/drupal
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/project_module
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/project_theme
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/project_distribution
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/features/accessibility
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/association
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/drupalorg
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/terms
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/privacy
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/trademark
+ [warning] Removed disallowed Markdown link with URL: https://dri.es
+ [warning] Cross-iteration data read on pipeline 565: job 5057 (node message_assemble.2, iteration 1) is satisfied by source node message_from_text.1 (job 5016, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Cross-iteration data read on pipeline 565: job 5057 (node message_assemble.2, iteration 1) is satisfied by source node message_from_text.2 (job 5019, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Multiple sources target port 'loop_back' on node 'conversation_buffer.1'; keeping value from latest executor 'conversation_buffer.7', ignoring 'conversation_buffer.2'.
+ [warning] Cross-iteration data read on pipeline 565: job 5065 (node message_assemble.1, iteration 4) is satisfied by source node conversation_buffer.4 (job 5007, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Multiple sources target port 'loop_back' on node 'conversation_buffer.1'; keeping value from latest executor 'conversation_buffer.2', ignoring 'conversation_buffer.7'.
+ [warning] Cross-iteration data read on pipeline 565: job 5075 (node message_assemble.1, iteration 5) is satisfied by source node conversation_buffer.4 (job 5007, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/overview/technical
+ [warning] Cross-iteration data read on pipeline 565: job 5081 (node message_assemble.2, iteration 2) is satisfied by source node message_from_text.1 (job 5016, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Cross-iteration data read on pipeline 565: job 5081 (node message_assemble.2, iteration 2) is satisfied by source node message_from_text.2 (job 5019, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+  bench_9_reflexion_with_tools_in_parent small   r1   completed  wall= 169.71s pipeline=564
+appended to /var/www/html/scratchpad/bench/results/runs.jsonl
+=================== claude-haiku-4-5-20251001 (small,medium) ===================
+  bench_2_raw_html_llm         flowdrop_ai_provider_chat.1                model      = claude-haiku-4-5-20251001
+  bench_3_markdown_llm         flowdrop_ai_provider_chat.1                model      = claude-haiku-4-5-20251001
+  bench_4_ai_agent_tool        flowdrop_agents_ai_agents_executor.1       llm_model  = anthropic__claude-haiku-4-5-20251001
+  bench_6_agent_autonomous     flowdrop_agents_ai_agents_executor.1       llm_model  = anthropic__claude-haiku-4-5-20251001
+  react_agent_with_tools       flowdrop_node_processor_reason.1           model      = claude-haiku-4-5-20251001
+  react_agent_with_optimized_tools flowdrop_node_processor_reason.1           model      = claude-haiku-4-5-20251001
+  react_agent_engine           flowdrop_node_processor_reason.1           model      = claude-haiku-4-5-20251001
+  reflexion_agent_engine       flowdrop_node_processor_reason.1           model      = claude-haiku-4-5-20251001
+  reflexion_agent_engine       flowdrop_node_processor_reason.2           model      = claude-haiku-4-5-20251001
+  react_agent_with_optimized_tools_v2 flowdrop_node_processor_reason.1           model      = claude-haiku-4-5-20251001
+
+updated 9 workflows -> anthropic:claude-haiku-4-5-20251001
+ [warning] ToolBox flowdrop_node_processor_toolbox.1 has no tools wired into it.
+ [warning] ToolBox flowdrop_node_processor_toolbox.1 has no tools wired into it.
+ [warning] Pipeline 570 has a loop-extent snapshot that could not be restored; loops in this run fall back to the per-node bound.
+ [warning] Cross-iteration data read on pipeline 569: job 5114 (node message_assemble.1, iteration 1) is satisfied by source node conversation_buffer.4 (job 5096, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Removed disallowed Markdown image with URL: https://www.drupal.org/sites/all/themes/bluecheese/images/icon-w-user.svg
+ [warning] Removed disallowed Markdown image with URL: https://www.drupal.org/sites/all/modules/drupalorg/drupalorg/images/drupal-wordmark-062025.svg
+ [warning] Removed disallowed Markdown image with URL: https://www.drupal.org/files/styles/grid-2-2x-square/public/announcements/da-icon.png?itok=Uj8MTnv2
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/terms
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/overview/technical
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/overview/technical
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/drupal-cms
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/ai
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/case-studies
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/industries/government
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/industries/education
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/industries/nonprofit
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/industries/ecommerce
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/industries/fintech
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/industries/healthcare
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/industries/enterprise
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/industries/retail
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/industries/travel
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs/official_docs/local-development-guide
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs/getting-started
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs/official_docs/local-development-guide
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/developers
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/docs/drupal-cms
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs/user_guide/en/index.html
+ [warning] Removed disallowed Markdown link with URL: https://api.drupal.org/api/drupal/11.x
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/modules
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/themes
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/browse/recipes
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/browse/site-templates
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/drupal-services
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/drupal-services
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/association/become-a-drupal-certified-partner
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/hosting
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/drupal-7/d7eol/migration-resource-center/enterprise
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/training
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/steward
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community/contributor-guide
+ [warning] Removed disallowed Markdown link with URL: https://events.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community/events
+ [warning] Removed disallowed Markdown link with URL: https://jobs.drupal.org/home
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/blog
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/forum
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/subscribe
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/swag
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/swag?utm_source=drupalorg&utm_medium=banner&utm_campaign=drupal_swag_shop_2020_09_17
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/drupal-cms/trial
+ [warning] Removed disallowed Markdown link with URL: https://forms.gle/BBiuni3o1KgUN9pMA
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/11
+ [warning] Removed disallowed Markdown link with URL: http://www.gnu.org/copyleft/gpl.html
+ [warning] Removed disallowed Markdown link with URL: https://twitter.com/intent/tweet?text=Drupal%E2%80%99s%20the%20content%20management%20system%20behind%20many%20of%20the%20digital%20experiences%20you%20love.%20And%20it%20will%20always%20be%20free.%20https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://twitter.com/intent/tweet?text=Drupal%E2%80%99s%20the%20content%20management%20system%20behind%20many%20of%20the%20digital%20experiences%20you%20love.%20And%20it%20will%20always%20be%20free.%20https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://digital.gov/resources/content-management-systems-used-by-government-agencies/
+ [warning] Removed disallowed Markdown link with URL: https://www.london.gov.uk/
+ [warning] Removed disallowed Markdown link with URL: http://www.gouvernement.fr/
+ [warning] Removed disallowed Markdown link with URL: http://www.bbc.com/
+ [warning] Removed disallowed Markdown link with URL: http://www.nbc.com/
+ [warning] Removed disallowed Markdown link with URL: http://www.mtv.co.uk/
+ [warning] Removed disallowed Markdown link with URL: http://www.amnesty.org/
+ [warning] Removed disallowed Markdown link with URL: http://www.ox.ac.uk/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/case-studies
+ [warning] Removed disallowed Markdown link with URL: http://localize.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://jobs.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/news
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/planet
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/media-kit/social-media
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/subscribe
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/security
+ [warning] Removed disallowed Markdown link with URL: https://jobs.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/drupal-services
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/training
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/hosting
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community/contributor-guide
+ [warning] Removed disallowed Markdown link with URL: https://groups.drupal.org/groups
+ [warning] Removed disallowed Markdown link with URL: https://events.drupal.org
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/dcoc
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/documentation
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs/user_guide/en/index.html
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/documentation/develop
+ [warning] Removed disallowed Markdown link with URL: https://api.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/download
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/drupal
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/project_module
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/project_theme
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/project_distribution
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/features/accessibility
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/association
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/drupalorg
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/terms
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/privacy
+ [warning] Removed disallowed Markdown link with URL: https://dri.es
+ [warning] Multiple sources target port 'loop_back' on node 'conversation_buffer.1'; keeping value from latest executor 'conversation_buffer.7', ignoring 'conversation_buffer.2'.
+ [warning] Cross-iteration data read on pipeline 569: job 5128 (node message_assemble.1, iteration 2) is satisfied by source node conversation_buffer.4 (job 5096, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Pipeline 571 has a loop-extent snapshot that could not be restored; loops in this run fall back to the per-node bound.
+ [warning] Multiple sources target port 'loop_back' on node 'conversation_buffer.1'; keeping value from latest executor 'conversation_buffer.2', ignoring 'conversation_buffer.7'.
+ [warning] Cross-iteration data read on pipeline 569: job 5140 (node message_assemble.1, iteration 3) is satisfied by source node conversation_buffer.4 (job 5096, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Removed disallowed Markdown image with URL: https://www.drupal.org/sites/all/themes/bluecheese/images/icon-w-user.svg
+ [warning] Removed disallowed Markdown image with URL: https://www.drupal.org/sites/all/modules/drupalorg/drupalorg/images/drupal-wordmark-062025.svg
+ [warning] Removed disallowed Markdown image with URL: https://www.drupal.org/files/styles/grid-2-2x-square/public/announcements/da-icon.png?itok=Uj8MTnv2
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/terms
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/overview/technical
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/overview/technical
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/drupal-cms
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/ai
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/case-studies
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/industries/government
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/industries/education
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/industries/nonprofit
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/industries/ecommerce
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/industries/fintech
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/industries/healthcare
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/industries/enterprise
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/industries/retail
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/industries/travel
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs/official_docs/local-development-guide
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs/getting-started
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs/official_docs/local-development-guide
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/developers
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/docs/drupal-cms
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs/user_guide/en/index.html
+ [warning] Removed disallowed Markdown link with URL: https://api.drupal.org/api/drupal/11.x
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/modules
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/themes
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/browse/recipes
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/browse/site-templates
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/drupal-services
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/drupal-services
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/association/become-a-drupal-certified-partner
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/hosting
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/drupal-7/d7eol/migration-resource-center/enterprise
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/training
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/steward
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community/contributor-guide
+ [warning] Removed disallowed Markdown link with URL: https://events.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community/events
+ [warning] Removed disallowed Markdown link with URL: https://jobs.drupal.org/home
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/blog
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/forum
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/subscribe
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/swag
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/swag?utm_source=drupalorg&utm_medium=banner&utm_campaign=drupal_swag_shop_2020_09_17
+ [warning] Removed disallowed Markdown link with URL: https://new.drupal.org/drupal-cms/trial
+ [warning] Removed disallowed Markdown link with URL: https://forms.gle/BBiuni3o1KgUN9pMA
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/11
+ [warning] Removed disallowed Markdown link with URL: http://www.gnu.org/copyleft/gpl.html
+ [warning] Removed disallowed Markdown link with URL: https://twitter.com/intent/tweet?text=Drupal%E2%80%99s%20the%20content%20management%20system%20behind%20many%20of%20the%20digital%20experiences%20you%20love.%20And%20it%20will%20always%20be%20free.%20https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://twitter.com/intent/tweet?text=Drupal%E2%80%99s%20the%20content%20management%20system%20behind%20many%20of%20the%20digital%20experiences%20you%20love.%20And%20it%20will%20always%20be%20free.%20https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://digital.gov/resources/content-management-systems-used-by-government-agencies/
+ [warning] Removed disallowed Markdown link with URL: https://www.london.gov.uk/
+ [warning] Removed disallowed Markdown link with URL: http://www.gouvernement.fr/
+ [warning] Removed disallowed Markdown link with URL: http://www.bbc.com/
+ [warning] Removed disallowed Markdown link with URL: http://www.nbc.com/
+ [warning] Removed disallowed Markdown link with URL: http://www.mtv.co.uk/
+ [warning] Removed disallowed Markdown link with URL: http://www.amnesty.org/
+ [warning] Removed disallowed Markdown link with URL: http://www.ox.ac.uk/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/case-studies
+ [warning] Removed disallowed Markdown link with URL: http://localize.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://jobs.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/news
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/planet
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/media-kit/social-media
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/subscribe
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/security
+ [warning] Removed disallowed Markdown link with URL: https://jobs.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/drupal-services
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/training
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/hosting
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/community/contributor-guide
+ [warning] Removed disallowed Markdown link with URL: https://groups.drupal.org/groups
+ [warning] Removed disallowed Markdown link with URL: https://events.drupal.org
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/dcoc
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/documentation
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/docs/user_guide/en/index.html
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/documentation/develop
+ [warning] Removed disallowed Markdown link with URL: https://api.drupal.org/
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/download
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/drupal
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/project_module
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/project_theme
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/project/project_distribution
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/about/features/accessibility
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/association
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/drupalorg
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/terms
+ [warning] Removed disallowed Markdown link with URL: https://www.drupal.org/privacy
+ [warning] Removed disallowed Markdown link with URL: https://dri.es
+ [warning] Cross-iteration data read on pipeline 569: job 5146 (node message_assemble.2, iteration 1) is satisfied by source node message_from_text.1 (job 5105, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Cross-iteration data read on pipeline 569: job 5146 (node message_assemble.2, iteration 1) is satisfied by source node message_from_text.2 (job 5108, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Multiple sources target port 'loop_back' on node 'conversation_buffer.1'; keeping value from latest executor 'conversation_buffer.7', ignoring 'conversation_buffer.2'.
+ [warning] Cross-iteration data read on pipeline 569: job 5154 (node message_assemble.1, iteration 4) is satisfied by source node conversation_buffer.4 (job 5096, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Multiple sources target port 'loop_back' on node 'conversation_buffer.1'; keeping value from latest executor 'conversation_buffer.2', ignoring 'conversation_buffer.7'.
+ [warning] Cross-iteration data read on pipeline 569: job 5164 (node message_assemble.1, iteration 5) is satisfied by source node conversation_buffer.4 (job 5096, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/terms
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/about/overview/technical
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/about/overview/technical
+ [warning] Removed disallowed AI output URL: https://new.drupal.org/drupal-cms
+ [warning] Removed disallowed AI output URL: https://new.drupal.org/ai
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/case-studies
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/industries/government
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/industries/education
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/industries/nonprofit
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/industries/ecommerce
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/industries/fintech
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/industries/healthcare
+ [warning] Removed disallowed AI output URL: https://new.drupal.org/industries/enterprise
+ [warning] Removed disallowed AI output URL: https://new.drupal.org/industries/retail
+ [warning] Removed disallowed AI output URL: https://new.drupal.org/industries/travel
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/docs/official_docs/local-development-guide
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/docs/getting-started
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/docs/official_docs/local-development-guide
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/developers
+ [warning] Removed disallowed AI output URL: https://new.drupal.org/docs/drupal-cms
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/docs/user_guide/en/index.html
+ [warning] Removed disallowed AI output URL: https://api.drupal.org/api/drupal/11.x
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/project/modules
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/project/themes
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/browse/recipes
+ [warning] Removed disallowed AI output URL: https://new.drupal.org/browse/site-templates
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/drupal-services
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/drupal-services
+ [warning] Removed disallowed AI output URL: https://new.drupal.org/association/become-a-drupal-certified-partner
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/hosting
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/about/drupal-7/d7eol/migration-resource-center/enterprise
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/training
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/steward
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/community
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/community
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/community/contributor-guide
+ [warning] Removed disallowed AI output URL: https://events.drupal.org/
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/community/events
+ [warning] Removed disallowed AI output URL: https://jobs.drupal.org/home
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/blog
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/forum
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/subscribe
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/swag
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/sustaining-members 
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/swag?utm_source=drupalorg&utm_medium=banner&utm_campaign=drupal_swag_shop_2020_09_17
+ [warning] Removed disallowed AI output URL: https://new.drupal.org/drupal-cms/trial
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/sites/all/themes/bluecheese/images/icon-w-user.svg
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/sites/all/modules/drupalorg/drupalorg/images/drupal-wordmark-062025.svg
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/files/styles/grid-2-2x-square/public/announcements/da-icon.png?itok=Uj8MTnv2
+ [warning] Removed disallowed AI output URL: https://forms.gle/BBiuni3o1KgUN9pMA
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/about/11
+ [warning] Removed disallowed AI output URL: http://www.gnu.org/copyleft/gpl.html
+ [warning] Removed disallowed AI output URL: https://twitter.com/intent/tweet?text=Drupal%E2%80%99s%20the%20content%20management%20system%20behind%20many%20of%20the%20digital%20experiences%20you%20love.%20And%20it%20will%20always%20be%20free.%20https%3A%2F%2Fwww.drupal.org%2Fabout
+ [warning] Removed disallowed AI output URL: https://twitter.com/intent/tweet?text=Drupal%E2%80%99s%20the%20content%20management%20system%20behind%20many%20of%20the%20digital%20experiences%20you%20love.%20And%20it%20will%20always%20be%20free.%20https%3A%2F%2Fwww.drupal.org%2Fabout
+ [warning] Removed disallowed AI output URL: https://digital.gov/resources/content-management-systems-used-by-government-agencies/
+ [warning] Removed disallowed AI output URL: https://www.london.gov.uk/
+ [warning] Removed disallowed AI output URL: http://www.gouvernement.fr/
+ [warning] Removed disallowed AI output URL: http://www.bbc.com/
+ [warning] Removed disallowed AI output URL: http://www.nbc.com/
+ [warning] Removed disallowed AI output URL: http://www.mtv.co.uk/
+ [warning] Removed disallowed AI output URL: http://www.amnesty.org/
+ [warning] Removed disallowed AI output URL: http://www.ox.ac.uk/
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/case-studies
+ [warning] Removed disallowed AI output URL: http://localize.drupal.org/
+ [warning] Removed disallowed AI output URL: https://jobs.drupal.org/
+ [warning] Removed disallowed AI output URL: https://www.tag1.com/?utm_source=DA&utm_medium=referral&utm_campaign=drupal-org-footer
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/news
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/planet
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/about/media-kit/social-media
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/subscribe
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/security
+ [warning] Removed disallowed AI output URL: https://jobs.drupal.org/
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/community
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/drupal-services
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/training
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/hosting
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/community/contributor-guide
+ [warning] Removed disallowed AI output URL: https://groups.drupal.org/groups
+ [warning] Removed disallowed AI output URL: https://events.drupal.org
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/dcoc
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/documentation
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/docs
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/docs/user_guide/en/index.html
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/documentation/develop
+ [warning] Removed disallowed AI output URL: https://api.drupal.org/
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/download
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/project/drupal
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/project/project_module
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/project/project_theme
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/project/project_distribution
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/about
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/about/features/accessibility
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/association
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/drupalorg
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/terms
+ [warning] Removed disallowed AI output URL: https://www.drupal.org/privacy
+ [warning] Removed disallowed AI output URL: https://dri.es
+ [warning] Multiple sources target port 'loop_back' on node 'conversation_buffer.1'; keeping value from latest executor 'conversation_buffer.2', ignoring 'conversation_buffer.7'.
+ [warning] Cross-iteration data read on pipeline 569: job 5174 (node message_assemble.1, iteration 6) is satisfied by source node conversation_buffer.4 (job 5096, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Cross-iteration data read on pipeline 569: job 5180 (node message_assemble.2, iteration 2) is satisfied by source node message_from_text.1 (job 5105, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Cross-iteration data read on pipeline 569: job 5180 (node message_assemble.2, iteration 2) is satisfied by source node message_from_text.2 (job 5108, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+  bench_9_reflexion_with_tools_in_parent small   r1   paused     wall= 280.53s pipeline=568
+ [warning] ToolBox flowdrop_node_processor_toolbox.1 has no tools wired into it.
+ [warning] ToolBox flowdrop_node_processor_toolbox.1 has no tools wired into it.
+ [warning] Pipeline 574 has a loop-extent snapshot that could not be restored; loops in this run fall back to the per-node bound.
+ [warning] Cross-iteration data read on pipeline 573: job 5214 (node message_assemble.1, iteration 1) is satisfied by source node conversation_buffer.4 (job 5196, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Removed disallowed Markdown link with URL: https://cloud.ibm.com/docs/solution-tutorials?topic=solution-tutorials-lamp-stack-on-vpc
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/forms/news-mkt-52954
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/think/videos/ai-academy
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/topics/lamp-stack
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/topics/containers
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/topics/kubernetes
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/account/reg/signup?formid=urx-52060
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/cloud-pak-for-business-automation/content-services
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/filenet-content-manager
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/enterprise-records
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/consulting/hybrid-by-design
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/cloud-pak-for-business-automation/content-services
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/content-manager
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/ecm-system-monitor
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/solutions/enterprise-content-management
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/account/reg/signup?formid=urx-45706
+ [warning] Multiple sources target port 'loop_back' on node 'conversation_buffer.1'; keeping value from latest executor 'conversation_buffer.7', ignoring 'conversation_buffer.2'.
+ [warning] Cross-iteration data read on pipeline 573: job 5228 (node message_assemble.1, iteration 2) is satisfied by source node conversation_buffer.4 (job 5196, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Cross-iteration data read on pipeline 573: job 5234 (node message_assemble.2, iteration 1) is satisfied by source node message_from_text.1 (job 5205, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Cross-iteration data read on pipeline 573: job 5234 (node message_assemble.2, iteration 1) is satisfied by source node message_from_text.2 (job 5208, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Multiple sources target port 'loop_back' on node 'conversation_buffer.1'; keeping value from latest executor 'conversation_buffer.7', ignoring 'conversation_buffer.2'.
+ [warning] Cross-iteration data read on pipeline 573: job 5242 (node message_assemble.1, iteration 3) is satisfied by source node conversation_buffer.4 (job 5196, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Multiple sources target port 'loop_back' on node 'conversation_buffer.1'; keeping value from latest executor 'conversation_buffer.2', ignoring 'conversation_buffer.7'.
+ [warning] Cross-iteration data read on pipeline 573: job 5252 (node message_assemble.1, iteration 4) is satisfied by source node conversation_buffer.4 (job 5196, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Removed disallowed AI output URL: https://www.ibm.com/forms/news-mkt-52954
+ [warning] Removed disallowed AI output URL: https://www.ibm.com/think/videos/ai-academy
+ [warning] Removed disallowed AI output URL: https://www.ibm.com/account/reg/signup?formid=urx-52060
+ [warning] Removed disallowed AI output URL: https://www.ibm.com/products/cloud-pak-for-business-automation/content-services
+ [warning] Removed disallowed AI output URL: https://www.ibm.com/products/filenet-content-manager
+ [warning] Removed disallowed AI output URL: https://www.ibm.com/products/enterprise-records
+ [warning] Removed disallowed AI output URL: https://www.ibm.com/consulting/hybrid-by-design
+ [warning] Removed disallowed AI output URL: https://www.ibm.com/products/cloud-pak-for-business-automation/content-services
+ [warning] Removed disallowed AI output URL: https://www.ibm.com/products/content-manager
+ [warning] Removed disallowed AI output URL: https://www.ibm.com/products/ecm-system-monitor
+ [warning] Removed disallowed AI output URL: https://www.ibm.com/solutions/enterprise-content-management
+ [warning] Removed disallowed AI output URL: https://www.ibm.com/account/reg/signup?formid=urx-45706
+ [warning] Multiple sources target port 'loop_back' on node 'conversation_buffer.1'; keeping value from latest executor 'conversation_buffer.2', ignoring 'conversation_buffer.7'.
+ [warning] Cross-iteration data read on pipeline 573: job 5262 (node message_assemble.1, iteration 5) is satisfied by source node conversation_buffer.4 (job 5196, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/forms/news-mkt-52954
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/think/videos/ai-academy
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/account/reg/signup?formid=urx-52060
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/cloud-pak-for-business-automation/content-services
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/filenet-content-manager
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/enterprise-records
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/consulting/hybrid-by-design
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/cloud-pak-for-business-automation/content-services
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/content-manager
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/products/ecm-system-monitor
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/solutions/enterprise-content-management
+ [warning] Removed disallowed Markdown link with URL: https://www.ibm.com/account/reg/signup?formid=urx-45706
+ [warning] Cross-iteration data read on pipeline 573: job 5268 (node message_assemble.2, iteration 2) is satisfied by source node message_from_text.1 (job 5205, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+ [warning] Cross-iteration data read on pipeline 573: job 5268 (node message_assemble.2, iteration 2) is satisfied by source node message_from_text.2 (job 5208, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
+  bench_9_reflexion_with_tools_in_parent medium  r1   completed  wall= 221.11s pipeline=572
+appended to /var/www/html/scratchpad/bench/results/runs.jsonl
+=================== B9 FIX RERUN COMPLETE ===================
