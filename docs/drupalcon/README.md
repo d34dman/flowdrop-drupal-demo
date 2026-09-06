@@ -29,7 +29,7 @@ plus the ideas for turning it into 45 minutes.
 | [ideas/objective-mapping.md](ideas/objective-mapping.md) | The seven learning objectives ↔ the evidence, **including the gaps** |
 | [ideas/talk-outline.md](ideas/talk-outline.md) | A 45-minute slide-by-slide plan |
 | [ideas/open-questions.md](ideas/open-questions.md) | What to run before the talk, with cost estimates |
-| [data/](data/) | **Frozen CSV snapshot of all 203 runs** — the scratchpad is not committed, this is the durable copy |
+| [data/](data/) | **Frozen CSV snapshot of all 203 runs** — the durable copy. The harness and its raw ledgers are committed under `scratchpad/bench/`; runs enter this folder only through `fold_runs.py` |
 | [v2/](v2/) | **Report v2** — the same runs re-graded against gold documents into Correct / Degraded / Silent / Format / Loud. Start with [v2/README.md](v2/README.md) |
 
 ## Published artifacts (interactive, for reference or live demo)
