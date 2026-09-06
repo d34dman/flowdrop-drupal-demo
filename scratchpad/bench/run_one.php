@@ -5,7 +5,7 @@
  * Usage: drush php:script run_one.php -- <workflow_id> <url>
  */
 $id  = $extra[0] ?? 'bench_1_reference';
-$url = $extra[1] ?? 'https://www.ibm.com/think/topics/drupal-wordpress';
+$url = $extra[1] ?? 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/medium.html';
 
 // drush php:script executes as the anonymous user, whose quota is a small
 // shared ceiling meant for public traffic — a benchmark run exhausts it and

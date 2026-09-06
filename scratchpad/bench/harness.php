@@ -38,9 +38,9 @@ $URLS = [
   // Ascending raw-HTML size (~38KB / ~164KB / ~535KB). The span is the point:
   // the variants that feed raw HTML to the model pay for the page, not for
   // the content in it.
-  'small'  => 'https://www.drupal.org/about',
-  'medium' => 'https://www.ibm.com/think/topics/drupal-wordpress',
-  'large'  => 'https://en.wikipedia.org/wiki/Drupal',
+  'small'  => 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/small.html',
+  'medium' => 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/medium.html',
+  'large'  => 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/large.html',
 ];
 
 // drush php:script executes as the anonymous user, whose quota is a small

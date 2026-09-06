@@ -79,12 +79,12 @@ nodes:
     data:
       label: 'Prompt Template'
       config:
-        template: 'https://www.ibm.com/think/topics/drupal-wordpress'
+        template: 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/medium.html'
         nodeType: default
         maxRetries: 0
         requiresConfirmation: ''
         instanceTitle: URL
-        instanceDescription: 'https://www.ibm.com/think/topics/drupal-wordpress'
+        instanceDescription: 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/medium.html'
         ports:
           inputs:
             -

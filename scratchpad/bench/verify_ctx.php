@@ -7,7 +7,7 @@ $uuid = \Drupal::service('uuid')->generate();
 
 $wf = \Drupal::entityTypeManager()->getStorage('flowdrop_workflow')->load('bench_3_markdown_llm');
 $res = \Drupal::service('flowdrop_workflow_executor.launcher')->launch(
-  $wf, ['url' => 'https://www.drupal.org/about'],
+  $wf, ['url' => 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/small.html'],
   new \Drupal\flowdrop_workflow_executor\DTO\LaunchOptions(wait: TRUE));
 \Drupal::service('fd_bench.run_context')->set(NULL);
 

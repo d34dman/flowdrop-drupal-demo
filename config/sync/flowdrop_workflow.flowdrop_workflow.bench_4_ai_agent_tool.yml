@@ -162,7 +162,7 @@ nodes:
               exposed: false
             -
               id: error
-        url: 'https://www.ibm.com/think/topics/drupal-wordpress'
+        url: 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/medium.html'
       metadata:
         node_type_id: http_request
     measured:

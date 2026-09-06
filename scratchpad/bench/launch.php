@@ -25,10 +25,13 @@ foreach ([$outDir, "$outDir/outputs"] as $d) {
   }
 }
 
+// The pages are the flowdrop-ai-bench corpus (owned, versioned, static). Until its
+// Pages site is enabled these URLs 404 and every run fails fast; that is intended.
+// The old live third-party pages must not come back here: no consent to fetch them.
 $URLS = [
-  'small'  => 'https://www.drupal.org/about',
-  'medium' => 'https://www.ibm.com/think/topics/drupal-wordpress',
-  'large'  => 'https://en.wikipedia.org/wiki/Drupal',
+  'small'  => 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/small.html',
+  'medium' => 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/medium.html',
+  'large'  => 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/large.html',
 ];
 
 // drush php:script executes as anonymous, whose quota is a small shared
