@@ -1,0 +1,53 @@
+{
+    "run_id": "bench_1_reference__medium__r9__1788101326",
+    "workflow": "bench_1_reference",
+    "url_key": "medium",
+    "url": "https://www.ibm.com/think/topics/drupal-wordpress",
+    "rep": 9,
+    "pipeline_id": "307",
+    "context_uuid": "77f56575-710e-49d5-bc09-b9c82df70eaa",
+    "wall_seconds": 0.2147,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "overhead-probe",
+    "ts": "2026-08-30T14:48:46+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 3,
+    "payload_bytes": 455361,
+    "total_seconds": 0.127,
+    "ai_seconds": 0,
+    "deterministic_seconds": 0.127,
+    "llm_calls": 0,
+    "models": [],
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cached_tokens": 0,
+    "cost_usd": 0,
+    "retries": 0,
+    "output_chars": 14497,
+    "nodes": [
+        {
+            "node_type": "http_request",
+            "status": "completed",
+            "seconds": 0.121,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "html_to_markdown",
+            "status": "completed",
+            "seconds": 0.007,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

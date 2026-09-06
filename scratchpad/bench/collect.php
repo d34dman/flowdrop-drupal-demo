@@ -33,7 +33,7 @@ if (is_file("$dir/annotations.jsonl")) {
   }
 }
 
-if (!is_dir("$dir/outputs")) { mkdir("$dir/outputs", 0777, TRUE); }
+foreach (["$dir/outputs", "$dir/runs"] as $d) { if (!is_dir($d)) { mkdir($d, 0777, TRUE); } }
 $out = fopen("$dir/metrics.jsonl", 'w');
 $n = 0;
 
@@ -101,7 +101,7 @@ foreach (file("$dir/runs.jsonl", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) 
 
   if ($output !== NULL) { file_put_contents("$dir/outputs/{$run['run_id']}.md", $output); }
 
-  fwrite($out, json_encode($run + [
+  $record = $run + [
     'pipeline_status' => $pipeline->getStatus(),
     'failed_nodes' => $failed,
     'job_count' => count($nodes),
@@ -121,8 +121,14 @@ foreach (file("$dir/runs.jsonl", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) 
     // The status stays whatever the engine reported; an annotation never
     // upgrades a failed run into a successful one.
     'annotations' => $annotations[$run['run_id']] ?? [],
-  ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n");
+  ];
+  $json = json_encode($record, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+  fwrite($out, $json . "\n");
+  // One file per run is the unit of contribution to flowdrop-ai-bench: two
+  // contributors never touch the same line, and a PR is reviewable per run.
+  file_put_contents("$dir/runs/{$run['run_id']}.json", json_encode($record,
+    JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . "\n");
   $n++;
 }
 fclose($out);
-printf("collected %d runs -> %s/metrics.jsonl\n", $n, $dir);
+printf("collected %d runs -> %s/metrics.jsonl and %s/runs/*.json\n", $n, $dir, $dir);

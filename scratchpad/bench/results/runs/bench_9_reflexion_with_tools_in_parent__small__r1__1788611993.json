@@ -1,0 +1,48 @@
+{
+    "run_id": "bench_9_reflexion_with_tools_in_parent__small__r1__1788611993",
+    "workflow": "bench_9_reflexion_with_tools_in_parent",
+    "url_key": "small",
+    "url": "https://www.drupal.org/about",
+    "rep": 1,
+    "pipeline_id": "564",
+    "context_uuid": "dd28499b-6d09-47fd-9197-15aa571b410e",
+    "wall_seconds": 169.7147,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "b9fix-claude-sonnet-4-6",
+    "ts": "2026-09-05T12:42:42+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 2,
+    "payload_bytes": 19422,
+    "total_seconds": 169.348,
+    "ai_seconds": 0,
+    "deterministic_seconds": 169.348,
+    "llm_calls": 9,
+    "models": [
+        "claude-sonnet-4-6"
+    ],
+    "input_tokens": 78856,
+    "output_tokens": 7271,
+    "cached_tokens": 0,
+    "cost_usd": 0.345633,
+    "retries": 0,
+    "output_chars": 4608,
+    "nodes": [
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0.001,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_workflow_reflexion_agent_engine",
+            "status": "completed",
+            "seconds": 169.348,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

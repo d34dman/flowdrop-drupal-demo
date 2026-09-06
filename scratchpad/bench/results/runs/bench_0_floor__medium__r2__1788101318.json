@@ -1,0 +1,39 @@
+{
+    "run_id": "bench_0_floor__medium__r2__1788101318",
+    "workflow": "bench_0_floor",
+    "url_key": "medium",
+    "url": "https://www.ibm.com/think/topics/drupal-wordpress",
+    "rep": 2,
+    "pipeline_id": "264",
+    "context_uuid": "acf0c8d0-937a-4e4c-b9b6-8a996dea2dca",
+    "wall_seconds": 0.0265,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "overhead-probe",
+    "ts": "2026-08-30T14:48:38+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 1,
+    "payload_bytes": 89,
+    "total_seconds": 0,
+    "ai_seconds": 0,
+    "deterministic_seconds": 0,
+    "llm_calls": 0,
+    "models": [],
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cached_tokens": 0,
+    "cost_usd": 0,
+    "retries": 0,
+    "output_chars": 49,
+    "nodes": [
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

@@ -15,14 +15,14 @@ file is the reference for the pieces.
 | B3 | `bench_3_markdown_llm` | yes |
 | B4 | `bench_4_ai_agent_tool` | yes |
 | B5 | `bench_5_react_agent` | yes |
-| B5a | `bench_5a_react_agent_naive` | yes |
 | B6 | `bench_6_agent_autonomous` | yes |
 | B7 | `bench_7_react_optimized` | yes |
 | B8 | `bench_8_react_with_tools_in_parent` | yes |
 | B9 | `bench_9_reflexion_with_tools_in_parent` | yes |
 
-Pages: `small` (drupal.org/about), `medium` (ibm.com Drupal-vs-WordPress), `large`
-(Wikipedia Drupal). The URLs are in `launch.php`. Models run so far:
+Pages: `small`, `medium`, `large` from the flowdrop-ai-bench corpus, read from its
+`corpus/v1/manifest.json` at run time (URL and sha256 per page). B5a, the naive-prompt
+control, was retired when every cell moved to the one shared prompt. Models run so far:
 `claude-haiku-4-5-20251001`, `claude-sonnet-4-6`, `claude-sonnet-5`, `claude-opus-5`.
 Pass the bare Anthropic model id; the provider defaults to `anthropic`.
 
@@ -33,8 +33,13 @@ ddev exec sh scratchpad/bench/run_cell.sh <cells> <model> [pages] [reps] [tag] \
   > scratchpad/bench/<tag>.log 2>&1
 ```
 
-`run_cell.sh` does three things in order:
+`run_cell.sh` does four things in order:
 
+0. `set_prompt.php` fetches `prompt/redact.v1.md` (and `critic.v1.md` for B9) from the
+   bench site and writes it into every model-calling node and agent: chat and reason
+   nodes' `systemPrompt` (un-exposing the port, which otherwise shadows the value), the
+   ReAct/Reflexion engines' `system_prompt` and `critic_prompt`, and the two AI Agents
+   entities. The ledger records the prompt's sha256.
 1. `set_model.php` points every model-calling node in every bench workflow at the model.
    There is no per-cell model, so a sweep across models must set it each time. The model
    lives in three unrelated config shapes (chat node, reason processor, agent executor);
@@ -45,6 +50,11 @@ ddev exec sh scratchpad/bench/run_cell.sh <cells> <model> [pages] [reps] [tag] \
 3. `collect.php` rewrites `results/metrics.jsonl` for **all** runs from stored state
    (calls, tokens, cached tokens, cost, status) and writes each output document to
    `results/outputs/<run_id>.md`. It is idempotent and free; rerun it any time.
+
+Everything the harness needs from the bench repo is read over HTTP from
+`https://d34dman.github.io/flowdrop-ai-bench/`. `BENCH_BASE` overrides that (a local
+checkout served with `python3 -m http.server`, reached from the container as
+`http://host.docker.internal:<port>/`); `BENCH_CORPUS` picks the corpus version.
 
 Agent cells take 20 s to several minutes per page; B6 and B9 on `large` can take
 10+ minutes. Costs are real: a single-cell single-page run is cents, a full B2–B9 sweep
@@ -70,15 +80,18 @@ data point. Eyeball the redaction in `results/outputs/<run_id>.md`: the marks ar
 | `results/runs.jsonl` | Launch ledger, append-only |
 | `results/metrics.jsonl` | Derived metrics, rewritten by `collect.php` |
 | `results/outputs/` | One Markdown document per run |
-| `fold_runs.py <tag-prefix>` | Appends tagged runs to `docs/drupalcon/data/runs.csv` and copies outputs there. Skips run ids already present. |
+| `results/runs/` | One JSON file per run, the unit of contribution |
+| `export.py <bench-checkout> <tag-prefix>` | Copies the runs and outputs for a tag into a flowdrop-ai-bench checkout, ready for a PR |
+| `bench_lib.php`, `set_prompt.php` | Manifest/prompt fetch and the prompt push |
+| `fold_runs.py` | Retired with the v1 dataset; use `export.py` |
 | `summarize.py`, `analyse.py`, `overhead.py`, `report_final.py` | Local analysis |
 | `build*.php`, `apply_prompt.php`, `fix_bench7_ports.php` | One-off scripts that built or repaired the bench workflows; kept for the record |
 | `*.log`, `*.sh` | Logs and wrappers of the sweeps behind the published dataset |
 
 ## Rules
 
-- `docs/drupalcon/data/runs.csv` is the frozen dataset behind the published pages. New
-  runs stay in `results/` until they are folded in with `fold_runs.py`; never hand-edit it.
+- The dataset lives in flowdrop-ai-bench. Runs get there through `export.py` and a PR;
+  nothing is hand-edited.
 - `results/` is committed. Commit new runs as `bench: <what> on <model>`.
 - Changing a workflow or prompt changes the experiment. Export the config
   (`ddev drush cex`) and say what changed in the commit or PR.

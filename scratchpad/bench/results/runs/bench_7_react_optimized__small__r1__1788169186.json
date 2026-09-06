@@ -1,0 +1,48 @@
+{
+    "run_id": "bench_7_react_optimized__small__r1__1788169186",
+    "workflow": "bench_7_react_optimized",
+    "url_key": "small",
+    "url": "https://www.drupal.org/about",
+    "rep": 1,
+    "pipeline_id": "409",
+    "context_uuid": "8ecba445-6123-434d-a18e-75b9167b6c1a",
+    "wall_seconds": 15.078,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "b7-smoke2",
+    "ts": "2026-08-31T09:40:01+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 2,
+    "payload_bytes": 8885,
+    "total_seconds": 14.858,
+    "ai_seconds": 14.858,
+    "deterministic_seconds": 0,
+    "llm_calls": 2,
+    "models": [
+        "claude-sonnet-5"
+    ],
+    "input_tokens": 9061,
+    "output_tokens": 931,
+    "cached_tokens": 0,
+    "cost_usd": 0.027432,
+    "retries": 0,
+    "output_chars": 2458,
+    "nodes": [
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_workflow_react_agent_with_optimized_tools",
+            "status": "completed",
+            "seconds": 14.858,
+            "is_ai": true,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

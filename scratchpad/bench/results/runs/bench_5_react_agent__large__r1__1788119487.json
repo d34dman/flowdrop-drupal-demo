@@ -1,0 +1,48 @@
+{
+    "run_id": "bench_5_react_agent__large__r1__1788119487",
+    "workflow": "bench_5_react_agent",
+    "url_key": "large",
+    "url": "https://en.wikipedia.org/wiki/Drupal",
+    "rep": 1,
+    "pipeline_id": "366",
+    "context_uuid": "033a6522-5259-4787-8445-09b7784f6dab",
+    "wall_seconds": 157.4231,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "matrix-claude-sonnet-5",
+    "ts": "2026-08-30T19:54:05+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 2,
+    "payload_bytes": 68650,
+    "total_seconds": 157.331,
+    "ai_seconds": 157.331,
+    "deterministic_seconds": 0.001,
+    "llm_calls": 3,
+    "models": [
+        "claude-sonnet-5"
+    ],
+    "input_tokens": 691024,
+    "output_tokens": 16312,
+    "cached_tokens": 0,
+    "cost_usd": 1.545168,
+    "retries": 0,
+    "output_chars": 21990,
+    "nodes": [
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0.001,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_workflow_react_agent_with_tools",
+            "status": "completed",
+            "seconds": 157.331,
+            "is_ai": true,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

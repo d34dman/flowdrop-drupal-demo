@@ -1,0 +1,59 @@
+{
+    "run_id": "bench_8_react_with_tools_in_parent__medium__r1__1788625440",
+    "workflow": "bench_8_react_with_tools_in_parent",
+    "url_key": "medium",
+    "url": "https://www.ibm.com/think/topics/drupal-wordpress",
+    "rep": 1,
+    "pipeline_id": "600",
+    "context_uuid": "223f9b83-fd07-4118-93ad-e50499364f4f",
+    "wall_seconds": 5.5808,
+    "launch_status": "paused",
+    "launch_error": null,
+    "tag": "bench89-opus5-medium-retry",
+    "ts": "2026-09-05T16:24:06+00:00",
+    "pipeline_status": "paused",
+    "failed_nodes": [
+        "chat_output:idle",
+        "flowdrop_workflow_react_agent_engine:interrupted",
+        "text_output:idle"
+    ],
+    "job_count": 3,
+    "payload_bytes": 12,
+    "total_seconds": 0,
+    "ai_seconds": 0,
+    "deterministic_seconds": 0,
+    "llm_calls": 1,
+    "models": [
+        "claude-opus-5"
+    ],
+    "input_tokens": 816,
+    "output_tokens": 151,
+    "cached_tokens": 0,
+    "cost_usd": 0.007855,
+    "retries": 0,
+    "output_chars": null,
+    "nodes": [
+        {
+            "node_type": "chat_output",
+            "status": "idle",
+            "seconds": null,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_workflow_react_agent_engine",
+            "status": "interrupted",
+            "seconds": null,
+            "is_ai": true,
+            "error": null
+        },
+        {
+            "node_type": "text_output",
+            "status": "idle",
+            "seconds": null,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

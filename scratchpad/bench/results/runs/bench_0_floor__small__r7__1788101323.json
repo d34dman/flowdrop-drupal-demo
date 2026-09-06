@@ -1,0 +1,39 @@
+{
+    "run_id": "bench_0_floor__small__r7__1788101323",
+    "workflow": "bench_0_floor",
+    "url_key": "small",
+    "url": "https://www.drupal.org/about",
+    "rep": 7,
+    "pipeline_id": "292",
+    "context_uuid": "29be9cd2-dd5e-48d7-b686-33398c4de6f0",
+    "wall_seconds": 0.0278,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "overhead-probe",
+    "ts": "2026-08-30T14:48:43+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 1,
+    "payload_bytes": 66,
+    "total_seconds": 0,
+    "ai_seconds": 0,
+    "deterministic_seconds": 0,
+    "llm_calls": 0,
+    "models": [],
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cached_tokens": 0,
+    "cost_usd": 0,
+    "retries": 0,
+    "output_chars": 28,
+    "nodes": [
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

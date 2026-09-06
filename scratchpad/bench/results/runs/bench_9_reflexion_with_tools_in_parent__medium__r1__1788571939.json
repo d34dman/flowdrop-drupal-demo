@@ -1,0 +1,51 @@
+{
+    "run_id": "bench_9_reflexion_with_tools_in_parent__medium__r1__1788571939",
+    "workflow": "bench_9_reflexion_with_tools_in_parent",
+    "url_key": "medium",
+    "url": "https://www.ibm.com/think/topics/drupal-wordpress",
+    "rep": 1,
+    "pipeline_id": "518",
+    "context_uuid": "137c5334-3dfa-4f05-aef3-038b96704b41",
+    "wall_seconds": 80.7595,
+    "launch_status": "failed",
+    "launch_error": null,
+    "tag": "bench89-claude-haiku-4-5-20251001",
+    "ts": "2026-09-05T01:33:40+00:00",
+    "pipeline_status": "failed",
+    "failed_nodes": [
+        "chat_output:idle",
+        "flowdrop_workflow_reflexion_agent_engine:failed"
+    ],
+    "job_count": 2,
+    "payload_bytes": 8,
+    "total_seconds": 0,
+    "ai_seconds": 0,
+    "deterministic_seconds": 0,
+    "llm_calls": 6,
+    "models": [
+        "claude-haiku-4-5-20251001"
+    ],
+    "input_tokens": 29511,
+    "output_tokens": 5855,
+    "cached_tokens": 0,
+    "cost_usd": 0.058786,
+    "retries": 0,
+    "output_chars": null,
+    "nodes": [
+        {
+            "node_type": "chat_output",
+            "status": "idle",
+            "seconds": null,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_workflow_reflexion_agent_engine",
+            "status": "failed",
+            "seconds": null,
+            "is_ai": false,
+            "error": "Sub-workflow reflexion_agent_engine failed: Workflow execution failed"
+        }
+    ],
+    "annotations": []
+}

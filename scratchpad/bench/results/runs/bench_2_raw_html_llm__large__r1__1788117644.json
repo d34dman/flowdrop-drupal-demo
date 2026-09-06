@@ -1,0 +1,56 @@
+{
+    "run_id": "bench_2_raw_html_llm__large__r1__1788117644",
+    "workflow": "bench_2_raw_html_llm",
+    "url_key": "large",
+    "url": "https://en.wikipedia.org/wiki/Drupal",
+    "rep": 1,
+    "pipeline_id": "339",
+    "context_uuid": "eab52a72-c578-41f4-a962-304f3fc5db93",
+    "wall_seconds": 1.9681,
+    "launch_status": "failed",
+    "launch_error": null,
+    "tag": "matrix-claude-haiku-4-5-20251001",
+    "ts": "2026-08-30T19:20:46+00:00",
+    "pipeline_status": "failed",
+    "failed_nodes": [
+        "flowdrop_ai_provider_chat:failed",
+        "chat_output:idle"
+    ],
+    "job_count": 3,
+    "payload_bytes": 1654994,
+    "total_seconds": 0.283,
+    "ai_seconds": 0,
+    "deterministic_seconds": 0.283,
+    "llm_calls": 0,
+    "models": [],
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cached_tokens": 0,
+    "cost_usd": 0,
+    "retries": 0,
+    "output_chars": null,
+    "nodes": [
+        {
+            "node_type": "http_request",
+            "status": "completed",
+            "seconds": 0.283,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_ai_provider_chat",
+            "status": "failed",
+            "seconds": null,
+            "is_ai": true,
+            "error": "Node execution failed for flowdrop_ai_provider_chat.1: prompt is too long: 212010 tokens > 200000 maximum"
+        },
+        {
+            "node_type": "chat_output",
+            "status": "idle",
+            "seconds": null,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

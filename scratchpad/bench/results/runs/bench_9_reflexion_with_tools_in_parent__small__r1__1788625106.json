@@ -1,0 +1,48 @@
+{
+    "run_id": "bench_9_reflexion_with_tools_in_parent__small__r1__1788625106",
+    "workflow": "bench_9_reflexion_with_tools_in_parent",
+    "url_key": "small",
+    "url": "https://www.drupal.org/about",
+    "rep": 1,
+    "pipeline_id": "591",
+    "context_uuid": "fe64b3d3-dc5a-4300-b6af-b28353d3fd68",
+    "wall_seconds": 77.2094,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "bench89-opus5-sm",
+    "ts": "2026-09-05T16:19:43+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 2,
+    "payload_bytes": 37238,
+    "total_seconds": 77.17,
+    "ai_seconds": 0,
+    "deterministic_seconds": 77.17,
+    "llm_calls": 3,
+    "models": [
+        "claude-opus-5"
+    ],
+    "input_tokens": 12859,
+    "output_tokens": 7390,
+    "cached_tokens": 0,
+    "cost_usd": 0.249045,
+    "retries": 0,
+    "output_chars": 8679,
+    "nodes": [
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_workflow_reflexion_agent_engine",
+            "status": "completed",
+            "seconds": 77.17,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

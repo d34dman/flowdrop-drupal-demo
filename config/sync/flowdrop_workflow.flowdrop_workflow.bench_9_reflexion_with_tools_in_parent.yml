@@ -62,13 +62,18 @@ nodes:
       label: 'Reflexion Agent Engine'
       config:
         system_prompt: |-
-          Fetch the content at the given URL and convert the ENTIRE page to Markdown.
+          Convert the ENTIRE page to Markdown. If you are given a URL rather than the page,
+          fetch the content at that URL first.
 
           Reproduce the full document: every heading, paragraph, list item and table, in
           the original order and wording. Do not summarise, abridge, omit or re-word
           anything. Redaction is the only change you may make to the text.
 
-          Redaction: replace any competitor of Drupal CMS with "▌▌▌▌▌▌▌▌▌".
+          Redaction: the page discusses Drupal and its competing content management
+          products. Replace every mention of the CMS products Quillpress, Hexagrid, Lumen
+          CMS, Marrow and Sitewright with "████". Redact only the product: the same word
+          used in another sense (a person, a place, a unit, an ordinary word) is not a
+          product and must stay as written. Never redact Drupal.
 
           Output the Markdown document and nothing else. No code fences, no preamble, no
           commentary, no explanation of what you did.
@@ -79,9 +84,10 @@ nodes:
           You are a strict reviewer of a Markdown conversion. The last assistant message is the
           draft output. Judge it ONLY against these rules: (1) it must be the ENTIRE page as
           Markdown, every heading, paragraph, list item and table in original order and wording,
-          nothing summarised or omitted; (2) every competitor of Drupal CMS must be replaced with
-          "▌▌▌▌▌▌▌▌▌" and no other text may be changed; (3) it must contain nothing but the
-          Markdown document: no code fences, no preamble, no commentary.
+          nothing summarised or omitted; (2) every mention of the CMS products Quillpress, Hexagrid, Lumen CMS, Marrow and Sitewright
+          must be replaced with "████" and no other text may be changed, and the same word used
+          in another sense (a person, a place, a unit) must NOT be replaced; (3) it must contain
+          nothing but the Markdown document: no code fences, no preamble, no commentary.
 
           Your reply must begin with exactly one line: VERDICT: ACCEPT if all three rules hold, or
           VERDICT: REVISE if any is broken. After a REVISE verdict, list concretely which rule is
@@ -320,7 +326,7 @@ metadata:
   orchestrator_settings:
     type: 'flowdrop_runtime:synchronous'
 created: 1788390754
-changed: 1788574198
+changed: 1788703860
 uid: 1
 input_ports:
   -

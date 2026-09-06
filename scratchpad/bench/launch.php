@@ -11,6 +11,7 @@
  * so the launch is timed here and carried through.
  *
  * Usage: drush php:script launch.php -- <out_dir> <workflows,csv> <urlkeys,csv> [reps] [tag]
+ * Env: BENCH_BASE (bench site base URL), BENCH_CORPUS (corpus version, default v1)
  */
 $outDir   = $extra[0] ?? 'scratchpad/bench/results';
 $wfIds    = array_filter(explode(',', $extra[1] ?? ''));
@@ -25,14 +26,16 @@ foreach ([$outDir, "$outDir/outputs"] as $d) {
   }
 }
 
-// The pages are the flowdrop-ai-bench corpus (owned, versioned, static). Until its
-// Pages site is enabled these URLs 404 and every run fails fast; that is intended.
-// The old live third-party pages must not come back here: no consent to fetch them.
-$URLS = [
-  'small'  => 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/small.html',
-  'medium' => 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/medium.html',
-  'large'  => 'https://d34dman.github.io/flowdrop-ai-bench/corpus/v1/large.html',
-];
+require_once __DIR__ . '/bench_lib.php';
+// The pages are the flowdrop-ai-bench corpus: owned, versioned, static, and
+// described by its manifest (URL and sha256 per page). The old live third-party
+// pages must not come back here: no consent to fetch them.
+$corpusVersion = getenv('BENCH_CORPUS') ?: 'v1';
+$manifest = bench_manifest($corpusVersion, "$outDir/.bench-cache");
+$URLS = array_map(static fn ($p) => $p['url'], $manifest['pages']);
+[$promptMeta, , $promptSha] = bench_prompt_file($manifest['prompt'] ?? 'prompt/redact.v1.md', "$outDir/.bench-cache");
+$flowdropVersion = bench_flowdrop_version();
+const HARNESS_VERSION = '2.0.0';
 
 // drush php:script executes as anonymous, whose quota is a small shared
 // ceiling meant for public traffic; a benchmark exhausts it mid-matrix.
@@ -74,6 +77,12 @@ foreach (range(1, $reps) as $rep) {
         'workflow' => $wfId,
         'url_key' => $urlKey,
         'url' => $url,
+        'corpus_version' => $manifest['version'],
+        'page_sha256' => $manifest['pages'][$urlKey]['sha256'] ?? NULL,
+        'prompt_sha256' => $promptSha,
+        'glyph' => $promptMeta['glyph'] ?? NULL,
+        'flowdrop_version' => $flowdropVersion,
+        'harness_version' => HARNESS_VERSION,
         'rep' => $rep,
         'pipeline_id' => (string) $pipelineId,
         'context_uuid' => $runUuid,

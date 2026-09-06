@@ -1,0 +1,55 @@
+{
+    "run_id": "bench_2_raw_html_llm__small__r1__1788117676",
+    "workflow": "bench_2_raw_html_llm",
+    "url_key": "small",
+    "url": "https://www.drupal.org/about",
+    "rep": 1,
+    "pipeline_id": "347",
+    "context_uuid": "6595cac8-3868-4a6c-8395-348f6cdf7c2b",
+    "wall_seconds": 138.7268,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "matrix-claude-sonnet-5",
+    "ts": "2026-08-30T19:23:34+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 3,
+    "payload_bytes": 242307,
+    "total_seconds": 138.262,
+    "ai_seconds": 137.796,
+    "deterministic_seconds": 0.466,
+    "llm_calls": 1,
+    "models": [
+        "claude-sonnet-5"
+    ],
+    "input_tokens": 16622,
+    "output_tokens": 16762,
+    "cached_tokens": 0,
+    "cost_usd": 0.200864,
+    "retries": 0,
+    "output_chars": 27904,
+    "nodes": [
+        {
+            "node_type": "http_request",
+            "status": "completed",
+            "seconds": 0.466,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_ai_provider_chat",
+            "status": "completed",
+            "seconds": 137.796,
+            "is_ai": true,
+            "error": null
+        },
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

@@ -1,0 +1,50 @@
+{
+    "run_id": "bench_2_raw_html_llm__small__r1__1788094492",
+    "workflow": "bench_2_raw_html_llm",
+    "url_key": "small",
+    "url": "https://www.drupal.org/about",
+    "rep": 1,
+    "pipeline_id": "209",
+    "context_uuid": "8760597f-d7b6-4e68-a878-1eed1a737d63",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 3,
+    "payload_bytes": 242265,
+    "total_seconds": 252.658,
+    "ai_seconds": 252.618,
+    "deterministic_seconds": 0.041,
+    "llm_calls": 1,
+    "models": [
+        "claude-sonnet-4-6"
+    ],
+    "input_tokens": 13671,
+    "output_tokens": 13616,
+    "cached_tokens": 0,
+    "cost_usd": 0.245253,
+    "retries": 0,
+    "output_chars": 27886,
+    "nodes": [
+        {
+            "node_type": "http_request",
+            "status": "completed",
+            "seconds": 0.036,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_ai_provider_chat",
+            "status": "completed",
+            "seconds": 252.618,
+            "is_ai": true,
+            "error": null
+        },
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0.004,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

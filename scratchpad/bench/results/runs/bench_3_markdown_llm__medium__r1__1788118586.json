@@ -1,0 +1,62 @@
+{
+    "run_id": "bench_3_markdown_llm__medium__r1__1788118586",
+    "workflow": "bench_3_markdown_llm",
+    "url_key": "medium",
+    "url": "https://www.ibm.com/think/topics/drupal-wordpress",
+    "rep": 1,
+    "pipeline_id": "356",
+    "context_uuid": "9096d034-b7ff-470a-992c-f7bb0c69abe9",
+    "wall_seconds": 41.1482,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "matrix-claude-sonnet-5",
+    "ts": "2026-08-30T19:37:07+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 4,
+    "payload_bytes": 479832,
+    "total_seconds": 40.925,
+    "ai_seconds": 39.533,
+    "deterministic_seconds": 1.392,
+    "llm_calls": 1,
+    "models": [
+        "claude-sonnet-5"
+    ],
+    "input_tokens": 4924,
+    "output_tokens": 4945,
+    "cached_tokens": 0,
+    "cost_usd": 0.059298,
+    "retries": 0,
+    "output_chars": 12325,
+    "nodes": [
+        {
+            "node_type": "http_request",
+            "status": "completed",
+            "seconds": 1.381,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "html_to_markdown",
+            "status": "completed",
+            "seconds": 0.01,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_ai_provider_chat",
+            "status": "completed",
+            "seconds": 39.533,
+            "is_ai": true,
+            "error": null
+        },
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

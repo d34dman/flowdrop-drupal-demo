@@ -1,0 +1,55 @@
+{
+    "run_id": "bench_2_raw_html_llm__small__r1__1788116759",
+    "workflow": "bench_2_raw_html_llm",
+    "url_key": "small",
+    "url": "https://www.drupal.org/about",
+    "rep": 1,
+    "pipeline_id": "323",
+    "context_uuid": "510ff1be-7128-40d8-ae43-8b852d78a9a0",
+    "wall_seconds": 127.8375,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "matrix-claude-haiku-4-5-20251001",
+    "ts": "2026-08-30T19:08:07+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 3,
+    "payload_bytes": 242589,
+    "total_seconds": 127.62,
+    "ai_seconds": 127.416,
+    "deterministic_seconds": 0.204,
+    "llm_calls": 1,
+    "models": [
+        "claude-haiku-4-5-20251001"
+    ],
+    "input_tokens": 13675,
+    "output_tokens": 13652,
+    "cached_tokens": 0,
+    "cost_usd": 0.081935,
+    "retries": 0,
+    "output_chars": 27922,
+    "nodes": [
+        {
+            "node_type": "http_request",
+            "status": "completed",
+            "seconds": 0.203,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_ai_provider_chat",
+            "status": "completed",
+            "seconds": 127.416,
+            "is_ai": true,
+            "error": null
+        },
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0.001,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

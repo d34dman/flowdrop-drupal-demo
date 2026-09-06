@@ -75,14 +75,26 @@ nodes:
     data:
       label: Chat
       config:
-        model: claude-opus-5
+        model: claude-haiku-4-5-20251001
         operation_type: chat
         temperature: 0
         maxTokens: 200000
         systemPrompt: |-
-          Replace any competitor of Drupal CMS with "▌▌▌▌" in the given user message
+          Convert the ENTIRE page to Markdown. If you are given a URL rather than the page,
+          fetch the content at that URL first.
 
-          Display the output as markdown without any codefense or anything. Don't provide any reason on any other text explanation.
+          Reproduce the full document: every heading, paragraph, list item and table, in
+          the original order and wording. Do not summarise, abridge, omit or re-word
+          anything. Redaction is the only change you may make to the text.
+
+          Redaction: the page discusses Drupal and its competing content management
+          products. Replace every mention of the CMS products Quillpress, Hexagrid, Lumen
+          CMS, Marrow and Sitewright with "████". Redact only the product: the same word
+          used in another sense (a person, a place, a unit, an ordinary word) is not a
+          product and must stay as written. Never redact Drupal.
+
+          Output the Markdown document and nothing else. No code fences, no preamble, no
+          commentary, no explanation of what you did.
         maxRetries: 0
         requiresConfirmation: ''
         ports:
@@ -199,7 +211,7 @@ metadata:
   orchestrator_settings:
     type: 'flowdrop_runtime:synchronous'
 created: 1788088649
-changed: 1788623257
+changed: 1788703861
 uid: 0
 input_ports:
   -

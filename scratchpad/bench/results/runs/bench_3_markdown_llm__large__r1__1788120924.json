@@ -1,0 +1,62 @@
+{
+    "run_id": "bench_3_markdown_llm__large__r1__1788120924",
+    "workflow": "bench_3_markdown_llm",
+    "url_key": "large",
+    "url": "https://en.wikipedia.org/wiki/Drupal",
+    "rep": 1,
+    "pipeline_id": "388",
+    "context_uuid": "8bb46401-4aa1-4a79-bc44-7b534271bbeb",
+    "wall_seconds": 421.6951,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "matrix-claude-opus-5",
+    "ts": "2026-08-30T20:22:25+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 4,
+    "payload_bytes": 2097988,
+    "total_seconds": 421.283,
+    "ai_seconds": 421.042,
+    "deterministic_seconds": 0.241,
+    "llm_calls": 1,
+    "models": [
+        "claude-opus-5"
+    ],
+    "input_tokens": 46970,
+    "output_tokens": 47628,
+    "cached_tokens": 0,
+    "cost_usd": 1.42555,
+    "retries": 0,
+    "output_chars": 64548,
+    "nodes": [
+        {
+            "node_type": "http_request",
+            "status": "completed",
+            "seconds": 0.165,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "html_to_markdown",
+            "status": "completed",
+            "seconds": 0.075,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_ai_provider_chat",
+            "status": "completed",
+            "seconds": 421.042,
+            "is_ai": true,
+            "error": null
+        },
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

@@ -1,0 +1,48 @@
+{
+    "run_id": "bench_6_agent_autonomous__medium__r1__1788110386",
+    "workflow": "bench_6_agent_autonomous",
+    "url_key": "medium",
+    "url": "https://www.ibm.com/think/topics/drupal-wordpress",
+    "rep": 1,
+    "pipeline_id": "317",
+    "context_uuid": "134f05ed-6000-4a2f-8f59-c17563573efe",
+    "wall_seconds": 127.5496,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "bench6-fill",
+    "ts": "2026-08-30T17:21:53+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 2,
+    "payload_bytes": 34253,
+    "total_seconds": 127.236,
+    "ai_seconds": 127.236,
+    "deterministic_seconds": 0,
+    "llm_calls": 3,
+    "models": [
+        "claude-sonnet-4-6"
+    ],
+    "input_tokens": 125833,
+    "output_tokens": 5512,
+    "cached_tokens": 0,
+    "cost_usd": 0.460179,
+    "retries": 0,
+    "output_chars": 10869,
+    "nodes": [
+        {
+            "node_type": "flowdrop_agents_ai_agents_executor",
+            "status": "completed",
+            "seconds": 127.236,
+            "is_ai": true,
+            "error": null
+        },
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

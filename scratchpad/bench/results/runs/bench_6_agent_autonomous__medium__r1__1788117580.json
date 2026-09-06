@@ -1,0 +1,48 @@
+{
+    "run_id": "bench_6_agent_autonomous__medium__r1__1788117580",
+    "workflow": "bench_6_agent_autonomous",
+    "url_key": "medium",
+    "url": "https://www.ibm.com/think/topics/drupal-wordpress",
+    "rep": 1,
+    "pipeline_id": "338",
+    "context_uuid": "5f23c533-c7d3-4f1f-9a6d-9456a2a96f87",
+    "wall_seconds": 63.9601,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "matrix-claude-haiku-4-5-20251001",
+    "ts": "2026-08-30T19:20:44+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 2,
+    "payload_bytes": 27425,
+    "total_seconds": 63.907,
+    "ai_seconds": 63.906,
+    "deterministic_seconds": 0.001,
+    "llm_calls": 3,
+    "models": [
+        "claude-haiku-4-5-20251001"
+    ],
+    "input_tokens": 125622,
+    "output_tokens": 4772,
+    "cached_tokens": 0,
+    "cost_usd": 0.149482,
+    "retries": 0,
+    "output_chars": 8663,
+    "nodes": [
+        {
+            "node_type": "flowdrop_agents_ai_agents_executor",
+            "status": "completed",
+            "seconds": 63.906,
+            "is_ai": true,
+            "error": null
+        },
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0.001,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

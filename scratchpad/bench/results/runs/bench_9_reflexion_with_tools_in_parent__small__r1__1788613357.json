@@ -1,0 +1,48 @@
+{
+    "run_id": "bench_9_reflexion_with_tools_in_parent__small__r1__1788613357",
+    "workflow": "bench_9_reflexion_with_tools_in_parent",
+    "url_key": "small",
+    "url": "https://www.drupal.org/about",
+    "rep": 1,
+    "pipeline_id": "575",
+    "context_uuid": "78f0dbae-899f-45dd-bbd2-882a91cab8b2",
+    "wall_seconds": 281.4663,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "b9fix2-claude-haiku-4-5-20251001",
+    "ts": "2026-09-05T13:07:19+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 2,
+    "payload_bytes": 36542,
+    "total_seconds": 280.337,
+    "ai_seconds": 0,
+    "deterministic_seconds": 280.337,
+    "llm_calls": 9,
+    "models": [
+        "claude-haiku-4-5-20251001"
+    ],
+    "input_tokens": 125817,
+    "output_tokens": 20896,
+    "cached_tokens": 0,
+    "cost_usd": 0.230297,
+    "retries": 0,
+    "output_chars": 8500,
+    "nodes": [
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0.001,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_workflow_reflexion_agent_engine",
+            "status": "completed",
+            "seconds": 280.336,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

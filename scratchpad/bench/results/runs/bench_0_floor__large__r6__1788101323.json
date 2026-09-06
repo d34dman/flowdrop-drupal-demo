@@ -1,0 +1,39 @@
+{
+    "run_id": "bench_0_floor__large__r6__1788101323",
+    "workflow": "bench_0_floor",
+    "url_key": "large",
+    "url": "https://en.wikipedia.org/wiki/Drupal",
+    "rep": 6,
+    "pipeline_id": "290",
+    "context_uuid": "b0afe7d5-1efe-49c1-817d-a3e7a63531a3",
+    "wall_seconds": 0.0249,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "overhead-probe",
+    "ts": "2026-08-30T14:48:43+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 1,
+    "payload_bytes": 75,
+    "total_seconds": 0,
+    "ai_seconds": 0,
+    "deterministic_seconds": 0,
+    "llm_calls": 0,
+    "models": [],
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cached_tokens": 0,
+    "cost_usd": 0,
+    "retries": 0,
+    "output_chars": 36,
+    "nodes": [
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

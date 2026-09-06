@@ -1,0 +1,62 @@
+{
+    "run_id": "bench_3_markdown_llm__small__r1__1788116518",
+    "workflow": "bench_3_markdown_llm",
+    "url_key": "small",
+    "url": "https://www.drupal.org/about",
+    "rep": 1,
+    "pipeline_id": "321",
+    "context_uuid": "35f51e0e-bfa2-4796-98b6-eecc7a8f9605",
+    "wall_seconds": 46.8612,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "smoke-haiku",
+    "ts": "2026-08-30T19:02:45+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 4,
+    "payload_bytes": 174355,
+    "total_seconds": 46.491,
+    "ai_seconds": 45.167,
+    "deterministic_seconds": 1.324,
+    "llm_calls": 1,
+    "models": [
+        "claude-haiku-4-5-20251001"
+    ],
+    "input_tokens": 4915,
+    "output_tokens": 3930,
+    "cached_tokens": 0,
+    "cost_usd": 0.024565,
+    "retries": 0,
+    "output_chars": 8009,
+    "nodes": [
+        {
+            "node_type": "http_request",
+            "status": "completed",
+            "seconds": 1.297,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "html_to_markdown",
+            "status": "completed",
+            "seconds": 0.019,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_ai_provider_chat",
+            "status": "completed",
+            "seconds": 45.167,
+            "is_ai": true,
+            "error": null
+        },
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0.008,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

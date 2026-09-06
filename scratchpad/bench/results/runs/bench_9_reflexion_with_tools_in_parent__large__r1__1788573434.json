@@ -1,0 +1,48 @@
+{
+    "run_id": "bench_9_reflexion_with_tools_in_parent__large__r1__1788573434",
+    "workflow": "bench_9_reflexion_with_tools_in_parent",
+    "url_key": "large",
+    "url": "https://en.wikipedia.org/wiki/Drupal",
+    "rep": 1,
+    "pipeline_id": "543",
+    "context_uuid": "6ec5d361-da39-49b9-87f7-e51b10943beb",
+    "wall_seconds": 641.8493,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "bench89-claude-sonnet-5",
+    "ts": "2026-09-05T02:07:55+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 2,
+    "payload_bytes": 133497,
+    "total_seconds": 641.812,
+    "ai_seconds": 0,
+    "deterministic_seconds": 641.812,
+    "llm_calls": 7,
+    "models": [
+        "claude-sonnet-5"
+    ],
+    "input_tokens": 265477,
+    "output_tokens": 75130,
+    "cached_tokens": 0,
+    "cost_usd": 1.282254,
+    "retries": 0,
+    "output_chars": 38319,
+    "nodes": [
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_workflow_reflexion_agent_engine",
+            "status": "completed",
+            "seconds": 641.812,
+            "is_ai": false,
+            "error": null
+        }
+    ],
+    "annotations": []
+}

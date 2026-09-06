@@ -1,0 +1,48 @@
+{
+    "run_id": "bench_5_react_agent__medium__r1__1788170950",
+    "workflow": "bench_5_react_agent",
+    "url_key": "medium",
+    "url": "https://www.ibm.com/think/topics/drupal-wordpress",
+    "rep": 1,
+    "pipeline_id": "450",
+    "context_uuid": "e5432b7a-3f19-4982-80cc-909fac81c4a5",
+    "wall_seconds": 113.5211,
+    "launch_status": "completed",
+    "launch_error": null,
+    "tag": "final-sonnet5",
+    "ts": "2026-08-31T10:11:03+00:00",
+    "pipeline_status": "completed",
+    "failed_nodes": [],
+    "job_count": 2,
+    "payload_bytes": 38037,
+    "total_seconds": 113.489,
+    "ai_seconds": 113.489,
+    "deterministic_seconds": 0,
+    "llm_calls": 2,
+    "models": [
+        "claude-sonnet-5"
+    ],
+    "input_tokens": 91622,
+    "output_tokens": 12442,
+    "cached_tokens": 0,
+    "cost_usd": 0.307664,
+    "retries": 0,
+    "output_chars": 11724,
+    "nodes": [
+        {
+            "node_type": "chat_output",
+            "status": "completed",
+            "seconds": 0,
+            "is_ai": false,
+            "error": null
+        },
+        {
+            "node_type": "flowdrop_workflow_react_agent_with_tools",
+            "status": "completed",
+            "seconds": 113.489,
+            "is_ai": true,
+            "error": null
+        }
+    ],
+    "annotations": []
+}
