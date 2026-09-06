@@ -1,9 +1,0 @@
-services:
-  fd_bench.run_context:
-    class: Drupal\fd_bench\BenchRunContext
-
-  fd_bench.ai_context_tag_subscriber:
-    class: Drupal\fd_bench\EventSubscriber\AiContextTagSubscriber
-    arguments: ['@fd_bench.run_context']
-    tags:
-      - { name: event_subscriber }

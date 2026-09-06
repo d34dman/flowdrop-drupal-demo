@@ -1,4 +1,0 @@
- [warning] Cross-iteration data read on pipeline 320: job 2625 (node message_assemble.1, iteration 1) is satisfied by source node conversation_buffer.4 (job 2620, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
- [warning] Cross-iteration data read on pipeline 320: job 2634 (node message_assemble.1, iteration 2) is satisfied by source node conversation_buffer.4 (job 2620, iteration 0) — an OLDER iteration than the consumer. Delivery is not gated (BR-6); logged for observability only.
-  bench_5_react_agent          large   r1   completed  wall= 553.24s pipeline=319
-appended to /var/www/html/scratchpad/bench/results/runs.jsonl
