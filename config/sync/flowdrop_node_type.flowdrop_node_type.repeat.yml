@@ -14,18 +14,18 @@ icon: 'mdi:repeat'
 plugin_version: 1.0.0
 enabled: true
 parameters:
-  value:
-    configurable: true
-    connectable: true
-    required: false
   count:
     configurable: true
     connectable: true
     required: true
+  value:
+    configurable: true
+    connectable: true
+    required: false
 outputs:
-  items:
-    exposed: true
   count:
+    exposed: true
+  items:
     exposed: true
   value:
     exposed: true
@@ -36,3 +36,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

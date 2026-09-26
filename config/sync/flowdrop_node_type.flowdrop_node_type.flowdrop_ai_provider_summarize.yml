@@ -1,3 +1,7 @@
+uuid: 7f4fdd97-2d03-49ff-aca0-5f3a5e0c3391
+langcode: en
+status: true
+dependencies: {  }
 id: flowdrop_ai_provider_summarize
 label: Summarize
 description: 'Summarize long text into a shorter version using AI models'
@@ -34,3 +38,11 @@ tags:
   - summarization
   - nlp
 executor_plugin: 'flowdrop_ai_provider:summarize'
+visual_type: default
+supported_visual_types:
+  - default
+unified_input_exposed: false
+unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

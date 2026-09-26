@@ -1,0 +1,11 @@
+.fd-demo-start { max-width: 72rem; }
+.fd-demo-start__intro { font-size: 1.05rem; max-width: 48rem; }
+.fd-demo-start__key { padding: 0.75rem 1rem; border-radius: 0.5rem; margin: 1rem 0 1.5rem; max-width: 48rem; }
+.fd-demo-start__key--ok { background: #e6f4ea; border: 1px solid #9fd3ad; }
+.fd-demo-start__key--missing { background: #fff4e5; border: 1px solid #f0c27b; }
+.fd-demo-start__key pre { margin: 0.5rem 0 0; padding: 0.5rem; background: rgba(0, 0, 0, 0.06); border-radius: 0.25rem; white-space: pre-wrap; }
+.fd-demo-start h2 { margin-top: 2rem; }
+.fd-demo-start__badge { display: inline-block; padding: 0 0.5rem; border-radius: 1rem; font-size: 0.8rem; white-space: nowrap; }
+.fd-demo-start__badge--ai { background: #ede7f6; color: #4527a0; }
+.fd-demo-start__badge--offline { background: #e6f4ea; color: #1e6b34; }
+.fd-demo-start__badge--net { background: #e3f2fd; color: #0d47a1; }

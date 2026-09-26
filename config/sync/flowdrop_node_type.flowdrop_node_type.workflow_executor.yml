@@ -14,44 +14,44 @@ icon: 'mdi:play-circle-outline'
 plugin_version: ''
 enabled: true
 parameters:
-  workflow_id:
-    configurable: true
-    connectable: false
-    required: true
-  input_data:
-    configurable: false
-    connectable: true
-    required: false
-    default: {  }
   execution_mode:
     configurable: true
     connectable: false
     required: false
     default: job_fire_forget
-  timeout:
-    configurable: true
-    connectable: false
+  input_data:
+    configurable: false
+    connectable: true
     required: false
-    default: 300
+    default: {  }
   poll_interval_ms:
     configurable: true
     connectable: false
     required: false
     default: 2000
+  timeout:
+    configurable: true
+    connectable: false
+    required: false
+    default: 300
+  workflow_id:
+    configurable: true
+    connectable: false
+    required: true
 outputs:
-  success:
+  error_message:
     exposed: true
-  status:
-    exposed: true
-  session_id:
+  execution_time_ms:
     exposed: true
   job_id:
     exposed: true
   outputs:
     exposed: true
-  error_message:
+  session_id:
     exposed: true
-  execution_time_ms:
+  status:
+    exposed: true
+  success:
     exposed: true
 tags:
   - processing
@@ -63,3 +63,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

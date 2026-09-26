@@ -19,17 +19,17 @@ parameters:
     connectable: true
     required: false
 outputs:
-  title:
-    exposed: true
   body:
-    exposed: true
-  sections:
     exposed: true
   front_matter:
     exposed: true
   plain_text:
     exposed: true
   raw:
+    exposed: true
+  sections:
+    exposed: true
+  title:
     exposed: true
 tags: {  }
 executor_plugin: 'flowdrop_node_processor:markdown_extractor'
@@ -38,3 +38,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

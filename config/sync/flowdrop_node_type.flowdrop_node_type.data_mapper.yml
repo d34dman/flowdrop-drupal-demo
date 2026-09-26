@@ -14,11 +14,6 @@ icon: 'mdi:swap-horizontal'
 plugin_version: 1.0.0
 enabled: true
 parameters:
-  engine:
-    configurable: true
-    connectable: false
-    required: false
-    default: expression_language
   dynamicInputs:
     configurable: true
     connectable: false
@@ -29,6 +24,11 @@ parameters:
     connectable: false
     required: false
     default: {  }
+  engine:
+    configurable: true
+    connectable: false
+    required: false
+    default: expression_language
 outputs: {  }
 tags:
   - transform
@@ -40,3 +40,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

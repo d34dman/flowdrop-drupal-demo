@@ -1,3 +1,7 @@
+uuid: 2c7bd8d8-2060-443b-98aa-90931ef061e8
+langcode: en
+status: true
+dependencies: {  }
 id: flowdrop_ai_provider_object_detection
 label: 'Object Detection'
 description: 'Detect and locate objects within images using AI models'
@@ -34,3 +38,11 @@ tags:
   - detection
   - vision
 executor_plugin: 'flowdrop_ai_provider:object_detection'
+visual_type: default
+supported_visual_types:
+  - default
+unified_input_exposed: false
+unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

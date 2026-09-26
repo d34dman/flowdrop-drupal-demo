@@ -14,15 +14,15 @@ icon: 'mdi:language-html5'
 plugin_version: 1.0.0
 enabled: true
 parameters:
-  text:
-    configurable: false
-    connectable: true
-    required: false
   strip_h1:
     configurable: true
     connectable: false
     required: false
     default: false
+  text:
+    configurable: false
+    connectable: true
+    required: false
 outputs:
   html:
     exposed: true
@@ -35,3 +35,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

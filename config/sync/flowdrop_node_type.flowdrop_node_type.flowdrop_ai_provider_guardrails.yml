@@ -14,10 +14,6 @@ icon: 'mdi:shield-check-outline'
 plugin_version: 1.0.0
 enabled: true
 parameters:
-  text:
-    configurable: false
-    connectable: true
-    required: true
   guardrail_set:
     configurable: true
     connectable: false
@@ -27,17 +23,21 @@ parameters:
     connectable: false
     required: false
     default: input
+  text:
+    configurable: false
+    connectable: true
+    required: true
 outputs:
   passed:
     exposed: true
-  text:
-    exposed: true
+  results:
+    exposed: false
   stop_score:
+    exposed: true
+  text:
     exposed: true
   violation_message:
     exposed: true
-  results:
-    exposed: false
 tags:
   - ai
   - safety
@@ -48,3 +48,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

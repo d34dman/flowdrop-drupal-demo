@@ -1,3 +1,7 @@
+uuid: e9f64ebf-b33a-443d-a931-aec4344e428d
+langcode: en
+status: true
+dependencies: {  }
 id: flowdrop_ai_provider_rerank
 label: Rerank
 description: 'Rerank a list of documents by relevance to a query using AI models'
@@ -38,3 +42,11 @@ tags:
   - search
   - relevance
 executor_plugin: 'flowdrop_ai_provider:rerank'
+visual_type: default
+supported_visual_types:
+  - default
+unified_input_exposed: false
+unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

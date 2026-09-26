@@ -39,3 +39,6 @@ supported_visual_types:
   - gateway
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

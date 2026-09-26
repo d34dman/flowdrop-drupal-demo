@@ -22,6 +22,11 @@ parameters:
     configurable: true
     connectable: false
     required: false
+  engine:
+    configurable: true
+    connectable: false
+    required: false
+    default: jsonpath
   extract_all:
     configurable: true
     connectable: false
@@ -31,13 +36,10 @@ parameters:
     configurable: true
     connectable: false
     required: false
-  engine:
-    configurable: true
-    connectable: false
-    required: false
-    default: jsonpath
 outputs:
   data:
+    exposed: true
+  engine:
     exposed: true
   is_jsonpath:
     exposed: true
@@ -47,8 +49,6 @@ outputs:
     exposed: true
   success:
     exposed: true
-  engine:
-    exposed: true
 tags: {  }
 executor_plugin: 'flowdrop_node_processor:data_extractor'
 visual_type: default
@@ -56,3 +56,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

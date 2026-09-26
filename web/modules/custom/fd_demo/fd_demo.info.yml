@@ -1,0 +1,9 @@
+name: 'FlowDrop Demo'
+type: module
+description: 'The "Start here" front page of the FlowDrop demo site: the workflows in learning order, with editor and Playground links.'
+package: Custom
+core_version_requirement: ^11
+dependencies:
+  - flowdrop:flowdrop_workflow
+  - flowdrop:flowdrop_playground
+  - key:key

@@ -14,26 +14,26 @@ icon: 'mdi:ray-start-end'
 plugin_version: 1.0.0
 enabled: true
 parameters:
-  start:
-    configurable: true
-    connectable: true
-    required: false
   end:
     configurable: true
     connectable: true
     required: true
+  start:
+    configurable: true
+    connectable: true
+    required: false
   step:
     configurable: true
     connectable: true
     required: false
 outputs:
-  items:
-    exposed: true
   count:
     exposed: true
-  start:
-    exposed: true
   end:
+    exposed: true
+  items:
+    exposed: true
+  start:
     exposed: true
   step:
     exposed: true
@@ -44,3 +44,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

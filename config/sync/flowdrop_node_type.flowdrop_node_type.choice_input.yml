@@ -14,32 +14,32 @@ icon: 'mdi:format-list-bulleted-type'
 plugin_version: 1.0.0
 enabled: true
 parameters:
-  message:
-    configurable: true
-    connectable: true
-    required: true
-  options:
-    configurable: true
-    connectable: true
-    required: true
-  multiple:
-    configurable: true
-    connectable: false
-    required: false
-  min_selections:
-    configurable: true
-    connectable: false
-    required: false
   max_selections:
     configurable: true
     connectable: false
     required: false
+  message:
+    configurable: true
+    connectable: true
+    required: true
+  min_selections:
+    configurable: true
+    connectable: false
+    required: false
+  multiple:
+    configurable: true
+    connectable: false
+    required: false
+  options:
+    configurable: true
+    connectable: true
+    required: true
 outputs:
+  response_time:
+    exposed: true
   selected:
     exposed: true
   selection_count:
-    exposed: true
-  response_time:
     exposed: true
   user_id:
     exposed: true
@@ -55,3 +55,6 @@ supported_visual_types:
   - simple
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

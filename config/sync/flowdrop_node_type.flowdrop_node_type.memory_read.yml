@@ -14,30 +14,30 @@ icon: 'mdi:database-search'
 plugin_version: 1.0.0
 enabled: true
 parameters:
+  default_value:
+    configurable: true
+    connectable: true
+    required: false
+  key:
+    configurable: false
+    connectable: true
+    required: true
   scope:
     configurable: true
     connectable: false
     required: false
     default: global
-  key:
-    configurable: false
-    connectable: true
-    required: true
-  default_value:
-    configurable: true
-    connectable: true
-    required: false
 outputs:
-  value:
-    exposed: true
   found:
     exposed: true
   key:
     exposed: false
-  scope:
-    exposed: false
   resolved_scope_id:
     exposed: false
+  scope:
+    exposed: false
+  value:
+    exposed: true
 tags: {  }
 executor_plugin: 'flowdrop_memory:memory_read'
 visual_type: default
@@ -45,3 +45,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

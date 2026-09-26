@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+## Description: Install the FlowDrop demo site from scratch and print a login link
+## Usage: install-demo
+## Example: "ddev install-demo"
+
+set -euo pipefail
+
+composer install --no-interaction
+drush site:install --existing-config -y
+# Redis keeps the previous site's cache across a reinstall; without this the
+# new site reads stale config until someone clears it.
+drush cache:rebuild
+
+if [ -z "${ANTHROPIC_KEY:-}" ]; then
+  echo
+  echo "No ANTHROPIC_KEY set. The workflows marked 'offline' on the start page"
+  echo "work without it. To unlock the AI ones:"
+  echo "  echo 'ANTHROPIC_KEY=sk-ant-...' >> .ddev/.env && ddev restart && ddev drush cr"
+fi
+
+echo
+echo "Open this link to log in and land on the start page:"
+drush user:login start

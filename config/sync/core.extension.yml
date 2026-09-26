@@ -4,6 +4,7 @@ module:
   address: 0
   ai: 0
   ai_agents: 0
+  ai_assistant_api: 0
   ai_metering: 0
   ai_provider_anthropic: 0
   announcements_feed: 0
@@ -24,6 +25,7 @@ module:
   dynamic_entity_reference: 0
   dynamic_page_cache: 0
   editor: 0
+  fd_demo: 0
   field: 0
   field_ui: 0
   file: 0

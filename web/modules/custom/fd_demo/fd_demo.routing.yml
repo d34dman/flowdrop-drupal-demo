@@ -1,0 +1,9 @@
+fd_demo.start:
+  path: '/start'
+  defaults:
+    _controller: '\Drupal\fd_demo\Controller\StartController::page'
+    _title: 'FlowDrop demo: start here'
+  requirements:
+    _permission: 'access content'
+  options:
+    _admin_route: TRUE

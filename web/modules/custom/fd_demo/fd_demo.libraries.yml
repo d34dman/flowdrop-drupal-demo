@@ -1,0 +1,4 @@
+start:
+  css:
+    theme:
+      css/start.css: {}

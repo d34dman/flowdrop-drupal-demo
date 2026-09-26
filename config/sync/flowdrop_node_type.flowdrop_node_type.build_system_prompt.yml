@@ -14,11 +14,6 @@ icon: 'mdi:text-box-edit-outline'
 plugin_version: 1.0.0
 enabled: true
 parameters:
-  workflow_state:
-    configurable: false
-    connectable: true
-    required: false
-    default: null
   node_types:
     configurable: false
     connectable: true
@@ -29,6 +24,11 @@ parameters:
     connectable: false
     required: false
     default: ''
+  workflow_state:
+    configurable: false
+    connectable: true
+    required: false
+    default: null
 outputs:
   system_prompt:
     exposed: true
@@ -39,3 +39,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

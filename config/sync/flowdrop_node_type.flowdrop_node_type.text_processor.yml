@@ -14,15 +14,15 @@ icon: 'mdi:format-letter-case'
 plugin_version: 1.0.0
 enabled: true
 parameters:
-  text:
-    configurable: false
-    connectable: true
-    required: false
   operation:
     configurable: true
     connectable: true
     required: false
     default: capitalize
+  text:
+    configurable: false
+    connectable: true
+    required: false
 outputs:
   text:
     exposed: true
@@ -33,3 +33,6 @@ supported_visual_types:
   - default
 unified_input_exposed: false
 unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }
