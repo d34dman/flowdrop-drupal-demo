@@ -1,0 +1,734 @@
+uuid: dfea2412-7d4a-4817-80ff-fd2f01d50002
+langcode: en
+status: true
+dependencies:
+  config:
+    - flowdrop_node_type.flowdrop_node_type.chat_output
+    - flowdrop_node_type.flowdrop_node_type.data_extractor
+    - flowdrop_node_type.flowdrop_node_type.form_input
+    - flowdrop_node_type.flowdrop_node_type.json_to_data
+    - flowdrop_node_type.flowdrop_node_type.mcp_dri_es_find_albums
+    - flowdrop_node_type.flowdrop_node_type.mcp_dri_es_find_images
+    - flowdrop_node_type.flowdrop_node_type.prompt_template
+id: dri_es_photo_finder
+label: 'dri.es photo finder (MCP, no AI)'
+description: 'Filter form (album list fetched live from the dri.es MCP server) → find_images → Twig gallery. No model in the loop. Built 2026-09-24.'
+nodes:
+  -
+    id: mcp_dri_es_find_albums.1
+    position:
+      x: 0
+      'y': 200
+    data:
+      label: 'List albums (MCP)'
+      config:
+        nodeType: default
+        maxRetries: 0
+        ports:
+          outputs:
+            -
+              id: success
+              exposed: false
+            -
+              id: message
+            -
+              id: albums
+            -
+              id: trigger
+              exposed: false
+            -
+              id: tool
+            -
+              id: error
+          inputs:
+            -
+              id: query
+              exposed: false
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: mcp_dri_es_find_albums
+    measured:
+      width: 280
+      height: 222
+  -
+    id: prompt_template.1
+    position:
+      x: 380
+      'y': 220
+    data:
+      label: 'Build filter form'
+      config:
+        template: |-
+          {%- set albums_opts = [{'const': '', 'title': 'All albums'}] -%}
+          {%- for a in albums -%}
+            {%- set albums_opts = albums_opts|merge([{'const': a.id, 'title': a.title ~ (a.year ? ' (' ~ a.year ~ ')' : '')}]) -%}
+          {%- endfor -%}
+          {{ {
+            'type': 'object',
+            'properties': {
+              'query': {'type': 'string', 'title': 'Words', 'description': 'Words in the title, caption or alt text. Leave empty to browse.'},
+              'album': {'type': 'string', 'title': 'Album', 'oneOf': albums_opts, 'default': ''},
+              'sort': {'type': 'string', 'title': 'Order', 'oneOf': [{'const': 'newest', 'title': 'Newest first'}, {'const': 'oldest', 'title': 'Oldest first'}], 'default': 'newest'},
+              'limit': {'type': 'integer', 'title': 'How many', 'minimum': 1, 'maximum': 20, 'default': 6}
+            }
+          }|json_encode|raw }}
+        dynamicInputs:
+          -
+            name: albums
+            label: albums
+            description: ''
+            dataType: array
+            required: false
+        instanceTitle: 'Build filter form'
+        nodeType: default
+        maxRetries: 0
+        ports:
+          inputs:
+            -
+              id: variables
+              exposed: false
+            -
+              id: template
+            -
+              id: albums
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+          outputs:
+            -
+              id: prompt
+            -
+              id: template
+            -
+              id: variables
+            -
+              id: trigger
+              exposed: false
+            -
+              id: tool
+            -
+              id: error
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: prompt_template
+    measured:
+      width: 280
+      height: 262
+  -
+    id: json_to_data.1
+    position:
+      x: 760
+      'y': 280
+    data:
+      label: 'JSON to Data'
+      config:
+        parse_mode: strict
+        nodeType: default
+        maxRetries: 0
+        ports:
+          outputs:
+            -
+              id: data
+            -
+              id: success
+              exposed: false
+            -
+              id: parse_source
+              exposed: false
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+          inputs:
+            -
+              id: json
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: json_to_data
+    measured:
+      width: 280
+      height: 262
+  -
+    id: form_input.1
+    position:
+      x: 1140
+      'y': 340
+    data:
+      label: 'Filter form'
+      config:
+        message: 'Find photos on dri.es'
+        instanceTitle: 'Filter form'
+        nodeType: default
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              title: Name
+        maxRetries: 0
+        ports:
+          outputs:
+            -
+              id: data
+            -
+              id: response_time
+              exposed: false
+            -
+              id: user_id
+              exposed: false
+            -
+              id: interrupt_id
+              exposed: false
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+          inputs:
+            -
+              id: message
+              exposed: false
+            -
+              id: schema
+            -
+              id: default_values
+              exposed: false
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: form_input
+    measured:
+      width: 280
+      height: 262
+  -
+    id: data_extractor.1
+    position:
+      x: 1620
+      'y': 260
+    data:
+      label: 'Pick words'
+      config:
+        path: $.query
+        engine: jsonpath
+        instanceTitle: 'Pick words'
+        nodeType: default
+        default: null
+        extract_all: false
+        maxRetries: 0
+        ports:
+          outputs:
+            -
+              id: data
+            -
+              id: path
+              exposed: false
+            -
+              id: success
+              exposed: false
+            -
+              id: is_jsonpath
+              exposed: false
+            -
+              id: match_count
+              exposed: false
+            -
+              id: engine
+              exposed: false
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+          inputs:
+            -
+              id: data
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: data_extractor
+    measured:
+      width: 280
+      height: 262
+  -
+    id: data_extractor.2
+    position:
+      x: 1620
+      'y': 680
+    data:
+      label: 'Pick album'
+      config:
+        path: $.album
+        engine: jsonpath
+        instanceTitle: 'Pick album'
+        nodeType: default
+        default: null
+        extract_all: false
+        maxRetries: 0
+        ports:
+          outputs:
+            -
+              id: data
+            -
+              id: path
+              exposed: false
+            -
+              id: success
+              exposed: false
+            -
+              id: is_jsonpath
+              exposed: false
+            -
+              id: match_count
+              exposed: false
+            -
+              id: engine
+              exposed: false
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+          inputs:
+            -
+              id: data
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: data_extractor
+    measured:
+      width: 280
+      height: 262
+  -
+    id: mcp_dri_es_find_images.1
+    position:
+      x: 2060
+      'y': 440
+    data:
+      label: 'Find images (MCP)'
+      config:
+        nodeType: default
+        maxRetries: 0
+        ports:
+          inputs:
+            -
+              id: query
+            -
+              id: album
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+          outputs:
+            -
+              id: success
+              exposed: false
+            -
+              id: message
+            -
+              id: total
+            -
+              id: images
+            -
+              id: trigger
+              exposed: false
+            -
+              id: tool
+            -
+              id: error
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: mcp_dri_es_find_images
+    measured:
+      width: 280
+      height: 402
+  -
+    id: prompt_template.2
+    position:
+      x: 2560
+      'y': 600
+    data:
+      label: 'Render gallery'
+      config:
+        template: |-
+          {%- set limit = filters.limit ?: 6 -%}
+          {%- set sorted = filters.sort == 'oldest' ? images|sort((a, b) => a.date <=> b.date) : images|sort((a, b) => b.date <=> a.date) -%}
+          {%- set shown = sorted|slice(0, limit) -%}
+          {%- if total == 0 -%}
+          No photos match those filters.
+          {%- else -%}
+          **{{ total }} photo{{ total == 1 ? '' : 's' }} match** · showing {{ shown|length }}, {{ filters.sort == 'oldest' ? 'oldest' : 'newest' }} first
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:8px">
+          {%- for img in shown %}
+          <a href="{{ img.url }}" target="_blank" style="text-decoration:none;color:inherit"><img src="{{ img.thumbnail }}" alt="{{ img.alt ?: img.title }}" style="display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px"><div style="font-size:13px;font-weight:600;margin-top:4px;line-height:1.3">{{ img.title }}</div><div style="font-size:12px;opacity:.65">{{ img.date|date('j M Y') }}</div></a>
+          {%- endfor %}
+          </div>
+          {%- endif -%}
+        dynamicInputs:
+          -
+            name: total
+            label: total
+            description: ''
+            dataType: integer
+            required: false
+          -
+            name: images
+            label: images
+            description: ''
+            dataType: array
+            required: false
+          -
+            name: filters
+            label: filters
+            description: ''
+            dataType: json
+            required: false
+        instanceTitle: 'Render gallery'
+        nodeType: default
+        maxRetries: 0
+        ports:
+          inputs:
+            -
+              id: variables
+            -
+              id: template
+            -
+              id: images
+            -
+              id: total
+            -
+              id: filters
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+          outputs:
+            -
+              id: prompt
+            -
+              id: template
+            -
+              id: variables
+            -
+              id: trigger
+              exposed: false
+            -
+              id: tool
+            -
+              id: error
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: prompt_template
+    measured:
+      width: 280
+      height: 442
+  -
+    id: chat_output.1
+    position:
+      x: 2940
+      'y': 860
+    data:
+      label: Gallery
+      config:
+        format: markdown
+        showTimestamp: false
+        nodeType: default
+        maxRetries: 0
+        ports:
+          inputs:
+            -
+              id: message
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+          outputs:
+            -
+              id: message
+            -
+              id: format
+            -
+              id: timestamp
+            -
+              id: metadata
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+        requiresConfirmation: ''
+      metadata:
+        node_type_id: chat_output
+    measured:
+      width: 280
+      height: 242
+edges:
+  -
+    id: xy-edge__mcp_dri_es_find_albums.1mcp_dri_es_find_albums.1-output-albums-prompt_template.1prompt_template.1-input-albums
+    source: mcp_dri_es_find_albums.1
+    target: prompt_template.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: prompts
+      metadata:
+        edgeType: data
+        sourcePortDataType: array
+      edgeType: data
+    sourceHandle: mcp_dri_es_find_albums.1-output-albums
+    targetHandle: prompt_template.1-input-albums
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__prompt_template.1prompt_template.1-output-prompt-json_to_data.1json_to_data.1-input-json
+    source: prompt_template.1
+    target: json_to_data.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: data
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+      edgeType: data
+    sourceHandle: prompt_template.1-output-prompt
+    targetHandle: json_to_data.1-input-json
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__json_to_data.1json_to_data.1-output-data-form_input.1form_input.1-input-schema
+    source: json_to_data.1
+    target: form_input.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: human_in_loop
+      metadata:
+        edgeType: data
+        sourcePortDataType: json
+      edgeType: data
+    sourceHandle: json_to_data.1-output-data
+    targetHandle: form_input.1-input-schema
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__form_input.1form_input.1-output-data-data_extractor.1data_extractor.1-input-data
+    source: form_input.1
+    target: data_extractor.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: data
+      metadata:
+        edgeType: data
+        sourcePortDataType: json
+      edgeType: data
+    sourceHandle: form_input.1-output-data
+    targetHandle: data_extractor.1-input-data
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__form_input.1form_input.1-output-data-data_extractor.2data_extractor.2-input-data
+    source: form_input.1
+    target: data_extractor.2
+    data:
+      targetNodeType: universalNode
+      targetCategory: data
+      metadata:
+        edgeType: data
+        sourcePortDataType: json
+      edgeType: data
+    sourceHandle: form_input.1-output-data
+    targetHandle: data_extractor.2-input-data
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__data_extractor.1data_extractor.1-output-data-mcp_dri_es_find_images.1mcp_dri_es_find_images.1-input-query
+    source: data_extractor.1
+    target: mcp_dri_es_find_images.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: tools
+      metadata:
+        edgeType: data
+        sourcePortDataType: mixed
+      edgeType: data
+    sourceHandle: data_extractor.1-output-data
+    targetHandle: mcp_dri_es_find_images.1-input-query
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__data_extractor.2data_extractor.2-output-data-mcp_dri_es_find_images.1mcp_dri_es_find_images.1-input-album
+    source: data_extractor.2
+    target: mcp_dri_es_find_images.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: tools
+      metadata:
+        edgeType: data
+        sourcePortDataType: mixed
+      edgeType: data
+    sourceHandle: data_extractor.2-output-data
+    targetHandle: mcp_dri_es_find_images.1-input-album
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__mcp_dri_es_find_images.1mcp_dri_es_find_images.1-output-images-prompt_template.2prompt_template.2-input-images
+    source: mcp_dri_es_find_images.1
+    target: prompt_template.2
+    data:
+      targetNodeType: universalNode
+      targetCategory: prompts
+      metadata:
+        edgeType: data
+        sourcePortDataType: array
+      edgeType: data
+    sourceHandle: mcp_dri_es_find_images.1-output-images
+    targetHandle: prompt_template.2-input-images
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__mcp_dri_es_find_images.1mcp_dri_es_find_images.1-output-total-prompt_template.2prompt_template.2-input-total
+    source: mcp_dri_es_find_images.1
+    target: prompt_template.2
+    data:
+      targetNodeType: universalNode
+      targetCategory: prompts
+      metadata:
+        edgeType: data
+        sourcePortDataType: number
+      edgeType: data
+    sourceHandle: mcp_dri_es_find_images.1-output-total
+    targetHandle: prompt_template.2-input-total
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__form_input.1form_input.1-output-data-prompt_template.2prompt_template.2-input-filters
+    source: form_input.1
+    target: prompt_template.2
+    data:
+      targetNodeType: universalNode
+      targetCategory: prompts
+      metadata:
+        edgeType: data
+        sourcePortDataType: json
+      edgeType: data
+    sourceHandle: form_input.1-output-data
+    targetHandle: prompt_template.2-input-filters
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+  -
+    id: xy-edge__prompt_template.2prompt_template.2-output-prompt-chat_output.1chat_output.1-input-message
+    source: prompt_template.2
+    target: chat_output.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+      edgeType: data
+    sourceHandle: prompt_template.2-output-prompt
+    targetHandle: chat_output.1-input-message
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+    type: default
+metadata:
+  createdAt: '2026-09-24T19:10:43.970Z'
+  updatedAt: '2026-09-24T19:17:14.027Z'
+created: 1790276758
+changed: 1790277434
+uid: 0
+input_ports: null
+output_ports: null
+parameter_schema: null
+output_schema: null
+schema_version: 0.0.0

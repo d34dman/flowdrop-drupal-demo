@@ -1,0 +1,504 @@
+uuid: 23039673-3a75-450e-8ea7-97fd09aaade4
+langcode: en
+status: true
+dependencies:
+  config:
+    - flowdrop_node_type.flowdrop_node_type.chat_input
+    - flowdrop_node_type.flowdrop_node_type.chat_output
+    - flowdrop_node_type.flowdrop_node_type.conversation_buffer
+    - flowdrop_node_type.flowdrop_node_type.flowdrop_node_processor_toolbox
+    - flowdrop_node_type.flowdrop_node_type.flowdrop_workflow_react_agent
+    - flowdrop_node_type.flowdrop_node_type.mcp_dri_es_find_albums
+    - flowdrop_node_type.flowdrop_node_type.mcp_dri_es_find_images
+    - flowdrop_node_type.flowdrop_node_type.mcp_dri_es_search
+id: dri_es_chat_agent
+label: 'Chat with dri.es (MCP agent)'
+description: 'Chat shell around the reusable ReAct agent sub-workflow (react_agent); the dri.es MCP tools are wired into its tool port.'
+nodes:
+  -
+    id: chat_input.1
+    position:
+      x: -660
+      'y': 500
+    data:
+      label: 'Chat Input'
+      config:
+        nodeType: simple
+        maxRetries: 0
+        requiresConfirmation: ''
+        ports:
+          inputs:
+            -
+              id: message
+            -
+              id: history
+              exposed: false
+            -
+              id: sessionId
+              exposed: false
+            -
+              id: messageId
+              exposed: false
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+          outputs:
+            -
+              id: message
+            -
+              id: history
+            -
+              id: sessionId
+            -
+              id: messageId
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+      metadata:
+        node_type_id: chat_input
+    measured:
+      width: 280
+      height: 94
+  -
+    id: chat_output.1
+    position:
+      x: 860
+      'y': 680
+    data:
+      label: 'Chat Output'
+      config:
+        format: text
+        showTimestamp: false
+        nodeType: simple
+        maxRetries: 0
+        requiresConfirmation: ''
+        ports:
+          outputs:
+            -
+              id: message
+            -
+              id: format
+            -
+              id: timestamp
+            -
+              id: metadata
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+          inputs:
+            -
+              id: message
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+      metadata:
+        node_type_id: chat_output
+    measured:
+      width: 280
+      height: 80
+  -
+    id: conversation_buffer.4
+    position:
+      x: -140
+      'y': 360
+    data:
+      label: 'Conversation Buffer'
+      config:
+        scope: session
+        key: chat_history
+        max_messages: 60
+        backend: entity
+        maxRetries: 0
+        requiresConfirmation: ''
+        role: user
+        ports:
+          inputs:
+            -
+              id: key
+              exposed: false
+            -
+              id: message
+            -
+              id: role
+              exposed: false
+            -
+              id: content
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+          outputs:
+            -
+              id: messages
+            -
+              id: count
+            -
+              id: appended_any
+              exposed: false
+            -
+              id: appended
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+      metadata:
+        node_type_id: conversation_buffer
+    measured:
+      width: 280
+      height: 282
+  -
+    id: conversation_buffer.5
+    position:
+      x: 860
+      'y': 820
+    data:
+      label: 'Conversation Buffer'
+      config:
+        scope: session
+        key: chat_history
+        max_messages: 60
+        backend: entity
+        maxRetries: 0
+        requiresConfirmation: ''
+        role: assistant
+        instanceTitle: 'Save reply to chat history'
+        nodeType: default
+        ports:
+          inputs:
+            -
+              id: key
+              exposed: false
+            -
+              id: message
+              exposed: false
+            -
+              id: role
+              exposed: false
+            -
+              id: content
+              exposed: true
+            -
+              id: loop_back
+            -
+              id: trigger
+              exposed: false
+          outputs:
+            -
+              id: messages
+              exposed: false
+            -
+              id: count
+            -
+              id: appended_any
+              exposed: false
+            -
+              id: appended
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+      metadata:
+        node_type_id: conversation_buffer
+    measured:
+      width: 280
+      height: 222
+  -
+    id: mcp_dri_es_search.1
+    position:
+      x: -660
+      'y': 940
+    data:
+      label: 'Search dri.es'
+      config:
+        nodeType: tool
+        maxRetries: 0
+        requiresConfirmation: waive
+        instanceTitle: 'Search dri.es'
+        instanceDescription: 'Full-text search across dri.es blog posts and pages. Input q: search words (every term must match as a prefix). Returns total and up to 20 results with title, url, date, snippets and summary. Append .md to a result url for the full text.'
+        ports:
+          outputs:
+            -
+              id: tool
+              exposed: true
+      metadata:
+        node_type_id: mcp_dri_es_search
+    measured:
+      width: 280
+      height: 100
+  -
+    id: mcp_dri_es_find_albums.1
+    position:
+      x: -660
+      'y': 820
+    data:
+      label: 'Find dri.es photo albums'
+      config:
+        nodeType: tool
+        maxRetries: 0
+        requiresConfirmation: waive
+        instanceTitle: 'Find dri.es photo albums'
+        instanceDescription: 'Find photo albums on dri.es by words in their name, including the year (e.g. "2019"). Omit query to list all albums. Returns albums with id, title, url, year and description.'
+        ports:
+          outputs:
+            -
+              id: tool
+              exposed: true
+      metadata:
+        node_type_id: mcp_dri_es_find_albums
+    measured:
+      width: 280
+      height: 100
+  -
+    id: mcp_dri_es_find_images.1
+    position:
+      x: -660
+      'y': 1060
+    data:
+      label: 'Find dri.es photos'
+      config:
+        nodeType: tool
+        maxRetries: 0
+        requiresConfirmation: waive
+        instanceTitle: 'Find dri.es photos'
+        instanceDescription: 'Find photos on dri.es by words in their title, caption or alt text, and/or by album id (from find_albums). Returns total and up to 20 images with title, url, thumbnail, alt, caption and date.'
+        ports:
+          outputs:
+            -
+              id: tool
+              exposed: true
+      metadata:
+        node_type_id: mcp_dri_es_find_images
+    measured:
+      width: 280
+      height: 100
+  -
+    id: flowdrop_node_processor_toolbox.1
+    position:
+      x: -140
+      'y': 700
+    data:
+      label: Toolbox
+      config:
+        nodeType: default
+        maxRetries: 0
+        requiresConfirmation: ''
+        instanceTitle: 'dri.es tools'
+      metadata:
+        node_type_id: flowdrop_node_processor_toolbox
+    measured:
+      width: 280
+      height: 262
+  -
+    id: flowdrop_workflow_react_agent.1
+    position:
+      x: 300
+      'y': 440
+    data:
+      label: 'ReAct agent'
+      config:
+        nodeType: default
+        executionMode: job
+        system_prompt: |-
+          You are a research assistant for Dries Buytaert's website, dri.es.
+          Answer questions by using your tools, not from memory:
+          - "Search dri.es" for blog posts and pages. Use a few specific words; if nothing relevant comes back, retry with different words.
+          - "Find dri.es photo albums" and "Find dri.es photos" for photography.
+
+          Rules:
+          - Base your answer only on what the tools return in this conversation.
+          - Write every post or photo you mention as a Markdown link, [Title](url), followed by its date.
+          - When asked for recent items, sort by date, newest first.
+          - If the tools return nothing relevant, say so plainly.
+          - Keep answers short.
+        maxRetries: 0
+        requiresConfirmation: ''
+        instanceTitle: 'dri.es research agent'
+        ports:
+          outputs:
+            -
+              id: reply
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
+      metadata:
+        node_type_id: flowdrop_workflow_react_agent
+    measured:
+      width: 280
+      height: 322
+edges:
+  -
+    id: e-chat_input.1-message-conversation_buffer.4-content
+    source: chat_input.1
+    target: conversation_buffer.4
+    data:
+      targetNodeType: universalNode
+      targetCategory: memories
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+    sourceHandle: chat_input.1-output-message
+    targetHandle: conversation_buffer.4-input-content
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: e-conversation_buffer.4-messages-flowdrop_workflow_react_agent.1-messages
+    source: conversation_buffer.4
+    target: flowdrop_workflow_react_agent.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: agents
+      metadata:
+        edgeType: data
+        sourcePortDataType: messages
+    sourceHandle: conversation_buffer.4-output-messages
+    targetHandle: flowdrop_workflow_react_agent.1-input-messages
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: e-flowdrop_node_processor_toolbox.1-tool-flowdrop_workflow_react_agent.1-tool
+    source: flowdrop_node_processor_toolbox.1
+    target: flowdrop_workflow_react_agent.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: agents
+      metadata:
+        edgeType: tool
+        sourcePortDataType: tool
+    sourceHandle: flowdrop_node_processor_toolbox.1-output-tool
+    targetHandle: flowdrop_workflow_react_agent.1-input-tool
+    style: 'stroke: var(--fd-edge-tool); stroke-dasharray: 5 3;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-tool)
+    class: flowdrop--edge--tool
+  -
+    id: e-flowdrop_workflow_react_agent.1-reply-chat_output.1-message
+    source: flowdrop_workflow_react_agent.1
+    target: chat_output.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+    sourceHandle: flowdrop_workflow_react_agent.1-output-reply
+    targetHandle: chat_output.1-input-message
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: e-flowdrop_workflow_react_agent.1-reply-conversation_buffer.5-content
+    source: flowdrop_workflow_react_agent.1
+    target: conversation_buffer.5
+    data:
+      targetNodeType: universalNode
+      targetCategory: memories
+      metadata:
+        edgeType: data
+        sourcePortDataType: string
+    sourceHandle: flowdrop_workflow_react_agent.1-output-reply
+    targetHandle: conversation_buffer.5-input-content
+    style: 'stroke: var(--fd-edge-data);'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-data)
+    class: flowdrop--edge--data
+  -
+    id: e-mcp_dri_es_search.1-tool-flowdrop_node_processor_toolbox.1-tool
+    source: mcp_dri_es_search.1
+    target: flowdrop_node_processor_toolbox.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: tool
+        sourcePortDataType: tool
+    sourceHandle: mcp_dri_es_search.1-output-tool
+    targetHandle: flowdrop_node_processor_toolbox.1-input-tool
+    style: 'stroke: var(--fd-edge-tool); stroke-dasharray: 5 3;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-tool)
+    class: flowdrop--edge--tool
+  -
+    id: e-mcp_dri_es_find_albums.1-tool-flowdrop_node_processor_toolbox.1-tool
+    source: mcp_dri_es_find_albums.1
+    target: flowdrop_node_processor_toolbox.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: tool
+        sourcePortDataType: tool
+    sourceHandle: mcp_dri_es_find_albums.1-output-tool
+    targetHandle: flowdrop_node_processor_toolbox.1-input-tool
+    style: 'stroke: var(--fd-edge-tool); stroke-dasharray: 5 3;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-tool)
+    class: flowdrop--edge--tool
+  -
+    id: e-mcp_dri_es_find_images.1-tool-flowdrop_node_processor_toolbox.1-tool
+    source: mcp_dri_es_find_images.1
+    target: flowdrop_node_processor_toolbox.1
+    data:
+      targetNodeType: universalNode
+      targetCategory: processing
+      metadata:
+        edgeType: tool
+        sourcePortDataType: tool
+    sourceHandle: mcp_dri_es_find_images.1-output-tool
+    targetHandle: flowdrop_node_processor_toolbox.1-input-tool
+    style: 'stroke: var(--fd-edge-tool); stroke-dasharray: 5 3;'
+    markerEnd:
+      type: arrowclosed
+      width: 16
+      height: 16
+      color: var(--fd-edge-tool)
+    class: flowdrop--edge--tool
+metadata:
+  createdAt: '2026-08-26T19:53:50.286Z'
+  updatedAt: '2026-09-24T17:48:12.885Z'
+created: 1790269931
+changed: 1790272092
+uid: 1
+input_ports: null
+output_ports: null
+parameter_schema: null
+output_schema: null
+schema_version: 0.0.0

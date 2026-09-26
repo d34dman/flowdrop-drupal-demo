@@ -1,0 +1,48 @@
+uuid: 80282ee5-68c3-4de5-bc6e-92e2b3e6663c
+langcode: en
+status: true
+dependencies:
+  module:
+    - flowdrop_tool_provider
+id: mcp_dri_es_find_images
+label: 'dri.es: find_images (MCP)'
+description: 'Find photos on dri.es by words in their title, caption or alt text, and/or by album id (from find_albums). Returns total and up to 20 images with title, url, thumbnail, alt, caption and date.'
+category: tools
+icon: 'mdi:connection'
+plugin_version: 1.0.0
+enabled: true
+parameters:
+  album:
+    configurable: false
+    connectable: true
+    exposed_by_default: true
+    required: false
+  query:
+    configurable: false
+    connectable: true
+    exposed_by_default: true
+    required: false
+outputs:
+  images:
+    exposed: true
+    exposed_by_default: true
+  message:
+    exposed: true
+    exposed_by_default: false
+  success:
+    exposed: true
+    exposed_by_default: true
+  total:
+    exposed: true
+    exposed_by_default: true
+tags: {  }
+executor_plugin: 'flowdrop_tool_provider:tool_api:mcp_tool_dri_es_find_images'
+visual_type: default
+supported_visual_types:
+  - default
+  - tool
+unified_input_exposed: false
+unified_output_exposed: false
+tool_exposed: true
+confirmation: {  }
+reserved_port_exposure: {  }

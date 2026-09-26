@@ -1,0 +1,43 @@
+uuid: 00db19df-a6fd-440f-8e6d-69718f90453f
+langcode: en
+status: true
+dependencies:
+  module:
+    - flowdrop_tool_provider
+id: mcp_dri_es_search
+label: 'dri.es: search (MCP)'
+description: 'Full-text search across dri.es blog posts and pages. Input q: search words (every term must match as a prefix). Returns total and up to 20 results with title, url, date, snippets and summary. Append .md to a result url for the full text.'
+category: tools
+icon: 'mdi:connection'
+plugin_version: 1.0.0
+enabled: true
+parameters:
+  q:
+    configurable: false
+    connectable: true
+    exposed_by_default: true
+    required: true
+outputs:
+  message:
+    exposed: true
+    exposed_by_default: false
+  results:
+    exposed: true
+    exposed_by_default: true
+  success:
+    exposed: true
+    exposed_by_default: true
+  total:
+    exposed: true
+    exposed_by_default: true
+tags: {  }
+executor_plugin: 'flowdrop_tool_provider:tool_api:mcp_tool_dri_es_search'
+visual_type: default
+supported_visual_types:
+  - default
+  - tool
+unified_input_exposed: false
+unified_output_exposed: false
+tool_exposed: true
+confirmation: {  }
+reserved_port_exposure: {  }
