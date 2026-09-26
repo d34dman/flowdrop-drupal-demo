@@ -1,12 +1,22 @@
 {
-    "_hash": "175a2583bba05eef7bea24a125c034e5c94298ed24b1ca86ab2fb2a3c3f75dc7",
+    "_hash": "2f31047f36ba3ded1e5bef556016a7921adf24e7a1d6e71f5b1478bd3cdd0f4d",
     "patches": {
-        "drupal/flowdrop": [
+        "drupal/mcp_client": [
             {
-                "package": "drupal/flowdrop",
-                "description": "Make MemoryManager::MAX_VALUE_BYTES configurable (#3592436)",
-                "url": "patches/flowdrop-memory-configurable-max-value-bytes.patch",
-                "sha256": "410f7264c0c459ed8d8a24297d857cbfa15ad495c7785a6baf58a3658adab263",
+                "package": "drupal/mcp_client",
+                "description": "Speak MCP 2026-07-28 (stateless, no initialize) — experiment for dri.es/mcp",
+                "url": "patches/mcp_client-protocol-2026-07-28.patch",
+                "sha256": "4920ab4cc4ffe4b5c261d46060f5e4633ae4cd86d20f9dab25db0606c71fc07f",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            },
+            {
+                "package": "drupal/mcp_client",
+                "description": "Pass MCP outputSchema/structuredContent through as Tool API outputs — experiment",
+                "url": "patches/mcp_client-structured-output.patch",
+                "sha256": "5ce17bfe32fba3f8449092e3227ae5aeb36f64ad3b6c4a3b91f134a99bab290c",
                 "depth": 1,
                 "extra": {
                     "provenance": "root"

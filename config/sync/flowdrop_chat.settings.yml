@@ -6,3 +6,7 @@ max_history_length: 50
 memory_backend: entity
 processing_mode: builtin
 processing_workflow: ''
+node_type_index_threshold: 30
+chat_mode: tools
+max_tool_rounds: 8
+agent_prompt_template: ''

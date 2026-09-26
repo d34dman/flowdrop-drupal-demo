@@ -1,0 +1,226 @@
+uuid: db6428c9-6030-4007-a4e5-3e34173bfbdd
+langcode: en
+status: true
+dependencies: {  }
+id: dri_es
+label: dri.es
+description: 'Dries Buytaert blog MCP (stateless 2026-07-28)'
+endpoint: 'https://dri.es/mcp'
+transport_type: http
+stdio_command: null
+stdio_env: {  }
+stdio_cwd: null
+timeout: 30
+http_headers: {  }
+tools:
+  -
+    name: find_albums
+    description: "Finds the site's photo albums by the words in their name, including the year."
+    inputSchema:
+      type: object
+      properties:
+        query:
+          oneOf:
+            -
+              type: string
+            -
+              type: 'null'
+          description: 'Query: Words to look for. Every word has to appear somewhere in the album''s folder name or its title, but they do not have to be next to each other. Matched case insensitively and on whole words. The year is part of the folder name, so "2019" finds that year''s albums. A query shorter than two characters returns nothing rather than an error. Omit to list every album.'
+          title: Query
+      additionalProperties: false
+    enabled: true
+    locked: false
+    operation: read
+    outputSchema:
+      type: object
+      required:
+        - albums
+      properties:
+        albums:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                minLength: 1
+                description: 'Id: Also the prefix of every image id in the album.'
+                title: Id
+              title:
+                type: string
+                minLength: 1
+                description: "Title: The album's display name."
+                title: Title
+              url:
+                type: string
+                format: uri
+                description: "Url: Absolute URL to the album's page."
+                title: Url
+              year:
+                oneOf:
+                  -
+                    type: integer
+                  -
+                    type: 'null'
+                description: 'Year: The year the album is from.'
+                title: Year
+              description:
+                type: string
+                contentMediaType: text/html
+                description: 'Description: Sanitized HTML shown at the top of the album page.'
+                title: Description
+            required:
+              - id
+              - title
+              - url
+          description: 'Albums: Every matching album, newest first.'
+          title: Albums
+    lockedDefinition: null
+  -
+    name: find_images
+    description: 'Finds images by the words written about them, by album, or both.'
+    inputSchema:
+      type: object
+      properties:
+        query:
+          oneOf:
+            -
+              type: string
+            -
+              type: 'null'
+          description: 'Query: Words to look for. Every word has to appear somewhere in the title, caption or alt text, but they do not have to be next to each other. Matched case insensitively and on whole words, so "engine" does not match "engineer". A query shorter than two characters returns nothing rather than an error. Omit to list without searching.'
+          title: Query
+        album:
+          oneOf:
+            -
+              type: string
+            -
+              type: 'null'
+          description: 'Album: An album id, as find_albums returns it. Omit for every album.'
+          title: Album
+      additionalProperties: false
+    enabled: true
+    locked: false
+    operation: read
+    outputSchema:
+      type: object
+      required:
+        - total
+        - images
+      properties:
+        total:
+          type: integer
+          description: 'Total: How many images matched. Can be higher than the number returned.'
+          title: Total
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                minLength: 1
+                description: "Id: The album's id, a slash, then the photo's name."
+                title: Id
+              title:
+                type: string
+                minLength: 1
+                description: "Title: The image's display name."
+                title: Title
+              url:
+                type: string
+                format: uri
+                description: "Url: Absolute URL to the photo's page on dri.es."
+                title: Url
+              thumbnail:
+                type: string
+                format: uri
+                description: 'Thumbnail: Absolute URL to a 640px wide copy, for showing the photo.'
+                title: Thumbnail
+              alt:
+                type: string
+                contentMediaType: text/plain
+                description: 'Alt: Plain text describing the photo for screen readers.'
+                title: Alt
+              caption:
+                type: string
+                contentMediaType: text/html
+                description: 'Caption: Sanitized HTML shown under the image.'
+                title: Caption
+              date:
+                type:
+                  - string
+                  - 'null'
+                format: date-time
+                description: 'Date: When the photo was taken, from its EXIF data.'
+                title: Date
+            required:
+              - id
+              - title
+              - url
+              - alt
+          description: 'Images: The matching images. A photo named for the query comes first, otherwise newest first. At most 20 are returned.'
+          title: Images
+    lockedDefinition: null
+  -
+    name: search
+    description: "Full-text search across the site's content, ranked by relevance. Returns up to 20 items, ordered by relevance. The `total` field gives the number of items that matched. There is no pagination, so consider narrowing the query when `total` exceeds 20. Append `.md` to a result URL for that item's full text as Markdown."
+    inputSchema:
+      type: object
+      properties:
+        q:
+          type: string
+          description: 'Q: Search query. Every term must match, each as a prefix, so "waffle" also matches "waffles" and adding a term narrows the search. Punctuation is stripped, so quoting a phrase does not hold its words together. A query shorter than two characters returns no results rather than an error.'
+          title: Q
+      required:
+        - q
+      additionalProperties: false
+    enabled: true
+    locked: false
+    operation: read
+    outputSchema:
+      type: object
+      required:
+        - total
+        - results
+      properties:
+        total:
+          type: integer
+          description: 'Total: Number of items matching the query, which can exceed the number returned.'
+          title: Total
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                description: "Title: The item's name, as shown at the top of its page."
+                title: Title
+              url:
+                type: string
+                format: uri
+                description: 'Url: Absolute URL of the canonical version of the content.'
+                title: Url
+              date:
+                type: string
+                format: date
+                description: 'Date: Publication date in ISO 8601 format (YYYY-MM-DD).'
+                title: Date
+              snippets:
+                type: array
+                items:
+                  type: string
+                description: "Snippets: Complete paragraphs from the item's body containing any of the query words, at most three, in document order but not always adjacent. Plain text: Markdown and HTML are removed. Empty when no paragraph holds the words, as when they appear only in the title or a heading."
+                title: Snippets
+              summary:
+                type: string
+                description: 'Summary: Short author-written summary, present only when the author wrote one.'
+                title: Summary
+            required:
+              - title
+              - url
+              - date
+              - snippets
+          title: Results
+    lockedDefinition: null

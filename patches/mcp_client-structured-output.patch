@@ -1,0 +1,345 @@
+diff --git a/config/schema/mcp_client.schema.yml b/config/schema/mcp_client.schema.yml
+index bc66f0a..48971e5 100644
+--- a/config/schema/mcp_client.schema.yml
++++ b/config/schema/mcp_client.schema.yml
+@@ -89,6 +89,10 @@ mcp_client.mcp_server.*:
+                   - transform
+                   - trigger
+                   - write
++          # Following MCP protocol standard (camelCase).
++          outputSchema:
++            type: ignore
++            label: Output Schema
+           lockedDefinition:
+             type: mapping
+             label: Locked Definition
+diff --git a/src/Form/McpServerForm.php b/src/Form/McpServerForm.php
+index e98e054..df072c6 100644
+--- a/src/Form/McpServerForm.php
++++ b/src/Form/McpServerForm.php
+@@ -675,6 +675,7 @@ final class McpServerForm extends EntityForm {
+               'description' => $tool_data['description'] ?? '',
+               // Following MCP protocol standard (camelCase).
+               'inputSchema' => $tool_data['inputSchema'] ?? [],
++              'outputSchema' => $tool_data['outputSchema'] ?? [],
+               'enabled' => $enabled,
+               'locked' => FALSE,
+               'operation' => $operation?->value,
+diff --git a/src/MCPClient.php b/src/MCPClient.php
+index edee09d..26eed13 100644
+--- a/src/MCPClient.php
++++ b/src/MCPClient.php
+@@ -229,6 +229,7 @@ class MCPClient {
+             // tool's schema properties) as \stdClass. Normalize to a pure array
+             // tree so the legacy shape and downstream array type hints hold.
+             'inputSchema' => $this->normalizeToArray($tool->inputSchema),
++            'outputSchema' => $tool->outputSchema !== NULL ? $this->normalizeToArray($tool->outputSchema) : [],
+           ];
+         }
+ 
+@@ -285,8 +286,12 @@ class MCPClient {
+       }
+     }
+ 
++    $structured = $result->structuredContent;
+     return [
+       'content' => $content,
++      // Typed result matching the tool's outputSchema, when the server sends
++      // one. Normalized to a pure array tree like the content items.
++      'structuredContent' => is_array($structured) || is_object($structured) ? $this->normalizeToArray((array) $structured) : $structured,
+       'isError' => $result->isError,
+     ];
+   }
+diff --git a/src/Plugin/tool/Tool/Derivative/McpToolDeriver.php b/src/Plugin/tool/Tool/Derivative/McpToolDeriver.php
+index ae7bda2..6b01e7f 100644
+--- a/src/Plugin/tool/Tool/Derivative/McpToolDeriver.php
++++ b/src/Plugin/tool/Tool/Derivative/McpToolDeriver.php
+@@ -10,6 +10,10 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
+ use Drupal\tool\Tool\ToolDefinition;
+ use Drupal\tool\Tool\ToolOperation;
+ use Drupal\tool\TypedData\InputDefinition;
++use Drupal\tool\TypedData\ListOutputDefinition;
++use Drupal\tool\TypedData\MapOutputDefinition;
++use Drupal\tool\TypedData\OutputDefinition;
++use Drupal\tool\TypedData\OutputDefinitionInterface;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
+ 
+ /**
+@@ -81,7 +85,7 @@ class McpToolDeriver extends DeriverBase implements ContainerDeriverInterface {
+           $properties = $schema->getProperties();
+           foreach ($properties as $key => $info) {
+             // Map MCP types to Drupal data types.
+-            $type = match ($info['type']) {
++            $type = match (static::jsonSchemaType($info)) {
+               'number' => 'float',
+               'integer' => 'integer',
+               'boolean' => 'boolean',
+@@ -106,6 +110,7 @@ class McpToolDeriver extends DeriverBase implements ContainerDeriverInterface {
+             'label' => new TranslatableMarkup('@name', ['@name' => $tool->name()]),
+             'description' => new TranslatableMarkup('@desc', ['@desc' => $tool->description()]),
+             'input_definitions' => $input_definitions,
++            'output_definitions' => $this->outputDefinitions($tool->getOutputSchema()),
+             'class' => $base_plugin_definition->getClass(),
+             'operation' => $tool->getOperation() ?? ToolOperation::Trigger,
+           ]);
+@@ -123,4 +128,111 @@ class McpToolDeriver extends DeriverBase implements ContainerDeriverInterface {
+     return parent::getDerivativeDefinitions($base_array);
+   }
+ 
++  /**
++   * Builds output definitions from a tool's MCP outputSchema.
++   *
++   * Each top-level property of the structuredContent object becomes one
++   * output, so a consumer can read `results` or `total` directly instead of
++   * parsing the text content.
++   *
++   * @param array<string, mixed> $output_schema
++   *   The tool's outputSchema; empty when the server declares none.
++   *
++   * @return array<string, \Drupal\tool\TypedData\OutputDefinitionInterface>
++   *   Output definitions keyed by property name.
++   */
++  protected function outputDefinitions(array $output_schema): array {
++    $properties = $output_schema['properties'] ?? [];
++    if (!is_array($properties)) {
++      return [];
++    }
++    $required = (array) ($output_schema['required'] ?? []);
++    $definitions = [];
++    foreach ($properties as $key => $info) {
++      if (is_array($info)) {
++        $definitions[$key] = $this->outputDefinition((string) $key, $info, in_array($key, $required, TRUE));
++      }
++    }
++    return $definitions;
++  }
++
++  /**
++   * Converts one JSON Schema node into an output definition.
++   *
++   * @param string $key
++   *   The property name, used when the schema has no title.
++   * @param array<string, mixed> $info
++   *   The JSON Schema of the property.
++   * @param bool $required
++   *   Whether the parent object lists the property as required.
++   *
++   * @return \Drupal\tool\TypedData\OutputDefinitionInterface
++   *   The output definition.
++   */
++  protected function outputDefinition(string $key, array $info, bool $required): OutputDefinitionInterface {
++    // Plain strings, not TranslatableMarkup: the text comes from a remote
++    // server and an '@' placeholder would HTML-escape it.
++    $label = (string) ($info['title'] ?? $key);
++    $description = (string) ($info['description'] ?? '');
++
++    switch (static::jsonSchemaType($info)) {
++      case 'array':
++        $items = is_array($info['items'] ?? NULL) ? $info['items'] : [];
++        return new ListOutputDefinition($label, $description, $required, FALSE, NULL, [], $this->outputDefinition($key, $items, FALSE));
++
++      case 'object':
++        $item_required = (array) ($info['required'] ?? []);
++        $properties = [];
++        foreach ((array) ($info['properties'] ?? []) as $name => $property) {
++          if (is_array($property)) {
++            $properties[$name] = $this->outputDefinition((string) $name, $property, in_array($name, $item_required, TRUE));
++          }
++        }
++        return new MapOutputDefinition($label, $description, $required, FALSE, NULL, [], $properties);
++
++      default:
++        $type = match (static::jsonSchemaType($info)) {
++          'number' => 'float',
++          'integer' => 'integer',
++          'boolean' => 'boolean',
++          default => 'string',
++        };
++        return new OutputDefinition($type, $label, $description, $required);
++    }
++  }
++
++  /**
++   * Resolves the JSON Schema type of a property.
++   *
++   * Handles a plain `type`, a type list such as ["string", "null"], and a
++   * `oneOf`/`anyOf` of alternatives, taking the first type that is not null.
++   *
++   * @param array<string, mixed> $info
++   *   The JSON Schema of the property.
++   *
++   * @return string
++   *   The type name, or 'string' when none can be found.
++   */
++  protected static function jsonSchemaType(array $info): string {
++    $type = $info['type'] ?? NULL;
++    if (is_string($type)) {
++      return $type;
++    }
++    if (is_array($type)) {
++      foreach ($type as $candidate) {
++        if (is_string($candidate) && $candidate !== 'null') {
++          return $candidate;
++        }
++      }
++    }
++    foreach (['oneOf', 'anyOf'] as $keyword) {
++      foreach ((array) ($info[$keyword] ?? []) as $alternative) {
++        if (is_array($alternative) && ($resolved = static::jsonSchemaType($alternative)) !== 'null') {
++          return $resolved;
++        }
++      }
++    }
++    return 'string';
++  }
++
+ }
+diff --git a/src/Plugin/tool/Tool/McpToolBase.php b/src/Plugin/tool/Tool/McpToolBase.php
+index ea104de..04056b2 100644
+--- a/src/Plugin/tool/Tool/McpToolBase.php
++++ b/src/Plugin/tool/Tool/McpToolBase.php
+@@ -159,8 +159,14 @@ class McpToolBase extends ToolBase {
+         );
+       }
+ 
++      // Hand the typed result on as context values, one per top-level
++      // property; ToolBase::execute() keeps those with an output definition.
++      $structured = $response['structuredContent'] ?? NULL;
++      $context_values = is_array($structured) && !array_is_list($structured) ? $structured : [];
++
+       return ExecutableResult::success(
+-        new TranslatableMarkup('MCP tool executed successfully: @output', ['@output' => $output])
++        new TranslatableMarkup('MCP tool executed successfully: @output', ['@output' => $output]),
++        $context_values,
+       );
+     }
+     catch (\Exception $e) {
+diff --git a/src/ValueObject/Tool.php b/src/ValueObject/Tool.php
+index e14021b..eccdbcc 100644
+--- a/src/ValueObject/Tool.php
++++ b/src/ValueObject/Tool.php
+@@ -30,6 +30,9 @@ final class Tool implements ToolInterface {
+    *   The tool operations.
+    * @param LockedDefinitionInterface|null $lockedDefinition
+    *   The locked definition (following MCP protocol standard).
++   * @param array<string, mixed> $outputSchema
++   *   The JSON Schema of the tool's structuredContent (MCP outputSchema), or
++   *   an empty array when the server declares none.
+    */
+   public function __construct(
+     public readonly string $name,
+@@ -39,6 +42,7 @@ final class Tool implements ToolInterface {
+     public readonly bool $locked = FALSE,
+     public readonly ?ToolOperation $operation = NULL,
+     public readonly ?LockedDefinitionInterface $lockedDefinition = NULL,
++    public readonly array $outputSchema = [],
+   ) {
+     if ($this->locked && $this->lockedDefinition === NULL) {
+       throw new \InvalidArgumentException('Locked tools must have a locked_definition');
+@@ -99,6 +103,13 @@ final class Tool implements ToolInterface {
+     return $this->lockedDefinition;
+   }
+ 
++  /**
++   * {@inheritdoc}
++   */
++  public function getOutputSchema(): array {
++    return $this->outputSchema;
++  }
++
+   /**
+    * Creates a builder from this Tool instance.
+    *
+@@ -136,6 +147,8 @@ final class Tool implements ToolInterface {
+       'operation' => $this->operation?->value,
+       // Following MCP protocol standard (camelCase).
+       'lockedDefinition' => $this->lockedDefinition?->toArray(),
++      // Following MCP protocol standard (camelCase).
++      'outputSchema' => $this->outputSchema,
+     ];
+   }
+ 
+diff --git a/src/ValueObject/ToolBuilder.php b/src/ValueObject/ToolBuilder.php
+index ddc101d..afa1cb2 100644
+--- a/src/ValueObject/ToolBuilder.php
++++ b/src/ValueObject/ToolBuilder.php
+@@ -77,6 +77,13 @@ final class ToolBuilder {
+    */
+   private ?LockedDefinitionInterface $lockedDefinition = NULL;
+ 
++  /**
++   * The tool output schema (MCP outputSchema).
++   *
++   * @var array<string, mixed>
++   */
++  private array $outputSchema = [];
++
+   /**
+    * Private constructor to enforce factory methods.
+    *
+@@ -133,6 +140,7 @@ final class ToolBuilder {
+     $builder->locked = $tool->locked;
+     $builder->operation = $tool->operation;
+     $builder->lockedDefinition = $tool->lockedDefinition;
++    $builder->outputSchema = $tool->outputSchema;
+     return $builder;
+   }
+ 
+@@ -173,6 +181,9 @@ final class ToolBuilder {
+     $lockedDefData = $data['lockedDefinition'] ?? $data['locked_definition'] ?? NULL;
+     $builder->lockedDefinition = $lockedDefData ? LockedDefinition::fromArray($lockedDefData) : NULL;
+ 
++    $outputSchema = $data['outputSchema'] ?? $data['output_schema'] ?? [];
++    $builder->outputSchema = is_array($outputSchema) ? $outputSchema : [];
++
+     return $builder;
+   }
+ 
+@@ -232,6 +243,17 @@ final class ToolBuilder {
+     return $this;
+   }
+ 
++  /**
++   * Sets the output schema.
++   *
++   * @param array<string, mixed> $outputSchema
++   *   The JSON Schema of the tool's structuredContent.
++   */
++  public function setOutputSchema(array $outputSchema): self {
++    $this->outputSchema = $outputSchema;
++    return $this;
++  }
++
+   /**
+    * Builds the immutable Tool instance.
+    *
+@@ -249,7 +271,8 @@ final class ToolBuilder {
+       $this->enabled,
+       $this->locked,
+       $this->operation,
+-      $this->lockedDefinition
++      $this->lockedDefinition,
++      $this->outputSchema,
+     );
+   }
+ 
+diff --git a/src/ValueObject/ToolInterface.php b/src/ValueObject/ToolInterface.php
+index ce069c0..da4eb5b 100644
+--- a/src/ValueObject/ToolInterface.php
++++ b/src/ValueObject/ToolInterface.php
+@@ -67,6 +67,15 @@ interface ToolInterface {
+    */
+   public function getLockedDefinition(): ?LockedDefinitionInterface;
+ 
++  /**
++   * Gets the tool's output schema, as the server advertised it.
++   *
++   * @return array<string, mixed>
++   *   The JSON Schema of the tool's structuredContent, or an empty array when
++   *   the server declares none.
++   */
++  public function getOutputSchema(): array;
++
+   /**
+    * Creates a builder from this Tool instance.
+    *

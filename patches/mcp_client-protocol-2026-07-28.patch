@@ -1,0 +1,21 @@
+diff --git a/src/MCPClient.php b/src/MCPClient.php
+index 703b372..edee09d 100644
+--- a/src/MCPClient.php
++++ b/src/MCPClient.php
+@@ -11,6 +11,7 @@ use Mcp\Client\Transport\StdioTransport;
+ use Mcp\Client\Transport\TransportInterface;
+ use Mcp\Exception\ExceptionInterface as McpExceptionInterface;
+ use Mcp\Schema\Content\TextContent;
++use Mcp\Schema\Enum\ProtocolVersion;
+ use Psr\Log\LoggerInterface;
+ 
+ /**
+@@ -102,6 +103,8 @@ class MCPClient {
+ 
+     $this->client = Client::builder()
+       ->setClientInfo('Drupal MCP Client', '1.0.0')
++      // Speak the stateless 2026-07-28 revision (no initialize handshake).
++      ->setProtocolVersion(ProtocolVersion::V2026_07_28)
+       ->setLogger($bufferingLogger)
+       ->setRequestTimeout($timeout)
+       ->setInitTimeout($timeout)
