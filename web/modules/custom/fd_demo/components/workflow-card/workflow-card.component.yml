@@ -1,0 +1,38 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Workflow card
+status: stable
+description: 'A card for one workflow: icon, title, description, what it needs, node count, and Try it / Open editor.'
+group: FlowDrop Demo
+props:
+  type: object
+  required:
+    - title
+  properties:
+    title:
+      type: string
+    description:
+      type: string
+    icon:
+      type: string
+      description: 'Trusted SVG markup from the FlowDrop dashboard icon repository.'
+    needs:
+      type: array
+      description: "Requirement pills: {label, variant} with a flowdrop_ui_components:pill variant."
+      items:
+        type: object
+        properties:
+          label: { type: string }
+          variant: { type: string }
+    node_count:
+      type: integer
+    try_url:
+      type: string
+    edit_url:
+      type: string
+    try_label:
+      type: string
+    edit_label:
+      type: string
+libraryOverrides:
+  dependencies:
+    - fd_demo/start

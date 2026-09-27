@@ -1,0 +1,46 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Hero
+status: stable
+description: 'Start-page hero: FlowDrop logo, pitch, calls to action, a three-step how-to, and an animated mini canvas.'
+group: FlowDrop Demo
+props:
+  type: object
+  required:
+    - title
+  properties:
+    eyebrow:
+      type: string
+      title: Eyebrow
+    title:
+      type: string
+      title: Title
+    lead:
+      type: string
+      title: Lead
+      description: 'Intro paragraph. Trusted markup (from t()), rendered raw.'
+    logo_url:
+      type: string
+      title: Logo URL
+    primary:
+      type: object
+      title: Primary action
+      properties:
+        label: { type: string }
+        url: { type: string }
+    secondary:
+      type: object
+      title: Secondary action
+      properties:
+        label: { type: string }
+        url: { type: string }
+    steps:
+      type: array
+      title: How-to steps
+      items:
+        type: object
+        properties:
+          title: { type: string }
+          text: { type: string }
+libraryOverrides:
+  dependencies:
+    - fd_demo/start

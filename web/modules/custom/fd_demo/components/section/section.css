@@ -1,0 +1,20 @@
+.fd-demo-section {
+  scroll-margin-top: 6rem;
+}
+
+.fd-demo-section__header {
+  margin-block-end: var(--fd-space-4);
+}
+
+.fd-demo-section__eyebrow {
+  margin: 0 0 var(--fd-space-1);
+  color: var(--fd-primary-hover);
+  font-size: var(--fd-text-xs);
+  font-weight: var(--fd-font-weight-semibold);
+  letter-spacing: var(--fd-letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.fd-demo-section__title {
+  font-size: var(--fd-text-xl);
+}

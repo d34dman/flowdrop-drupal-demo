@@ -1,0 +1,24 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Section
+status: stable
+description: 'A titled page section with an eyebrow and a description, built on the FlowDrop dashboard section styles.'
+group: FlowDrop Demo
+props:
+  type: object
+  required:
+    - title
+  properties:
+    id:
+      type: string
+    eyebrow:
+      type: string
+    title:
+      type: string
+    description:
+      type: string
+slots:
+  content:
+    title: Content
+libraryOverrides:
+  dependencies:
+    - fd_demo/start

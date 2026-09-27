@@ -1,4 +1,8 @@
+# Page-level styles shared by this module's components: buttons and the
+# learning-path list. Components depend on it so they render the same anywhere.
 start:
   css:
     theme:
       css/start.css: {}
+  dependencies:
+    - flowdrop_ui_components/theme-layer

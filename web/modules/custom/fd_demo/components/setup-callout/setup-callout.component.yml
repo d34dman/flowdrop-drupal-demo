@@ -1,0 +1,31 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Setup callout
+status: stable
+description: 'A status banner for a setup step (ok, missing, info), with optional shell commands and a copy button.'
+group: FlowDrop Demo
+props:
+  type: object
+  required:
+    - status
+    - title
+  properties:
+    status:
+      type: string
+      enum: [ok, missing, info]
+    title:
+      type: string
+    message:
+      type: string
+      description: 'Trusted markup (from t()), rendered raw.'
+    commands:
+      type: array
+      items: { type: string }
+    copy_label:
+      type: string
+    copied_label:
+      type: string
+libraryOverrides:
+  dependencies:
+    - fd_demo/start
+    - core/drupal
+    - core/once

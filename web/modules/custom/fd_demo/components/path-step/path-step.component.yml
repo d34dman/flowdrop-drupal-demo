@@ -1,0 +1,40 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Path step
+status: stable
+description: 'One numbered step of the learning path: a rail marker, the workflow, what it needs, and Try it / Open editor.'
+group: FlowDrop Demo
+props:
+  type: object
+  required:
+    - number
+    - title
+  properties:
+    number:
+      type: string
+    title:
+      type: string
+    stage:
+      type: string
+    description:
+      type: string
+    needs:
+      type: array
+      description: "Requirement pills: {label, variant} with a flowdrop_ui_components:pill variant."
+      items:
+        type: object
+        properties:
+          label: { type: string }
+          variant: { type: string }
+    node_count:
+      type: integer
+    try_url:
+      type: string
+    edit_url:
+      type: string
+    try_label:
+      type: string
+    edit_label:
+      type: string
+libraryOverrides:
+  dependencies:
+    - fd_demo/start

@@ -1,0 +1,95 @@
+{#
+/**
+ * @file
+ * Start-page hero.
+ *
+ * The illustration is decorative: a four-node workflow whose edges carry a
+ * moving dash and whose model node pulses, the way a run looks in the
+ * Playground. It is aria-hidden; the text column carries the meaning.
+ */
+#}
+<section class="fd-demo-hero" aria-labelledby="fd-demo-hero-title">
+  <div class="fd-demo-hero__text">
+    <div class="fd-demo-hero__brand">
+      {% if logo_url %}
+        <img src="{{ logo_url }}" alt="" class="fd-demo-hero__logo" width="40" height="40">
+      {% endif %}
+      {% if eyebrow %}
+        <span class="fd-demo-hero__eyebrow">{{ eyebrow }}</span>
+      {% endif %}
+    </div>
+
+    <h2 id="fd-demo-hero-title" class="fd-demo-hero__title">{{ title }}</h2>
+
+    {% if lead %}
+      <p class="fd-demo-hero__lead">{{ lead|raw }}</p>
+    {% endif %}
+
+    {% if primary.url or secondary.url %}
+      <div class="fd-demo-hero__actions">
+        {% if primary.url %}
+          <a href="{{ primary.url }}" class="fd-demo-btn fd-demo-btn--primary fd-demo-btn--lg">
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.34-5.89a1.5 1.5 0 000-2.54L6.3 2.84z"/></svg>
+            {{ primary.label }}
+          </a>
+        {% endif %}
+        {% if secondary.url %}
+          <a href="{{ secondary.url }}" class="fd-demo-btn fd-demo-btn--secondary fd-demo-btn--lg">{{ secondary.label }}</a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if steps %}
+      <ol class="fd-demo-hero__steps">
+        {% for step in steps %}
+          <li class="fd-demo-hero__step">
+            <span class="fd-demo-hero__step-num" aria-hidden="true">{{ loop.index }}</span>
+            <span>
+              <strong>{{ step.title }}</strong>
+              <span class="fd-demo-hero__step-text">{{ step.text }}</span>
+            </span>
+          </li>
+        {% endfor %}
+      </ol>
+    {% endif %}
+  </div>
+
+  <div class="fd-demo-hero__canvas" aria-hidden="true">
+    <div class="fd-demo-hero__chrome">
+      <span></span><span></span><span></span>
+      <em>level_2_7_style_controlled_ai_reply</em>
+    </div>
+    <svg class="fd-demo-flow" viewBox="0 0 480 270" role="presentation">
+      <g class="fd-demo-flow__edges">
+        <path d="M140 60 C172 60 148 135 178 135"/>
+        <path d="M140 210 C172 210 148 135 178 135"/>
+        <path d="M302 135 L340 135"/>
+      </g>
+      <g class="fd-demo-flow__pulses">
+        <path d="M140 60 C172 60 148 135 178 135"/>
+        <path d="M140 210 C172 210 148 135 178 135"/>
+        <path d="M302 135 L340 135"/>
+      </g>
+
+      {% set nodes = [
+        {x: 16, y: 32, color: 'emerald', title: 'Chat input', sub: 'message', glyph: 'M17 22h10a3 3 0 013 3v5a3 3 0 01-3 3h-6l-4 3v-3a3 3 0 01-3-3v-5a3 3 0 013-3z'},
+        {x: 16, y: 182, color: 'amber', title: 'Pick a tone', sub: 'choice', glyph: 'M17 23h14M17 28h14M17 33h14M20 21v4M28 26v4M23 31v4'},
+        {x: 178, y: 107, color: 'violet', title: 'Chat model', sub: 'Claude', running: true, glyph: 'M24 20l2.2 5.8L32 28l-5.8 2.2L24 36l-2.2-5.8L16 28l5.8-2.2z'},
+        {x: 340, y: 107, color: 'blue', title: 'Chat output', sub: 'reply', done: true, glyph: 'M17 24h14M17 28h14M17 32h9'},
+      ] %}
+      {% for n in nodes %}
+        <g class="fd-demo-flow__node fd-demo-flow__node--{{ n.color }}{% if n.running %} is-running{% endif %}" transform="translate({{ n.x }} {{ n.y }})">
+          {% if n.running %}<rect class="fd-demo-flow__halo" x="-4" y="-4" width="132" height="64" rx="13"/>{% endif %}
+          <rect class="fd-demo-flow__box" width="124" height="56" rx="10"/>
+          <rect class="fd-demo-flow__chip" x="10" y="14" width="28" height="28" rx="7"/>
+          <path class="fd-demo-flow__glyph" d="{{ n.glyph }}"/>
+          <text class="fd-demo-flow__title" x="46" y="26">{{ n.title }}</text>
+          <text class="fd-demo-flow__sub" x="46" y="42">{{ n.sub }}</text>
+          {% if n.x > 16 %}<circle class="fd-demo-flow__port" cx="0" cy="28" r="4"/>{% endif %}
+          {% if n.x < 340 %}<circle class="fd-demo-flow__port" cx="124" cy="28" r="4"/>{% endif %}
+          {% if n.done %}<circle class="fd-demo-flow__done" cx="118" cy="6" r="8"/><path class="fd-demo-flow__tick" d="M114 6 l3 3 l5 -6"/>{% endif %}
+        </g>
+      {% endfor %}
+    </svg>
+  </div>
+</section>

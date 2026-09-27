@@ -1,0 +1,8 @@
+<section class="fd-section fd-demo-section"{% if id %} id="{{ id }}" aria-labelledby="{{ id }}-title"{% endif %}>
+  <header class="fd-demo-section__header">
+    {% if eyebrow %}<p class="fd-demo-section__eyebrow">{{ eyebrow }}</p>{% endif %}
+    <h2 class="fd-section__title fd-demo-section__title"{% if id %} id="{{ id }}-title"{% endif %}>{{ title }}</h2>
+    {% if description %}<p class="fd-section__description">{{ description }}</p>{% endif %}
+  </header>
+  {{ content }}
+</section>

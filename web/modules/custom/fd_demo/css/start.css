@@ -1,11 +1,240 @@
-.fd-demo-start { max-width: 72rem; }
-.fd-demo-start__intro { font-size: 1.05rem; max-width: 48rem; }
-.fd-demo-start__key { padding: 0.75rem 1rem; border-radius: 0.5rem; margin: 1rem 0 1.5rem; max-width: 48rem; }
-.fd-demo-start__key--ok { background: #e6f4ea; border: 1px solid #9fd3ad; }
-.fd-demo-start__key--missing { background: #fff4e5; border: 1px solid #f0c27b; }
-.fd-demo-start__key pre { margin: 0.5rem 0 0; padding: 0.5rem; background: rgba(0, 0, 0, 0.06); border-radius: 0.25rem; white-space: pre-wrap; }
-.fd-demo-start h2 { margin-top: 2rem; }
-.fd-demo-start__badge { display: inline-block; padding: 0 0.5rem; border-radius: 1rem; font-size: 0.8rem; white-space: nowrap; }
-.fd-demo-start__badge--ai { background: #ede7f6; color: #4527a0; }
-.fd-demo-start__badge--offline { background: #e6f4ea; color: #1e6b34; }
-.fd-demo-start__badge--net { background: #e3f2fd; color: #0d47a1; }
+/**
+ * @file
+ * Start page: shared buttons and page rhythm. Everything uses FlowDrop tokens.
+ */
+
+.fd-demo-start {
+  box-sizing: border-box;
+  gap: var(--fd-space-10);
+  color: var(--fd-foreground);
+}
+
+/* Claro and Olivero hyphenate; headings and card copy read better whole. */
+.fd-demo-start * {
+  hyphens: manual;
+}
+
+/* The dashboard sections carry their own bottom margin; the flex gap wins. */
+.fd-demo-start,
+.fd-demo-start > * {
+  min-width: 0;
+  margin-block: 0;
+}
+
+/* ---- Buttons ---------------------------------------------------------- */
+
+.fd-demo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fd-space-2);
+  padding: var(--fd-space-2) var(--fd-space-4);
+  border: var(--fd-border-width) solid transparent;
+  border-radius: var(--fd-radius-lg);
+  font-family: var(--fd-font-family-sans);
+  font-size: var(--fd-text-sm);
+  font-weight: var(--fd-font-weight-semibold);
+  line-height: 1.25rem;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--fd-transition-fast),
+    border-color var(--fd-transition-fast),
+    box-shadow var(--fd-transition-fast),
+    transform var(--fd-transition-fast);
+}
+
+.fd-demo-btn:focus-visible {
+  outline: 2px solid var(--fd-ring);
+  outline-offset: 2px;
+}
+
+.fd-demo-btn:active {
+  transform: translateY(1px);
+}
+
+.fd-demo-btn svg {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.fd-demo-btn--lg {
+  padding: var(--fd-space-3) var(--fd-space-5);
+  font-size: var(--fd-text-base);
+}
+
+.fd-demo-btn--sm {
+  padding: var(--fd-space-1) var(--fd-space-3);
+  font-size: var(--fd-text-xs);
+  line-height: 1.25rem;
+}
+
+.fd-demo-btn--primary,
+.fd-demo-btn--primary:visited {
+  color: var(--fd-primary-foreground);
+  background-color: var(--fd-primary);
+  box-shadow: var(--fd-shadow-sm);
+}
+
+.fd-demo-btn--primary:hover,
+.fd-demo-btn--primary:focus {
+  color: var(--fd-primary-foreground);
+  background-color: var(--fd-primary-hover);
+  box-shadow: var(--fd-shadow-md);
+  text-decoration: none;
+}
+
+.fd-demo-btn--secondary,
+.fd-demo-btn--secondary:visited {
+  color: var(--fd-foreground);
+  border-color: var(--fd-border);
+  background-color: var(--fd-card);
+}
+
+.fd-demo-btn--secondary:hover,
+.fd-demo-btn--secondary:focus {
+  color: var(--fd-foreground);
+  border-color: var(--fd-border-strong);
+  background-color: var(--fd-muted);
+  text-decoration: none;
+}
+
+.fd-demo-btn--ghost,
+.fd-demo-btn--ghost:visited {
+  color: var(--fd-muted-foreground);
+  background-color: transparent;
+}
+
+.fd-demo-btn--ghost:hover,
+.fd-demo-btn--ghost:focus {
+  color: var(--fd-foreground);
+  background-color: var(--fd-subtle);
+  text-decoration: none;
+}
+
+/* ---- Workflow card body (workflow-card and path-step) ---------------- */
+
+.fd-demo-wf {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fd-space-2);
+  padding: var(--fd-space-4) var(--fd-space-5);
+  border: var(--fd-border-width) solid var(--fd-border-muted);
+  border-radius: var(--fd-radius-xl);
+  background: var(--fd-card);
+  box-shadow: var(--fd-shadow-sm);
+  transition:
+    border-color var(--fd-transition-fast),
+    box-shadow var(--fd-transition-fast),
+    transform var(--fd-transition-fast);
+}
+
+.fd-demo-wf:hover,
+.fd-demo-wf:focus-within {
+  border-color: color-mix(in srgb, var(--fd-primary) 40%, var(--fd-border));
+  box-shadow: var(--fd-shadow-md);
+}
+
+.fd-demo-section .fd-grid {
+  align-items: stretch;
+}
+
+.fd-demo-wf--card:hover {
+  transform: translateY(-2px);
+}
+
+.fd-demo-wf__header {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-3);
+}
+
+.fd-demo-wf__icon {
+  display: inline-grid;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: var(--fd-radius-lg);
+  color: var(--fd-accent-hover);
+  background: var(--fd-accent-muted);
+}
+
+.fd-demo-wf__icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.fd-demo-wf__title {
+  flex: 1;
+  margin: 0;
+  color: var(--fd-foreground);
+  font-family: var(--fd-font-family-sans);
+  font-size: var(--fd-text-base);
+  font-weight: var(--fd-font-weight-semibold);
+  line-height: 1.4;
+}
+
+.fd-demo-wf__description {
+  flex: 1;
+  margin: 0;
+  color: var(--fd-muted-foreground);
+  font-size: var(--fd-text-sm);
+  line-height: 1.55;
+}
+
+.fd-demo-wf__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fd-space-3);
+  margin-block-start: var(--fd-space-2);
+}
+
+.fd-demo-wf__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fd-space-2);
+}
+
+.fd-demo-wf__nodes {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fd-space-1);
+  color: var(--fd-muted-foreground);
+  font-size: var(--fd-text-xs);
+}
+
+.fd-demo-wf__nodes svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.fd-demo-wf__actions {
+  display: flex;
+  gap: var(--fd-space-2);
+  margin-inline-start: auto;
+}
+
+/* ---- Learning path ------------------------------------------------------ */
+
+.fd-demo-path {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fd-demo-start *,
+  .fd-demo-start *::before,
+  .fd-demo-start *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
