@@ -1,0 +1,43 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Concepts
+status: stable
+description: 'The few words a first-time visitor needs, each tied to the button that opens it, beside a short tour video (or its placeholder).'
+group: FlowDrop Demo
+props:
+  type: object
+  required:
+    - items
+  properties:
+    items:
+      type: array
+      items:
+        type: object
+        properties:
+          term: { type: string }
+          text:
+            type: string
+            description: 'Trusted markup (from t()), rendered raw.'
+          icon:
+            type: string
+            description: 'Trusted SVG markup from the FlowDrop dashboard icon repository.'
+          button:
+            type: string
+            description: 'Label of the start-page button that opens this, shown as a chip.'
+    tour_url:
+      type: string
+      title: Tour video URL
+      description: 'When empty, a placeholder stands where the video goes.'
+    tour_poster:
+      type: string
+    tour_caption:
+      type: string
+    placeholder_label:
+      type: string
+      description: 'Badge in the corner of the placeholder, so it reads as unfinished on purpose.'
+    placeholder_title:
+      type: string
+    placeholder_text:
+      type: string
+libraryOverrides:
+  dependencies:
+    - fd_demo/start

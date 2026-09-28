@@ -7,3 +7,20 @@ fd_demo.start:
     _permission: 'access content'
   options:
     _admin_route: TRUE
+
+# One click from the start page into a running Playground: creates the session
+# the "New Playground Session" form would, and skips the form. It writes on GET,
+# so the link carries a CSRF token.
+fd_demo.try:
+  path: '/start/try/{flowdrop_workflow}'
+  defaults:
+    _controller: '\Drupal\fd_demo\Controller\TryController::try'
+  requirements:
+    _permission: 'create flowdrop_session'
+    _csrf_token: 'TRUE'
+    flowdrop_workflow: '[a-z0-9_]+'
+  options:
+    _admin_route: TRUE
+    parameters:
+      flowdrop_workflow:
+        type: entity:flowdrop_workflow

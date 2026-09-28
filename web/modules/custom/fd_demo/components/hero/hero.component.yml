@@ -33,6 +33,10 @@ props:
       properties:
         label: { type: string }
         url: { type: string }
+    canvas_label:
+      type: string
+      title: Illustration title
+      description: 'Shown in the mini canvas title bar; name the workflow it depicts.'
     steps:
       type: array
       title: How-to steps

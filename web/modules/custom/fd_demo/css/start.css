@@ -21,6 +21,20 @@
   margin-block: 0;
 }
 
+/* Sample inputs and outputs in the copy: what to type, what comes back. */
+.fd-demo-start code {
+  padding: 0.05em 0.35em;
+  border: var(--fd-border-width) solid var(--fd-border-muted);
+  border-radius: var(--fd-radius-sm);
+  color: var(--fd-foreground);
+  background: var(--fd-muted);
+  font-family: var(--fd-font-family-mono);
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
 /* ---- Buttons ---------------------------------------------------------- */
 
 .fd-demo-btn {
@@ -185,6 +199,55 @@
   line-height: 1.55;
 }
 
+.fd-demo-wf__hints {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--fd-space-1) var(--fd-space-3);
+  margin: var(--fd-space-1) 0 0;
+  font-size: var(--fd-text-sm);
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .fd-demo-wf__hints {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0;
+  }
+
+  .fd-demo-wf__hint dd + dt,
+  .fd-demo-wf__hint:not(:first-child) dt {
+    margin-block-start: var(--fd-space-2);
+  }
+}
+
+/* In a card the hints, not the description, take up the slack above the footer. */
+.fd-demo-wf--card .fd-demo-wf__hints {
+  flex: 1;
+  align-content: start;
+}
+
+.fd-demo-wf__description:has(+ .fd-demo-wf__hints) {
+  flex: none;
+}
+
+.fd-demo-wf__hint {
+  display: contents;
+}
+
+.fd-demo-wf__hint dt {
+  color: var(--fd-primary-hover);
+  font-size: var(--fd-text-xs);
+  font-weight: var(--fd-font-weight-semibold);
+  letter-spacing: var(--fd-letter-spacing-wide);
+  line-height: 1.5rem;
+  text-transform: uppercase;
+}
+
+.fd-demo-wf__hint dd {
+  margin: 0;
+  color: var(--fd-foreground);
+}
+
 .fd-demo-wf__footer {
   display: flex;
   flex-wrap: wrap;
@@ -218,6 +281,15 @@
   display: flex;
   gap: var(--fd-space-2);
   margin-inline-start: auto;
+}
+
+/* Headings inside a section, e.g. the groups under "For developers". */
+.fd-demo-subheading {
+  margin: 0 0 calc(var(--fd-space-3) * -1);
+  color: var(--fd-foreground);
+  font-family: var(--fd-font-family-sans);
+  font-size: var(--fd-text-base);
+  font-weight: var(--fd-font-weight-semibold);
 }
 
 /* ---- Learning path ------------------------------------------------------ */

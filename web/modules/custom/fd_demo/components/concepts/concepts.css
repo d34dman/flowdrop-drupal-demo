@@ -1,0 +1,142 @@
+.fd-demo-concepts {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--fd-space-8);
+}
+
+.fd-demo-concepts__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--fd-space-5) var(--fd-space-6);
+  margin: 0;
+}
+
+.fd-demo-concepts__item {
+  margin: 0;
+}
+
+.fd-demo-concepts__term {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fd-space-2);
+  margin: 0 0 var(--fd-space-1);
+  color: var(--fd-foreground);
+  font-size: var(--fd-text-base);
+  font-weight: var(--fd-font-weight-semibold);
+}
+
+.fd-demo-concepts__icon {
+  display: inline-grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  place-items: center;
+  border-radius: var(--fd-radius-md);
+  color: var(--fd-accent-hover);
+  background: var(--fd-accent-muted);
+}
+
+.fd-demo-concepts__icon svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Looks like the button it names, so the link from word to button is visual. */
+.fd-demo-concepts__button {
+  padding: 0 var(--fd-space-2);
+  border: var(--fd-border-width) solid var(--fd-border);
+  border-radius: var(--fd-radius-md);
+  color: var(--fd-muted-foreground);
+  background: var(--fd-card);
+  font-size: var(--fd-text-xs);
+  font-weight: var(--fd-font-weight-medium);
+  line-height: 1.25rem;
+}
+
+.fd-demo-concepts__text {
+  margin: 0;
+  color: var(--fd-muted-foreground);
+  font-size: var(--fd-text-sm);
+  line-height: 1.55;
+}
+
+.fd-demo-concepts__tour {
+  margin: 0;
+}
+
+.fd-demo-concepts__video,
+.fd-demo-concepts__placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--fd-radius-xl);
+}
+
+.fd-demo-concepts__video {
+  background: var(--fd-muted);
+  box-shadow: var(--fd-shadow-md);
+}
+
+.fd-demo-concepts__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fd-space-1);
+  position: relative;
+  box-sizing: border-box;
+  padding: var(--fd-space-4);
+  border: 2px dashed var(--fd-border);
+  color: var(--fd-muted-foreground);
+  background-color: var(--fd-muted);
+  background-image: radial-gradient(var(--fd-border) 1px, transparent 1px);
+  background-size: 16px 16px;
+  font-size: var(--fd-text-sm);
+  text-align: center;
+}
+
+.fd-demo-concepts__badge {
+  position: absolute;
+  top: var(--fd-space-3);
+  left: var(--fd-space-3);
+  padding: 0 var(--fd-space-2);
+  border: var(--fd-border-width) solid color-mix(in srgb, var(--fd-warning, #d97706) 40%, transparent);
+  border-radius: var(--fd-radius-full);
+  color: var(--fd-warning, #b45309);
+  background: var(--fd-card);
+  font-size: var(--fd-text-xs);
+  font-weight: var(--fd-font-weight-semibold);
+  letter-spacing: var(--fd-letter-spacing-wide);
+  line-height: 1.25rem;
+  text-transform: uppercase;
+}
+
+.fd-demo-concepts__placeholder svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-block-end: var(--fd-space-2);
+  color: var(--fd-border-strong);
+}
+
+.fd-demo-concepts__placeholder strong {
+  color: var(--fd-foreground);
+}
+
+.fd-demo-concepts__caption {
+  margin-block-start: var(--fd-space-2);
+  color: var(--fd-muted-foreground);
+  font-size: var(--fd-text-xs);
+}
+
+@media (max-width: 1024px) {
+  .fd-demo-concepts {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .fd-demo-concepts__list {
+    grid-template-columns: 1fr;
+  }
+}

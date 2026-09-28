@@ -8,15 +8,23 @@
 <li class="fd-demo-step">
   <span class="fd-demo-step__marker" aria-hidden="true">{{ number }}</span>
   <article class="fd-demo-wf fd-demo-step__card">
+  <div class="fd-demo-step__body">
     <header class="fd-demo-wf__header">
       <h3 class="fd-demo-wf__title">
-        <span class="visually-hidden">{{ 'Level'|t }} {{ number }}: </span>{{ title }}
+        <span class="visually-hidden">{{ 'Step'|t }} {{ number }}: </span>{{ title }}
       </h3>
       {% if stage %}
         {{ include('flowdrop_ui_components:pill', {label: stage, variant: 'secondary', style: 'outlined', size: 'xs', uppercase: true}, with_context = false) }}
       {% endif %}
     </header>
     {% if description %}<p class="fd-demo-wf__description">{{ description }}</p>{% endif %}
+  {% if try_text or see_text %}
+    <dl class="fd-demo-wf__hints">
+      {% if try_text %}<div class="fd-demo-wf__hint"><dt>{{ "Try"|t }}</dt><dd>{{ try_text|raw }}</dd></div>{% endif %}
+      {% if see_text %}<div class="fd-demo-wf__hint"><dt>{{ "You'll see"|t }}</dt><dd>{{ see_text|raw }}</dd></div>{% endif %}
+    </dl>
+  {% endif %}
+  </div>
   <div class="fd-demo-wf__footer">
     <div class="fd-demo-wf__meta">
       {% for need in needs %}

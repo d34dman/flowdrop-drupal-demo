@@ -16,6 +16,13 @@ props:
       type: string
     description:
       type: string
+    collapsible:
+      type: boolean
+      title: Collapsible
+      description: 'Render as a disclosure: the header is the toggle.'
+    open:
+      type: boolean
+      title: Open by default
 slots:
   content:
     title: Content

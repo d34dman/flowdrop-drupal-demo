@@ -1,0 +1,28 @@
+{#
+/**
+ * @file
+ * The guided first run: run a workflow, run a longer one, change it.
+ */
+#}
+<div class="fd-demo-first-run">
+  <ol class="fd-demo-first-run__steps">
+    {% for step in steps %}
+      <li class="fd-demo-first-run__step">
+        <span class="fd-demo-first-run__num" aria-hidden="true">{{ loop.index }}</span>
+        <h3 class="fd-demo-first-run__title">{{ step.title }}</h3>
+        <p class="fd-demo-first-run__text">{{ step.text|raw }}</p>
+        {% if step.action_url %}
+          <a href="{{ step.action_url }}" class="fd-demo-btn fd-demo-btn--sm {{ step.action_kind == 'edit' ? 'fd-demo-btn--secondary' : 'fd-demo-btn--primary' }} fd-demo-first-run__action">
+            {% if step.action_kind == 'edit' %}
+              <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z"/></svg>
+            {% else %}
+              <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.34-5.89a1.5 1.5 0 000-2.54L6.3 2.84z"/></svg>
+            {% endif %}
+            {{ step.action_label }}
+          </a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+  {% if outro %}<p class="fd-demo-first-run__outro">{{ outro }}</p>{% endif %}
+</div>

@@ -17,6 +17,12 @@ props:
       type: string
     description:
       type: string
+    try_text:
+      type: string
+      description: 'What to type or do in the Playground. Trusted markup (from t()), rendered raw.'
+    see_text:
+      type: string
+      description: 'What comes back. Trusted markup (from t()), rendered raw.'
     needs:
       type: array
       description: "Requirement pills: {label, variant} with a flowdrop_ui_components:pill variant."
