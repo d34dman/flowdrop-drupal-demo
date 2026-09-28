@@ -18,7 +18,7 @@ nodes:
     data:
       label: 'Prompt Template'
       config:
-        template: 'prompt_template` (`"Hello {{ variables }}, welcome back!"'
+        template: 'Hello {{ variables }}, welcome back!'
         nodeType: default
       metadata:
         node_type_id: prompt_template

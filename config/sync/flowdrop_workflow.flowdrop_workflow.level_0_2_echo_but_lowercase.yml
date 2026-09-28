@@ -34,7 +34,7 @@ nodes:
     data:
       label: 'Text Processor'
       config:
-        operation: capitalize
+        operation: lowercase
       metadata:
         node_type_id: text_processor
     measured:
