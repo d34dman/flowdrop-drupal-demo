@@ -32,7 +32,7 @@ nodes:
             -
               id: message
             -
-              id: albums
+              id: results
             -
               id: trigger
               exposed: false
@@ -65,7 +65,7 @@ nodes:
       config:
         template: |-
           {%- set albums_opts = [{'const': '', 'title': 'All albums'}] -%}
-          {%- for a in albums -%}
+          {%- for a in results -%}
             {%- set albums_opts = albums_opts|merge([{'const': a.id, 'title': a.title ~ (a.year ? ' (' ~ a.year ~ ')' : '')}]) -%}
           {%- endfor -%}
           {{ {
@@ -79,8 +79,8 @@ nodes:
           }|json_encode|raw }}
         dynamicInputs:
           -
-            name: albums
-            label: albums
+            name: results
+            label: results
             description: ''
             dataType: array
             required: false
@@ -95,7 +95,7 @@ nodes:
             -
               id: template
             -
-              id: albums
+              id: results
             -
               id: loop_back
             -
@@ -169,7 +169,7 @@ nodes:
     data:
       label: 'Filter form'
       config:
-        message: 'Find photos on dri.es'
+        message: 'Find images on dri.es'
         instanceTitle: 'Filter form'
         nodeType: default
         schema:
@@ -225,8 +225,8 @@ nodes:
     data:
       label: 'Pick words'
       config:
-        path: $.query
-        engine: jsonpath
+        path: 'query ?: null'
+        engine: expression_language
         instanceTitle: 'Pick words'
         nodeType: default
         default: null
@@ -353,7 +353,7 @@ nodes:
             -
               id: total
             -
-              id: images
+              id: results
             -
               id: trigger
               exposed: false
@@ -376,18 +376,22 @@ nodes:
       label: 'Render gallery'
       config:
         template: |-
+          {%- if results is not iterable -%}
+          **The dri.es server did not return a list of images.** Either it rejected the search (for example, a search shorter than 2 letters), or its answer no longer has the `results` field this workflow reads, in which case the stored tool definition is out of date.
+          {%- else -%}
           {%- set limit = filters.limit ?: 6 -%}
-          {%- set sorted = filters.sort == 'oldest' ? images|sort((a, b) => a.date <=> b.date) : images|sort((a, b) => b.date <=> a.date) -%}
+          {%- set sorted = filters.sort == 'oldest' ? results|sort((a, b) => (a.month ?? '9999') <=> (b.month ?? '9999')) : results|sort((a, b) => (b.month ?? '0000') <=> (a.month ?? '0000')) -%}
           {%- set shown = sorted|slice(0, limit) -%}
           {%- if total == 0 -%}
-          No photos match those filters.
+          No images match those filters.
           {%- else -%}
-          **{{ total }} photo{{ total == 1 ? '' : 's' }} match** · showing {{ shown|length }}, {{ filters.sort == 'oldest' ? 'oldest' : 'newest' }} first
+          **{{ total }} image{{ total == 1 ? '' : 's' }} match** · showing {{ shown|length }}, {{ filters.sort == 'oldest' ? 'oldest' : 'newest' }} first
           <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:8px">
           {%- for img in shown %}
-          <a href="{{ img.url }}" target="_blank" style="text-decoration:none;color:inherit"><img src="{{ img.thumbnail }}" alt="{{ img.alt ?: img.title }}" style="display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px"><div style="font-size:13px;font-weight:600;margin-top:4px;line-height:1.3">{{ img.title }}</div><div style="font-size:12px;opacity:.65">{{ img.date|date('j M Y') }}</div></a>
+          <a href="{{ img.url }}" target="_blank" style="text-decoration:none;color:inherit"><img src="{{ img.thumbnail }}" alt="{{ img.alt ?: img.title }}" style="display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px"><div style="font-size:13px;font-weight:600;margin-top:4px;line-height:1.3">{{ img.title }}</div><div style="font-size:12px;opacity:.65">{{ img.month ? img.month|date('M Y') : '' }}</div></a>
           {%- endfor %}
           </div>
+          {%- endif -%}
           {%- endif -%}
         dynamicInputs:
           -
@@ -397,8 +401,8 @@ nodes:
             dataType: integer
             required: false
           -
-            name: images
-            label: images
+            name: results
+            label: results
             description: ''
             dataType: array
             required: false
@@ -418,7 +422,7 @@ nodes:
             -
               id: template
             -
-              id: images
+              id: results
             -
               id: total
             -
@@ -491,7 +495,7 @@ nodes:
       height: 242
 edges:
   -
-    id: xy-edge__mcp_dri_es_find_albums.1mcp_dri_es_find_albums.1-output-albums-prompt_template.1prompt_template.1-input-albums
+    id: xy-edge__mcp_dri_es_find_albums.1mcp_dri_es_find_albums.1-output-results-prompt_template.1prompt_template.1-input-results
     source: mcp_dri_es_find_albums.1
     target: prompt_template.1
     data:
@@ -501,8 +505,8 @@ edges:
         edgeType: data
         sourcePortDataType: array
       edgeType: data
-    sourceHandle: mcp_dri_es_find_albums.1-output-albums
-    targetHandle: prompt_template.1-input-albums
+    sourceHandle: mcp_dri_es_find_albums.1-output-results
+    targetHandle: prompt_template.1-input-results
     style: 'stroke: var(--fd-edge-data);'
     markerEnd:
       type: arrowclosed
@@ -638,7 +642,7 @@ edges:
     class: flowdrop--edge--data
     type: default
   -
-    id: xy-edge__mcp_dri_es_find_images.1mcp_dri_es_find_images.1-output-images-prompt_template.2prompt_template.2-input-images
+    id: xy-edge__mcp_dri_es_find_images.1mcp_dri_es_find_images.1-output-results-prompt_template.2prompt_template.2-input-results
     source: mcp_dri_es_find_images.1
     target: prompt_template.2
     data:
@@ -648,8 +652,8 @@ edges:
         edgeType: data
         sourcePortDataType: array
       edgeType: data
-    sourceHandle: mcp_dri_es_find_images.1-output-images
-    targetHandle: prompt_template.2-input-images
+    sourceHandle: mcp_dri_es_find_images.1-output-results
+    targetHandle: prompt_template.2-input-results
     style: 'stroke: var(--fd-edge-data);'
     markerEnd:
       type: arrowclosed

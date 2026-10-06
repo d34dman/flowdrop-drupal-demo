@@ -15,7 +15,7 @@ http_headers: {  }
 tools:
   -
     name: find_albums
-    description: "Finds the site's photo albums by the words in their name, including the year."
+    description: "Finds the site's albums by the words in their name or description, including the year. Every match is returned, newest first."
     inputSchema:
       type: object
       properties:
@@ -25,7 +25,8 @@ tools:
               type: string
             -
               type: 'null'
-          description: 'Query: Words to look for. Every word has to appear somewhere in the album''s folder name or its title, but they do not have to be next to each other. Matched case insensitively and on whole words. The year is part of the folder name, so "2019" finds that year''s albums. A query shorter than two characters returns nothing rather than an error. Omit to list every album.'
+          minLength: 2
+          description: 'Query: Words to look for. Every word has to appear somewhere in the album''s folder name, title or description, but they do not have to be next to each other. Matched case insensitively, each word from its start. The year is part of the folder name, so "2019" finds that year''s albums. A query needs at least two characters. Without a query, every album is listed.'
           title: Query
       additionalProperties: false
     enabled: true
@@ -33,11 +34,14 @@ tools:
     operation: read
     outputSchema:
       type: object
-      required:
-        - albums
       properties:
-        albums:
+        total:
+          type: integer
+          description: 'Total: How many albums matched.'
+          title: Total
+        results:
           type: array
+          description: 'Results: The matching albums.'
           items:
             type: object
             properties:
@@ -67,18 +71,20 @@ tools:
               description:
                 type: string
                 contentMediaType: text/html
-                description: 'Description: Sanitized HTML shown at the top of the album page.'
+                description: 'Description: Shown inside a paragraph at the top of the album page, so it may hold inline HTML such as a link.'
                 title: Description
             required:
               - id
               - title
               - url
-          description: 'Albums: Every matching album, newest first.'
-          title: Albums
+          title: Results
+      required:
+        - total
+        - results
     lockedDefinition: null
   -
     name: find_images
-    description: 'Finds images by the words written about them, by album, or both.'
+    description: "Finds the site's images by the words written about them, by album, or both. A search returns at most 20 images. Listing an album without a query returns all of its images. There is no pagination: when total is higher than the number returned, narrow the query. Results come newest first, except that a search lists images whose title has every word of the query before the rest. Only the month of each image is included, so use this order to tell which came first. Each image's posts field lists the published posts that embed it, link to it, or show it as their lead image. To see how a post uses an image, append .md to the post's URL."
     inputSchema:
       type: object
       properties:
@@ -88,7 +94,8 @@ tools:
               type: string
             -
               type: 'null'
-          description: 'Query: Words to look for. Every word has to appear somewhere in the title, caption or alt text, but they do not have to be next to each other. Matched case insensitively and on whole words, so "engine" does not match "engineer". A query shorter than two characters returns nothing rather than an error. Omit to list without searching.'
+          minLength: 2
+          description: 'Query: Words to look for. Every word has to appear somewhere in the title, caption or alt text, but they do not have to be next to each other. Matched case insensitively, each word from its start, so "engine" also matches "engineer". A query needs at least two characters. Without a query, the newest images are listed, or every image in the album when one is given.'
           title: Query
         album:
           oneOf:
@@ -96,7 +103,7 @@ tools:
               type: string
             -
               type: 'null'
-          description: 'Album: An album id, as find_albums returns it. Omit for every album.'
+          description: 'Album: The album to look in: an id from find_albums, or the album field of an image. Without an album, every album is searched.'
           title: Album
       additionalProperties: false
     enabled: true
@@ -104,23 +111,21 @@ tools:
     operation: read
     outputSchema:
       type: object
-      required:
-        - total
-        - images
       properties:
         total:
           type: integer
-          description: 'Total: How many images matched. Can be higher than the number returned.'
+          description: 'Total: How many images matched, including any not returned.'
           title: Total
-        images:
+        results:
           type: array
+          description: 'Results: The matching images.'
           items:
             type: object
             properties:
               id:
                 type: string
                 minLength: 1
-                description: "Id: The album's id, a slash, then the photo's name."
+                description: "Id: The album's id, a slash, then the image's name."
                 title: Id
               title:
                 type: string
@@ -130,37 +135,54 @@ tools:
               url:
                 type: string
                 format: uri
-                description: "Url: Absolute URL to the photo's page on dri.es."
+                description: "Url: Absolute URL to the image's page on dri.es."
                 title: Url
+              album:
+                type: string
+                description: 'Album: The id of the album the image is in, as find_albums returns it.'
+                title: Album
               thumbnail:
                 type: string
                 format: uri
-                description: 'Thumbnail: Absolute URL to a 640px wide copy, for showing the photo.'
+                description: 'Thumbnail: Absolute URL to a copy at most 640px wide, for showing the image.'
                 title: Thumbnail
               alt:
                 type: string
                 contentMediaType: text/plain
-                description: 'Alt: Plain text describing the photo for screen readers.'
+                description: 'Alt: Plain text describing the image for screen readers.'
                 title: Alt
               caption:
                 type: string
                 contentMediaType: text/html
                 description: 'Caption: Sanitized HTML shown under the image.'
                 title: Caption
-              date:
+              credit:
+                type: string
+                contentMediaType: text/plain
+                description: 'Credit: Who to credit for the image. Omitted for images by Dries.'
+                title: Credit
+              month:
+                type: string
+                description: 'Month: The year and month the image was taken, as YYYY-MM. Omitted when the image has no date.'
+                title: Month
+              posts:
                 type:
-                  - string
+                  - array
                   - 'null'
-                format: date-time
-                description: 'Date: When the photo was taken, from its EXIF data.'
-                title: Date
+                description: 'Posts: Absolute URLs of the posts that use this image. Omitted when there are none.'
+                items:
+                  type: string
+                title: Posts
             required:
               - id
               - title
               - url
+              - album
               - alt
-          description: 'Images: The matching images. A photo named for the query comes first, otherwise newest first. At most 20 are returned.'
-          title: Images
+          title: Results
+      required:
+        - total
+        - results
     lockedDefinition: null
   -
     name: search
