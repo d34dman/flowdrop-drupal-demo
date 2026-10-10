@@ -17,7 +17,7 @@ props:
       description: 'Trusted SVG markup from the FlowDrop dashboard icon repository.'
     try_text:
       type: string
-      description: 'What to type or do in the Playground. Trusted markup (from t()), rendered raw.'
+      description: 'What to type or do in Test mode. Trusted markup (from t()), rendered raw.'
     see_text:
       type: string
       description: 'What comes back. Trusted markup (from t()), rendered raw.'

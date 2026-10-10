@@ -1,10 +1,13 @@
 {#
 /**
  * @file
- * The words a first-time visitor needs, beside the tour video.
+ * The words a first-time visitor needs, beside the tour video when there is
+ * one (or its placeholder, when one is given). Without either, the words take
+ * the full width.
  */
 #}
-<div class="fd-demo-concepts">
+{% set has_tour = tour_url or placeholder_title %}
+<div class="fd-demo-concepts{{ has_tour ? '' : ' fd-demo-concepts--words-only' }}">
   <dl class="fd-demo-concepts__list">
     {% for item in items %}
       <div class="fd-demo-concepts__item">
@@ -18,6 +21,7 @@
     {% endfor %}
   </dl>
 
+  {% if has_tour %}
   <figure class="fd-demo-concepts__tour">
     {% if tour_url %}
       <video class="fd-demo-concepts__video" src="{{ tour_url }}"{% if tour_poster %} poster="{{ tour_poster }}"{% endif %} controls muted playsinline preload="metadata"></video>
@@ -31,4 +35,5 @@
     {% endif %}
     {% if tour_caption %}<figcaption class="fd-demo-concepts__caption">{{ tour_caption }}</figcaption>{% endif %}
   </figure>
+  {% endif %}
 </div>

@@ -6,14 +6,16 @@
   gap: var(--fd-space-4);
   margin: 0;
   padding-block-end: var(--fd-space-3);
+  row-gap: var(--fd-space-2);
   animation: fd-fade-in var(--fd-transition-normal) ease-out backwards;
 }
 
-/* The rail: runs from this marker down to the next one. */
+/* The rail: runs the full height, under the markers; the first step's starts
+ * at its marker. */
 .fd-demo-step::before {
   content: "";
   position: absolute;
-  top: 2.5rem;
+  top: 0;
   bottom: 0;
   left: calc(var(--rail) / 2 - 1px);
   width: 2px;
@@ -21,12 +23,93 @@
   opacity: 0.35;
 }
 
+.fd-demo-step:first-child::before {
+  top: 4rem;
+}
+
 .fd-demo-step:last-child::before {
+  bottom: auto;
+  height: 1.25rem;
+}
+
+/* The stage name, above the first step of each stage. */
+.fd-demo-step__stage {
+  grid-column: 2;
+  margin: var(--fd-space-4) 0 0;
+  color: var(--fd-muted-foreground);
+  font-size: var(--fd-text-xs);
+  font-weight: var(--fd-font-weight-semibold);
+  letter-spacing: var(--fd-letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.fd-demo-step:first-child .fd-demo-step__stage {
+  margin-block-start: 0;
+}
+
+.fd-demo-step__marker,
+.fd-demo-step__card {
+  align-self: start;
+}
+
+.fd-demo-step__card {
+  padding-block: var(--fd-space-3);
+}
+
+/* What to try, folded. Claro styles every details/summary; undo it here. */
+.fd-demo-step__more {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.fd-demo-step__more > summary {
+  margin: 0;
+  padding: 0;
+  background: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fd-space-1);
+  color: var(--fd-primary-hover);
+  font-size: var(--fd-text-xs);
+  font-weight: var(--fd-font-weight-semibold);
+  list-style: none;
+  cursor: pointer;
+}
+
+.fd-demo-step__more > summary::-webkit-details-marker {
   display: none;
+}
+
+.fd-demo-step__more > summary::before {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform var(--fd-transition-fast);
+}
+
+.fd-demo-step__more[open] > summary::before {
+  transform: rotate(45deg);
+}
+
+.fd-demo-step__more > summary:focus-visible {
+  outline: 2px solid var(--fd-ring);
+  outline-offset: 2px;
+  border-radius: var(--fd-radius-sm);
+}
+
+.fd-demo-step__more .fd-demo-wf__hints {
+  margin-block-start: var(--fd-space-2);
 }
 
 .fd-demo-step__marker {
   position: relative;
+  grid-column: 1;
   display: grid;
   width: var(--rail);
   height: var(--rail);

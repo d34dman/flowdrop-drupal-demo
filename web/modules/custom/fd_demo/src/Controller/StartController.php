@@ -60,7 +60,7 @@ final class StartController extends ControllerBase {
   ];
 
   /**
-   * Sub-workflows: they have no chat input, so the Playground is no use.
+   * Sub-workflows: they have no input of their own, so Test mode is no use.
    */
   private const EDITOR_ONLY = ['react_agent', 'react_agent_with_tools'];
 
@@ -105,7 +105,7 @@ final class StartController extends ControllerBase {
     $catalogue = $this->catalogue();
 
     $main['hero'] = $this->hero($logo, [
-      'label' => $this->t('Run your first workflow'),
+      'label' => $this->t('Start'),
       'url' => '#fd-demo-first-run',
     ], isset($workflows['dri_es_chat_agent']) ? [
       'label' => $this->t('See what it can do'),
@@ -321,16 +321,16 @@ final class StartController extends ControllerBase {
         'text' => $this->t("Nodes wired together. Each wire carries one node's output into the next node's input."),
       ],
       [
-        'term' => $this->t('Playground'),
-        'icon' => 'playground',
-        'button' => $this->t('Try it'),
-        'text' => $this->t('Where you run a workflow. You chat on the right; on the left, each node lights up as it runs.'),
-      ],
-      [
         'term' => $this->t('Editor'),
         'icon' => 'create',
-        'button' => $this->t('Open editor'),
+        'button' => $this->t('Edit'),
         'text' => $this->t('Where you change a workflow: add nodes, rewire them, adjust their settings, save.'),
+      ],
+      [
+        'term' => $this->t('Test mode'),
+        'icon' => 'playground',
+        'button' => $this->t('Test'),
+        'text' => $this->t('The same editor, switched to running. You chat on the left while each node on the canvas lights up.'),
       ],
     ];
     foreach ($items as &$item) {
@@ -347,9 +347,6 @@ final class StartController extends ControllerBase {
       'content' => $this->component('concepts', array_filter([
         'items' => $items,
         'tour_url' => self::TOUR_VIDEO,
-        'placeholder_label' => (string) $this->t('Placeholder'),
-        'placeholder_title' => (string) $this->t('30-second tour video'),
-        'placeholder_text' => (string) $this->t('Coming soon: a workflow being run, changed in the editor, and run again.'),
       ])),
     ]);
   }
@@ -368,21 +365,21 @@ final class StartController extends ControllerBase {
     $steps = [
       [
         'title' => $this->t('Run it'),
-        'text' => $this->t('Open <strong>Echo</strong>, type <code>Hello FlowDrop</code> and press <strong>Send</strong>. On the left, each node lights up as it runs. On the right, your words come back.'),
+        'text' => $this->t('Open <strong>Echo</strong>, type <code>Hello FlowDrop</code> in the chat on the left and send it. Each node on the canvas lights up as it runs, and your words come back.'),
         'action_label' => $this->t('Try Echo'),
         'action_url' => $run['try_url'],
         'action_kind' => 'try',
       ],
       [
         'title' => $this->t('Add a step'),
-        'text' => $this->t('Open <strong>Echo, but lowercase</strong>. Same chat, one more node in the middle: a Text Processor. Type <code>HELLO World</code> and you get <code>hello world</code> back.'),
+        'text' => $this->t('Open <strong>Echo, but lowercase</strong>: the same chat with one more node in the middle, a Text Processor. Send <code>HELLO World</code> and you get <code>hello world</code> back.'),
         'action_label' => $this->t('Try it'),
         'action_url' => $change['try_url'],
         'action_kind' => 'try',
       ],
       [
         'title' => $this->t('Change it'),
-        'text' => $this->t('Open that workflow in the editor. Click the <strong>⚙</strong> on the Text Processor node, set <strong>Operation</strong> to <code>uppercase</code>, press <strong>Save</strong>, and try it again. Set it back to <code>lowercase</code> when you are done.'),
+        'text' => $this->t('Open the same workflow in Edit mode (or switch from <strong>Test</strong> to <strong>Edit</strong> at the top). Open the Text Processor\'s settings, set <strong>Operation</strong> to <code>uppercase</code>, press <strong>Save</strong>, then switch back to <strong>Test</strong> and send it again.'),
         'action_label' => $this->t('Open editor'),
         'action_url' => $change['edit_url'],
         'action_kind' => 'edit',
@@ -395,7 +392,7 @@ final class StartController extends ControllerBase {
 
     return $this->component('section', [
       'id' => 'fd-demo-first-run',
-      'eyebrow' => $this->t('Start here: three minutes, no AI key needed'),
+      'eyebrow' => $this->t('Three minutes, no AI key needed'),
       'title' => $this->t('Your first run'),
     ], [
       'content' => $this->component('first-run', [
@@ -411,14 +408,22 @@ final class StartController extends ControllerBase {
   private function pathSection(array $workflows, array $entries): ?array {
     $steps = [];
     $number = 0;
+    $stage = NULL;
     foreach ($entries as $id => $entry) {
       if (!isset($workflows[$id])) {
         continue;
       }
       $info = $this->describe($workflows[$id]);
-      $steps[$id] = $this->component('path-step', $this->cardProps($workflows[$id], $info, $entry) + [
+      $props = $this->cardProps($workflows[$id], $info, $entry);
+      unset($props['node_count']);
+      // The stage heads the first step of each stage only.
+      if ((string) $entry['stage'] !== $stage) {
+        $stage = (string) $entry['stage'];
+        $props['stage'] = $stage;
+      }
+      $steps[$id] = $this->component('path-step', $props + [
         'number' => (string) ++$number,
-        'stage' => (string) $entry['stage'],
+        'hints_label' => (string) $this->t('What to try'),
       ]);
     }
     if (!$steps) {
@@ -572,16 +577,23 @@ final class StartController extends ControllerBase {
       $needs[] = ['label' => (string) $this->t('offline'), 'variant' => 'success'];
     }
 
-    // Try it goes straight into a new Playground session. Access is that of
-    // the add-session form, which has the same permission; the direct route's
-    // CSRF check would fail here, outside a request for it.
-    $try = NULL;
-    if (!in_array($id, self::EDITOR_ONLY, TRUE)
-      && Url::fromRoute('flowdrop_playground.workflow.session.add', ['flowdrop_workflow' => $id])->access()) {
-      $try = Url::fromRoute('fd_demo.try', ['flowdrop_workflow' => $id])->toString();
-    }
     $url = Url::fromRoute('flowdrop.workflow.editor', ['flowdrop_workflow' => $id]);
     $edit = $url->access() ? $url->toString() : NULL;
+
+    // Try it opens the editor in Test mode. Someone who may not open the
+    // editor, or a site with Test mode switched off, gets the standalone
+    // Playground (deprecated in FlowDrop 2.7) through fd_demo.try. Its access
+    // is that of the add-session form, which has the same permission; the
+    // direct route's CSRF check would fail here, outside a request for it.
+    $try = NULL;
+    if (!in_array($id, self::EDITOR_ONLY, TRUE)) {
+      if ($edit !== NULL && $this->testModeEnabled()) {
+        $try = Url::fromRoute('flowdrop.workflow.editor', ['flowdrop_workflow' => $id], ['query' => ['mode' => 'test']])->toString();
+      }
+      elseif (Url::fromRoute('flowdrop_playground.workflow.session.add', ['flowdrop_workflow' => $id])->access()) {
+        $try = Url::fromRoute('fd_demo.try', ['flowdrop_workflow' => $id])->toString();
+      }
+    }
 
     $description = trim((string) $workflow->getDescription());
     $description = ucfirst(preg_replace('/^Goal:\s*/', '', $description));
@@ -593,6 +605,13 @@ final class StartController extends ControllerBase {
       'try_url' => $try,
       'edit_url' => $edit,
     ];
+  }
+
+  /**
+   * Whether the editor offers Test mode. A site without the key has it on.
+   */
+  private function testModeEnabled(): bool {
+    return $this->config('flowdrop_ui_components.settings')->get('test_mode_enabled') !== FALSE;
   }
 
   /**

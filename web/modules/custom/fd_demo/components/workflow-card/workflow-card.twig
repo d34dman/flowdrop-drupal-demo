@@ -37,7 +37,7 @@
           </a>
         {% endif %}
         {% if try_url %}
-          <a href="{{ try_url }}" class="fd-demo-btn fd-demo-btn--sm fd-demo-btn--primary" aria-label="{{ try_label|default("Try it") }}: {{ title }}">
+          <a href="{{ try_url }}" class="fd-demo-btn fd-demo-btn--sm fd-demo-btn--primary fd-demo-btn--run" aria-label="{{ try_label|default("Try it") }}: {{ title }}">
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.34-5.89a1.5 1.5 0 000-2.54L6.3 2.84z"/></svg>
             {{ try_label|default("Try it") }}
           </a>

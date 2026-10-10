@@ -16,6 +16,29 @@
   margin: 0;
 }
 
+/* No video: the words sit in one row of quiet cards. */
+.fd-demo-concepts--words-only {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.fd-demo-concepts--words-only .fd-demo-concepts__list {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--fd-space-4);
+}
+
+.fd-demo-concepts--words-only .fd-demo-concepts__item {
+  padding: var(--fd-space-4) var(--fd-space-5);
+  border: var(--fd-border-width) solid var(--fd-border-muted);
+  border-radius: var(--fd-radius-xl);
+  background: var(--fd-card);
+}
+
+@media (max-width: 1024px) {
+  .fd-demo-concepts--words-only .fd-demo-concepts__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .fd-demo-concepts__term {
   display: flex;
   flex-wrap: wrap;

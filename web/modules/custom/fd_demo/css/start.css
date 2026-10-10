@@ -5,7 +5,8 @@
 
 .fd-demo-start {
   box-sizing: border-box;
-  gap: var(--fd-space-10);
+  /* Room between sections, so each reads as its own step. */
+  gap: calc(var(--fd-space-12) + var(--fd-space-4));
   color: var(--fd-foreground);
 }
 
@@ -62,6 +63,14 @@
 .fd-demo-btn:focus-visible {
   outline: 2px solid var(--fd-ring);
   outline-offset: 2px;
+}
+
+/* Claro's `.page-wrapper :focus` draws a green ring on every focused link,
+ * mouse clicks included, from a stylesheet that loads after this one. Three
+ * classes beat it; the run-button hover and done states match that below. */
+.fd-demo-start .fd-demo-btn:focus:where(:not(:focus-visible)) {
+  outline: none;
+  box-shadow: none;
 }
 
 .fd-demo-btn:active {
@@ -128,6 +137,161 @@
   text-decoration: none;
 }
 
+/* ---- Run buttons ------------------------------------------------------
+ * The primary actions (Start, Try it). Hover: a band of light runs round the
+ * border, like data along a wire. Click (js/run-button.js): a ripple, a fill
+ * sweeping left to right like a node executing, then a tick before the link
+ * is followed.
+ */
+
+@property --fd-demo-run-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.fd-demo-btn--run {
+  position: relative;
+  isolation: isolate;
+}
+
+/* The flowing border. Browsers without @property show it still, not spinning. */
+.fd-demo-btn--run::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -4px;
+  padding: 2.5px;
+  border-radius: calc(var(--fd-radius-lg) + 4px);
+  background: conic-gradient(
+    from var(--fd-demo-run-angle),
+    transparent 0 50%,
+    color-mix(in srgb, var(--fd-accent) 60%, transparent) 64%,
+    var(--fd-accent) 76%,
+    var(--fd-primary) 90%,
+    transparent 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--fd-transition-normal);
+  pointer-events: none;
+}
+
+.fd-demo-btn--run:hover::before,
+.fd-demo-btn--run:focus-visible::before,
+.fd-demo-btn--run.is-running::before {
+  opacity: 1;
+  animation: fd-demo-run-spin 1.6s linear infinite;
+}
+
+.fd-demo-btn--run.is-running::before {
+  animation-duration: 0.5s;
+}
+
+@keyframes fd-demo-run-spin {
+  to { --fd-demo-run-angle: 360deg; }
+}
+
+.fd-demo-start .fd-demo-btn--run:hover,
+.fd-demo-start .fd-demo-btn--run:focus-visible {
+  box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--fd-primary) 70%, transparent);
+}
+
+.fd-demo-btn--run svg {
+  transition: transform var(--fd-transition-fast);
+}
+
+.fd-demo-btn--run:hover svg {
+  transform: translateX(2px);
+}
+
+/* Click: the fill, clipped to the button by its own inset box. */
+.fd-demo-btn--run::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--fd-primary-hover), color-mix(in srgb, var(--fd-accent) 70%, var(--fd-primary-hover)));
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.fd-demo-btn--run.is-running::after {
+  animation: fd-demo-run-fill 520ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fd-demo-run-fill {
+  to { transform: scaleX(1); }
+}
+
+.fd-demo-btn__ripple {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  z-index: -1;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.55);
+  animation: fd-demo-run-ripple 520ms ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes fd-demo-run-ripple {
+  to {
+    transform: scale(24);
+    opacity: 0;
+  }
+}
+
+/* The ripple may grow past the corners; only while it runs. */
+.fd-demo-btn--run.is-running {
+  overflow: hidden;
+}
+
+.fd-demo-btn--run.is-running::before {
+  display: none;
+}
+
+.fd-demo-btn--run.is-running svg:not(.fd-demo-btn__tick) {
+  animation: fd-demo-run-icon 520ms ease-in-out;
+}
+
+@keyframes fd-demo-run-icon {
+  40% { transform: translateX(4px) scale(0.85); }
+  100% { transform: translateX(0) scale(1); }
+}
+
+.fd-demo-start .fd-demo-btn--run.is-done,
+.fd-demo-start .fd-demo-btn--run.is-done:hover {
+  background-color: var(--fd-success);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--fd-success) 22%, transparent);
+}
+
+.fd-demo-btn--run.is-done::after {
+  opacity: 0;
+  transition: opacity 120ms;
+}
+
+.fd-demo-btn--run.is-done svg:not(.fd-demo-btn__tick) {
+  display: none;
+}
+
+.fd-demo-btn__tick {
+  animation: fd-demo-run-tick 220ms cubic-bezier(0.3, 1.6, 0.6, 1);
+}
+
+@keyframes fd-demo-run-tick {
+  from { transform: scale(0.3); opacity: 0; }
+}
+
 /* ---- Workflow card body (workflow-card and path-step) ---------------- */
 
 .fd-demo-wf {
@@ -153,6 +317,13 @@
 
 .fd-demo-section .fd-grid {
   align-items: stretch;
+}
+
+/* Two showcase cards share the row instead of leaving a third empty. */
+@media (min-width: 900px) {
+  #fd-demo-showcase .fd-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .fd-demo-wf--card:hover {

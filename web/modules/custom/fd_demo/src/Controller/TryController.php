@@ -10,7 +10,10 @@ use Drupal\flowdrop_workflow\Entity\FlowDropWorkflow;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * "Try it": opens a fresh Playground session without the add-session form.
+ * "Try it" for people who may not open the editor: a fresh session in the
+ * standalone Playground, without the add-session form. Everyone else goes to
+ * the editor's Test mode; the standalone Playground is deprecated in FlowDrop
+ * 2.7 and becomes a redirect to Test mode in 3.0.
  *
  * Mirrors WorkflowSessionAddForm::submitForm(), with the workflow's label as
  * the session name.

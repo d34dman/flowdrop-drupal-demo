@@ -2,10 +2,12 @@
 /**
  * @file
  * One step of the learning path. The rail and marker are drawn in CSS; the
- * last step's rail is cut off with :last-child.
+ * last step's rail is cut off with :last-child. What to try is folded away so
+ * the path reads as a short list.
  */
 #}
-<li class="fd-demo-step">
+<li class="fd-demo-step{{ stage ? ' fd-demo-step--stage' : '' }}">
+  {% if stage %}<p class="fd-demo-step__stage">{{ stage }}</p>{% endif %}
   <span class="fd-demo-step__marker" aria-hidden="true">{{ number }}</span>
   <article class="fd-demo-wf fd-demo-step__card">
   <div class="fd-demo-step__body">
@@ -13,16 +15,16 @@
       <h3 class="fd-demo-wf__title">
         <span class="visually-hidden">{{ 'Step'|t }} {{ number }}: </span>{{ title }}
       </h3>
-      {% if stage %}
-        {{ include('flowdrop_ui_components:pill', {label: stage, variant: 'secondary', style: 'outlined', size: 'xs', uppercase: true}, with_context = false) }}
-      {% endif %}
     </header>
     {% if description %}<p class="fd-demo-wf__description">{{ description }}</p>{% endif %}
   {% if try_text or see_text %}
-    <dl class="fd-demo-wf__hints">
-      {% if try_text %}<div class="fd-demo-wf__hint"><dt>{{ "Try"|t }}</dt><dd>{{ try_text|raw }}</dd></div>{% endif %}
-      {% if see_text %}<div class="fd-demo-wf__hint"><dt>{{ "You'll see"|t }}</dt><dd>{{ see_text|raw }}</dd></div>{% endif %}
-    </dl>
+    <details class="fd-demo-step__more">
+      <summary>{{ hints_label|default("What to try"|t) }}</summary>
+      <dl class="fd-demo-wf__hints">
+        {% if try_text %}<div class="fd-demo-wf__hint"><dt>{{ "Try"|t }}</dt><dd>{{ try_text|raw }}</dd></div>{% endif %}
+        {% if see_text %}<div class="fd-demo-wf__hint"><dt>{{ "You'll see"|t }}</dt><dd>{{ see_text|raw }}</dd></div>{% endif %}
+      </dl>
+    </details>
   {% endif %}
   </div>
   <div class="fd-demo-wf__footer">
@@ -46,7 +48,7 @@
           </a>
         {% endif %}
         {% if try_url %}
-          <a href="{{ try_url }}" class="fd-demo-btn fd-demo-btn--sm fd-demo-btn--primary" aria-label="{{ try_label|default("Try it") }}: {{ title }}">
+          <a href="{{ try_url }}" class="fd-demo-btn fd-demo-btn--sm fd-demo-btn--primary fd-demo-btn--run" aria-label="{{ try_label|default("Try it") }}: {{ title }}">
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.34-5.89a1.5 1.5 0 000-2.54L6.3 2.84z"/></svg>
             {{ try_label|default("Try it") }}
           </a>

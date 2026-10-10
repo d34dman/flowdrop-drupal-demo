@@ -15,11 +15,12 @@ props:
       type: string
     stage:
       type: string
+      description: 'Shown above the step: set it on the first step of each stage only.'
     description:
       type: string
     try_text:
       type: string
-      description: 'What to type or do in the Playground. Trusted markup (from t()), rendered raw.'
+      description: 'What to type or do in Test mode. Trusted markup (from t()), rendered raw.'
     see_text:
       type: string
       description: 'What comes back. Trusted markup (from t()), rendered raw.'
@@ -37,6 +38,9 @@ props:
       type: string
     edit_url:
       type: string
+    hints_label:
+      type: string
+      description: 'Summary of the folded try/see hints.'
     try_label:
       type: string
     edit_label:
