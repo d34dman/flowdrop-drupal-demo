@@ -2,10 +2,17 @@ default_settings: |-
   {
       "ui": {
           "configPlacement": "sidebar",
-          "consolePlacement": "sidebar"
+          "consolePlacement": "below"
       },
       "theme": {
-          "preference": "auto"
+          "preference": "host"
+      },
+      "editor": {
+          "zoomTiers": {
+              "full": 0.45,
+              "outline": 0.25,
+              "map": 0
+          }
       }
   }
 exposed_categories:
@@ -14,3 +21,8 @@ webmcp_tools: true
 webmcp_bridge: false
 console_enabled: true
 assistant_enabled: true
+theme: ''
+branding:
+  logo: ''
+  name: ''
+  link: ''

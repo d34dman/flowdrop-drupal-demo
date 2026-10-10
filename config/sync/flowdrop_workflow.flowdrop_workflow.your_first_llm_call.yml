@@ -6,6 +6,20 @@ dependencies:
     - flowdrop_node_type.flowdrop_node_type.chat_input
     - flowdrop_node_type.flowdrop_node_type.chat_output
     - flowdrop_node_type.flowdrop_node_type.flowdrop_ai_provider_simple_chat
+  module:
+    - flowdrop_playground
+third_party_settings:
+  flowdrop_playground:
+    chat:
+      message: message
+      history: null
+      session_id: null
+      message_id: null
+      replies:
+        -
+          node_id: chat_output.1
+          port: message
+      sub_workflow_replies: false
 id: your_first_llm_call
 label: 'Your First LLM Call'
 description: ''
@@ -175,7 +189,7 @@ metadata:
   createdAt: '2026-08-26T19:28:40.417Z'
   updatedAt: '2026-08-26T19:42:34.462Z'
 created: 1787772498
-changed: 1787773354
+changed: 1791653357
 uid: 0
 input_ports:
   -

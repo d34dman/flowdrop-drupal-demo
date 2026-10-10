@@ -7,6 +7,17 @@ dependencies:
     - flowdrop_node_type.flowdrop_node_type.chat_output
     - flowdrop_node_type.flowdrop_node_type.choice_input
     - flowdrop_node_type.flowdrop_node_type.text_processor
+  module:
+    - flowdrop_playground
+third_party_settings:
+  flowdrop_playground:
+    chat:
+      message: message
+      history: null
+      session_id: null
+      message_id: null
+      replies: {  }
+      sub_workflow_replies: false
 id: level_1_3_pick_your_transform
 label: 'Level 1.3. Pick‑your‑transform'
 description: 'Let the user steer the flow at runtime.'
@@ -14,24 +25,50 @@ nodes:
   -
     id: chat_output.1
     position:
-      x: 810
-      'y': 104
+      x: 780
+      'y': 440
     data:
       label: 'Chat Output'
       config:
         format: text
         showTimestamp: false
         nodeType: default
+        maxRetries: 0
+        requiresConfirmation: ''
+        ports:
+          inputs:
+            -
+              id: message
+              exposed: false
+            -
+              id: loop_back
+            -
+              id: trigger
+          outputs:
+            -
+              id: message
+              exposed: false
+            -
+              id: format
+            -
+              id: timestamp
+            -
+              id: metadata
+            -
+              id: trigger
+              exposed: false
+            -
+              id: error
       metadata:
         node_type_id: chat_output
     measured:
-      width: 290
-      height: 311
+      width: 280
+      height: 362
   -
     id: text_processor.1
     position:
-      x: 400
-      'y': 5
+      x: 440
+      'y': 220
     data:
       label: 'Text Processor'
       config:
@@ -39,17 +76,17 @@ nodes:
       metadata:
         node_type_id: text_processor
     measured:
-      width: 290
-      height: 509
+      width: 280
+      height: 462
   -
     id: choice_input.1
     position:
-      x: -10
-      'y': -142
+      x: 20
+      'y': 440
     data:
       label: 'Choice Input'
       config:
-        message: 'Please select an option'
+        message: 'Please select an option '
         options:
           -
             value: uppercase
@@ -62,14 +99,16 @@ nodes:
         multiple: false
         min_selections: 1
         nodeType: default
+        maxRetries: 0
+        requiresConfirmation: ''
       metadata:
         node_type_id: choice_input
       extensions:
         ui:
           hideUnconnectedHandles: false
     measured:
-      width: 290
-      height: 805
+      width: 280
+      height: 682
   -
     id: chat_input.1
     position:
@@ -82,8 +121,8 @@ nodes:
       metadata:
         node_type_id: chat_input
     measured:
-      width: 290
-      height: 647
+      width: 280
+      height: 562
 edges:
   -
     id: xy-edge__choice_input.1choice_input.1-output-selected-text_processor.1text_processor.1-input-operation
@@ -97,25 +136,6 @@ edges:
         sourcePortDataType: mixed
     sourceHandle: choice_input.1-output-selected
     targetHandle: text_processor.1-input-operation
-    style: 'stroke: var(--fd-edge-data);'
-    markerEnd:
-      type: arrowclosed
-      width: 16
-      height: 16
-      color: var(--fd-edge-data)
-    class: flowdrop--edge--data
-  -
-    id: xy-edge__text_processor.1text_processor.1-output-text-chat_output.1chat_output.1-input-message
-    source: text_processor.1
-    target: chat_output.1
-    data:
-      targetNodeType: universalNode
-      targetCategory: processing
-      metadata:
-        edgeType: data
-        sourcePortDataType: string
-    sourceHandle: text_processor.1-output-text
-    targetHandle: chat_output.1-input-message
     style: 'stroke: var(--fd-edge-data);'
     markerEnd:
       type: arrowclosed
@@ -162,14 +182,23 @@ edges:
       color: var(--fd-edge-trigger)
     class: flowdrop--edge--trigger
 metadata:
-  version: 1.0.0
   createdAt: '2026-05-13T18:14:36.787Z'
-  updatedAt: '2026-05-13T19:21:47.656Z'
+  updatedAt: '2026-09-29T16:51:33.558Z'
 created: 1778696052
-changed: 1787771561
+changed: 1791653357
 uid: 0
-input_ports: null
+input_ports:
+  -
+    name: message
+    node_id: chat_input.1
+    port: message
 output_ports: null
-parameter_schema: null
+parameter_schema:
+  type: object
+  properties:
+    message:
+      type: string
+      x-data-type: string
+      default: ''
 output_schema: null
-schema_version: 0.0.0
+schema_version: 1.0.0

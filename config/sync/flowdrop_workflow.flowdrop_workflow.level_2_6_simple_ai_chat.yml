@@ -6,6 +6,20 @@ dependencies:
     - flowdrop_node_type.flowdrop_node_type.chat_input
     - flowdrop_node_type.flowdrop_node_type.chat_output
     - flowdrop_node_type.flowdrop_node_type.flowdrop_ai_provider_chat
+  module:
+    - flowdrop_playground
+third_party_settings:
+  flowdrop_playground:
+    chat:
+      message: message
+      history: null
+      session_id: null
+      message_id: null
+      replies:
+        -
+          node_id: chat_output.1
+          port: message
+      sub_workflow_replies: false
 id: level_2_6_simple_ai_chat
 label: 'Level 2.6. Simple AI chat'
 description: 'Prove the AI provider works on the canvas.'
@@ -106,10 +120,20 @@ metadata:
   createdAt: '2026-05-13T19:29:23.599Z'
   updatedAt: '2026-08-28T12:36:52.853Z'
 created: 1778700556
-changed: 1787920613
+changed: 1791653357
 uid: 0
-input_ports: null
+input_ports:
+  -
+    name: message
+    node_id: chat_input.1
+    port: message
 output_ports: null
-parameter_schema: null
+parameter_schema:
+  type: object
+  properties:
+    message:
+      type: string
+      x-data-type: string
+      default: ''
 output_schema: null
-schema_version: 0.0.0
+schema_version: 1.0.0

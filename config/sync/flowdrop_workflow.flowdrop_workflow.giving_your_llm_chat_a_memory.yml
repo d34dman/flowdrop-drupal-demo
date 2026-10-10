@@ -6,6 +6,22 @@ dependencies:
     - flowdrop_node_type.flowdrop_node_type.chat_input
     - flowdrop_node_type.flowdrop_node_type.chat_output
     - flowdrop_node_type.flowdrop_node_type.flowdrop_ai_provider_simple_chat
+  module:
+    - flowdrop_playground
+third_party_settings:
+  flowdrop_playground:
+    chat:
+      message: message
+      history:
+        input: history
+        limit: 10
+      session_id: null
+      message_id: null
+      replies:
+        -
+          node_id: chat_output.1
+          port: message
+      sub_workflow_replies: false
 id: giving_your_llm_chat_a_memory
 label: 'Giving Your LLM Chat a memory'
 description: ''
@@ -200,7 +216,7 @@ metadata:
   createdAt: '2026-08-26T19:28:40.417Z'
   updatedAt: '2026-08-26T19:48:02.724Z'
 created: 1787773405
-changed: 1787773682
+changed: 1791653357
 uid: 1
 input_ports:
   -
@@ -209,6 +225,10 @@ input_ports:
     port: message
     title: Message
     description: 'The chat message content (typically injected from playground)'
+  -
+    name: history
+    node_id: chat_input.1
+    port: history
 output_ports: null
 parameter_schema:
   type: object
@@ -219,5 +239,17 @@ parameter_schema:
       description: 'The chat message content (typically injected from playground)'
       x-data-type: string
       default: ''
+    history:
+      type: array
+      x-data-type: array
+      items:
+        type: object
+        properties:
+          role:
+            type: string
+          content:
+            type: string
+          timestamp:
+            type: integer
 output_schema: null
-schema_version: 1.0.0
+schema_version: 1.1.0

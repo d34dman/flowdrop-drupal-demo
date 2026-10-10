@@ -1,0 +1,25 @@
+uuid: 674e6678-0fbd-44ee-a505-072659191b7a
+langcode: en
+status: true
+dependencies:
+  module:
+    - flowdrop_node_processor
+id: caption
+label: Caption
+description: 'Short high-contrast text (one or two lines) that names or marks nearby nodes. For anything longer, use note.'
+category: helpers
+icon: 'mdi:format-title'
+plugin_version: 1.0.0
+enabled: true
+parameters: {  }
+outputs: {  }
+tags: {  }
+executor_plugin: 'flowdrop_node_processor:caption'
+visual_type: caption
+supported_visual_types:
+  - caption
+unified_input_exposed: false
+unified_output_exposed: false
+tool_exposed: false
+confirmation: {  }
+reserved_port_exposure: {  }

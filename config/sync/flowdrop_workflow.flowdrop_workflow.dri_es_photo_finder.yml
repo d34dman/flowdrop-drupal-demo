@@ -10,6 +10,20 @@ dependencies:
     - flowdrop_node_type.flowdrop_node_type.mcp_dri_es_find_albums
     - flowdrop_node_type.flowdrop_node_type.mcp_dri_es_find_images
     - flowdrop_node_type.flowdrop_node_type.prompt_template
+  module:
+    - flowdrop_playground
+third_party_settings:
+  flowdrop_playground:
+    chat:
+      message: null
+      history: null
+      session_id: null
+      message_id: null
+      replies:
+        -
+          node_id: chat_output.1
+          port: message
+      sub_workflow_replies: false
 id: dri_es_photo_finder
 label: 'dri.es photo finder (MCP, no AI)'
 description: 'Filter form (album list fetched live from the dri.es MCP server) → find_images → Twig gallery. No model in the loop. Built 2026-09-24.'
@@ -725,7 +739,7 @@ metadata:
   createdAt: '2026-09-24T19:10:43.970Z'
   updatedAt: '2026-09-24T19:17:14.027Z'
 created: 1790276758
-changed: 1790277434
+changed: 1791653357
 uid: 0
 input_ports: null
 output_ports: null

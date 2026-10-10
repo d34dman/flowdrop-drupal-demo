@@ -17,7 +17,7 @@ nodes:
     id: conversation_buffer.1
     position:
       x: -140
-      'y': 560
+      'y': 720
     data:
       label: 'Conversation Buffer'
       config:
@@ -252,6 +252,7 @@ nodes:
               id: trigger
             -
               id: error
+              exposed: true
       metadata:
         node_type_id: flowdrop_node_processor_reason
     measured:
@@ -627,9 +628,9 @@ edges:
     class: flowdrop--edge--data
 metadata:
   createdAt: '2026-09-24T17:44:28.616Z'
-  updatedAt: '2026-09-24T17:46:35.263Z'
+  updatedAt: '2026-09-29T17:02:23.696Z'
 created: 1790270803
-changed: 1790271995
+changed: 1790701343
 uid: 0
 input_ports:
   -
@@ -655,6 +656,10 @@ output_ports:
     name: reply
     node_id: flowdrop_node_processor_reason.1
     port: text
+  -
+    name: tools
+    node_id: flowdrop_node_processor_tool_invoke.1
+    port: tool_results
 parameter_schema:
   type: object
   properties:
@@ -679,4 +684,7 @@ output_schema:
     reply:
       type: string
       x-data-type: string
-schema_version: 1.1.0
+    tools:
+      type: array
+      x-data-type: array
+schema_version: 1.2.0

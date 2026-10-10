@@ -8,6 +8,20 @@ dependencies:
     - flowdrop_node_type.flowdrop_node_type.html_to_markdown
     - flowdrop_node_type.flowdrop_node_type.http_request
     - flowdrop_node_type.flowdrop_node_type.text_input_interrupt
+  module:
+    - flowdrop_playground
+third_party_settings:
+  flowdrop_playground:
+    chat:
+      message: null
+      history: null
+      session_id: null
+      message_id: null
+      replies:
+        -
+          node_id: chat_output.1
+          port: message
+      sub_workflow_replies: false
 id: level_3_9_url_summariser
 label: 'Level 3.9. URL summariser'
 description: 'Bring in external content.'
@@ -185,7 +199,7 @@ metadata:
   createdAt: '2026-05-13T19:59:57.219Z'
   updatedAt: '2026-05-13T20:03:03.300Z'
 created: 1778702386
-changed: 1787771561
+changed: 1791653357
 uid: 0
 input_ports: null
 output_ports: null

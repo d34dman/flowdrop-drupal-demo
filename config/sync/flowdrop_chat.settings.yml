@@ -10,3 +10,4 @@ node_type_index_threshold: 30
 chat_mode: tools
 max_tool_rounds: 8
 agent_prompt_template: ''
+run_tools: true
