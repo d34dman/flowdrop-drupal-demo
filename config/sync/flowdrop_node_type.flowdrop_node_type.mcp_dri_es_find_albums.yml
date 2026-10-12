@@ -18,7 +18,7 @@ parameters:
     exposed_by_default: true
     required: false
 outputs:
-  albums:
+  results:
     exposed: true
     exposed_by_default: true
   message:
