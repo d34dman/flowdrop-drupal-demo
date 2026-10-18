@@ -8,12 +8,11 @@
   padding: calc(var(--ds-space-xl) * 1.25);
   overflow: hidden;
   border: var(--ds-border-width-s) solid var(--ds-color-border-soft);
-  border-radius: calc(var(--ds-radius-xl) * 1.5);
+  border-radius: var(--ds-radius-l);
   background:
     radial-gradient(ellipse 60% 100% at 110% -20%, color-mix(in srgb, var(--ds-color-border-primary-hover) 14%, transparent), transparent 60%),
     radial-gradient(ellipse 50% 80% at -10% 120%, color-mix(in srgb, var(--ds-color-action-primary) 12%, transparent), transparent 60%),
     var(--ds-color-bg-surface);
-  box-shadow: var(--ds-shadow-raised);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -123,7 +122,7 @@
 .fd-demo-hero__canvas {
   overflow: hidden;
   border: var(--ds-border-width-s) solid var(--ds-color-border-default);
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-l);
   background-color: var(--ds-color-bg-surface-nested);
   background-image: radial-gradient(var(--ds-color-border-default) var(--ds-border-width-s), transparent var(--ds-border-width-s));
   background-size: var(--ds-fd-demo-canvas-dot-gap) var(--ds-fd-demo-canvas-dot-gap);

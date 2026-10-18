@@ -12,9 +12,7 @@
 }
 
 .fd-demo-action:hover {
-  border-color: var(--ds-color-border-primary-soft);
-  background: var(--ds-color-bg-surface-nested);
-  box-shadow: var(--ds-shadow-raised);
+  border-color: var(--ds-color-border-hover);
   text-decoration: none;
 }
 
@@ -78,9 +76,7 @@
   .fd-demo-action,
   .fd-demo-action__arrow {
     transition:
-      background-color var(--ds-motion-duration-s),
       border-color var(--ds-motion-duration-s),
-      box-shadow var(--ds-motion-duration-s),
       opacity var(--ds-motion-duration-s),
       color var(--ds-motion-duration-s);
   }

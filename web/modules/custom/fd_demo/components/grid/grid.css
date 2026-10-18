@@ -8,7 +8,6 @@
 
 .fd-demo-grid--actions {
   --min: var(--ds-fd-demo-grid-action);
-  align-items: start;
 }
 
 @media (prefers-reduced-motion: no-preference) {

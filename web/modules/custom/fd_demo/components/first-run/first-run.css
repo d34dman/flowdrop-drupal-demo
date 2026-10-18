@@ -19,11 +19,10 @@
   margin: 0;
   padding: var(--ds-space-l);
   border: var(--ds-border-width-s) solid var(--ds-color-border-soft);
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-l);
   background:
     radial-gradient(ellipse 80% 60% at 100% 0%, color-mix(in srgb, var(--ds-color-action-primary) 8%, transparent), transparent 70%),
     var(--ds-color-bg-surface);
-  box-shadow: var(--ds-shadow-raised);
 }
 
 .fd-demo-first-run__num {

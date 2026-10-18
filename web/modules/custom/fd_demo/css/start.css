@@ -266,14 +266,13 @@
   gap: var(--ds-space-xs);
   padding: var(--ds-space-m) var(--ds-space-l);
   border: var(--ds-border-width-s) solid var(--ds-color-border-soft);
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-l);
   background: var(--ds-color-bg-surface);
-  box-shadow: var(--ds-shadow-raised);
 }
 
 .fd-demo-wf:hover,
 .fd-demo-wf:focus-within {
-  border-color: var(--ds-color-border-primary-soft);
+  border-color: var(--ds-color-border-hover);
 }
 
 /* Two showcase cards share the row instead of leaving a third empty. */
@@ -285,14 +284,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .fd-demo-wf {
-    transition:
-      border-color var(--ds-motion-duration-s),
-      box-shadow var(--ds-motion-duration-s),
-      transform var(--ds-motion-duration-s);
-  }
-
-  .fd-demo-wf--card:hover {
-    transform: translateY(calc(var(--ds-space-2xs) / -2));
+    transition: border-color var(--ds-motion-duration-s);
   }
 }
 

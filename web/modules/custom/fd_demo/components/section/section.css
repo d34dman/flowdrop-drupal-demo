@@ -37,7 +37,7 @@
 .fd-demo-section--collapsible {
   padding: var(--ds-space-m) var(--ds-space-l);
   border: var(--ds-border-width-s) solid var(--ds-color-border-soft);
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-l);
   background: var(--ds-color-bg-surface-nested);
 }
 

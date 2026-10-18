@@ -5,9 +5,7 @@
   align-items: flex-start;
   gap: var(--ds-space-s);
   padding: var(--ds-space-m) var(--ds-space-l);
-  border: var(--ds-border-width-s) solid color-mix(in srgb, var(--c) 35%, transparent);
-  border-inline-start-width: calc(var(--ds-border-width-m) * 2);
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-l);
   background: var(--c-soft);
 }
 
