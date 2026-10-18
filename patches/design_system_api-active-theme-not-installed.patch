@@ -1,0 +1,35 @@
+diff --git a/src/Hook/PatternHooks.php b/src/Hook/PatternHooks.php
+index 727c7fb..2778324 100644
+--- a/src/Hook/PatternHooks.php
++++ b/src/Hook/PatternHooks.php
+@@ -42,7 +42,7 @@ public function __construct(
+   public function optedIn(): bool {
+     $name = $this->themeManager->getActiveTheme()->getName();
+     if (!isset($this->optedIn[$name])) {
+-      $settings = $this->themeList->exists($name) ? ($this->themeList->getExtensionInfo($name)['design_system_api'] ?? []) : [];
++      $settings = $this->themeList->exists($name) ? ($this->themeList->get($name)->info['design_system_api'] ?? []) : [];
+       $this->optedIn[$name] = is_array($settings) && ($settings['patterns'] ?? FALSE) === TRUE;
+     }
+     return $this->optedIn[$name];
+diff --git a/src/Registry/Registry.php b/src/Registry/Registry.php
+index 2efa4b4..9f5a49a 100644
+--- a/src/Registry/Registry.php
++++ b/src/Registry/Registry.php
+@@ -327,7 +327,7 @@ public function colorSchemes(string $theme, ?array $data = NULL): array {
+       }
+     }
+     if ($this->themeList->exists($theme)) {
+-      $info = $this->themeList->getExtensionInfo($theme)['design_system_api'] ?? NULL;
++      $info = $this->themeList->get($theme)->info['design_system_api'] ?? NULL;
+       $candidates[] = is_array($info) ? ($info['color_schemes'] ?? NULL) : NULL;
+     }
+     foreach ($candidates as $schemes) {
+@@ -355,7 +355,7 @@ public function darkSelector(string $theme): ?string {
+       }
+     }
+     if ($this->themeList->exists($theme)) {
+-      $info = $this->themeList->getExtensionInfo($theme)['design_system_api'] ?? NULL;
++      $info = $this->themeList->get($theme)->info['design_system_api'] ?? NULL;
+       $candidates[] = is_array($info) ? ($info['dark_selector'] ?? NULL) : NULL;
+     }
+     foreach ($candidates as $selector) {

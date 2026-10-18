@@ -22,6 +22,8 @@ module:
   datetime: 0
   datetime_range: 0
   dblog: 0
+  design_system_api: 0
+  design_system_api_chrome: 0
   dynamic_entity_reference: 0
   dynamic_page_cache: 0
   editor: 0
@@ -76,11 +78,13 @@ module:
   search: 0
   search_help: 0
   search_node: 0
+  search_user: 0
   serialization: 0
   shortcut: 0
   system: 0
   taxonomy: 0
   text: 0
+  text_with_summary: 0
   tool: 0
   tool_explorer: 0
   toolbar: 0
@@ -94,4 +98,5 @@ module:
 theme:
   olivero: 0
   claro: 0
+  advaita: 0
 profile: standard

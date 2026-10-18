@@ -1,0 +1,25 @@
+uuid: eed3ebd2-cfe8-440e-8526-fcfd3697c80b
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - advaita
+_core:
+  default_config_hash: 0TKRhWyXd845JGfE5a8SwSxlGJhFsn2bM2yY5lkt6OQ
+id: advaita_site_branding
+theme: advaita
+region: branding
+weight: 0
+provider: null
+plugin: system_branding_block
+settings:
+  id: system_branding_block
+  label: 'Site branding'
+  label_display: '0'
+  provider: system
+  use_site_logo: true
+  use_site_name: true
+  use_site_slogan: true
+visibility: {  }

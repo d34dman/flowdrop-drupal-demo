@@ -1,0 +1,22 @@
+uuid: 4c05f28b-0cf6-4177-bc3d-f767f12704c2
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - advaita
+_core:
+  default_config_hash: 9UJij0N0Ns8Znv_Tdt63fSO2WWZCI3ijZkrRIauoZNo
+id: advaita_messages
+theme: advaita
+region: highlighted
+weight: 0
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: Messages
+  label_display: '0'
+  provider: system
+visibility: {  }

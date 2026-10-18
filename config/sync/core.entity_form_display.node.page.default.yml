@@ -7,7 +7,7 @@ dependencies:
     - node.type.page
   module:
     - path
-    - text
+    - text_with_summary
 _core:
   default_config_hash: MzSYzZbqqlwSM8mtLwEdCerBZRNGvHZntu5u_Gao8LY
 id: node.page.default

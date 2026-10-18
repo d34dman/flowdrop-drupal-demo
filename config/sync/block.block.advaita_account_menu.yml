@@ -1,0 +1,27 @@
+uuid: 56cd32c4-8b12-4f97-9cf2-ece9bfc64c32
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.account
+  module:
+    - system
+  theme:
+    - advaita
+_core:
+  default_config_hash: '-VwLREMUk0mTpxyew7D0A2QpWph9uUKHdgsCS40RL4Y'
+id: advaita_account_menu
+theme: advaita
+region: secondary_menu
+weight: 0
+provider: null
+plugin: 'system_menu_block:account'
+settings:
+  id: 'system_menu_block:account'
+  label: 'User account menu'
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 1
+  expand_all_items: false
+visibility: {  }

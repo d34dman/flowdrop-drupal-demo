@@ -6,7 +6,7 @@ dependencies:
     - block_content.type.basic
     - field.storage.block_content.body
   module:
-    - text
+    - text_with_summary
 _core:
   default_config_hash: j00Gfs9AFqwK4x9RIsISLbPO7vA12psPR4s60wOIwQo
 id: block_content.basic.body

@@ -1,0 +1,22 @@
+uuid: c5a262f8-b2d7-464f-8831-2ff06e6d901a
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - advaita
+_core:
+  default_config_hash: WOkSLIKBvBhxJ6DjU9nqxbf0O-ZMtybGOZ5kUYsCfCQ
+id: advaita_breadcrumbs
+theme: advaita
+region: breadcrumb
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  label_display: '0'
+  provider: system
+visibility: {  }

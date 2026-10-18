@@ -1,0 +1,20 @@
+uuid: 517dc854-f2ab-45d3-ab9a-19292f49ff3a
+langcode: en
+status: true
+dependencies:
+  theme:
+    - advaita
+_core:
+  default_config_hash: tBuEYeYYETDSMweV3_HX67iECsuFjgWroVfGubdINj4
+id: advaita_local_actions
+theme: advaita
+region: content_header
+weight: 10
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  label_display: '0'
+  provider: core
+visibility: {  }

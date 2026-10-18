@@ -1,0 +1,22 @@
+uuid: 045d68e0-3da6-4931-be1c-65a5ed34b454
+langcode: en
+status: true
+dependencies:
+  theme:
+    - advaita
+_core:
+  default_config_hash: n0SJAZuNN_xdnswKS9yDDq2FbVI2WV0LmtuuHJd-K_Q
+id: advaita_secondary_local_tasks
+theme: advaita
+region: highlighted
+weight: -5
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Secondary tabs'
+  label_display: '0'
+  provider: core
+  primary: false
+  secondary: true
+visibility: {  }

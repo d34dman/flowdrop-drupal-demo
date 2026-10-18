@@ -1,0 +1,22 @@
+uuid: 1f686d6a-4073-46ee-97ac-36339e520960
+langcode: en
+status: true
+dependencies:
+  module:
+    - help
+  theme:
+    - advaita
+_core:
+  default_config_hash: vbtlEA_Fqvc1FMJ2cfV4d5qX_6BNSWrRr9Z-SIiZS8Y
+id: advaita_help
+theme: advaita
+region: help
+weight: 0
+provider: null
+plugin: help_block
+settings:
+  id: help_block
+  label: Help
+  label_display: '0'
+  provider: help
+visibility: {  }

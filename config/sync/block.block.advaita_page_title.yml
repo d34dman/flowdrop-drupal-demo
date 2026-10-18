@@ -1,0 +1,20 @@
+uuid: 28f3b63b-064b-4703-a31c-e53dcb35999d
+langcode: en
+status: true
+dependencies:
+  theme:
+    - advaita
+_core:
+  default_config_hash: uO2X2OI80WGqFn05puO1Y0NySQLuZQWytnjqcqVC2Bo
+id: advaita_page_title
+theme: advaita
+region: content_header
+weight: -10
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility: {  }

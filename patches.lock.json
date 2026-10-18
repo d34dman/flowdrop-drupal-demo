@@ -1,5 +1,5 @@
 {
-    "_hash": "2f31047f36ba3ded1e5bef556016a7921adf24e7a1d6e71f5b1478bd3cdd0f4d",
+    "_hash": "d40270dfd8981953d8ffb5a8809664b4ee9c1bef99f797c9a2584f12b65d5fb2",
     "patches": {
         "drupal/mcp_client": [
             {
@@ -17,6 +17,18 @@
                 "description": "Pass MCP outputSchema/structuredContent through as Tool API outputs — experiment",
                 "url": "patches/mcp_client-structured-output.patch",
                 "sha256": "5ce17bfe32fba3f8449092e3227ae5aeb36f64ad3b6c4a3b91f134a99bab290c",
+                "depth": 1,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ],
+        "drupal/design_system_api": [
+            {
+                "package": "drupal/design_system_api",
+                "description": "Read theme info for an active theme that isn't installed (fixes si --existing-config on 11.5; drop with 1.0.0-alpha2)",
+                "url": "patches/design_system_api-active-theme-not-installed.patch",
+                "sha256": "92b5ed5eaa6e57f8cf43c6a9cc8b71aba3adda478df830e3aedcee161e3d260a",
                 "depth": 1,
                 "extra": {
                     "provenance": "root"

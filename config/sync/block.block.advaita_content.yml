@@ -1,0 +1,22 @@
+uuid: abf31363-ec58-433e-b0ae-69c544939417
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - advaita
+_core:
+  default_config_hash: XkI1C59UAo-njJoQfWbma2faAK1GvSoCt_3FKJUf8nU
+id: advaita_content
+theme: advaita
+region: content
+weight: 0
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  label_display: '0'
+  provider: system
+visibility: {  }

@@ -13,7 +13,7 @@ dependencies:
     - comment
     - image
     - path
-    - text
+    - text_with_summary
 _core:
   default_config_hash: ewbd6G2uX456-bgwseM2Q-KQG3RkASoyHmTh-XR3oLU
 id: node.article.default

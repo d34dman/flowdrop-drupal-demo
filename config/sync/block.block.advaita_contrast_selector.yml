@@ -1,0 +1,24 @@
+uuid: e98b31d7-80cb-4d62-848e-023ccfc518bb
+langcode: en
+status: true
+dependencies:
+  module:
+    - design_system_api
+  theme:
+    - advaita
+_core:
+  default_config_hash: MwlmQc6SLwYNNiFaX9h7WRY1eUUooVTQg5byo_0z5yk
+id: advaita_contrast_selector
+theme: advaita
+region: secondary_menu
+weight: -19
+provider: null
+plugin: design_system_api_contrast_selector
+settings:
+  id: design_system_api_contrast_selector
+  label: Contrast
+  label_display: '0'
+  provider: design_system_api
+  label_display_selector: hidden
+  icons_only: true
+visibility: {  }
