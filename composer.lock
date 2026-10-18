@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "03d805170cfea13b68d1b56ccc7ddf2e",
+    "content-hash": "3e8476cdce1b6676bc141939c8006663",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1786,6 +1786,10 @@
                     "homepage": "https://www.drupal.org/user/385947"
                 },
                 {
+                    "name": "markusa",
+                    "homepage": "https://www.drupal.org/user/142798"
+                },
+                {
                     "name": "michaellander",
                     "homepage": "https://www.drupal.org/user/636494"
                 },
@@ -1816,10 +1820,6 @@
                 {
                     "name": "wouters_f",
                     "homepage": "https://www.drupal.org/user/721548"
-                },
-                {
-                    "name": "yautja_cetanu",
-                    "homepage": "https://www.drupal.org/user/626050"
                 }
             ],
             "description": "Adds decoupled AI Assistants for any frontend to work with.",

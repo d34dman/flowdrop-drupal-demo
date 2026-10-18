@@ -1,6 +1,18 @@
 {
-    "_hash": "d40270dfd8981953d8ffb5a8809664b4ee9c1bef99f797c9a2584f12b65d5fb2",
+    "_hash": "aecda27e3e121bbe829301966234bff05d47c19fad636a8f72801af4a7de442a",
     "patches": {
+        "drupal/core": [
+            {
+                "package": "drupal/core",
+                "description": "No hook_install() in Standard, so it installs from existing config again (11.5.0-beta1 regression; drop when core fixes it)",
+                "url": "patches/core-standard-no-install-hook.patch",
+                "sha256": "73f67f770afc3c6d48051d12a4803f4a5e2dacebc7857c52a69e35eed226d6a3",
+                "depth": 2,
+                "extra": {
+                    "provenance": "root"
+                }
+            }
+        ],
         "drupal/mcp_client": [
             {
                 "package": "drupal/mcp_client",

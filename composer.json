@@ -138,6 +138,9 @@
             ]
         },
         "patches": {
+            "drupal/core": {
+                "No hook_install() in Standard, so it installs from existing config again (11.5.0-beta1 regression; drop when core fixes it)": "patches/core-standard-no-install-hook.patch"
+            },
             "drupal/mcp_client": {
                 "Speak MCP 2026-07-28 (stateless, no initialize) — experiment for dri.es/mcp": "patches/mcp_client-protocol-2026-07-28.patch",
                 "Pass MCP outputSchema/structuredContent through as Tool API outputs — experiment": "patches/mcp_client-structured-output.patch"
