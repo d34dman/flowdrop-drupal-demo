@@ -2795,17 +2795,17 @@
         },
         {
             "name": "drupal/flowdrop",
-            "version": "2.7.0",
+            "version": "2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/flowdrop.git",
-                "reference": "2.7.0"
+                "reference": "2.7.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/flowdrop-2.7.0.zip",
-                "reference": "2.7.0",
-                "shasum": "fd872d876dc8b629e5b6e9c81c2522008756af01"
+                "url": "https://ftp.drupal.org/files/projects/flowdrop-2.7.2.zip",
+                "reference": "2.7.2",
+                "shasum": "5172496915d80543e27b55159595e8dd5ab4b968"
             },
             "require": {
                 "d34dman/vanilla-icon-picker": "^1.4",
@@ -2850,8 +2850,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.7.0",
-                    "datestamp": "1792251170",
+                    "version": "2.7.2",
+                    "datestamp": "1792354206",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3694,7 +3694,7 @@
         },
         {
             "name": "drupal/flowdrop_ui_components",
-            "version": "2.6.0",
+            "version": "2.7.2",
             "require": {
                 "drupal/core": "^11.3",
                 "drupal/flowdrop": "^2"
@@ -3702,8 +3702,8 @@
             "type": "metapackage",
             "extra": {
                 "drupal": {
-                    "version": "2.6.0",
-                    "datestamp": "1790037174",
+                    "version": "2.7.2",
+                    "datestamp": "1792354206",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5857,16 +5857,16 @@
         },
         {
             "name": "league/html-to-markdown",
-            "version": "5.1.4",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/html-to-markdown.git",
-                "reference": "0be46a17d8e42ff5522d935b1b182a283bf7378d"
+                "reference": "c055ef510196411cc02360d8042fa57285d119a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/0be46a17d8e42ff5522d935b1b182a283bf7378d",
-                "reference": "0be46a17d8e42ff5522d935b1b182a283bf7378d",
+                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/c055ef510196411cc02360d8042fa57285d119a9",
+                "reference": "c055ef510196411cc02360d8042fa57285d119a9",
                 "shasum": ""
             },
             "require": {
@@ -5888,7 +5888,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.2-dev"
+                    "dev-master": "5.3-dev"
                 }
             },
             "autoload": {
@@ -5922,7 +5922,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/html-to-markdown/issues",
-                "source": "https://github.com/thephpleague/html-to-markdown/tree/5.1.4"
+                "source": "https://github.com/thephpleague/html-to-markdown/tree/5.2.0"
             },
             "funding": [
                 {
@@ -5942,7 +5942,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-10T16:25:01+00:00"
+            "time": "2026-10-18T18:17:10+00:00"
         },
         {
             "name": "loilo/jsonpath",
@@ -9771,16 +9771,16 @@
         },
         {
             "name": "symfony/expression-language",
-            "version": "v8.1.6",
+            "version": "v8.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/expression-language.git",
-                "reference": "bda5b15a7658d256bcfe67d23eb0e10d437dc708"
+                "reference": "9c2729bca940d84938dc0b435d037e4844f237c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/expression-language/zipball/bda5b15a7658d256bcfe67d23eb0e10d437dc708",
-                "reference": "bda5b15a7658d256bcfe67d23eb0e10d437dc708",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/9c2729bca940d84938dc0b435d037e4844f237c9",
+                "reference": "9c2729bca940d84938dc0b435d037e4844f237c9",
                 "shasum": ""
             },
             "require": {
@@ -9814,7 +9814,7 @@
             "description": "Provides an engine that can compile and evaluate expressions",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/expression-language/tree/v8.1.6"
+                "source": "https://github.com/symfony/expression-language/tree/v8.1.9"
             },
             "funding": [
                 {
@@ -9834,7 +9834,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-30T01:03:44+00:00"
+            "time": "2026-10-09T13:58:01+00:00"
         },
         {
             "name": "symfony/filesystem",
