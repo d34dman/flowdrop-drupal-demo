@@ -46,9 +46,16 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--ds-space-m);
+  /* The summary spans the panel, so the chevron sits at its edge; the text
+   * keeps the header's line length. */
+  max-inline-size: none;
   margin: 0;
   list-style: none;
   cursor: pointer;
+}
+
+.fd-demo-section--collapsible .fd-demo-section__heading {
+  max-inline-size: var(--ds-fd-demo-measure-header);
 }
 
 .fd-demo-section--collapsible > summary::-webkit-details-marker {
