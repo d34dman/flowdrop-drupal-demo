@@ -1,0 +1,7 @@
+# Maps FlowDrop's base tokens (--fd-*) onto the contract (--ds-*). Added to
+# flowdrop_ui_components/design-tokens, so it is on every page that has
+# FlowDrop's tokens; see css/bridge.css for why the editor is left out.
+bridge:
+  css:
+    theme:
+      css/bridge.css: {}

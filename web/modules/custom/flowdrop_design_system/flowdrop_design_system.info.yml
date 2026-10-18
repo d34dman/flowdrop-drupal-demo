@@ -1,0 +1,8 @@
+name: 'FlowDrop: Design System API'
+type: module
+description: 'Draws FlowDrop''s admin pages (dashboard, listings, job and pipeline pages) on the Design System API contract, so they take the bound skin. The editor keeps its own look.'
+package: FlowDrop
+core_version_requirement: ^11.5 || ^12
+dependencies:
+  - flowdrop:flowdrop_ui_components
+  - design_system_api:design_system_api

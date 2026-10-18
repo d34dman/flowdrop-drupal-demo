@@ -37,6 +37,7 @@ module:
   flowdrop_agents: 0
   flowdrop_ai_provider: 0
   flowdrop_chat: 0
+  flowdrop_design_system: 0
   flowdrop_interrupt: 0
   flowdrop_job: 0
   flowdrop_memory: 0

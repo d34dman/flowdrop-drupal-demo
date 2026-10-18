@@ -1,0 +1,100 @@
+/**
+ * @file
+ * FlowDrop's base tokens, drawn from the Design System API contract.
+ *
+ * FlowDrop's admin pages read --fd-* tokens: the library's (tokens.css) and
+ * the Drupal ones (design-tokens-drupal.css). Setting the base tokens here to
+ * contract tokens makes those pages take the bound skin, in every mode; the
+ * component tokens of theme-layer.css are built from the base tokens on
+ * :root as well, so they follow without being listed.
+ *
+ * Only what the admin pages read is mapped. The node and brand colours
+ * (--fd-node-*, --fd-brand-*) and the inspector's syntax colours stay
+ * FlowDrop's: they mean the same thing in every skin.
+ *
+ * :root:not(:has(.fd-fullscreen-layout)) leaves the editor and the
+ * Playground alone (they keep their own theme), and outranks the library's
+ * :root and [data-theme='dark'] blocks whatever the load order.
+ */
+
+:root:not(:has(.fd-fullscreen-layout)) {
+  /* Surfaces and text. */
+  --fd-background: var(--ds-color-bg-canvas);
+  --fd-foreground: var(--ds-color-fg-default);
+  --fd-card: var(--ds-color-bg-surface);
+  --fd-muted: var(--ds-color-bg-surface-nested);
+  --fd-subtle: var(--ds-color-bg-surface-nested);
+  --fd-muted-foreground: var(--ds-color-fg-soft);
+  --fd-secondary: var(--ds-color-bg-surface-nested);
+  --fd-secondary-hover: var(--ds-color-bg-selected);
+  --fd-secondary-foreground: var(--ds-color-fg-default);
+
+  /* Edges and focus. */
+  --fd-border: var(--ds-color-border-default);
+  --fd-border-muted: var(--ds-color-border-soft);
+  --fd-border-strong: var(--ds-color-border-loud);
+  --fd-border-width: var(--ds-border-width-s);
+  --fd-ring: var(--ds-color-focus);
+
+  /* Actions. FlowDrop's violet accent (icon chips) becomes the skin's primary. */
+  --fd-primary: var(--ds-color-action-primary);
+  --fd-primary-hover: var(--ds-color-action-primary-hover);
+  --fd-primary-foreground: var(--ds-color-fg-on-action);
+  --fd-primary-muted: var(--ds-color-action-primary-soft);
+  --fd-accent: var(--ds-color-fg-primary);
+  --fd-accent-hover: var(--ds-color-action-primary-soft-hover-text);
+  --fd-accent-muted: var(--ds-color-action-primary-faint);
+
+  /* Status. The -hover tokens are FlowDrop's text on a -muted fill. */
+  --fd-success: var(--ds-color-status-success);
+  --fd-success-hover: var(--ds-color-status-success);
+  --fd-success-muted: var(--ds-color-status-success-soft);
+  --fd-warning: var(--ds-color-status-warning);
+  --fd-warning-hover: var(--ds-color-status-warning);
+  --fd-warning-muted: var(--ds-color-status-warning-soft);
+  --fd-error: var(--ds-color-status-error);
+  --fd-error-hover: var(--ds-color-status-error);
+  --fd-error-muted: var(--ds-color-status-error-soft);
+  /* No info status in the contract (token wishlist W9): link colour on the faint primary. */
+  --fd-info: var(--ds-color-fg-link);
+  --fd-info-muted: var(--ds-color-action-primary-faint);
+
+  /* Type. */
+  --fd-font-family-sans: var(--ds-font-family-base);
+  --fd-font-family-mono: var(--ds-font-family-mono);
+  --fd-text-xs: var(--ds-font-size-xs);
+  --fd-text-sm: var(--ds-font-size-s);
+  --fd-text-base: var(--ds-font-size-m);
+  --fd-text-lg: var(--ds-font-size-l);
+  --fd-text-xl: var(--ds-font-size-xl);
+  --fd-text-2xl: var(--ds-font-size-2xl);
+  --fd-font-weight-normal: var(--ds-font-weight-normal);
+  --fd-font-weight-medium: var(--ds-font-weight-strong);
+  --fd-font-weight-semibold: var(--ds-font-weight-strong);
+  --fd-font-weight-bold: var(--ds-font-weight-bold);
+  --fd-line-height-normal: var(--ds-font-line-height-base);
+  --fd-line-height-tight: var(--ds-font-line-height-tight);
+
+  /* Space: FlowDrop's 4px steps onto the skin's scale, so density follows it. */
+  --fd-space-1: var(--ds-space-2xs);
+  --fd-space-2: var(--ds-space-xs);
+  --fd-space-3: var(--ds-space-s);
+  --fd-space-4: var(--ds-space-m);
+  --fd-space-5: var(--ds-space-l);
+  --fd-space-6: var(--ds-space-l);
+  --fd-space-8: var(--ds-space-xl);
+  --fd-space-12: calc(var(--ds-space-xl) * 1.5);
+
+  /* Shape and depth. --fd-radius-full stays a pill (token wishlist W2). */
+  --fd-radius-sm: var(--ds-radius-s);
+  --fd-radius-md: var(--ds-radius-m);
+  --fd-radius-lg: var(--ds-radius-l);
+  --fd-radius-xl: var(--ds-radius-xl);
+  --fd-shadow-sm: var(--ds-shadow-raised);
+  --fd-shadow-md: var(--ds-shadow-raised);
+  --fd-shadow-lg: var(--ds-shadow-overlay);
+
+  /* Motion: the easing stays the browser's default (token wishlist W3). */
+  --fd-transition-fast: var(--ds-motion-duration-s);
+  --fd-transition-normal: var(--ds-motion-duration-s);
+}
