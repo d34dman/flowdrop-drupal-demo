@@ -91,6 +91,10 @@ module:
   text: 0
   text_with_summary: 0
   tool: 0
+  tool_belt: 0
+  tool_belt_content: 0
+  tool_belt_entity: 0
+  tool_belt_user: 0
   tool_explorer: 0
   update: 0
   user: 0

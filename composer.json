@@ -49,6 +49,8 @@
         "drupal/notification_server": "^1.0@alpha",
         "drupal/pm": "^4.1@alpha",
         "drupal/revision_graph": "^4",
+        "drupal/tool": "1.0.0-beta9",
+        "drupal/tool_belt": "1.0.0-alpha5",
         "drush/drush": "^13.7.6",
         "mcp/sdk": "0.8.1 as 0.7.1",
         "symfony/ai-agent": "^0.1.0",
