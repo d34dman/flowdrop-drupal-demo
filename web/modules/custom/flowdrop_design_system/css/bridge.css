@@ -85,16 +85,32 @@
   --fd-space-8: var(--ds-space-xl);
   --fd-space-12: calc(var(--ds-space-xl) * 1.5);
 
-  /* Shape and depth. --fd-radius-full stays a pill (token wishlist W2). */
+  /* Shape and depth. --fd-radius-full stays a pill (token wishlist W2).
+   * The pages sit flat, as Advaita's do: a card is a soft ring at radius l,
+   * with no shadow at rest or under the pointer, where its edge darkens
+   * instead. FlowDrop reads -sm and -md only for cards, rows and buttons
+   * that rest on the page, so both go; -lg is its overlays' and keeps the
+   * skin's overlay shadow. The contract can't say which radius and depth a
+   * card takes (token wishlist W14), so it is answered here. */
   --fd-radius-sm: var(--ds-radius-s);
   --fd-radius-md: var(--ds-radius-m);
   --fd-radius-lg: var(--ds-radius-l);
-  --fd-radius-xl: var(--ds-radius-xl);
-  --fd-shadow-sm: var(--ds-shadow-raised);
-  --fd-shadow-md: var(--ds-shadow-raised);
+  --fd-radius-xl: var(--ds-radius-l);
+  /* An empty shadow, not none: FlowDrop also lists -md after a selection
+   * ring (.fd-run-card--selected), where none would void the whole list. */
+  --fd-shadow-sm: 0 0 transparent;
+  --fd-shadow-md: 0 0 transparent;
   --fd-shadow-lg: var(--ds-shadow-overlay);
+  --fd-card-hover-border: var(--ds-color-border-hover);
 
   /* Motion: the easing stays the browser's default (token wishlist W3). */
   --fd-transition-fast: var(--ds-motion-duration-s);
   --fd-transition-normal: var(--ds-motion-duration-s);
+}
+
+/* Three hovers move the edge to --fd-border-muted, lighter than at rest; the
+ * shadow used to carry the cue. With the shadow gone the edge darkens, as
+ * the card tokens above say (FlowDrop could read --fd-card-hover-border). */
+:root:not(:has(.fd-fullscreen-layout)) :is(.fd-action-link, .fd-stat-card--clickable, .fd-job-list__item):hover {
+  border-color: var(--fd-card-hover-border);
 }
