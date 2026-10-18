@@ -34,12 +34,12 @@ nodes:
       config:
         format: text
         showTimestamp: false
-        nodeType: default
       metadata:
         node_type_id: chat_output
     measured:
       width: 280
-      height: 362
+      height: 100
+    ariaLabel: 'Workflow node: Chat Output'
   -
     id: chat_input.1
     position:
@@ -48,12 +48,29 @@ nodes:
     data:
       label: 'Chat Input'
       config:
-        nodeType: default
+        ports:
+          inputs:
+            -
+              id: message
+            -
+              id: history
+              exposed: false
+            -
+              id: sessionId
+              exposed: false
+            -
+              id: messageId
+              exposed: false
+            -
+              id: loop_back
+            -
+              id: trigger
       metadata:
         node_type_id: chat_input
     measured:
       width: 280
-      height: 562
+      height: 220
+    ariaLabel: 'Workflow node: Chat Input'
   -
     id: text_processor.1
     position:
@@ -65,11 +82,23 @@ nodes:
         operation: uppercase
         maxRetries: 0
         requiresConfirmation: ''
+        ports:
+          inputs:
+            -
+              id: text
+            -
+              id: operation
+              exposed: false
+            -
+              id: loop_back
+            -
+              id: trigger
       metadata:
         node_type_id: text_processor
     measured:
       width: 280
-      height: 462
+      height: 140
+    ariaLabel: 'Workflow node: Text Processor'
 edges:
   -
     id: xy-edge__chat_input.1chat_input.1-output-message-text_processor.1text_processor.1-input-text
@@ -111,9 +140,9 @@ edges:
     class: flowdrop--edge--data
 metadata:
   createdAt: '2026-05-13T18:10:42.750Z'
-  updatedAt: '2026-10-01T09:59:09.628Z'
+  updatedAt: '2026-10-18T19:11:14.661Z'
 created: 1778695834
-changed: 1791653357
+changed: 1792350674
 uid: 0
 input_ports:
   -
