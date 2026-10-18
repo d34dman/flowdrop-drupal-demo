@@ -145,11 +145,17 @@
   font-weight: var(--ds-font-weight-bold);
 }
 
-.fd-demo-step:first-child .fd-demo-step__marker,
+/* Filled as the Navigation fills its items: grey under the pointer, the
+ * selected tint on the current (first) step. */
 .fd-demo-step:hover .fd-demo-step__marker,
 .fd-demo-step:focus-within .fd-demo-step__marker {
-  color: var(--ds-color-fg-on-action);
-  background: var(--ds-color-action-primary);
+  color: var(--ds-color-fg-default);
+  background: var(--ds-color-bg-surface-nested);
+}
+
+.fd-demo-step:first-child .fd-demo-step__marker {
+  color: var(--ds-color-fg-primary);
+  background: var(--ds-color-bg-selected);
 }
 
 .fd-demo-step__body {

@@ -32,8 +32,8 @@
   block-size: var(--ds-control-height-s);
   place-items: center;
   border-radius: var(--ds-fd-demo-shape-pill);
-  color: var(--ds-color-fg-on-action);
-  background: var(--ds-color-action-primary);
+  color: var(--ds-color-fg-primary);
+  background: var(--ds-color-bg-selected);
   font-size: var(--ds-font-size-s);
   font-weight: var(--ds-font-weight-bold);
 }

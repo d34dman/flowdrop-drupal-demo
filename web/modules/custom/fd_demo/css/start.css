@@ -62,9 +62,10 @@
 }
 
 /* ---- Buttons ----------------------------------------------------------
- * The look is the contract's (ds-button, --primary, --neutral, --ghost,
- * --small). Here only what the page adds: an icon's size, and the focus ring
- * of a mouse click, which Claro draws on every focused link.
+ * The look is the contract's (ds-button, --soft, --neutral, --ghost,
+ * --small). The run buttons are soft, as the admin's local actions ("+ Add
+ * content") are. Here only what the page adds: an icon's size, and the focus
+ * ring of a mouse click, which Claro draws on every focused link.
  */
 
 .fd-demo-start .ds-button svg {
@@ -154,11 +155,6 @@
   opacity: 1;
 }
 
-.fd-demo-start .fd-demo-btn--run:hover,
-.fd-demo-start .fd-demo-btn--run:focus-visible {
-  box-shadow: var(--ds-shadow-raised);
-}
-
 /* Click: the fill, clipped to the button by its own inset box. */
 .fd-demo-btn--run::after {
   content: "";
@@ -168,8 +164,8 @@
   border-radius: inherit;
   background: linear-gradient(
     90deg,
-    var(--ds-color-action-primary-hover),
-    color-mix(in srgb, var(--ds-color-border-primary-hover) 70%, var(--ds-color-action-primary-hover))
+    var(--ds-color-action-primary-soft-hover),
+    color-mix(in srgb, var(--ds-color-border-primary-soft) 50%, var(--ds-color-action-primary-soft-hover))
   );
   transform: scaleX(0);
   transform-origin: 0 50%;
@@ -186,7 +182,7 @@
   margin-block-start: calc(var(--ds-space-s) / -2);
   margin-inline-start: calc(var(--ds-space-s) / -2);
   border-radius: 50%;
-  background: color-mix(in srgb, var(--ds-color-fg-on-action) 55%, transparent);
+  background: color-mix(in srgb, var(--ds-color-fg-primary) 25%, transparent);
   --x: 50%;
   --y: 50%;
   pointer-events: none;
@@ -195,6 +191,7 @@
 /* The ripple may grow past the corners; only while it runs. */
 .fd-demo-btn--run.is-running {
   overflow: hidden;
+  color: var(--ds-color-action-primary-soft-hover-text);
 }
 
 .fd-demo-btn--run.is-running::before {
@@ -203,8 +200,9 @@
 
 .fd-demo-start .fd-demo-btn--run.is-done,
 .fd-demo-start .fd-demo-btn--run.is-done:hover {
-  background-color: var(--ds-color-status-success);
-  box-shadow: 0 0 0 var(--ds-focus-ring-width) color-mix(in srgb, var(--ds-color-status-success) 22%, transparent);
+  color: var(--ds-color-status-success);
+  background-color: var(--ds-color-status-success-soft);
+  box-shadow: none;
 }
 
 .fd-demo-btn--run.is-done::after {
