@@ -60,6 +60,8 @@ module:
   history: 0
   image: 0
   key: 0
+  layout_builder: 0
+  layout_discovery: 0
   link: 0
   markdown_easy: 0
   mcp_client: 0
@@ -67,6 +69,7 @@ module:
   menu_ui: 0
   modeler_api: 0
   mysql: 0
+  navigation: 0
   node: 0
   notification_server: 0
   options: 0
@@ -87,7 +90,6 @@ module:
   text_with_summary: 0
   tool: 0
   tool_explorer: 0
-  toolbar: 0
   update: 0
   user: 0
   verf: 0
