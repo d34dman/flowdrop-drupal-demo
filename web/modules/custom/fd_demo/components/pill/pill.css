@@ -1,33 +1,39 @@
+/* Information, not an action: soft text with a dot in the meaning's colour,
+ * so the soft Try it beside it stays the only tinted shape on the card. */
 .fd-demo-pill {
   display: inline-flex;
   align-items: center;
-  padding: var(--ds-space-2xs) var(--ds-space-xs);
-  border-radius: var(--ds-fd-demo-shape-pill);
+  gap: var(--ds-space-2xs);
   color: var(--ds-color-fg-soft);
-  background: var(--ds-color-bg-surface-nested);
   font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-size-xs);
-  font-weight: var(--ds-font-weight-strong);
+  font-weight: var(--ds-font-weight-normal);
   line-height: var(--ds-font-line-height-none);
   white-space: nowrap;
+  --_dot: var(--ds-color-fg-soft);
+}
+
+.fd-demo-pill::before {
+  content: "";
+  flex: none;
+  inline-size: var(--ds-space-xs);
+  block-size: var(--ds-space-xs);
+  border-radius: var(--ds-fd-demo-shape-pill);
+  background: var(--_dot);
 }
 
 .fd-demo-pill--primary {
-  color: var(--ds-color-fg-primary);
-  background: var(--ds-color-action-primary-soft);
+  --_dot: var(--ds-color-fg-primary);
 }
 
 .fd-demo-pill--success {
-  color: var(--ds-color-status-success);
-  background: var(--ds-color-status-success-soft);
+  --_dot: var(--ds-color-status-success);
 }
 
 .fd-demo-pill--warning {
-  color: var(--ds-color-status-warning);
-  background: var(--ds-color-status-warning-soft);
+  --_dot: var(--ds-color-status-warning);
 }
 
 .fd-demo-pill--info {
-  color: var(--ds-fd-demo-info-fg);
-  background: var(--ds-fd-demo-info-bg);
+  --_dot: var(--ds-fd-demo-info-fg);
 }

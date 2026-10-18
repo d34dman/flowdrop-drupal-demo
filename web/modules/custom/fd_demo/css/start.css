@@ -399,7 +399,12 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ds-space-xs);
+  gap: var(--ds-space-s);
+}
+
+/* A step that needs nothing has no tags; don't leave a gap for them. */
+.fd-demo-wf__meta:not(:has(*)) {
+  display: none;
 }
 
 .fd-demo-wf__nodes {

@@ -292,7 +292,7 @@ final class StartController extends ControllerBase {
     return $this->component('setup-callout', [
       'status' => 'missing',
       'title' => $this->t('No Anthropic API key yet'),
-      'message' => $this->t('The first run and everything marked <em>offline</em> work without one, so start there. To unlock the workflows marked <em>AI key needed</em>, run this in the project directory, then reload this page:'),
+      'message' => $this->t('The first run and every workflow without a tag work without one, so start there. To unlock the workflows marked <em>AI key needed</em>, run this in the project directory, then reload this page:'),
       'commands' => [
         'echo "ANTHROPIC_KEY=sk-ant-..." >> .ddev/.env',
         'ddev restart',
@@ -432,7 +432,7 @@ final class StartController extends ControllerBase {
       'id' => 'fd-demo-path',
       'eyebrow' => $this->t('Learn it'),
       'title' => $this->t('One new idea per step'),
-      'description' => $this->t('Each workflow adds one idea to the one before. The ones marked offline run without an AI key.'),
+      'description' => $this->t('Each workflow adds one idea to the one before. The ones without a tag run without an AI key.'),
     ], [
       'content' => ['#type' => 'html_tag', '#tag' => 'ol', '#attributes' => ['class' => ['fd-demo-path']], 'steps' => $steps],
     ]);
@@ -570,9 +570,6 @@ final class StartController extends ControllerBase {
     }
     if ($needs_net) {
       $needs[] = ['label' => (string) $this->t('internet'), 'variant' => 'info'];
-    }
-    if (!$needs) {
-      $needs[] = ['label' => (string) $this->t('offline'), 'variant' => 'success'];
     }
 
     $url = Url::fromRoute('flowdrop.workflow.editor', ['flowdrop_workflow' => $id]);
