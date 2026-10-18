@@ -1,5 +1,8 @@
-# Page-level styles shared by this module's components: buttons and the
-# learning-path list, plus the run-button click animation. Components depend on it so they render the same anywhere.
+# Page-level styles shared by this module's components: the learning-path card
+# body and the run-button animation, plus the run button's click script.
+# Buttons are the Design System API's (ds-button), so that library is a
+# dependency here and the page does not rely on the theme opting in.
+# Components depend on this so they render the same anywhere.
 start:
   css:
     theme:
@@ -9,4 +12,4 @@ start:
   dependencies:
     - core/drupal
     - core/once
-    - flowdrop_ui_components/theme-layer
+    - design_system_api/forms

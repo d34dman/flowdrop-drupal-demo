@@ -18,9 +18,9 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
  * (concepts), one guided run (first run), then the workflows in learning
  * order, the showcase, and a closed "For developers" section for the rest.
  *
- * Built from the FlowDrop UI components (grid, pill, action-link) plus this
- * module's own SDCs (hero, setup-callout, concepts, first-run, section,
- * path-step, workflow-card).
+ * Built from this module's own SDCs (hero, setup-callout, concepts, first-run,
+ * section, path-step, workflow-card, grid, pill, action-link), styled with
+ * Design System API tokens and patterns only.
  */
 final class StartController extends ControllerBase {
 
@@ -250,11 +250,9 @@ final class StartController extends ControllerBase {
   private function layout(array $main): array {
     return [
       '#type' => 'container',
-      '#attributes' => ['class' => ['fd-dashboard-layout']],
+      '#attributes' => ['class' => ['fd-demo-layout']],
       '#attached' => [
         'library' => [
-          'flowdrop_ui_components/dashboard-layout',
-          'flowdrop_ui_components/base',
           'fd_demo/start',
         ],
       ],
@@ -267,7 +265,7 @@ final class StartController extends ControllerBase {
       ],
       'main' => [
         '#type' => 'container',
-        '#attributes' => ['class' => ['fd-dashboard-main', 'fd-dashboard-main--constrained', 'fd-demo-start']],
+        '#attributes' => ['class' => ['fd-demo-start']],
       ] + $main,
     ];
   }
@@ -465,7 +463,7 @@ final class StartController extends ControllerBase {
     if (!$cards) {
       return NULL;
     }
-    return $this->component('grid', ['variant' => 'cards', 'stagger' => TRUE], ['default' => $cards], 'flowdrop_ui_components');
+    return $this->component('grid', ['variant' => 'cards', 'stagger' => TRUE], ['default' => $cards]);
   }
 
   /**
@@ -539,7 +537,7 @@ final class StartController extends ControllerBase {
           'description' => (string) $description,
           'url' => $link['url'],
           'icon' => $this->icons->getIcon($icon),
-        ], [], 'flowdrop_ui_components');
+        ], []);
       }
     }
     $items['flowdrop.io'] = $this->component('action-link', [
@@ -547,9 +545,9 @@ final class StartController extends ControllerBase {
       'description' => (string) $this->t('The project website.'),
       'url' => 'https://flowdrop.io',
       'external' => TRUE,
-    ], [], 'flowdrop_ui_components');
+    ], []);
 
-    return $this->component('grid', ['variant' => 'actions', 'stagger' => TRUE], ['default' => $items], 'flowdrop_ui_components');
+    return $this->component('grid', ['variant' => 'actions', 'stagger' => TRUE], ['default' => $items]);
   }
 
   /**

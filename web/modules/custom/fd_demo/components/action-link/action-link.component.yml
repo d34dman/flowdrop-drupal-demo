@@ -1,0 +1,26 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Action link
+status: stable
+description: 'A clickable card that links to a part of FlowDrop or to the project site.'
+group: FlowDrop Demo
+props:
+  type: object
+  required:
+    - title
+    - url
+  properties:
+    title:
+      type: string
+    description:
+      type: string
+    url:
+      type: string
+    icon:
+      type: string
+      description: 'Trusted SVG markup from the FlowDrop dashboard icon repository.'
+    external:
+      type: boolean
+      default: false
+libraryOverrides:
+  dependencies:
+    - fd_demo/start

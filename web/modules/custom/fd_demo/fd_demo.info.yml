@@ -8,3 +8,4 @@ dependencies:
   - flowdrop:flowdrop_playground
   - flowdrop:flowdrop_ui_components
   - key:key
+  - design_system_api:design_system_api

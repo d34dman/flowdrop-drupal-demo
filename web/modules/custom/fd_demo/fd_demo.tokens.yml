@@ -1,0 +1,109 @@
+# Component tokens of the start page. Each one suggests a mapping to the shared
+# vocabulary, so the page works under any skin with zero setup; an author can
+# override any of them per context in the registry. A literal value is used
+# only where the shared vocabulary has nothing to map to.
+fd-demo-node:
+  $type: color
+  $description: 'Hue per node category in the hero canvas illustration.'
+  idle:
+    $description: 'A node of no category.'
+    $value: '{color.fg.soft}'
+  input:
+    $description: 'An input node (chat input).'
+    $value: '{color.status.success}'
+  choice:
+    $description: 'A choice node (pick a tone).'
+    $value: '{color.status.warning}'
+  model:
+    $description: 'The model node, the one that is running.'
+    $value: '{color.action.primary}'
+  output:
+    $description: 'An output node (chat output).'
+    $value: '{color.fg.link}'
+fd-demo-window:
+  $type: color
+  $description: 'The three dots in the title bar of the hero canvas.'
+  dot-close:
+    $value: '{color.status.error}'
+  dot-minimize:
+    $value: '{color.status.warning}'
+  dot-zoom:
+    $value: '{color.status.success}'
+fd-demo-info:
+  $type: color
+  $description: 'The informational tone: the "internet" pill and the log-in callout. The contract has no info status.'
+  fg:
+    $value: '{color.fg.link}'
+  bg:
+    $value: '{color.action.primary-faint}'
+fd-demo-terminal:
+  $type: color
+  $description: 'The command box of the setup callout. Dark in every skin, like a terminal.'
+  bg:
+    $value: '#18181c'
+  fg:
+    $value: '#e4e4e7'
+  prompt:
+    $value: '#8d8d96'
+fd-demo-shape:
+  $type: dimension
+  $description: 'Shapes the contract has no radius for.'
+  pill:
+    $description: 'Fully rounded: pills, round markers, dots.'
+    $value: { value: 62.5, unit: rem }
+fd-demo-measure:
+  $type: dimension
+  $description: 'Line lengths of running text.'
+  header:
+    $description: 'A section header: title and description.'
+    $value: { value: 46, unit: rem }
+  lead:
+    $description: 'The hero lead paragraph.'
+    $value: { value: 36, unit: rem }
+  page:
+    $description: 'The widest the page grows.'
+    $value: { value: 87.5, unit: rem }
+fd-demo-grid:
+  $type: dimension
+  $description: 'Smallest column of the card grids.'
+  card:
+    $value: { value: 20, unit: rem }
+  action:
+    $value: { value: 17.5, unit: rem }
+fd-demo-canvas:
+  $type: dimension
+  $description: 'The dotted grid behind the hero canvas and the video placeholder.'
+  dot-gap:
+    $value: '{space.m}'
+  perspective:
+    $description: 'How strongly the hero canvas tilts.'
+    $value: { value: 75, unit: rem }
+fd-demo-text:
+  $type: dimension
+  $description: 'Letter spacing of small uppercase labels (eyebrows, stage names).'
+  tracking:
+    $value: { value: 0.04, unit: rem }
+fd-demo-run:
+  $type: duration
+  $description: 'The run button''s animation. The click animation must match RUN_MS in js/run-button.js.'
+  spin:
+    $description: 'One turn of the light round the border, hovered.'
+    $value: { value: 1.6, unit: s }
+  spin-fast:
+    $description: 'The same, while running.'
+    $value: { value: 0.5, unit: s }
+  fill:
+    $description: 'The fill sweeping across the button, and the ripple.'
+    $value: { value: 520, unit: ms }
+  tick:
+    $description: 'The tick appearing.'
+    $value: { value: 220, unit: ms }
+fd-demo-flow:
+  $type: duration
+  $description: 'The hero illustration''s moving edges.'
+  pulse:
+    $value: { value: 2.4, unit: s }
+  pulse-fast:
+    $value: { value: 1.2, unit: s }
+  halo:
+    $value: { value: 1.6, unit: s }

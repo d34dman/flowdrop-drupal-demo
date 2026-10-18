@@ -1,13 +1,25 @@
 .fd-demo-step {
-  --rail: 2.5rem;
+  --rail: var(--ds-control-height-m);
   position: relative;
   display: grid;
   grid-template-columns: var(--rail) minmax(0, 1fr);
-  gap: var(--fd-space-4);
+  gap: var(--ds-space-m);
   margin: 0;
-  padding-block-end: var(--fd-space-3);
-  row-gap: var(--fd-space-2);
-  animation: fd-fade-in var(--fd-transition-normal) ease-out backwards;
+  padding-block-end: var(--ds-space-s);
+  row-gap: var(--ds-space-xs);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fd-demo-step {
+    animation: fd-demo-fade-in var(--ds-motion-duration-s) backwards;
+  }
+
+  .fd-demo-step:nth-child(2) { animation-delay: var(--ds-motion-duration-s); }
+  .fd-demo-step:nth-child(3) { animation-delay: calc(var(--ds-motion-duration-s) * 2); }
+  .fd-demo-step:nth-child(4) { animation-delay: calc(var(--ds-motion-duration-s) * 3); }
+  .fd-demo-step:nth-child(5) { animation-delay: calc(var(--ds-motion-duration-s) * 4); }
+  .fd-demo-step:nth-child(6) { animation-delay: calc(var(--ds-motion-duration-s) * 5); }
+  .fd-demo-step:nth-child(n + 7) { animation-delay: calc(var(--ds-motion-duration-s) * 6); }
 }
 
 /* The rail: runs the full height, under the markers; the first step's starts
@@ -15,31 +27,30 @@
 .fd-demo-step::before {
   content: "";
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc(var(--rail) / 2 - 1px);
-  width: 2px;
-  background: linear-gradient(var(--fd-primary), var(--fd-accent));
+  inset-block: 0;
+  inset-inline-start: calc(var(--rail) / 2 - var(--ds-border-width-m) / 2);
+  inline-size: var(--ds-border-width-m);
+  background: linear-gradient(var(--ds-color-action-primary), var(--ds-color-border-primary-hover));
   opacity: 0.35;
 }
 
 .fd-demo-step:first-child::before {
-  top: 4rem;
+  inset-block-start: calc(var(--rail) * 1.6);
 }
 
 .fd-demo-step:last-child::before {
-  bottom: auto;
-  height: 1.25rem;
+  inset-block-end: auto;
+  block-size: calc(var(--rail) / 2);
 }
 
 /* The stage name, above the first step of each stage. */
 .fd-demo-step__stage {
   grid-column: 2;
-  margin: var(--fd-space-4) 0 0;
-  color: var(--fd-muted-foreground);
-  font-size: var(--fd-text-xs);
-  font-weight: var(--fd-font-weight-semibold);
-  letter-spacing: var(--fd-letter-spacing-wide);
+  margin: var(--ds-space-m) 0 0;
+  color: var(--ds-color-fg-soft);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-strong);
+  letter-spacing: var(--ds-fd-demo-text-tracking);
   text-transform: uppercase;
 }
 
@@ -53,7 +64,7 @@
 }
 
 .fd-demo-step__card {
-  padding-block: var(--fd-space-3);
+  padding-block: var(--ds-space-s);
 }
 
 /* What to try, folded. Claro styles every details/summary; undo it here. */
@@ -71,10 +82,10 @@
   background: none;
   display: inline-flex;
   align-items: center;
-  gap: var(--fd-space-1);
-  color: var(--fd-primary-hover);
-  font-size: var(--fd-text-xs);
-  font-weight: var(--fd-font-weight-semibold);
+  gap: var(--ds-space-2xs);
+  color: var(--ds-color-fg-primary);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-strong);
   list-style: none;
   cursor: pointer;
 }
@@ -85,12 +96,23 @@
 
 .fd-demo-step__more > summary::before {
   content: "";
-  width: 0.4rem;
-  height: 0.4rem;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
+  inline-size: var(--ds-space-xs);
+  block-size: var(--ds-space-xs);
+  border-inline-end: var(--ds-border-width-m) solid currentColor;
+  border-block-end: var(--ds-border-width-m) solid currentColor;
   transform: rotate(-45deg);
-  transition: transform var(--fd-transition-fast);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fd-demo-step__more > summary::before {
+    transition: transform var(--ds-motion-duration-s);
+  }
+
+  .fd-demo-step__marker {
+    transition:
+      color var(--ds-motion-duration-s),
+      background-color var(--ds-motion-duration-s);
+  }
 }
 
 .fd-demo-step__more[open] > summary::before {
@@ -98,53 +120,43 @@
 }
 
 .fd-demo-step__more > summary:focus-visible {
-  outline: 2px solid var(--fd-ring);
-  outline-offset: 2px;
-  border-radius: var(--fd-radius-sm);
+  outline: var(--ds-focus-ring-width) solid var(--ds-color-focus);
+  outline-offset: var(--ds-focus-ring-offset);
+  border-radius: var(--ds-radius-s);
 }
 
 .fd-demo-step__more .fd-demo-wf__hints {
-  margin-block-start: var(--fd-space-2);
+  margin-block-start: var(--ds-space-xs);
 }
 
 .fd-demo-step__marker {
   position: relative;
   grid-column: 1;
   display: grid;
-  width: var(--rail);
-  height: var(--rail);
+  inline-size: var(--rail);
+  block-size: var(--rail);
   place-items: center;
-  border: 2px solid var(--fd-primary);
-  border-radius: var(--fd-radius-full);
-  color: var(--fd-primary-hover);
-  background: var(--fd-card);
-  font-family: var(--fd-font-family-mono);
-  font-size: var(--fd-text-sm);
-  font-weight: var(--fd-font-weight-bold);
-  transition:
-    color var(--fd-transition-fast),
-    background-color var(--fd-transition-fast);
+  border: var(--ds-border-width-m) solid var(--ds-color-action-primary);
+  border-radius: var(--ds-fd-demo-shape-pill);
+  color: var(--ds-color-fg-primary);
+  background: var(--ds-color-bg-surface);
+  font-family: var(--ds-font-family-mono);
+  font-size: var(--ds-font-size-s);
+  font-weight: var(--ds-font-weight-bold);
 }
 
 .fd-demo-step:first-child .fd-demo-step__marker,
 .fd-demo-step:hover .fd-demo-step__marker,
 .fd-demo-step:focus-within .fd-demo-step__marker {
-  color: var(--fd-primary-foreground);
-  background: var(--fd-primary);
+  color: var(--ds-color-fg-on-action);
+  background: var(--ds-color-action-primary);
 }
-
-.fd-demo-step:nth-child(2) { animation-delay: 40ms; }
-.fd-demo-step:nth-child(3) { animation-delay: 80ms; }
-.fd-demo-step:nth-child(4) { animation-delay: 120ms; }
-.fd-demo-step:nth-child(5) { animation-delay: 160ms; }
-.fd-demo-step:nth-child(6) { animation-delay: 200ms; }
-.fd-demo-step:nth-child(n + 7) { animation-delay: 240ms; }
 
 .fd-demo-step__body {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-2);
-  min-width: 0;
+  gap: var(--ds-space-xs);
+  min-inline-size: 0;
 }
 
 /* Copy on the left, what it needs and the buttons on the right. */
@@ -153,7 +165,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    column-gap: var(--fd-space-6);
+    column-gap: var(--ds-space-l);
   }
 
   .fd-demo-step__card .fd-demo-wf__footer {

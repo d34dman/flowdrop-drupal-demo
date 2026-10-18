@@ -23,7 +23,7 @@ props:
       description: 'What comes back. Trusted markup (from t()), rendered raw.'
     needs:
       type: array
-      description: "Requirement pills: {label, variant} with a flowdrop_ui_components:pill variant."
+      description: "Requirement pills: {label, variant} with an fd_demo:pill variant."
       items:
         type: object
         properties:

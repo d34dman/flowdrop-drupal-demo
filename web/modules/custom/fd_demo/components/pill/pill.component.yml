@@ -1,0 +1,17 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Pill
+status: stable
+description: 'A small rounded label: what a workflow needs (AI key, internet, offline).'
+group: FlowDrop Demo
+props:
+  type: object
+  required:
+    - label
+  properties:
+    label:
+      type: string
+    variant:
+      type: string
+      description: 'Meaning, not colour: how the skin tints it.'
+      enum: [primary, success, warning, info, neutral]
+      default: neutral

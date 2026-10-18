@@ -1,0 +1,19 @@
+$schema: https://git.drupalcode.org/project/drupal/-/raw/HEAD/core/assets/schemas/v1/metadata.schema.json
+name: Grid
+status: stable
+description: 'A responsive grid for cards and links.'
+group: FlowDrop Demo
+props:
+  type: object
+  properties:
+    variant:
+      type: string
+      enum: [cards, actions]
+      default: cards
+    stagger:
+      type: boolean
+      description: 'Items fade in one after another.'
+      default: false
+slots:
+  default:
+    title: Grid items

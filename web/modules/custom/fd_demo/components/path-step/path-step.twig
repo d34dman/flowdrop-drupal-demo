@@ -30,7 +30,7 @@
   <div class="fd-demo-wf__footer">
     <div class="fd-demo-wf__meta">
       {% for need in needs %}
-        {{ include("flowdrop_ui_components:pill", {label: need.label, variant: need.variant|default("neutral"), size: "sm"}, with_context = false) }}
+        {{ include("fd_demo:pill", {label: need.label, variant: need.variant|default("neutral"), size: "sm"}, with_context = false) }}
       {% endfor %}
       {% if node_count %}
         <span class="fd-demo-wf__nodes">
@@ -42,13 +42,13 @@
     {% if try_url or edit_url %}
       <div class="fd-demo-wf__actions">
         {% if edit_url %}
-          <a href="{{ edit_url }}" class="fd-demo-btn fd-demo-btn--sm {{ try_url ? "fd-demo-btn--ghost" : "fd-demo-btn--secondary" }}" aria-label="{{ edit_label|default("Open editor") }}: {{ title }}">
+          <a href="{{ edit_url }}" class="ds-button ds-button--small {{ try_url ? "ds-button--ghost" : "ds-button--neutral" }}" aria-label="{{ edit_label|default("Open editor") }}: {{ title }}">
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z"/></svg>
             {{ edit_label|default("Open editor") }}
           </a>
         {% endif %}
         {% if try_url %}
-          <a href="{{ try_url }}" class="fd-demo-btn fd-demo-btn--sm fd-demo-btn--primary fd-demo-btn--run" aria-label="{{ try_label|default("Try it") }}: {{ title }}">
+          <a href="{{ try_url }}" class="ds-button ds-button--small ds-button--primary fd-demo-btn--run" aria-label="{{ try_label|default("Try it") }}: {{ title }}">
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.34-5.89a1.5 1.5 0 000-2.54L6.3 2.84z"/></svg>
             {{ try_label|default("Try it") }}
           </a>

@@ -1,0 +1,87 @@
+.fd-demo-action {
+  display: flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: var(--ds-space-m);
+  border: var(--ds-border-width-s) solid var(--ds-color-border-soft);
+  border-radius: var(--ds-radius-l);
+  color: inherit;
+  background: var(--ds-color-bg-surface);
+  text-decoration: none;
+  gap: var(--ds-space-m);
+}
+
+.fd-demo-action:hover {
+  border-color: var(--ds-color-border-primary-soft);
+  background: var(--ds-color-bg-surface-nested);
+  box-shadow: var(--ds-shadow-raised);
+  text-decoration: none;
+}
+
+.fd-demo-action:focus-visible {
+  outline: var(--ds-focus-ring-width) solid var(--ds-color-focus);
+  outline-offset: var(--ds-focus-ring-offset);
+}
+
+.fd-demo-action__icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--ds-control-height-s);
+  block-size: var(--ds-control-height-s);
+  border-radius: var(--ds-radius-l);
+  color: var(--ds-color-fg-primary);
+  background: var(--ds-color-action-primary-soft);
+}
+
+.fd-demo-action__icon svg {
+  inline-size: calc(var(--ds-space-m) * 1.25);
+  block-size: calc(var(--ds-space-m) * 1.25);
+}
+
+.fd-demo-action__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.fd-demo-action__title {
+  color: var(--ds-color-fg-loud);
+  font-size: var(--ds-font-size-m);
+  font-weight: var(--ds-font-weight-strong);
+}
+
+.fd-demo-action__description {
+  margin-block-start: var(--ds-space-2xs);
+  color: var(--ds-color-fg-soft);
+  font-size: var(--ds-font-size-s);
+  line-height: var(--ds-font-line-height-base);
+}
+
+.fd-demo-action__arrow {
+  flex-shrink: 0;
+  inline-size: calc(var(--ds-space-m) * 1.25);
+  block-size: calc(var(--ds-space-m) * 1.25);
+  color: var(--ds-color-fg-soft);
+  opacity: 0;
+}
+
+.fd-demo-action:hover .fd-demo-action__arrow,
+.fd-demo-action:focus-visible .fd-demo-action__arrow {
+  color: var(--ds-color-fg-primary);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fd-demo-action,
+  .fd-demo-action__arrow {
+    transition:
+      background-color var(--ds-motion-duration-s),
+      border-color var(--ds-motion-duration-s),
+      box-shadow var(--ds-motion-duration-s),
+      opacity var(--ds-motion-duration-s),
+      color var(--ds-motion-duration-s);
+  }
+}

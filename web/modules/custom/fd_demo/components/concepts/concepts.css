@@ -2,13 +2,13 @@
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
   align-items: start;
-  gap: var(--fd-space-8);
+  gap: var(--ds-space-xl);
 }
 
 .fd-demo-concepts__list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--fd-space-5) var(--fd-space-6);
+  gap: var(--ds-space-l) var(--ds-space-l);
   margin: 0;
 }
 
@@ -23,14 +23,14 @@
 
 .fd-demo-concepts--words-only .fd-demo-concepts__list {
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--fd-space-4);
+  gap: var(--ds-space-m);
 }
 
 .fd-demo-concepts--words-only .fd-demo-concepts__item {
-  padding: var(--fd-space-4) var(--fd-space-5);
-  border: var(--fd-border-width) solid var(--fd-border-muted);
-  border-radius: var(--fd-radius-xl);
-  background: var(--fd-card);
+  padding: var(--ds-space-m) var(--ds-space-l);
+  border: var(--ds-border-width-s) solid var(--ds-color-border-soft);
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-color-bg-surface);
 }
 
 @media (max-width: 1024px) {
@@ -43,45 +43,45 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--fd-space-2);
-  margin: 0 0 var(--fd-space-1);
-  color: var(--fd-foreground);
-  font-size: var(--fd-text-base);
-  font-weight: var(--fd-font-weight-semibold);
+  gap: var(--ds-space-xs);
+  margin: 0 0 var(--ds-space-2xs);
+  color: var(--ds-color-fg-loud);
+  font-size: var(--ds-font-size-m);
+  font-weight: var(--ds-font-weight-strong);
 }
 
 .fd-demo-concepts__icon {
   display: inline-grid;
-  width: 1.75rem;
-  height: 1.75rem;
+  inline-size: var(--ds-space-l);
+  block-size: var(--ds-space-l);
   place-items: center;
-  border-radius: var(--fd-radius-md);
-  color: var(--fd-accent-hover);
-  background: var(--fd-accent-muted);
+  border-radius: var(--ds-radius-m);
+  color: var(--ds-color-fg-primary);
+  background: var(--ds-color-action-primary-soft);
 }
 
 .fd-demo-concepts__icon svg {
-  width: 1rem;
-  height: 1rem;
+  inline-size: 1em;
+  block-size: 1em;
 }
 
 /* Looks like the button it names, so the link from word to button is visual. */
 .fd-demo-concepts__button {
-  padding: 0 var(--fd-space-2);
-  border: var(--fd-border-width) solid var(--fd-border);
-  border-radius: var(--fd-radius-md);
-  color: var(--fd-muted-foreground);
-  background: var(--fd-card);
-  font-size: var(--fd-text-xs);
-  font-weight: var(--fd-font-weight-medium);
-  line-height: 1.25rem;
+  padding: 0 var(--ds-space-xs);
+  border: var(--ds-border-width-s) solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-m);
+  color: var(--ds-color-fg-soft);
+  background: var(--ds-color-bg-surface);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-strong);
+  line-height: var(--ds-font-line-height-base);
 }
 
 .fd-demo-concepts__text {
   margin: 0;
-  color: var(--fd-muted-foreground);
-  font-size: var(--fd-text-sm);
-  line-height: 1.55;
+  color: var(--ds-color-fg-soft);
+  font-size: var(--ds-font-size-s);
+  line-height: var(--ds-font-line-height-base);
 }
 
 .fd-demo-concepts__tour {
@@ -91,14 +91,14 @@
 .fd-demo-concepts__video,
 .fd-demo-concepts__placeholder {
   display: block;
-  width: 100%;
+  inline-size: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: var(--fd-radius-xl);
+  border-radius: var(--ds-radius-xl);
 }
 
 .fd-demo-concepts__video {
-  background: var(--fd-muted);
-  box-shadow: var(--fd-shadow-md);
+  background: var(--ds-color-bg-surface-nested);
+  box-shadow: var(--ds-shadow-raised);
 }
 
 .fd-demo-concepts__placeholder {
@@ -106,50 +106,50 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--fd-space-1);
+  gap: var(--ds-space-2xs);
   position: relative;
   box-sizing: border-box;
-  padding: var(--fd-space-4);
-  border: 2px dashed var(--fd-border);
-  color: var(--fd-muted-foreground);
-  background-color: var(--fd-muted);
-  background-image: radial-gradient(var(--fd-border) 1px, transparent 1px);
-  background-size: 16px 16px;
-  font-size: var(--fd-text-sm);
+  padding: var(--ds-space-m);
+  border: var(--ds-border-width-m) dashed var(--ds-color-border-default);
+  color: var(--ds-color-fg-soft);
+  background-color: var(--ds-color-bg-surface-nested);
+  background-image: radial-gradient(var(--ds-color-border-default) var(--ds-border-width-s), transparent var(--ds-border-width-s));
+  background-size: var(--ds-fd-demo-canvas-dot-gap) var(--ds-fd-demo-canvas-dot-gap);
+  font-size: var(--ds-font-size-s);
   text-align: center;
 }
 
 .fd-demo-concepts__badge {
   position: absolute;
-  top: var(--fd-space-3);
-  left: var(--fd-space-3);
-  padding: 0 var(--fd-space-2);
-  border: var(--fd-border-width) solid color-mix(in srgb, var(--fd-warning, #d97706) 40%, transparent);
-  border-radius: var(--fd-radius-full);
-  color: var(--fd-warning, #b45309);
-  background: var(--fd-card);
-  font-size: var(--fd-text-xs);
-  font-weight: var(--fd-font-weight-semibold);
-  letter-spacing: var(--fd-letter-spacing-wide);
-  line-height: 1.25rem;
+  inset-block-start: var(--ds-space-s);
+  inset-inline-start: var(--ds-space-s);
+  padding: 0 var(--ds-space-xs);
+  border: var(--ds-border-width-s) solid color-mix(in srgb, var(--ds-color-status-warning) 40%, transparent);
+  border-radius: var(--ds-fd-demo-shape-pill);
+  color: var(--ds-color-status-warning);
+  background: var(--ds-color-bg-surface);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-strong);
+  letter-spacing: var(--ds-fd-demo-text-tracking);
+  line-height: var(--ds-font-line-height-base);
   text-transform: uppercase;
 }
 
 .fd-demo-concepts__placeholder svg {
-  width: 2.5rem;
-  height: 2.5rem;
-  margin-block-end: var(--fd-space-2);
-  color: var(--fd-border-strong);
+  inline-size: calc(var(--ds-space-xl) * 1.25);
+  block-size: calc(var(--ds-space-xl) * 1.25);
+  margin-block-end: var(--ds-space-xs);
+  color: var(--ds-color-border-loud);
 }
 
 .fd-demo-concepts__placeholder strong {
-  color: var(--fd-foreground);
+  color: var(--ds-color-fg-default);
 }
 
 .fd-demo-concepts__caption {
-  margin-block-start: var(--fd-space-2);
-  color: var(--fd-muted-foreground);
-  font-size: var(--fd-text-xs);
+  margin-block-start: var(--ds-space-xs);
+  color: var(--ds-color-fg-soft);
+  font-size: var(--ds-font-size-xs);
 }
 
 @media (max-width: 1024px) {

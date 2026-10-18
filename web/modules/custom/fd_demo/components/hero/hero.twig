@@ -28,13 +28,13 @@
     {% if primary.url or secondary.url %}
       <div class="fd-demo-hero__actions">
         {% if primary.url %}
-          <a href="{{ primary.url }}" class="fd-demo-btn fd-demo-btn--primary fd-demo-btn--lg fd-demo-btn--run">
+          <a href="{{ primary.url }}" class="ds-button ds-button--primary fd-demo-btn--run">
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.34-5.89a1.5 1.5 0 000-2.54L6.3 2.84z"/></svg>
             {{ primary.label }}
           </a>
         {% endif %}
         {% if secondary.url %}
-          <a href="{{ secondary.url }}" class="fd-demo-btn fd-demo-btn--secondary fd-demo-btn--lg">{{ secondary.label }}</a>
+          <a href="{{ secondary.url }}" class="ds-button ds-button--neutral">{{ secondary.label }}</a>
         {% endif %}
       </div>
     {% endif %}

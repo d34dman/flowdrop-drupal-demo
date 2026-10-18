@@ -1,13 +1,30 @@
 /**
  * @file
- * Start page: shared buttons and page rhythm. Everything uses FlowDrop tokens.
+ * Start page: page rhythm, the learning-path list's card body, and the run
+ * button's animation. Everything reads Design System API tokens (--ds-*);
+ * buttons are the contract's (ds-button), loaded by the design_system_api
+ * forms library.
  */
 
 .fd-demo-start {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: var(--ds-fd-demo-measure-page);
+  margin-inline: auto;
+  padding: var(--ds-space-l);
   /* Room between sections, so each reads as its own step. */
-  gap: calc(var(--fd-space-12) + var(--fd-space-4));
-  color: var(--fd-foreground);
+  gap: calc(var(--ds-space-xl) * 1.5 + var(--ds-space-m));
+  color: var(--ds-color-fg-default);
+  font-family: var(--ds-font-family-base);
+  line-height: var(--ds-font-line-height-base);
+}
+
+@media (max-width: 1024px) {
+  .fd-demo-start {
+    padding: var(--ds-space-m);
+  }
 }
 
 /* Claro and Olivero hyphenate; headings and card copy read better whole. */
@@ -18,123 +35,46 @@
 /* The dashboard sections carry their own bottom margin; the flex gap wins. */
 .fd-demo-start,
 .fd-demo-start > * {
-  min-width: 0;
+  min-inline-size: 0;
   margin-block: 0;
 }
 
 /* Sample inputs and outputs in the copy: what to type, what comes back. */
 .fd-demo-start code {
-  padding: 0.05em 0.35em;
-  border: var(--fd-border-width) solid var(--fd-border-muted);
-  border-radius: var(--fd-radius-sm);
-  color: var(--fd-foreground);
-  background: var(--fd-muted);
-  font-family: var(--fd-font-family-mono);
-  font-size: 0.9em;
+  padding-block: 0;
+  padding-inline: var(--ds-space-2xs);
+  border: var(--ds-border-width-s) solid var(--ds-color-border-soft);
+  border-radius: var(--ds-radius-s);
+  color: var(--ds-color-fg-default);
+  background: var(--ds-color-bg-surface-nested);
+  font-family: var(--ds-font-family-mono);
+  font-size: var(--ds-font-size-xs);
   overflow-wrap: anywhere;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
 
-/* ---- Buttons ---------------------------------------------------------- */
-
-.fd-demo-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--fd-space-2);
-  padding: var(--fd-space-2) var(--fd-space-4);
-  border: var(--fd-border-width) solid transparent;
-  border-radius: var(--fd-radius-lg);
-  font-family: var(--fd-font-family-sans);
-  font-size: var(--fd-text-sm);
-  font-weight: var(--fd-font-weight-semibold);
-  line-height: 1.25rem;
-  text-decoration: none;
-  white-space: nowrap;
-  cursor: pointer;
-  transition:
-    background-color var(--fd-transition-fast),
-    border-color var(--fd-transition-fast),
-    box-shadow var(--fd-transition-fast),
-    transform var(--fd-transition-fast);
+@keyframes fd-demo-fade-in {
+  from {
+    transform: translateY(var(--ds-space-xs));
+    opacity: 0;
+  }
 }
 
-.fd-demo-btn:focus-visible {
-  outline: 2px solid var(--fd-ring);
-  outline-offset: 2px;
-}
+/* ---- Buttons ----------------------------------------------------------
+ * The look is the contract's (ds-button, --primary, --neutral, --ghost,
+ * --small). Here only what the page adds: an icon's size, and the focus ring
+ * of a mouse click, which Claro draws on every focused link.
+ */
 
-/* Claro's `.page-wrapper :focus` draws a green ring on every focused link,
- * mouse clicks included, from a stylesheet that loads after this one. Three
- * classes beat it; the run-button hover and done states match that below. */
-.fd-demo-start .fd-demo-btn:focus:where(:not(:focus-visible)) {
-  outline: none;
-  box-shadow: none;
-}
-
-.fd-demo-btn:active {
-  transform: translateY(1px);
-}
-
-.fd-demo-btn svg {
-  width: 1rem;
-  height: 1rem;
+.fd-demo-start .ds-button svg {
   flex-shrink: 0;
+  inline-size: 1em;
+  block-size: 1em;
 }
 
-.fd-demo-btn--lg {
-  padding: var(--fd-space-3) var(--fd-space-5);
-  font-size: var(--fd-text-base);
-}
-
-.fd-demo-btn--sm {
-  padding: var(--fd-space-1) var(--fd-space-3);
-  font-size: var(--fd-text-xs);
-  line-height: 1.25rem;
-}
-
-.fd-demo-btn--primary,
-.fd-demo-btn--primary:visited {
-  color: var(--fd-primary-foreground);
-  background-color: var(--fd-primary);
-  box-shadow: var(--fd-shadow-sm);
-}
-
-.fd-demo-btn--primary:hover,
-.fd-demo-btn--primary:focus {
-  color: var(--fd-primary-foreground);
-  background-color: var(--fd-primary-hover);
-  box-shadow: var(--fd-shadow-md);
-  text-decoration: none;
-}
-
-.fd-demo-btn--secondary,
-.fd-demo-btn--secondary:visited {
-  color: var(--fd-foreground);
-  border-color: var(--fd-border);
-  background-color: var(--fd-card);
-}
-
-.fd-demo-btn--secondary:hover,
-.fd-demo-btn--secondary:focus {
-  color: var(--fd-foreground);
-  border-color: var(--fd-border-strong);
-  background-color: var(--fd-muted);
-  text-decoration: none;
-}
-
-.fd-demo-btn--ghost,
-.fd-demo-btn--ghost:visited {
-  color: var(--fd-muted-foreground);
-  background-color: transparent;
-}
-
-.fd-demo-btn--ghost:hover,
-.fd-demo-btn--ghost:focus {
-  color: var(--fd-foreground);
-  background-color: var(--fd-subtle);
-  text-decoration: none;
+.fd-demo-start .ds-button:focus:where(:not(:focus-visible)) {
+  outline: none;
 }
 
 /* ---- Run buttons ------------------------------------------------------
@@ -155,58 +95,68 @@
   isolation: isolate;
 }
 
+.fd-demo-btn--run svg {
+  position: relative;
+}
+
 /* The flowing border. Browsers without @property show it still, not spinning. */
 .fd-demo-btn--run::before {
   content: "";
   position: absolute;
   z-index: -1;
-  inset: -4px;
-  padding: 2.5px;
-  border-radius: calc(var(--fd-radius-lg) + 4px);
+  inset: calc(var(--ds-space-2xs) * -1);
+  padding: var(--ds-border-width-m);
+  border-radius: calc(var(--ds-radius-m) + var(--ds-space-2xs));
   background: conic-gradient(
     from var(--fd-demo-run-angle),
     transparent 0 50%,
-    color-mix(in srgb, var(--fd-accent) 60%, transparent) 64%,
-    var(--fd-accent) 76%,
-    var(--fd-primary) 90%,
+    color-mix(in srgb, var(--ds-color-border-primary-hover) 60%, transparent) 64%,
+    var(--ds-color-border-primary-hover) 76%,
+    var(--ds-color-action-primary) 90%,
     transparent 100%
   );
   -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
+    linear-gradient(var(--ds-color-fg-default) 0 0) content-box,
+    linear-gradient(var(--ds-color-fg-default) 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0;
-  transition: opacity var(--fd-transition-normal);
   pointer-events: none;
-}
-
-.fd-demo-btn--run:hover::before,
-.fd-demo-btn--run:focus-visible::before,
-.fd-demo-btn--run.is-running::before {
-  opacity: 1;
-  animation: fd-demo-run-spin 1.6s linear infinite;
-}
-
-.fd-demo-btn--run.is-running::before {
-  animation-duration: 0.5s;
 }
 
 @keyframes fd-demo-run-spin {
   to { --fd-demo-run-angle: 360deg; }
 }
 
+@keyframes fd-demo-run-fill {
+  to { transform: scaleX(1); }
+}
+
+@keyframes fd-demo-run-ripple {
+  to {
+    transform: scale(24);
+    opacity: 0;
+  }
+}
+
+@keyframes fd-demo-run-icon {
+  40% { inset-inline-start: var(--ds-space-2xs); transform: scale(0.85); }
+  100% { inset-inline-start: 0; transform: scale(1); }
+}
+
+@keyframes fd-demo-run-tick {
+  from { transform: scale(0.3); opacity: 0; }
+}
+
+.fd-demo-btn--run:hover::before,
+.fd-demo-btn--run:focus-visible::before,
+.fd-demo-btn--run.is-running::before {
+  opacity: 1;
+}
+
 .fd-demo-start .fd-demo-btn--run:hover,
 .fd-demo-start .fd-demo-btn--run:focus-visible {
-  box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--fd-primary) 70%, transparent);
-}
-
-.fd-demo-btn--run svg {
-  transition: transform var(--fd-transition-fast);
-}
-
-.fd-demo-btn--run:hover svg {
-  transform: translateX(2px);
+  box-shadow: var(--ds-shadow-raised);
 }
 
 /* Click: the fill, clipped to the button by its own inset box. */
@@ -216,39 +166,30 @@
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--fd-primary-hover), color-mix(in srgb, var(--fd-accent) 70%, var(--fd-primary-hover)));
+  background: linear-gradient(
+    90deg,
+    var(--ds-color-action-primary-hover),
+    color-mix(in srgb, var(--ds-color-border-primary-hover) 70%, var(--ds-color-action-primary-hover))
+  );
   transform: scaleX(0);
-  transform-origin: left center;
+  transform-origin: 0 50%;
   pointer-events: none;
-}
-
-.fd-demo-btn--run.is-running::after {
-  animation: fd-demo-run-fill 520ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes fd-demo-run-fill {
-  to { transform: scaleX(1); }
 }
 
 .fd-demo-btn__ripple {
   position: absolute;
-  top: var(--y);
-  left: var(--x);
+  inset-block-start: var(--y);
+  inset-inline-start: var(--x);
   z-index: -1;
-  width: 12px;
-  height: 12px;
-  margin: -6px 0 0 -6px;
+  inline-size: var(--ds-space-s);
+  block-size: var(--ds-space-s);
+  margin-block-start: calc(var(--ds-space-s) / -2);
+  margin-inline-start: calc(var(--ds-space-s) / -2);
   border-radius: 50%;
-  background: rgb(255 255 255 / 0.55);
-  animation: fd-demo-run-ripple 520ms ease-out forwards;
+  background: color-mix(in srgb, var(--ds-color-fg-on-action) 55%, transparent);
+  --x: 50%;
+  --y: 50%;
   pointer-events: none;
-}
-
-@keyframes fd-demo-run-ripple {
-  to {
-    transform: scale(24);
-    opacity: 0;
-  }
 }
 
 /* The ripple may grow past the corners; only while it runs. */
@@ -260,36 +201,63 @@
   display: none;
 }
 
-.fd-demo-btn--run.is-running svg:not(.fd-demo-btn__tick) {
-  animation: fd-demo-run-icon 520ms ease-in-out;
-}
-
-@keyframes fd-demo-run-icon {
-  40% { transform: translateX(4px) scale(0.85); }
-  100% { transform: translateX(0) scale(1); }
-}
-
 .fd-demo-start .fd-demo-btn--run.is-done,
 .fd-demo-start .fd-demo-btn--run.is-done:hover {
-  background-color: var(--fd-success);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--fd-success) 22%, transparent);
+  background-color: var(--ds-color-status-success);
+  box-shadow: 0 0 0 var(--ds-focus-ring-width) color-mix(in srgb, var(--ds-color-status-success) 22%, transparent);
 }
 
 .fd-demo-btn--run.is-done::after {
   opacity: 0;
-  transition: opacity 120ms;
 }
 
 .fd-demo-btn--run.is-done svg:not(.fd-demo-btn__tick) {
   display: none;
 }
 
-.fd-demo-btn__tick {
-  animation: fd-demo-run-tick 220ms cubic-bezier(0.3, 1.6, 0.6, 1);
-}
+@media (prefers-reduced-motion: no-preference) {
+  .fd-demo-btn--run::before {
+    transition: opacity var(--ds-motion-duration-s);
+  }
 
-@keyframes fd-demo-run-tick {
-  from { transform: scale(0.3); opacity: 0; }
+  .fd-demo-btn--run:hover::before,
+  .fd-demo-btn--run:focus-visible::before,
+  .fd-demo-btn--run.is-running::before {
+    /* stylelint-disable-next-line drupal-ds/motion-tokens-only -- a constant spin has to be linear; the contract has no easing token */
+    animation: fd-demo-run-spin var(--ds-fd-demo-run-spin) linear infinite;
+  }
+
+  .fd-demo-btn--run.is-running::before {
+    animation-duration: var(--ds-fd-demo-run-spin-fast);
+  }
+
+  .fd-demo-btn--run svg {
+    transition: inset-inline-start var(--ds-motion-duration-s);
+  }
+
+  .fd-demo-btn--run:hover svg {
+    inset-inline-start: var(--ds-space-2xs);
+  }
+
+  .fd-demo-btn--run.is-running::after {
+    animation: fd-demo-run-fill var(--ds-fd-demo-run-fill) forwards;
+  }
+
+  .fd-demo-btn__ripple {
+    animation: fd-demo-run-ripple var(--ds-fd-demo-run-fill) forwards;
+  }
+
+  .fd-demo-btn--run.is-running svg:not(.fd-demo-btn__tick) {
+    animation: fd-demo-run-icon var(--ds-fd-demo-run-fill);
+  }
+
+  .fd-demo-btn--run.is-done::after {
+    transition: opacity var(--ds-motion-duration-s);
+  }
+
+  .fd-demo-btn__tick {
+    animation: fd-demo-run-tick var(--ds-fd-demo-run-tick);
+  }
 }
 
 /* ---- Workflow card body (workflow-card and path-step) ---------------- */
@@ -297,86 +265,86 @@
 .fd-demo-wf {
   display: flex;
   flex-direction: column;
-  gap: var(--fd-space-2);
-  padding: var(--fd-space-4) var(--fd-space-5);
-  border: var(--fd-border-width) solid var(--fd-border-muted);
-  border-radius: var(--fd-radius-xl);
-  background: var(--fd-card);
-  box-shadow: var(--fd-shadow-sm);
-  transition:
-    border-color var(--fd-transition-fast),
-    box-shadow var(--fd-transition-fast),
-    transform var(--fd-transition-fast);
+  gap: var(--ds-space-xs);
+  padding: var(--ds-space-m) var(--ds-space-l);
+  border: var(--ds-border-width-s) solid var(--ds-color-border-soft);
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-color-bg-surface);
+  box-shadow: var(--ds-shadow-raised);
 }
 
 .fd-demo-wf:hover,
 .fd-demo-wf:focus-within {
-  border-color: color-mix(in srgb, var(--fd-primary) 40%, var(--fd-border));
-  box-shadow: var(--fd-shadow-md);
-}
-
-.fd-demo-section .fd-grid {
-  align-items: stretch;
+  border-color: var(--ds-color-border-primary-soft);
 }
 
 /* Two showcase cards share the row instead of leaving a third empty. */
 @media (min-width: 900px) {
-  #fd-demo-showcase .fd-grid {
+  #fd-demo-showcase .fd-demo-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.fd-demo-wf--card:hover {
-  transform: translateY(-2px);
+@media (prefers-reduced-motion: no-preference) {
+  .fd-demo-wf {
+    transition:
+      border-color var(--ds-motion-duration-s),
+      box-shadow var(--ds-motion-duration-s),
+      transform var(--ds-motion-duration-s);
+  }
+
+  .fd-demo-wf--card:hover {
+    transform: translateY(calc(var(--ds-space-2xs) / -2));
+  }
 }
 
 .fd-demo-wf__header {
   display: flex;
   align-items: center;
-  gap: var(--fd-space-3);
+  gap: var(--ds-space-s);
 }
 
 .fd-demo-wf__icon {
   display: inline-grid;
   flex-shrink: 0;
-  width: 2.25rem;
-  height: 2.25rem;
+  inline-size: var(--ds-control-height-s);
+  block-size: var(--ds-control-height-s);
   place-items: center;
-  border-radius: var(--fd-radius-lg);
-  color: var(--fd-accent-hover);
-  background: var(--fd-accent-muted);
+  border-radius: var(--ds-radius-l);
+  color: var(--ds-color-fg-primary);
+  background: var(--ds-color-action-primary-soft);
 }
 
 .fd-demo-wf__icon svg {
-  width: 1.25rem;
-  height: 1.25rem;
+  inline-size: calc(var(--ds-space-m) * 1.25);
+  block-size: calc(var(--ds-space-m) * 1.25);
 }
 
 .fd-demo-wf__title {
   flex: 1;
   margin: 0;
-  color: var(--fd-foreground);
-  font-family: var(--fd-font-family-sans);
-  font-size: var(--fd-text-base);
-  font-weight: var(--fd-font-weight-semibold);
-  line-height: 1.4;
+  color: var(--ds-color-fg-loud);
+  font-family: var(--ds-font-family-heading);
+  font-size: var(--ds-font-size-m);
+  font-weight: var(--ds-font-weight-strong);
+  line-height: var(--ds-font-line-height-tight);
 }
 
 .fd-demo-wf__description {
   flex: 1;
   margin: 0;
-  color: var(--fd-muted-foreground);
-  font-size: var(--fd-text-sm);
-  line-height: 1.55;
+  color: var(--ds-color-fg-soft);
+  font-size: var(--ds-font-size-s);
+  line-height: var(--ds-font-line-height-base);
 }
 
 .fd-demo-wf__hints {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
-  gap: var(--fd-space-1) var(--fd-space-3);
-  margin: var(--fd-space-1) 0 0;
-  font-size: var(--fd-text-sm);
-  line-height: 1.5;
+  gap: var(--ds-space-2xs) var(--ds-space-s);
+  margin: var(--ds-space-2xs) 0 0;
+  font-size: var(--ds-font-size-s);
+  line-height: var(--ds-font-line-height-base);
 }
 
 @media (max-width: 640px) {
@@ -387,7 +355,7 @@
 
   .fd-demo-wf__hint dd + dt,
   .fd-demo-wf__hint:not(:first-child) dt {
-    margin-block-start: var(--fd-space-2);
+    margin-block-start: var(--ds-space-xs);
   }
 }
 
@@ -406,17 +374,18 @@
 }
 
 .fd-demo-wf__hint dt {
-  color: var(--fd-primary-hover);
-  font-size: var(--fd-text-xs);
-  font-weight: var(--fd-font-weight-semibold);
-  letter-spacing: var(--fd-letter-spacing-wide);
-  line-height: 1.5rem;
+
+  color: var(--ds-color-fg-primary);
+  font-size: var(--ds-font-size-xs);
+  font-weight: var(--ds-font-weight-strong);
+  letter-spacing: var(--ds-fd-demo-text-tracking);
+  line-height: var(--ds-font-line-height-base);
   text-transform: uppercase;
 }
 
 .fd-demo-wf__hint dd {
   margin: 0;
-  color: var(--fd-foreground);
+  color: var(--ds-color-fg-default);
 }
 
 .fd-demo-wf__footer {
@@ -424,43 +393,43 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--fd-space-3);
-  margin-block-start: var(--fd-space-2);
+  gap: var(--ds-space-s);
+  margin-block-start: var(--ds-space-xs);
 }
 
 .fd-demo-wf__meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--fd-space-2);
+  gap: var(--ds-space-xs);
 }
 
 .fd-demo-wf__nodes {
   display: inline-flex;
   align-items: center;
-  gap: var(--fd-space-1);
-  color: var(--fd-muted-foreground);
-  font-size: var(--fd-text-xs);
+  gap: var(--ds-space-2xs);
+  color: var(--ds-color-fg-soft);
+  font-size: var(--ds-font-size-xs);
 }
 
 .fd-demo-wf__nodes svg {
-  width: 0.875rem;
-  height: 0.875rem;
+  inline-size: 1em;
+  block-size: 1em;
 }
 
 .fd-demo-wf__actions {
   display: flex;
-  gap: var(--fd-space-2);
+  gap: var(--ds-space-xs);
   margin-inline-start: auto;
 }
 
 /* Headings inside a section, e.g. the groups under "For developers". */
 .fd-demo-subheading {
-  margin: 0 0 calc(var(--fd-space-3) * -1);
-  color: var(--fd-foreground);
-  font-family: var(--fd-font-family-sans);
-  font-size: var(--fd-text-base);
-  font-weight: var(--fd-font-weight-semibold);
+  margin: 0 0 calc(var(--ds-space-s) * -1);
+  color: var(--ds-color-fg-loud);
+  font-family: var(--ds-font-family-heading);
+  font-size: var(--ds-font-size-m);
+  font-weight: var(--ds-font-weight-strong);
 }
 
 /* ---- Learning path ------------------------------------------------------ */
@@ -471,13 +440,4 @@
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .fd-demo-start *,
-  .fd-demo-start *::before,
-  .fd-demo-start *::after {
-    animation: none !important;
-    transition: none !important;
-  }
 }

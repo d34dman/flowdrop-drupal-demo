@@ -7,6 +7,7 @@
  * who prefer reduced motion, get the plain link at once.
  */
 ((Drupal, once) => {
+  // Match --ds-fd-demo-run-fill and --ds-fd-demo-run-tick (fd_demo.tokens.yml).
   const RUN_MS = 520;
   const DONE_MS = 220;
   const TICK = '<svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="fd-demo-btn__tick"><path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 111.4-1.4L8 12.6l7.3-7.3a1 1 0 011.4 0z" clip-rule="evenodd"/></svg>';
