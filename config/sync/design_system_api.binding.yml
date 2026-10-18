@@ -1,12 +1,12 @@
 _core:
   default_config_hash: dSR6zyirGk-nmiilKscRa56hDUS6wvibxNlGCiaUCTE
 site:
-  skin: advaita_paper
+  skin: advaita_slate
   dark: null
   contrast: null
-  mode: light
+  mode: follow
 chrome:
   skin: advaita_slate
   dark: null
   contrast: null
-  mode: light
+  mode: follow
